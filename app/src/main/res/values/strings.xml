@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyFoodChoice</string>
     <string name="login">Login</string>
+    <string name="LOGIN"><b>LOGIN</b></string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="enter_username">Enter username</string>
@@ -10,5 +11,5 @@
     <string name="or">or</string>
     <string name="login_as_guest"><u>Login as guest</u></string>
     <string name="need_an_account">Need an Account?</string>
-    <string name="sign_up"><u>SIGN UP</u></string>
+    <string name="sign_up"><u><b>UP</b> </u></string>
 </resources>

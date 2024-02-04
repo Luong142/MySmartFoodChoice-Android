@@ -11,9 +11,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="312dp"
-        android:layout_height="491dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="314dp"
+        android:layout_height="541dp"
+        android:layout_marginBottom="36dp"
         android:background="@drawable/rounded_layout_login_page"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Login"
+            android:text="@string/login"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,8 @@
             android:src="@drawable/login_person"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/login_label"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAccessibility="no" />
 
 
         <TextView
@@ -62,6 +63,8 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/rounded_layout_editext"
             android:hint="@string/enter_username"
+            android:inputType="textAutoComplete"
+            android:textColorHint="#FAFAFA"
             android:textSize="25sp"
             app:layout_constraintBottom_toTopOf="@+id/password_label"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,17 +82,23 @@
             app:layout_constraintHorizontal_bias="0.201"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- android:onClick="" for the above text -->
+
+
         <EditText
             android:id="@+id/editText_password"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="224dp"
+            android:layout_marginBottom="292dp"
+            android:autofillHints="password"
             android:background="@drawable/rounded_layout_editext"
             android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:textColorHint="#FAFAFA"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.631"
+            app:layout_constraintHorizontal_bias="0.578"
             app:layout_constraintStart_toStartOf="parent" />
 
         <CheckBox
@@ -100,25 +109,36 @@
             android:text="@string/remember_me"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.292"
+            app:layout_constraintHorizontal_bias="0.266"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_password" />
-        <!-- android:onClick="" for the above text -->
+
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_layout_login_page"
+            android:shadowColor="@color/dodger_blue"
+            android:text="@string/LOGIN"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rememberMe_check" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="137dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="128dp"
+            android:layout_marginBottom="132dp"
             android:clickable="true"
             android:minHeight="48dp"
             android:text="@string/forget_password"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.876"
+            app:layout_constraintHorizontal_bias="0.909"
             app:layout_constraintStart_toStartOf="parent" />
-
 
         <TextView
             android:id="@+id/textView"
@@ -129,6 +149,7 @@
             android:paddingHorizontal="10dp"
             android:text="@string/or"
             android:textAlignment="center"
+            android:textColor="#424242"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -155,29 +176,34 @@
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="@+id/textView" />
 
+        <!-- android:onClick="" for the above text -->
+
         <TextView
             android:id="@+id/login_guest_clickable_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:clickable="true"
+            android:minHeight="48dp"
             android:text="@string/login_as_guest"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
-        <!-- android:onClick="" for the above text -->
 
         <TextView
             android:id="@+id/need_account_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="52dp"
             android:text="@string/need_an_account"
 
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.261"
+            app:layout_constraintHorizontal_bias="0.04"
             app:layout_constraintStart_toStartOf="parent" />
 
 
