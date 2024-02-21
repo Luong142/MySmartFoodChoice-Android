@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper
 {
+    // TODO: update this later based on the provided table from big data team member.
     public static final String DATABASE_NAME = "exhibition.db";
 
     public static final String TABLE_NAME = "exhibition";
