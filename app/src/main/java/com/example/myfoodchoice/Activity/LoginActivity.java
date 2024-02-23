@@ -18,10 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfoodchoice.R;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -52,7 +49,8 @@ public class LoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_main);
+        setContentView(R.layout.activity_login);
+        setTitle("Smart Food Choice");
 
         // TODO: init Firebase auth
         mAuth = FirebaseAuth.getInstance();
