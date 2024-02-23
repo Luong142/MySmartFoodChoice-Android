@@ -26,15 +26,16 @@ public class WelcomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        // init bottom navigation view
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         // init buttons
         signingBtn = findViewById(R.id.signInBtn);
         signupBtn = findViewById(R.id.signUpBtn);
 
         signingBtn.setOnClickListener(onSignInListener);
         signupBtn.setOnClickListener(onSignUpListener);
+
+        // init bottom navigation view
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         bottomNavigationView.setOnItemSelectedListener(item ->
         {
@@ -48,24 +49,32 @@ public class WelcomeActivity extends AppCompatActivity
             {
                 Intent intent = new Intent(WelcomeActivity.this, AboutUsActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
                 return true;
             }
             else if (itemId == R.id.nav_partnership)
             {
                 Intent intent2 = new Intent(WelcomeActivity.this, PartnershipActivity.class);
                 startActivity(intent2);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
                 return true;
             }
             else if (itemId == R.id.nav_review)
             {
                 Intent intent3 = new Intent(WelcomeActivity.this, ReviewActivity.class);
                 startActivity(intent3);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
                 return true;
             }
             else if (itemId == R.id.nav_contact_us)
             {
                 Intent intent5 = new Intent(WelcomeActivity.this, ContactUsActivity.class);
                 startActivity(intent5);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
                 return true;
             }
             return false;

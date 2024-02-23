@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.MyFoodChoice" parent="Base.Theme.MyFoodChoice" />
+    <style name="SlideActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_out_left</item>
+
+    </style>
 </resources>
