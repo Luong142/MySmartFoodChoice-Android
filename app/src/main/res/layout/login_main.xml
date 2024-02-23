@@ -10,8 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="314dp"
-        android:layout_height="541dp"
+        android:layout_width="315dp"
+        android:layout_height="545dp"
         android:layout_marginBottom="160dp"
         android:background="@drawable/rounded_layout_login_page"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +103,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <CheckBox
-            android:id="@+id/rememberMe_check"
+            android:id="@+id/rememberMe_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -114,11 +114,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_password" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/loginBtn"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:background="@drawable/rounded_layout_editor"
+            android:backgroundTint="@color/dodger_blue"
             android:clickable="true"
             android:elevation="10dp"
             android:text="@string/LOGIN"
@@ -126,10 +126,10 @@
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rememberMe_check" />
+            app:layout_constraintTop_toBottomOf="@+id/rememberMe_checkBox" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/clickableForgotPassword"
             android:layout_width="137dp"
             android:layout_height="48dp"
             android:layout_marginBottom="132dp"
@@ -181,31 +181,32 @@
         <!-- android:onClick="" for the above text -->
 
         <TextView
-            android:id="@+id/login_guest_clickable_text"
+            android:id="@+id/clickableLoginGuestNavText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:clickable="true"
             android:minHeight="48dp"
             android:text="@string/login_as_guest"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
-            android:id="@+id/need_account_label"
+            android:id="@+id/clickableSignUpNavText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="52dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/need_an_account"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.04"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clickableLoginGuestNavText"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
