@@ -35,12 +35,12 @@ public class WelcomeActivity extends AppCompatActivity
 
         // init bottom navigation view
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        bottomNavigationView.setSelectedItemId(R.id.nav_welcome);
 
         bottomNavigationView.setOnItemSelectedListener(item ->
         {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_home)
+            if (itemId == R.id.nav_welcome)
             {
                 // Handle navigation to Home
                 return true;
