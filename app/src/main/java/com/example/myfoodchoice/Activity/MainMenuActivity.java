@@ -11,12 +11,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.Fragment.HomeFragment;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
     private DrawerLayout drawerLayout;
 
     private FirebaseAuth mAuth;
@@ -84,7 +88,7 @@ public class MainMenuActivity extends AppCompatActivity implements NavigationVie
         {
             // log out
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
             finish();
         }

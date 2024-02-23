@@ -15,20 +15,31 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.WelcomeActivity"
-            android:exported="true" >
+            android:name=".WelcomeActivity.ContactUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeActivity.ReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeActivity.PartnershipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeActivity.AboutUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeActivity.WelcomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Activity.PaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ForgotPasswordActivity"
+            android:name=".AuthenticationActivity.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.GuestMainMenuActivity"
@@ -37,13 +48,11 @@
             android:name=".Activity.MainMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.RegisterActivity"
+            android:name=".AuthenticationActivity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.LoginActivity"
-            android:exported="false">
-
-        </activity>
+            android:name=".AuthenticationActivity.LoginActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

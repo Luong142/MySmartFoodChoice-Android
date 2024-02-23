@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Activity;
+package com.example.myfoodchoice.AuthenticationActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,11 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfoodchoice.R;
-import com.google.firebase.Firebase;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity
 {
