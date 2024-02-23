@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "316923369990",
+    "project_id": "myfoodchoice-dc7bd",
+    "storage_bucket": "myfoodchoice-dc7bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316923369990:android:00c53a028c3680edda4187",
+        "android_client_info": {
+          "package_name": "com.example.myfoodchoice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGO0NFaE8rgmVPWD7ufoiDpx8vNWj1g7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
