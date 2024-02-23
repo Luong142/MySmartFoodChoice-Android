@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.RegisterActivity"
-    android:background="@color/dark_sea_green"
-    >
+    tools:context=".Activity.RegisterActivity">
 
     <LinearLayout
         android:layout_width="340dp"
