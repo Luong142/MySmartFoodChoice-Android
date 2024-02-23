@@ -8,6 +8,7 @@ import com.example.myfoodchoice.R;
 
 public class GuestMainMenuActivity extends AppCompatActivity
 {
+    // TODO: declare UI components
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

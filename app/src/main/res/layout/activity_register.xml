@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.RegisterActivity"
-    android:background="@drawable/gradient_bg_mainmenu"
+    android:background="@color/dark_sea_green"
     >
 
     <LinearLayout
@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589">
+        app:layout_constraintVertical_bias="0.59">
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,27 +93,6 @@
             android:textColorHint="#FAFAFA"
             android:textSize="15sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:text="@string/username"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/sign_up_username"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="last name"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_username"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="15sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -172,8 +151,7 @@
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

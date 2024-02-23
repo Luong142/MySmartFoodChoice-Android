@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -12,10 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myfoodchoice.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -25,17 +31,22 @@ public class LoginActivity extends AppCompatActivity
     private Button loginBtn;
 
     // Edit text
-    private EditText loginUsernameEditText, loginPasswordEditText;
+    private EditText loginEmailEditText, loginPasswordEditText;
 
     // check box
     private CheckBox rememberMe;
 
-    private FirebaseAnalytics firebaseAnalytics;
-
     // clickable text
     private TextView clickableForgotPassword, clickableSignUpNav, clickableLoginAsGuest;
 
+    // for clickable text
     private SpannableString spannableStringSignUpNav, spannableStringLoginAsGuestNav, spannableStringForgotPassword;
+
+    // for progress bar
+    private ProgressBar progressBar;
+
+    // firebase login
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,11 +54,12 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // TODO: init Firebase auth
+        mAuth = FirebaseAuth.getInstance();
 
         // TODO: init UI components
-        loginUsernameEditText = findViewById(R.id.editText_username);
-        loginPasswordEditText = findViewById(R.id.editText_password);
+        loginEmailEditText = findViewById(R.id.login_email);
+        loginPasswordEditText = findViewById(R.id.login_password);
 
         // check box
         rememberMe = findViewById(R.id.rememberMe_checkBox);
@@ -79,7 +91,9 @@ public class LoginActivity extends AppCompatActivity
         clickableForgotPassword.setText(spannableStringForgotPassword);
         clickableForgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
-
+        // progress bar
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
     }
 
     // TODO: to implement the login functionalities for this activity.
@@ -88,12 +102,42 @@ public class LoginActivity extends AppCompatActivity
         return v ->
         {
             Log.d("LoginActivity", "login button activated! ");
+            // TODO: login function
+            String email = loginEmailEditText.getText().toString().trim();
+            String password = loginPasswordEditText.getText().toString().trim();
 
-            // TODO: implement login logic here? override the function from the database.
+            // validation
+            if (TextUtils.isEmpty(email))
+            {
+                loginEmailEditText.setError("Email is required.");
+                return;
+            }
 
+            if (TextUtils.isEmpty(password))
+            {
+                loginPasswordEditText.setError("Password is required.");
+                return;
+            }
 
+            // loading
+            progressBar.setVisibility(View.VISIBLE);
 
-            finish();
+            // authentication login
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+            {
+                if (task.isSuccessful())
+                {
+                    Toast.makeText(LoginActivity.this, "Logged in successfully.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this, "Login failed, please try again.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         };
     }
 

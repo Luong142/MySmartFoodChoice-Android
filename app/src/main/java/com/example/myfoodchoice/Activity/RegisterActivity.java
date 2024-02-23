@@ -34,8 +34,7 @@ public class RegisterActivity extends AppCompatActivity
     private TextView navLoginClick;
 
     // Edit text
-    private EditText signupEmailEditText, signupFirstNameEditText, signupLastNameEditText, signupPasswordEditText
-            ,signupUsernameEditText;
+    private EditText signupEmailEditText, signupFirstNameEditText, signupLastNameEditText, signupPasswordEditText;
 
     // progress bar
     private ProgressBar progressBar;
@@ -60,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity
         signupEmailEditText = findViewById(R.id.sign_up_email);
         signupFirstNameEditText = findViewById(R.id.sign_up_firstname);
         signupLastNameEditText = findViewById(R.id.sign_up_lastname);
-        signupUsernameEditText  = findViewById(R.id.sign_up_username);
         signupPasswordEditText = findViewById(R.id.sign_up_password);
 
         // progress bar
@@ -77,14 +75,6 @@ public class RegisterActivity extends AppCompatActivity
         spannableStringLoginNav.setSpan(clickableLoginNavSpan(), 18, navLoginClick.length(), 0);
         navLoginClick.setText(spannableStringLoginNav);
         navLoginClick.setMovementMethod(LinkMovementMethod.getInstance());
-
-        // if the user already have their account (alternative)
-        if (mAuth.getCurrentUser() != null)
-        {
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private View.OnClickListener onSignUpListener()
@@ -98,19 +88,19 @@ public class RegisterActivity extends AppCompatActivity
             // validation
             if (TextUtils.isEmpty(email))
             {
-                Toast.makeText(this, "Email is required.", Toast.LENGTH_SHORT).show();
+                signupEmailEditText.setError("Email is required.");
                 return;
             }
 
             if (TextUtils.isEmpty(password))
             {
-                Toast.makeText(this, "Password is required.", Toast.LENGTH_SHORT).show();
+                signupPasswordEditText.setError("Password is required.");
                 return;
             }
 
-            if (password.length() < 6)
+            if (password.length() < 4)
             {
-                Toast.makeText(this, "Password must be at least 6 characters.", Toast.LENGTH_SHORT).show();
+                signupPasswordEditText.setError("Password must be at least 6 characters.");
                 return;
             }
 
@@ -122,15 +112,15 @@ public class RegisterActivity extends AppCompatActivity
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(this, "User created successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "User created successfully.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
                 else
                 {
-                    Toast.makeText(this, "Error" +
-                            Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,
+                            "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
                 }
             });
         };
