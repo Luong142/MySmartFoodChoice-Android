@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myfoodchoice.Activity.GuestMainMenuActivity;
-import com.example.myfoodchoice.Activity.MainMenuActivity;
+import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
+import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity
                 if (task.isSuccessful())
                 {
                     Toast.makeText(LoginActivity.this, "Logged in successfully.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
                     startActivity(intent);
                     finish();
                 }

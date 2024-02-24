@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Activity;
+package com.example.myfoodchoice.UserActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,13 +6,13 @@ import android.os.Bundle;
 
 import com.example.myfoodchoice.R;
 
-public class GuestMainMenuActivity extends AppCompatActivity
+public class PaymentActivity extends AppCompatActivity
 {
-    // TODO: declare UI components
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest_main_menu);
+        setContentView(R.layout.activity_payment);
     }
 }

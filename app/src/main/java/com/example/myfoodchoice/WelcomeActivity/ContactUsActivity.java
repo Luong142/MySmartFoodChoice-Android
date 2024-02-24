@@ -25,7 +25,7 @@ public class ContactUsActivity extends AppCompatActivity
         bottomNavigationView.setOnItemSelectedListener(item ->
         {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_home)
+            if (itemId == R.id.nav_welcome)
             {
                 // Handle navigation to Home
                 Intent intent = new Intent(this, WelcomeActivity.class);
