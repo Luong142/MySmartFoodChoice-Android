@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.myfoodchoice.R;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class bmiActivity extends AppCompatActivity
@@ -67,7 +68,7 @@ public class bmiActivity extends AppCompatActivity
 
         numBMI = numWeight  / (numHeight * numHeight);
 
-        bmi = Float.toString(numBMI);
+        bmi = String.format(Locale.ROOT, "%.2f", numBMI);
 
         if (numBMI < 16)
         {
@@ -75,26 +76,26 @@ public class bmiActivity extends AppCompatActivity
             background.setBackgroundColor(getColor(R.color.red));
             imageView.setImageResource(R.drawable.crosss);
         }
-        else if (numBMI >= 16.9 && numBMI > 16)
+        else if (numBMI > 16 && numBMI < 16.9)
         {
             mBMIcategory.setText("Moderately Underweight");
             background.setBackgroundColor(getColor(R.color.red));
             imageView.setImageResource(R.drawable.warning);
         }
-        else if (numBMI < 18.4 && numBMI > 17)
+        else if (numBMI > 17 && numBMI < 18.4)
         {
-            mBMIcategory.setText("Mild Underweight");
+            mBMIcategory.setText("Moderately Underweight");
             background.setBackgroundColor(getColor(R.color.orange));
             imageView.setImageResource(R.drawable.warning);
-
         }
-        else if (numBMI < 24.9 && numBMI > 18.5)
+
+        else if (numBMI < 25 && numBMI > 18.4)
         {
             mBMIcategory.setText("Normal");
             background.setBackgroundColor(getColor(R.color._light_green));
             imageView.setImageResource(R.drawable.ok);
         }
-        else if (numBMI < 29.9 && numBMI > 25)
+        else if (numBMI < 29.4 && numBMI > 25)
         {
             mBMIcategory.setText("Overweight");
             background.setBackgroundColor(getColor(R.color.orange));
