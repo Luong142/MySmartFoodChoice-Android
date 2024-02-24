@@ -72,38 +72,38 @@ public class bmiActivity extends AppCompatActivity
         if (numBMI < 16)
         {
             mBMIcategory.setText("Underweight");
-            background.setBackgroundColor(R.drawable.red_warning);
+            background.setBackgroundColor(getColor(R.color.red));
             imageView.setImageResource(R.drawable.crosss);
         }
         else if (numBMI >= 16.9 && numBMI > 16)
         {
             mBMIcategory.setText("Moderately Underweight");
-            background.setBackgroundColor(R.drawable.red_warning);
+            background.setBackgroundColor(getColor(R.color.red));
             imageView.setImageResource(R.drawable.warning);
         }
         else if (numBMI < 18.4 && numBMI > 17)
         {
             mBMIcategory.setText("Mild Underweight");
-            background.setBackgroundColor(R.drawable.orange_mild);
+            background.setBackgroundColor(getColor(R.color.orange));
             imageView.setImageResource(R.drawable.warning);
 
         }
         else if (numBMI < 24.9 && numBMI > 18.5)
         {
             mBMIcategory.setText("Normal");
-            background.setBackgroundColor(R.drawable.green_ok);
+            background.setBackgroundColor(getColor(R.color._light_green));
             imageView.setImageResource(R.drawable.ok);
         }
         else if (numBMI < 29.9 && numBMI > 25)
         {
             mBMIcategory.setText("Overweight");
-            background.setBackgroundColor(R.drawable.orange_mild);
+            background.setBackgroundColor(getColor(R.color.orange));
             imageView.setImageResource(R.drawable.warning);
         }
         else
         {
             mBMIcategory.setText("Obese Class I");
-            background.setBackgroundColor(R.drawable.red_warning);
+            background.setBackgroundColor(getColor(R.color.red));
             imageView.setImageResource(R.drawable.warning);
         }
 
