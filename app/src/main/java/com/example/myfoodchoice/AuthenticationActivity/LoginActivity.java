@@ -12,16 +12,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
+import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -48,7 +52,11 @@ public class LoginActivity extends AppCompatActivity
     // firebase login
     private FirebaseAuth mAuth;
 
+    private static final int INDEXSTART = 0;
+
     private FirebaseDatabase firebaseDatabase;
+
+    private String email, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -56,6 +64,9 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Smart Food Choice");
+
+        // TODO: init paper
+        Paper.init(LoginActivity.this);
 
         // TODO: init Firebase auth
         mAuth = FirebaseAuth.getInstance();
@@ -91,67 +102,96 @@ public class LoginActivity extends AppCompatActivity
 
         // nav to guest main menu page based on text click
         spannableStringLoginAsGuestNav = new SpannableString(clickableLoginAsGuest.getText());
-        spannableStringLoginAsGuestNav.setSpan(clickableLoginAsGuestNavSpan(), 0, clickableLoginAsGuest.length(), 0);
+        spannableStringLoginAsGuestNav.setSpan(clickableLoginAsGuestNavSpan(), INDEXSTART, clickableLoginAsGuest.length(), 0);
         clickableLoginAsGuest.setText(spannableStringLoginAsGuestNav);
         clickableLoginAsGuest.setMovementMethod(LinkMovementMethod.getInstance());
 
         // nav to forgot password page based on text click
         spannableStringForgotPassword = new SpannableString(clickableForgotPassword.getText());
-        spannableStringForgotPassword.setSpan(clickableForgotPasswordNavSpan(), 0, clickableForgotPassword.length(), 0);
+        spannableStringForgotPassword.setSpan(clickableForgotPasswordNavSpan(), INDEXSTART, clickableForgotPassword.length(), 0);
         clickableForgotPassword.setText(spannableStringForgotPassword);
         clickableForgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
         // progress bar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+
+        // check box listener
+        rememberMe.setOnCheckedChangeListener(onCheckedListener());
     }
 
+    // TODO: the purpose is to save data via Paper.
+    private CompoundButton.OnCheckedChangeListener onCheckedListener()
+    {
+        return (buttonView, isChecked) ->
+        {
+            email = loginEmailEditText.getText().toString().trim();
+            password = loginPasswordEditText.getText().toString().trim();
+            if (isChecked)
+            {
+                Log.d("LoginActivity", "remember me checked! ");
+                Paper.book().write(Prevalent.UserEmailKey, email);
+                Paper.book().write(Prevalent.UserPasswordKey, password);
+            }
+            else
+            {
+                Log.d("LoginActivity", "remember me unchecked! ");
+                Paper.book().delete(Prevalent.UserEmailKey);
+                Paper.book().delete(Prevalent.UserPasswordKey);
+            }
+        };
+    }
     // TODO: to implement the login functionalities for this activity.
+
     private View.OnClickListener onLoginListener()
     {
         return v ->
         {
             Log.d("LoginActivity", "login button activated! ");
-            // TODO: login function
-            String email = loginEmailEditText.getText().toString().trim();
-            String password = loginPasswordEditText.getText().toString().trim();
-
-            // validation
-            if (TextUtils.isEmpty(email))
-            {
-                loginEmailEditText.setError("Email is required.");
-                return;
-            }
-
-            if (TextUtils.isEmpty(password))
-            {
-                loginPasswordEditText.setError("Password is required.");
-                return;
-            }
-
-            // loading
-            progressBar.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.GONE);
-
-            // authentication login
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-            {
-                if (task.isSuccessful())
-                {
-                    Toast.makeText(LoginActivity.this, "Logged in successfully.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else
-                {
-                    progressBar.setVisibility(View.GONE);
-                    loginBtn.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginActivity.this, "Login failed, please try again.", Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            email = loginEmailEditText.getText().toString().trim();
+            password = loginPasswordEditText.getText().toString().trim();
+            allowLogin(email, password);
         };
+    }
+
+    private void allowLogin(String email, String password)
+    {
+        // TODO: login function
+
+        // validation
+        if (TextUtils.isEmpty(email))
+        {
+            loginEmailEditText.setError("Email is required.");
+            return;
+        }
+
+        if (TextUtils.isEmpty(password))
+        {
+            loginPasswordEditText.setError("Password is required.");
+            return;
+        }
+
+        // loading
+        progressBar.setVisibility(View.VISIBLE);
+        loginBtn.setVisibility(View.GONE);
+
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                progressBar.setVisibility(View.GONE);
+                loginBtn.setVisibility(View.VISIBLE);
+                Toast.makeText(LoginActivity.this, "Email or Password incorrect, please try again.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private ClickableSpan clickableForgotPasswordNavSpan()

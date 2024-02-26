@@ -34,6 +34,7 @@ android {
 
 dependencies {
     // Firebase dependencies.
+    implementation ("io.github.pilgr:paperdb:2.7.2")
     implementation("com.google.firebase:firebase-storage")
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation("com.google.firebase:firebase-analytics")

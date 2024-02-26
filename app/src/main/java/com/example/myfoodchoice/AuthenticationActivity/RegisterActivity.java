@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myfoodchoice.Model.ReadWriteUserDetail;
+import com.example.myfoodchoice.Model.User;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity
 
     private static final String LABEL = "Register Users";
 
-    private ReadWriteUserDetail readWriteUserDetail;
+    private User user;
 
     private DatabaseReference databaseReference;
 
@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity
                     Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
                     // create an object based on this model
-                    readWriteUserDetail = new ReadWriteUserDetail(firstName, lastName);
+                    user = new User(firstName, lastName);
 
                     // auto create a new path with name as string value and assign to a variable.
                     databaseReference = firebaseDatabase.getReference(LABEL);
@@ -155,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity
                     // TODO: set the value based on the model class ReadWriteUserDetail
                     // create a new child of this user and set that value.
                     databaseReference.child
-                            (firebaseUser.getUid()).setValue(readWriteUserDetail);
+                            (firebaseUser.getUid()).setValue(user);
 
                     // move to login page.
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);

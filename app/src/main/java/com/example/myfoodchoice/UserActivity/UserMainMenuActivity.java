@@ -16,6 +16,8 @@ import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import io.paperdb.Paper;
+
 public class UserMainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private DrawerLayout drawerLayout;
@@ -83,6 +85,8 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
 
         else if (itemId == R.id.nav_log_off)
         {
+            // TODO: destroy this temporary db.
+            Paper.book().destroy();
             // log out
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, WelcomeActivity.class);
