@@ -21,6 +21,7 @@ import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity
     // firebase login
     private FirebaseAuth mAuth;
 
+    private FirebaseDatabase firebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,6 +59,12 @@ public class LoginActivity extends AppCompatActivity
 
         // TODO: init Firebase auth
         mAuth = FirebaseAuth.getInstance();
+
+        // TODO: init Firebase database, paste the correct link as reference.
+        firebaseDatabase = FirebaseDatabase.getInstance(
+                "https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        // for testing
+        // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
 
         // TODO: init UI components
         loginEmailEditText = findViewById(R.id.login_email);
@@ -71,6 +80,7 @@ public class LoginActivity extends AppCompatActivity
 
         // button
         loginBtn = findViewById(R.id.loginBtn);
+        loginBtn.setVisibility(View.VISIBLE);
         loginBtn.setOnClickListener(onLoginListener());
 
         // nav to sign up page based on text click
@@ -121,6 +131,7 @@ public class LoginActivity extends AppCompatActivity
 
             // loading
             progressBar.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.GONE);
 
             // authentication login
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
@@ -134,6 +145,8 @@ public class LoginActivity extends AppCompatActivity
                 }
                 else
                 {
+                    progressBar.setVisibility(View.GONE);
+                    loginBtn.setVisibility(View.VISIBLE);
                     Toast.makeText(LoginActivity.this, "Login failed, please try again.", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -152,7 +165,6 @@ public class LoginActivity extends AppCompatActivity
                     Log.d("LoginActivity", "navigating to forgot password page! ");
                     Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                     startActivity(intent);
-
                 }
             };
         }

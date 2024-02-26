@@ -16,8 +16,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myfoodchoice.Model.ReadWriteUserDetail;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity
 {
@@ -40,11 +49,26 @@ public class RegisterActivity extends AppCompatActivity
     // for authentication
     private FirebaseAuth mAuth;
 
+    // for database
+    private FirebaseDatabase firebaseDatabase;
+
+    private static final String TAG = "RegisterActivity";
+
+    private ReadWriteUserDetail readWriteUserDetail;
+
+    private DatabaseReference databaseReference;
+
+    private String email, password, firstName, lastName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // init firebase database, paste the correct link as reference.
+        firebaseDatabase = FirebaseDatabase.getInstance // TODO: we need to link the url so that the database can retrieve the data from
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         // init firebase auth
         mAuth = FirebaseAuth.getInstance();
@@ -63,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity
 
         // button
         signupBtn = findViewById(R.id.signupBtn);
+        signupBtn.setVisibility(View.VISIBLE);
         signupBtn.setOnClickListener(onSignUpListener());
 
         // clickable text
@@ -78,8 +103,13 @@ public class RegisterActivity extends AppCompatActivity
         return v ->
         {
             Log.d("RegisterActivity", "signup button activated! ");
-            String email = signupEmailEditText.getText().toString().trim();
-            String password = signupPasswordEditText.getText().toString().trim();
+            email = signupEmailEditText.getText().toString().trim();
+            password = signupPasswordEditText.getText().toString().trim();
+            firstName = signupFirstNameEditText.getText().toString().trim();
+            lastName = signupLastNameEditText.getText().toString().trim();
+
+            Log.d(TAG, "onSignUpListener: " + firstName + " " + lastName);
+            Log.d(TAG, "onSignUpListener: " + email + " " + password);
 
             // validation
             if (TextUtils.isEmpty(email))
@@ -104,19 +134,66 @@ public class RegisterActivity extends AppCompatActivity
             progressBar.setVisibility(View.VISIBLE);
 
             // register user to the firebase.
+            // FIXME: the problem is the data is not saved in this realtime database.
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(RegisterActivity.this, "User created successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "User registered successfully.",
+                            Toast.LENGTH_SHORT).show();
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
+
+                    readWriteUserDetail = new ReadWriteUserDetail(firstName, lastName);
+
+                    // extracting user reference from database for "registered user"
+                    databaseReference = firebaseDatabase.getReference("Registered Users");
+
+                    // TODO: set the value based on the model class ReadWriteUserDetail
+                    databaseReference.child
+                            (firebaseUser.getUid()).setValue(readWriteUserDetail);
+
+                    // move to login page.
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
+                    finish(); // to close the register page.
                 }
                 else
                 {
-                    Toast.makeText(RegisterActivity.this,
-                            "Registration failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    try
+                    {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    catch (FirebaseAuthWeakPasswordException e)
+                    {
+                        signupPasswordEditText.setError("Your password is too weak. Kindly use a mix of alphabets, numbers," +
+                                " and special characters.");
+                        // this function is to focus on this edit text UI part so that user can focus on this error.
+                        signupPasswordEditText.requestFocus();
+                    }
+                    catch(FirebaseAuthInvalidCredentialsException e)
+                    {
+                        signupPasswordEditText.setError("Invalid credentials.");
+                        signupPasswordEditText.requestFocus();
+                    }
+                    catch(FirebaseAuthUserCollisionException e)
+                    {
+                        // this one is for email I suppose.
+                        signupEmailEditText.setError("User is already registered with this email. Use another email");
+                        signupEmailEditText.requestFocus();
+
+                    }
+                    catch (Exception e)
+                    {
+                        // FIXME: debug purpose
+                        Log.d(TAG, "Error: " + e.getMessage());
+                        Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    // to make the progress bar gone.
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         };
