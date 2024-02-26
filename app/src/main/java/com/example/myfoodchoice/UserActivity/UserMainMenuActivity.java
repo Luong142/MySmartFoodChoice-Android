@@ -10,7 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import com.example.myfoodchoice.Fragment.HomeFragment;
+import com.example.myfoodchoice.UserFragment.HomeFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;

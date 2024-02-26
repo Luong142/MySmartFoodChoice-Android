@@ -47,12 +47,14 @@ public class RegisterActivity extends AppCompatActivity
     private SpannableString spannableStringLoginNav;
 
     // for authentication
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
 
     // for database
     private FirebaseDatabase firebaseDatabase;
 
     private static final String TAG = "RegisterActivity";
+
+    private static final String LABEL = "Register Users";
 
     private ReadWriteUserDetail readWriteUserDetail;
 
@@ -67,14 +69,14 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         // init firebase database, paste the correct link as reference.
-        firebaseDatabase = FirebaseDatabase.getInstance // TODO: we need to link the url so that the database can retrieve the data from
+        firebaseDatabase = FirebaseDatabase.getInstance
+                // TODO: we need to link the url so that the database can retrieve the data from
                 ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         // init firebase auth
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // TODO: init UI components
-
         // edit text
         signupEmailEditText = findViewById(R.id.sign_up_email);
         signupFirstNameEditText = findViewById(R.id.sign_up_firstname);
@@ -135,21 +137,23 @@ public class RegisterActivity extends AppCompatActivity
 
             // register user to the firebase.
             // FIXME: the problem is the data is not saved in this realtime database.
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->
             {
                 if (task.isSuccessful())
                 {
                     Toast.makeText(RegisterActivity.this, "User registered successfully.",
                             Toast.LENGTH_SHORT).show();
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
+                    // create an object based on this model
                     readWriteUserDetail = new ReadWriteUserDetail(firstName, lastName);
 
-                    // extracting user reference from database for "registered user"
-                    databaseReference = firebaseDatabase.getReference("Registered Users");
+                    // auto create a new path with name as string value and assign to a variable.
+                    databaseReference = firebaseDatabase.getReference(LABEL);
 
                     // TODO: set the value based on the model class ReadWriteUserDetail
+                    // create a new child of this user and set that value.
                     databaseReference.child
                             (firebaseUser.getUid()).setValue(readWriteUserDetail);
 

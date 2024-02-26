@@ -65,4 +65,8 @@
     <string name="gender">Gender</string>
     <string name="your_bmi_category_is">YOUR BMI CATEGORY IS</string>
     <string name="recalculate_bmi">Recalculate BMI</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="back">Back</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="provide_your_current_email_for_which_you_want_to_reset_your_password">Provide your current email for which you want to reset your password</string>
 </resources>

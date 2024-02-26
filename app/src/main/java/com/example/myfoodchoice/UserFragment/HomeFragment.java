@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Fragment;
+package com.example.myfoodchoice.UserFragment;
 
 import android.os.Bundle;
 
