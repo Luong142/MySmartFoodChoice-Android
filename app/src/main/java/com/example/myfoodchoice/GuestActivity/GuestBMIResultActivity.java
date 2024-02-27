@@ -3,10 +3,7 @@ package com.example.myfoodchoice.GuestActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,9 +12,8 @@ import android.widget.TextView;
 import com.example.myfoodchoice.R;
 
 import java.util.Locale;
-import java.util.Objects;
 
-public class bmiActivity extends AppCompatActivity
+public class GuestBMIResultActivity extends AppCompatActivity
 {
     // TODO: declare UI components
     private Button recalculateBMI;
@@ -113,7 +109,7 @@ public class bmiActivity extends AppCompatActivity
 
         recalculateBMI.setOnClickListener(v ->
         {
-            Intent intent = new Intent(bmiActivity.this, GuestMainMenuActivity.class);
+            Intent intent = new Intent(GuestBMIResultActivity.this, GuestBMICalculatorActivity.class);
             startActivity(intent);
             finish();
         });

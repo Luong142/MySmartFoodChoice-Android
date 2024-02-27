@@ -20,9 +20,7 @@ import android.widget.Toast;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterActivity;
 import com.example.myfoodchoice.R;
 
-import java.util.Objects;
-
-public class GuestMainMenuActivity extends AppCompatActivity
+public class GuestBMICalculatorActivity extends AppCompatActivity
 {
     // TODO: declare UI components
 
@@ -129,32 +127,32 @@ public class GuestMainMenuActivity extends AppCompatActivity
             {
                 if (gender.equals("null"))
                 {
-                    Toast.makeText(GuestMainMenuActivity.this, "Please select your gender.",
+                    Toast.makeText(GuestBMICalculatorActivity.this, "Please select your gender.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (mIntHeightProgress.equals("0"))
                 {
-                    Toast.makeText(GuestMainMenuActivity.this, "Please select your height.",
+                    Toast.makeText(GuestBMICalculatorActivity.this, "Please select your height.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (numAge == 0 || numAge < 0)
                 {
-                    Toast.makeText(GuestMainMenuActivity.this, "Age is incorrect, please try again.",
+                    Toast.makeText(GuestBMICalculatorActivity.this, "Age is incorrect, please try again.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (numWeight == 0 || numWeight < 0)
                 {
-                    Toast.makeText(GuestMainMenuActivity.this, "Weight is incorrect, please try again.",
+                    Toast.makeText(GuestBMICalculatorActivity.this, "Weight is incorrect, please try again.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Intent intent = new Intent(GuestMainMenuActivity.this, bmiActivity.class);
+                Intent intent = new Intent(GuestBMICalculatorActivity.this, GuestBMIResultActivity.class);
                 Log.d("GuestMainMenuActivity", "Navigating to bmi page!");
                 intent.putExtra("gender", gender);
                 intent.putExtra("height", mIntHeightProgress);
@@ -175,7 +173,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("GuestMainMenuActivity", "Navigating to register page!");
-                    Intent intent = new Intent(GuestMainMenuActivity.this, RegisterActivity.class);
+                    Intent intent = new Intent(GuestBMICalculatorActivity.this, RegisterActivity.class);
                     startActivity(intent);
                     finish(); // close this activity and go back to previous activity (LoginActivity)
                 }

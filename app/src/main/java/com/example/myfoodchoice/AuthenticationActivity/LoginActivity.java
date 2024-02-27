@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
+import com.example.myfoodchoice.GuestActivity.GuestBMICalculatorActivity;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
@@ -133,12 +133,7 @@ public class LoginActivity extends AppCompatActivity
                 Paper.book().write(Prevalent.UserEmailKey, email);
                 Paper.book().write(Prevalent.UserPasswordKey, password);
             }
-            else
-            {
-                Log.d("LoginActivity", "remember me unchecked! ");
-                Paper.book().delete(Prevalent.UserEmailKey);
-                Paper.book().delete(Prevalent.UserPasswordKey);
-            }
+            
         };
     }
     // TODO: to implement the login functionalities for this activity.
@@ -236,7 +231,7 @@ public class LoginActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("LoginActivity", "navigating to guest main menu page! ");
-                    Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, GuestBMICalculatorActivity.class);
                     startActivity(intent);
                     finish();
                 }
