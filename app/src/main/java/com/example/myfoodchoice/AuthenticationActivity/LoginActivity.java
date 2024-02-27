@@ -19,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfoodchoice.GuestActivity.GuestBMICalculatorActivity;
+import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.UserActivity.UserProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -32,31 +34,33 @@ public class LoginActivity extends AppCompatActivity
     // TODO: declare UI component
 
     // button
-    private Button loginBtn;
+    Button loginBtn;
 
     // Edit text
-    private EditText loginEmailEditText, loginPasswordEditText;
+    EditText loginEmailEditText, loginPasswordEditText;
 
     // check box
-    private CheckBox rememberMe;
+    CheckBox rememberMe;
 
     // clickable text
-    private TextView clickableForgotPassword, clickableSignUpNav, clickableLoginAsGuest;
+    TextView clickableForgotPassword, clickableSignUpNav, clickableLoginAsGuest;
 
     // for clickable text
-    private SpannableString spannableStringSignUpNav, spannableStringLoginAsGuestNav, spannableStringForgotPassword;
+    SpannableString spannableStringSignUpNav, spannableStringLoginAsGuestNav, spannableStringForgotPassword;
 
     // for progress bar
-    private ProgressBar progressBar;
+    ProgressBar progressBar;
 
     // firebase login
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
 
-    private static final int INDEXSTART = 0;
+    static final int INDEXSTART = 0;
 
-    private FirebaseDatabase firebaseDatabase;
+    FirebaseDatabase firebaseDatabase;
 
-    private String email, password;
+    String email, password;
+
+    UserProfile userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -121,7 +125,7 @@ public class LoginActivity extends AppCompatActivity
     }
 
     // TODO: the purpose is to save data via Paper.
-    private CompoundButton.OnCheckedChangeListener onCheckedListener()
+    public CompoundButton.OnCheckedChangeListener onCheckedListener()
     {
         return (buttonView, isChecked) ->
         {
@@ -138,7 +142,7 @@ public class LoginActivity extends AppCompatActivity
     }
     // TODO: to implement the login functionalities for this activity.
 
-    private View.OnClickListener onLoginListener()
+     View.OnClickListener onLoginListener()
     {
         return v ->
         {
@@ -149,7 +153,7 @@ public class LoginActivity extends AppCompatActivity
         };
     }
 
-    private void allowLogin(String email, String password)
+    public void allowLogin(String email, String password)
     {
         // TODO: login function
 
@@ -189,7 +193,7 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    private ClickableSpan clickableForgotPasswordNavSpan()
+    public ClickableSpan clickableForgotPasswordNavSpan()
     {
         {
             return new ClickableSpan()
@@ -205,7 +209,7 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private ClickableSpan clickableSignUpNavSpan()
+    public ClickableSpan clickableSignUpNavSpan()
     {
         {
             return new ClickableSpan()
@@ -222,7 +226,7 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private ClickableSpan clickableLoginAsGuestNavSpan()
+    public ClickableSpan clickableLoginAsGuestNavSpan()
     {
         {
             return new ClickableSpan()

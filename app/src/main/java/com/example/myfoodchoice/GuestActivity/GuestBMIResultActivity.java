@@ -34,7 +34,7 @@ public class GuestBMIResultActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bmi);
+        setContentView(R.layout.activity_guest_bmi_result);
 
         //Objects.requireNonNull(getSupportActionBar()).setElevation(0);
         //getSupportActionBar().setTitle(Html.fromHtml("<font color=\"white\">Result</font>"));

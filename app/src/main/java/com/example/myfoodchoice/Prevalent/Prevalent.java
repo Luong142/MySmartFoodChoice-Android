@@ -1,10 +1,10 @@
 package com.example.myfoodchoice.Prevalent;
 
-import com.example.myfoodchoice.Model.User;
+import com.example.myfoodchoice.Model.UserProfile;
 
 public class Prevalent
 {
-    public User currentOnlineUser;
+    public UserProfile currentOnlineUser;
 
     public static final String UserEmailKey = "UserEmail";
 

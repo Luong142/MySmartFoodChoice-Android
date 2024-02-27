@@ -54,7 +54,7 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest_main_menu);
+        setContentView(R.layout.activity_guest_bmi_calculator);
         // Objects.requireNonNull(getSupportActionBar()).hide();
 
         // TODO: init UI components

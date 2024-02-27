@@ -69,4 +69,10 @@
     <string name="back">Back</string>
     <string name="reset_password">Reset Password</string>
     <string name="provide_your_current_email_for_which_you_want_to_reset_your_password">Provide your current email for which you want to reset your password</string>
+    <string name="user_profile">User Profile</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="you_can_change_them_at_any_time">You can change them at any time.</string>
+    <string name="next">Next</string>
+    <string name="enter_age">Enter age</string>
+    <string name="create_profile">Create Profile</string>
 </resources>

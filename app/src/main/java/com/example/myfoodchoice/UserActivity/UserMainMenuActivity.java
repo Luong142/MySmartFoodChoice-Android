@@ -20,9 +20,9 @@ import io.paperdb.Paper;
 
 public class UserMainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    private DrawerLayout drawerLayout;
+    DrawerLayout drawerLayout;
 
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

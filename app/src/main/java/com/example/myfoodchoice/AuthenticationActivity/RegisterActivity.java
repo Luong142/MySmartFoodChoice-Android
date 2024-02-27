@@ -1,7 +1,6 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -15,9 +14,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.myfoodchoice.Model.User;
+import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.UserActivity.UserProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -33,34 +33,39 @@ public class RegisterActivity extends AppCompatActivity
     // TODO: declare UI components
 
     // buttons
-    private Button signupBtn;
+    Button signupBtn;
 
     // log in clickable text
-    private TextView navLoginClick;
+    TextView navLoginClick;
 
     // Edit text
-    private EditText signupEmailEditText, signupFirstNameEditText, signupLastNameEditText, signupPasswordEditText;
+    EditText signupEmailEditText, signupPasswordEditText;
 
     // progress bar
-    private ProgressBar progressBar;
+    ProgressBar progressBar;
 
-    private SpannableString spannableStringLoginNav;
+    SpannableString spannableStringLoginNav;
 
     // for authentication
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
 
     // for database
-    private FirebaseDatabase firebaseDatabase;
+    FirebaseDatabase firebaseDatabase;
 
-    private static final String TAG = "RegisterActivity";
+    static final String TAG = "RegisterActivity";
 
-    private static final String LABEL = "Register Users";
+    static final String LABEL = "Registered Users";
 
-    private User user;
 
-    private DatabaseReference databaseReference;
+    DatabaseReference databaseReference;
 
-    private String email, password, firstName, lastName;
+    String email, password, firstName, lastName;
+
+    UserProfile userProfile;
+
+    FirebaseUser firebaseUser;
+
+    Intent intentNavToUserProfileActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,8 +84,6 @@ public class RegisterActivity extends AppCompatActivity
         // TODO: init UI components
         // edit text
         signupEmailEditText = findViewById(R.id.sign_up_email);
-        signupFirstNameEditText = findViewById(R.id.sign_up_firstname);
-        signupLastNameEditText = findViewById(R.id.sign_up_lastname);
         signupPasswordEditText = findViewById(R.id.sign_up_password);
 
         // progress bar
@@ -100,15 +103,13 @@ public class RegisterActivity extends AppCompatActivity
         navLoginClick.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private View.OnClickListener onSignUpListener()
+    public View.OnClickListener onSignUpListener()
     {
         return v ->
         {
             Log.d("RegisterActivity", "signup button activated! ");
             email = signupEmailEditText.getText().toString().trim();
             password = signupPasswordEditText.getText().toString().trim();
-            firstName = signupFirstNameEditText.getText().toString().trim();
-            lastName = signupLastNameEditText.getText().toString().trim();
 
             Log.d(TAG, "onSignUpListener: " + firstName + " " + lastName);
             Log.d(TAG, "onSignUpListener: " + email + " " + password);
@@ -143,25 +144,29 @@ public class RegisterActivity extends AppCompatActivity
                 {
                     Toast.makeText(RegisterActivity.this, "User registered successfully.",
                             Toast.LENGTH_SHORT).show();
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    firebaseUser = firebaseAuth.getCurrentUser();
                     Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
-                    // create an object based on this model
-                    user = new User(firstName, lastName);
+                    // init user profile
+                    userProfile = new UserProfile(email, password);
+
+                    intentNavToUserProfileActivity = new Intent(RegisterActivity.this, UserProfileActivity.class);
 
                     // auto create a new path with name as string value and assign to a variable.
-                    databaseReference = firebaseDatabase.getReference(LABEL);
+                    // databaseReference = firebaseDatabase.getReference(LABEL);
 
                     // TODO: set the value based on the model class ReadWriteUserDetail
                     // create a new child of this user and set that value.
-                    databaseReference.child
-                            (firebaseUser.getUid()).setValue(user);
+                    // databaseReference.child
+                            // (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
+                    // FIXME: not yet to do this, need to set up the user profile before uploading to firebase.
 
-                    // move to login page.
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    Log.d(TAG, "onCompleteListener: " + task.isSuccessful());
+                    // move to user profile for default user profile page.
+                    intentNavToUserProfileActivity.putExtra("userProfile", userProfile);
+                    intentNavToUserProfileActivity.setFlags
+                            (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentNavToUserProfileActivity);
                     finish(); // to close the register page.
                 }
                 else
@@ -203,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity
         };
     }
 
-    private ClickableSpan clickableLoginNavSpan()
+    public ClickableSpan clickableLoginNavSpan()
     {
         {
             return new ClickableSpan()
@@ -217,5 +222,13 @@ public class RegisterActivity extends AppCompatActivity
                 }
             };
         }
+    }
+
+    public OnCompleteListener<Void> onCompleteListener()
+    {
+        return task ->
+        {
+
+        };
     }
 }

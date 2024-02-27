@@ -16,15 +16,15 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ForgotPasswordActivity extends AppCompatActivity
 {
     // TODO: declare UI components
-    private Button resetPasswordBtn, backBtn;
+     Button resetPasswordBtn, backBtn;
 
-    private EditText emailEditText;
+     EditText emailEditText;
 
-    private ProgressBar progressBar;
+     ProgressBar progressBar;
 
-    private String email;
+     String email;
 
-    private FirebaseAuth firebaseAuth;
+     FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,7 +55,7 @@ public class ForgotPasswordActivity extends AppCompatActivity
         });
     }
 
-    private View.OnClickListener onResetListener()
+    public View.OnClickListener onResetListener()
     {
         return v ->
         {
@@ -70,7 +70,7 @@ public class ForgotPasswordActivity extends AppCompatActivity
         };
     }
 
-    private void resetPassword()
+    public void resetPassword()
     {
         progressBar.setVisibility(ProgressBar.VISIBLE);
         resetPasswordBtn.setVisibility(Button.GONE);
