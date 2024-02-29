@@ -2,6 +2,7 @@ package com.example.myfoodchoice.AuthenticationActivity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -18,15 +19,22 @@ import android.widget.Toast;
 
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class UserProfileActivity extends AppCompatActivity
@@ -51,9 +59,11 @@ public class UserProfileActivity extends AppCompatActivity
 
     FirebaseUser firebaseUser;
 
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReferenceRegisteredUser;
 
-    FirebaseStorage firebaseStorage;
+    StorageReference storageReferenceProfilePics;
+
+    StorageTask storageTask;
 
     final static String TAG = "UserProfileActivity";
 
@@ -62,6 +72,8 @@ public class UserProfileActivity extends AppCompatActivity
     static final String LABEL = "Registered Users";
 
     Uri selectedImageUri;
+
+    String myUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,8 +88,9 @@ public class UserProfileActivity extends AppCompatActivity
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        firebaseStorage = FirebaseStorage.getInstance();
-
+        databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
+        storageReferenceProfilePics =
+                FirebaseStorage.getInstance().getReference().child("ProfilePics");
 
         // TODO: init UI components
         firstName = findViewById(R.id.firstNameProfile);
@@ -115,16 +128,14 @@ public class UserProfileActivity extends AppCompatActivity
                             Log.d(TAG, "Selected image URI: " + selectedImageUri);
                             // display the selected image in an ImageView.
                             profilePicture.setImageURI(selectedImageUri);
-                            getImageInImageView();
                         }
                     }
                 }
         );
-    }
 
-    private void getImageInImageView()
-    {
-
+        // TODO: this is to display the profile picture in here
+        // we can reference this function to UserMainMenuActivity and use it to display the profile picture.
+        getUserInfo();
     }
 
     private View.OnClickListener onImageClickListener()
@@ -135,6 +146,7 @@ public class UserProfileActivity extends AppCompatActivity
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             activityResultLauncher.launch(Intent.createChooser(intent, "Select File"));
+
         };
     }
 
@@ -152,41 +164,93 @@ public class UserProfileActivity extends AppCompatActivity
             // TODO: the user can click on image view and select their profile picture or take new picture to upload
             // TODO: to Firebase database.
 
-            // Check if selectedImageUri is null
-            if (selectedImageUri == null)
-            {
+            // check if selectedImageUri is null
+            if (selectedImageUri == null) {
                 Toast.makeText(UserProfileActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // Exit the method if selectedImageUri is null
             }
 
-            // FIXME: try to upload the image to storage and then retrieve it.
             // upload the image to Firebase Storage
-            StorageReference storageRef = firebaseStorage.getReference().
-                    child("profile_images/" + firebaseUser.getUid());
-            storageRef.putFile(selectedImageUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        // Image uploaded successfully
-                        // Get the download URL
-                        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // Set the download URL to the user profile
-                            userProfile.setProfileImageUrl(uri.toString());
-                            userProfile.setFirstName(firstNameString);
-                            userProfile.setLastName(lastNameString);
-                            userProfile.setAge(ageInt);
+            final StorageReference storageReference = storageReferenceProfilePics.child
+                    (firebaseUser.getUid() + ".jpg");
 
-                            Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
-                            Log.d(TAG, "onNextListener: " + userProfile);
-                            databaseReference = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
-                            databaseReference.setValue(userProfile).addOnCompleteListener(onCompleteListener());
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle unsuccessful uploads
-                        Toast.makeText(UserProfileActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(ProgressBar.GONE);
-                    });
+            storageTask = storageReference.putFile(selectedImageUri);
+
+            storageTask.continueWithTask(task ->
+            {
+                if (!task.isSuccessful())
+                {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return storageReference.getDownloadUrl();
+            }).addOnCompleteListener(onCompleteUploadListener());
+
+            // Set the download URL to the user profile
+            userProfile.setFirstName(firstNameString);
+            userProfile.setLastName(lastNameString);
+            userProfile.setAge(ageInt);
+
+            Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
+            Log.d(TAG, "onNextListener: " + userProfile);
+            databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+        };
+    }
+
+    private OnCompleteListener<Uri> onCompleteUploadListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Uri downloadUri = task.getResult();
+                myUri = downloadUri.toString();
+
+                HashMap<String, Object> userMap = new HashMap<>();
+                userMap.put("image", myUri);
+                databaseReferenceRegisteredUser.child
+                        (Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid()).updateChildren(userMap);
+
+            }
+            else
+            {
+                Log.e(TAG, "onCompleteUploadListener: " + task.getException());
+                Toast.makeText(UserProfileActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    private void getUserInfo()
+    {
+        databaseReferenceRegisteredUser.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
+    }
+
+    private ValueEventListener valueEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0)
+                {
+                    if (snapshot.hasChild("image"))
+                    {
+                        String image = Objects.requireNonNull(snapshot.child("image").getValue()).toString();
+                        Picasso.get().load(image).into(profilePicture);
+
+                        // set the nav_header image?
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+
+            }
         };
     }
 
