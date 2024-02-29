@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.Model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,14 +22,17 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     private String weight;
 
-    private int profileImage;
-
+    private String profileImageUrl;
     private String gender;
 
     private int age;
 
     private String dob;
 
+    public UserProfile()
+    {
+        // this constructor is required for Firebase to be able to deserialize the object
+    }
 
     public UserProfile(String email, String password)
     {
@@ -45,7 +49,7 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         lastName = in.readString();
         height = in.readString();
         weight = in.readString();
-        profileImage = in.readInt();
+        profileImageUrl = in.readString();
         gender = in.readString();
         age = in.readInt();
         dob = in.readString();
@@ -69,6 +73,8 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         return  0;
     }
 
+
+
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
@@ -78,12 +84,13 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         dest.writeString(lastName);
         dest.writeString(height);
         dest.writeString(weight);
-        dest.writeInt(profileImage);
+        dest.writeString(profileImageUrl);
         dest.writeString(gender);
         dest.writeInt(age);
         dest.writeString(dob);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "UserProfile{" +
@@ -93,11 +100,19 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
                 ", lastName='" + lastName + '\'' +
                 ", height='" + height + '\'' +
                 ", weight='" + weight + '\'' +
-                ", profileImage=" + profileImage +
+                ", profileImage=" + profileImageUrl +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
                 ", dob='" + dob + '\'' +
                 '}';
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getEmail() {
@@ -148,13 +163,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         this.weight = weight;
     }
 
-    public int getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(int profileImage) {
-        this.profileImage = profileImage;
-    }
 
     public String getGender() {
         return gender;

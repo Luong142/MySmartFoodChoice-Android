@@ -75,4 +75,6 @@
     <string name="next">Next</string>
     <string name="enter_age">Enter age</string>
     <string name="create_profile">Create Profile</string>
+    <string name="put_email_here">put email here</string>
+    <string name="put_our_user_profile_image_here">Put our user profile image here</string>
 </resources>

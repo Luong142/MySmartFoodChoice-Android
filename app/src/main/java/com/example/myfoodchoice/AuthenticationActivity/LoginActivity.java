@@ -23,7 +23,6 @@ import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserActivity.UserProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 

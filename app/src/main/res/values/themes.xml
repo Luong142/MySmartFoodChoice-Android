@@ -2,13 +2,15 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MyFoodChoice" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/dodger_blue</item>
     </style>
 
-    <style name="Theme.MyFoodChoice" parent="Base.Theme.MyFoodChoice" />
+    <style name="Theme.MyFoodChoice" parent="Base.Theme.MyFoodChoice">
+        <!-- the purpose of theme and style is to apply all of them without specifying individually -->
+    </style>
+
     <style name="SlideActivityAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_out_left</item>
-
     </style>
 </resources>

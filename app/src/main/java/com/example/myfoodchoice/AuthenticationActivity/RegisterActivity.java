@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserActivity.UserProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -55,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity
     static final String TAG = "RegisterActivity";
 
     static final String LABEL = "Registered Users";
-
 
     DatabaseReference databaseReference;
 

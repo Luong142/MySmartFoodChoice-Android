@@ -8,13 +8,28 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.UserFragment.HomeFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import io.paperdb.Paper;
 
@@ -22,7 +37,30 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
 {
     DrawerLayout drawerLayout;
 
-    FirebaseAuth mAuth;
+    DatabaseReference databaseReference;
+
+    FirebaseAuth firebaseAuth;
+
+    FirebaseDatabase firebaseDatabase;
+
+    FirebaseUser firebaseUser;
+
+    String userID;
+
+    // TODO: declare UI components on the
+    NavigationView navigationView;
+
+    View headerView;
+
+    TextView headerFullName, headerEmail;
+
+    ImageView headerProfilePicture;
+
+    final static String TAG = "UserMainMenuActivity";
+
+    final static String LABEL = "Registered Users";
+    Toolbar toolbar;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,20 +68,47 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // TODO: init Firebase Database
+        firebaseDatabase = FirebaseDatabase.getInstance
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
+        // TODO: init Firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // TODO: init user id
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+        {
+            userID = firebaseUser.getUid();
+            // TODO: init database reference
+            databaseReference = firebaseDatabase.getReference(LABEL).child(userID);
+            databaseReference.addListenerForSingleValueEvent(valueEventListener());
+        }
+
+        // TODO: init UI component in nav_header and activity_main_menu
+        navigationView = findViewById(R.id.nav_view);
+        headerView = navigationView.getHeaderView(0);
+        headerFullName = headerView.findViewById(R.id.fullNameText);
+        headerEmail = headerView.findViewById(R.id.emailText);
+        headerProfilePicture = headerView.findViewById(R.id.profilePicture);
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
 
+        // TODO: set UI components in nav_header
+        Log.d(TAG, "getDisplayName() function is " + firebaseUser.getDisplayName());
+        Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
+        Log.d(TAG, "getPhotoUrl() function is " + firebaseUser.getPhotoUrl());
+        Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
+
+        // TODO: for navigation drawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
-
         // TODO: the animation is here in navigation drawer should record this in report file.
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.open_nav, R.string.close_nav);
-        drawerLayout.addDrawerListener(toogle);
-        toogle.syncState();
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
         if (savedInstanceState == null)
         {
@@ -66,6 +131,54 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
 
+    }
+
+    private ValueEventListener valueEventListener()
+    {
+        {
+            return new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot)
+                {
+                    // check if the dataSnapshot contains the user profile data
+                    if (snapshot.exists())
+                    {
+                        // extract the user profile
+                        UserProfile userProfile = snapshot.getValue(UserProfile.class);
+                        Log.d(TAG, "onDataChange: " + userProfile);
+                        if (userProfile != null)
+                        {
+                            // set the first name and last name in the UI
+                            String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                            headerFullName.setText(fullName);
+                            // set email
+                            String email = userProfile.getEmail();
+                            headerEmail.setText(email);
+                            // set profile picture
+                            String profileImageUrl = userProfile.getProfileImageUrl();
+                            Uri profileImageUri = Uri.parse(profileImageUrl);
+                            // FIXME: the image doesn't show because the image source is from Gallery within android device.
+                            Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+                            Picasso.get()
+                                    .load(profileImageUri)
+                                    .error(R.drawable.error)
+                                    .into(headerProfilePicture);
+                            // TODO: we need to write a function that upload image to Firebase Storage to have the resource I think.
+
+
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error)
+                {
+                    Toast.makeText
+                            (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
+                }
+            };
+        }
     }
 
     @Override

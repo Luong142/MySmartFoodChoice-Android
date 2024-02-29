@@ -10,7 +10,8 @@ public class MainActivity extends AppCompatActivity
     private ImageView frame;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -18,7 +19,8 @@ public class MainActivity extends AppCompatActivity
         btnSelectImage = (Button) findViewById(R.id.btnSelectImage);
         btnCaptureImage = (Button) findViewById(R.id.btnCaptureImage);
 
-        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+        btnSelectImage.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 galleryIntent(); //call this when user click the button

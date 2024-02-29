@@ -10,12 +10,15 @@
     >
 
     <ImageView
+        android:id="@+id/profilePicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round">
+        android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="@string/put_our_user_profile_image_here">
     </ImageView>
 
     <TextView
+        android:id="@+id/fullNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/placeholder"
@@ -24,10 +27,11 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="put email here"
+        android:text="@string/put_email_here"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="italic" />
