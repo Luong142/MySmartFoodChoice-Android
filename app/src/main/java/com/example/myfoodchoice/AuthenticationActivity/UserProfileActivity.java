@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class UserProfileActivity extends AppCompatActivity
 
     StorageReference storageReferenceProfilePics;
 
-    StorageTask storageTask;
+    StorageTask<UploadTask.TaskSnapshot> storageTask;
 
     final static String TAG = "UserProfileActivity";
 
@@ -178,6 +179,11 @@ public class UserProfileActivity extends AppCompatActivity
 
             storageTask = storageReference.putFile(selectedImageUri);
 
+            // Set the download URL to the user profile
+            userProfile.setFirstName(firstNameString);
+            userProfile.setLastName(lastNameString);
+            userProfile.setAge(ageInt);
+
             storageTask.continueWithTask(task ->
             {
                 if (!task.isSuccessful())
@@ -186,15 +192,6 @@ public class UserProfileActivity extends AppCompatActivity
                 }
                 return storageReference.getDownloadUrl();
             }).addOnCompleteListener(onCompleteUploadListener());
-
-            // Set the download URL to the user profile
-            userProfile.setFirstName(firstNameString);
-            userProfile.setLastName(lastNameString);
-            userProfile.setAge(ageInt);
-
-            Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
-            Log.d(TAG, "onNextListener: " + userProfile);
-            databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
         };
     }
 
@@ -207,11 +204,10 @@ public class UserProfileActivity extends AppCompatActivity
                 Uri downloadUri = task.getResult();
                 myUri = downloadUri.toString();
 
-                HashMap<String, Object> userMap = new HashMap<>();
-                userMap.put("image", myUri);
-                databaseReferenceRegisteredUser.child
-                        (Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid()).updateChildren(userMap);
-
+                userProfile.setProfileImageUrl(myUri);
+                Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
+                Log.d(TAG, "onNextListener: " + userProfile);
+                databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
             }
             else
             {

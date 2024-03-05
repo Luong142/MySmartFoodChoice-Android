@@ -66,7 +66,7 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_user_main_menu);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -162,11 +162,9 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                             Log.d(TAG, "onDataChange: " + profileImageUri.toString());
                             Picasso.get()
                                     .load(profileImageUri)
+                                    .resize(50, 50)
                                     .error(R.drawable.error)
                                     .into(headerProfilePicture);
-                            // TODO: we need to write a function that upload image to Firebase Storage to have the resource I think.
-
-
                         }
                     }
                 }
