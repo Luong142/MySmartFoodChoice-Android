@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyFoodChoice</string>
+    <string name="app_name">MySmartFoodChoice</string>
     <string name="login">Login</string>
     <string name="LOGIN"><b>LOGIN</b></string>
     <string name="username">Username</string>
@@ -85,4 +85,6 @@
     <string name="upload_a_photo">Upload a photo</string>
     <string name="_60">60%</string>
     <string name="day_1">Day 1</string>
+    <string name="take_a_photo">Take a photo</string>
+    <string name="meal_record">Meal Record</string>
 </resources>

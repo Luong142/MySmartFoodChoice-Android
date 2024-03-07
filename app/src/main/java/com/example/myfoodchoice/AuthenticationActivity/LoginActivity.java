@@ -1,7 +1,6 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.myfoodchoice.GuestActivity.GuestBMICalculatorActivity;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.Prevalent.Prevalent;
@@ -25,7 +23,6 @@ import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity

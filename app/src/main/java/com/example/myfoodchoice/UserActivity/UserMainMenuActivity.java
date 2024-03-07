@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.UserFragment.HomeFragment;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.UserFragment.MealRecordFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -162,7 +163,7 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                             Log.d(TAG, "onDataChange: " + profileImageUri.toString());
                             Picasso.get()
                                     .load(profileImageUri)
-                                    .resize(50, 50)
+                                    .resize(100, 100)
                                     .error(R.drawable.error)
                                     .into(headerProfilePicture);
                         }
@@ -192,6 +193,12 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (itemId == R.id.nav_meal_record)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MealRecordFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)

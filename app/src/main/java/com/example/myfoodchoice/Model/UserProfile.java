@@ -1,12 +1,8 @@
 package com.example.myfoodchoice.Model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
-
-import java.io.Serializable;
 
 public class UserProfile implements Parcelable // way more efficient to use Parcelable.
 {
@@ -24,9 +20,7 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     private String profileImageUrl;
     private String gender;
-
     private int age;
-
     private String dob;
 
     public UserProfile()
@@ -69,11 +63,10 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     };
 
     @Override
-    public int describeContents() {
+    public int describeContents()
+    {
         return  0;
     }
-
-
 
     @Override
     public void writeToParcel(Parcel dest, int flags)

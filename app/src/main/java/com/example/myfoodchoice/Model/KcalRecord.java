@@ -7,14 +7,6 @@ import java.util.Objects;
 
 public class KcalRecord
 {
-    private static final String labelBreakfast = "Breakfast";
-
-    private static final String labelLunch = "Lunch";
-
-    private static final String labelDinner = "Dinner";
-
-    private static final String labelKcal = "kcal";
-
     private int breakfastKcal;
 
     private int lunchKcal;
@@ -39,9 +31,10 @@ public class KcalRecord
         return String.format(Locale.ROOT, "%s: %d %s\n\n" +
                 "%s: %d %s\n\n" +
                 "%s: %d %s",
-                labelBreakfast, breakfastKcal, labelKcal, labelLunch, lunchKcal, labelKcal, labelDinner, dinnerKcal, labelKcal);
+                MealType.BREAKFAST, breakfastKcal, MealType.KCAL,
+                MealType.LUNCH, lunchKcal, MealType.KCAL,
+                MealType.DINNER, dinnerKcal, MealType.KCAL);
     }
-
 
     @Override
     public int hashCode() {

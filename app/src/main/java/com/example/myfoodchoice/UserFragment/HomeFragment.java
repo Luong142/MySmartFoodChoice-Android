@@ -15,14 +15,12 @@ import com.example.myfoodchoice.R;
 public class HomeFragment extends Fragment
 {
 
-
     // TODO: declare UI components
     ProgressBar progressBar;
 
     TextView caloriesTextView, kcalModelStringTextView, progressTextView, checkInTextView;
 
     Button uploadPhoto;
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
