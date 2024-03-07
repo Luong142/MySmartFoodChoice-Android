@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -43,12 +44,12 @@ public class UserProfileActivity extends AppCompatActivity
     // TODO: declare UI components
     EditText firstName, lastName, age;
 
-    ImageView profilePicture;
+    ImageView profilePicture, maleImage, femaleImage;
     ProgressBar progressBar;
 
     Button createProfileBtn;
 
-    String firstNameString, lastNameString;
+    String firstNameString, lastNameString, myUri, gender;
 
     int ageInt;
 
@@ -74,8 +75,6 @@ public class UserProfileActivity extends AppCompatActivity
 
     Uri selectedImageUri;
 
-    String myUri;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -100,6 +99,13 @@ public class UserProfileActivity extends AppCompatActivity
         profilePicture = findViewById(R.id.profilePicture);
         progressBar = findViewById(R.id.progressBar);
         createProfileBtn = findViewById(R.id.createProfileBtn);
+        maleImage = findViewById(R.id.maleImage);
+        femaleImage = findViewById(R.id.femaleImage);
+
+        // set gender to male by default
+        gender = "Male";
+        maleImage.setOnClickListener(onMaleClickListener());
+        femaleImage.setOnClickListener(onFemaleClickListener());
 
         // set progress bar to gone
         progressBar.setVisibility(ProgressBar.GONE);
@@ -137,6 +143,27 @@ public class UserProfileActivity extends AppCompatActivity
         // TODO: this is to display the profile picture in here
         // we can reference this function to UserMainMenuActivity and use it to display the profile picture.
         getUserInfo();
+    }
+
+    // TODO: update this new field for the user to select to get the gender
+    private View.OnClickListener onFemaleClickListener()
+    {
+        return v ->
+        {
+            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
+            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
+            gender = "Female";
+        };
+    }
+
+    private View.OnClickListener onMaleClickListener()
+    {
+        return v ->
+        {
+            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
+            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
+            gender = "Male";
+        };
     }
 
     private View.OnClickListener onImageClickListener()
