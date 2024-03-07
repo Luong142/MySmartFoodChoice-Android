@@ -87,4 +87,7 @@
     <string name="day_1">Day 1</string>
     <string name="take_a_photo">Take a photo</string>
     <string name="meal_record">Meal Record</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="view_profile">View Profile</string>
+    <string name="view_feedback">View Feedback</string>
 </resources>

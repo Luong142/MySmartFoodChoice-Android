@@ -14,13 +14,13 @@ import com.example.myfoodchoice.R;
 
 public class HomeFragment extends Fragment
 {
-
     // TODO: declare UI components
     ProgressBar progressBar;
 
     TextView caloriesTextView, kcalModelStringTextView, progressTextView, checkInTextView;
 
-    Button uploadPhoto;
+    // TODO: add in one more button for taking photo I think.
+    Button uploadPhoto, takePhoto;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)

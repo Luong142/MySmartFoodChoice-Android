@@ -188,6 +188,7 @@ public class UserProfileActivity extends AppCompatActivity
             firstNameString = firstName.getText().toString().trim();
             lastNameString = lastName.getText().toString().trim();
             ageInt = Integer.parseInt(age.getText().toString().trim());
+            Log.d(TAG, "onCreateProfileListener: " + gender);
 
             // TODO: the user can click on image view and select their profile picture or take new picture to upload
             // TODO: to Firebase database.
@@ -206,7 +207,8 @@ public class UserProfileActivity extends AppCompatActivity
 
             storageTask = storageReference.putFile(selectedImageUri);
 
-            // Set the download URL to the user profile
+            // set the download URL to the user profile
+            userProfile.setGender(gender); // FIXME: need to test this field.
             userProfile.setFirstName(firstNameString);
             userProfile.setLastName(lastNameString);
             userProfile.setAge(ageInt);
@@ -232,13 +234,13 @@ public class UserProfileActivity extends AppCompatActivity
                 myUri = downloadUri.toString();
 
                 userProfile.setProfileImageUrl(myUri);
-                Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
+                //Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 Log.d(TAG, "onNextListener: " + userProfile);
                 databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
             }
             else
             {
-                Log.e(TAG, "onCompleteUploadListener: " + task.getException());
+                //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
                 Toast.makeText(UserProfileActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
             }
         };
@@ -262,9 +264,6 @@ public class UserProfileActivity extends AppCompatActivity
                     {
                         String image = Objects.requireNonNull(snapshot.child("image").getValue()).toString();
                         Picasso.get().load(image).into(profilePicture);
-
-                        // set the nav_header image?
-
                     }
                 }
             }

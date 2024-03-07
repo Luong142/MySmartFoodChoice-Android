@@ -21,6 +21,9 @@ import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.UserFragment.HomeFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserFragment.MealRecordFragment;
+import com.example.myfoodchoice.UserFragment.ReviewFragment;
+import com.example.myfoodchoice.UserFragment.UserProfileUpdateFragment;
+import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -193,6 +196,24 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (itemId == R.id.nav_review)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new ReviewFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_update_userProfile)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserProfileUpdateFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_view_userProfile)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserProfileViewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_meal_record)

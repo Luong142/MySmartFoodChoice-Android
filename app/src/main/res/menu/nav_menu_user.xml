@@ -18,6 +18,23 @@
             />
 
         <item
+            android:id="@+id/nav_update_userProfile"
+            android:title="@string/update_profile"
+            android:icon="@drawable/update_profile"
+            />
+
+        <item
+            android:id="@+id/nav_view_userProfile"
+            android:title="@string/view_profile"
+            android:icon="@drawable/view_profile"/>
+
+        <item
+            android:id="@+id/nav_review"
+            android:title="@string/view_feedback"
+            android:icon="@drawable/review"
+            />
+
+        <item
             android:id="@+id/nav_log_off"
             android:icon="@drawable/logoff"
             android:title="@string/log_out"
