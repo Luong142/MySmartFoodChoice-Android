@@ -13,4 +13,9 @@
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_out_left</item>
     </style>
+
+    <style name="CircularDeterminateProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle</item>
+    </style>
 </resources>

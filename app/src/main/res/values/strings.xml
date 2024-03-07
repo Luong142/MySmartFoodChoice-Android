@@ -77,4 +77,12 @@
     <string name="create_profile">Create Profile</string>
     <string name="put_email_here">put email here</string>
     <string name="put_our_user_profile_image_here">Put our user profile image here</string>
+    <string name="_1320">1320</string>
+    <string name="_2200">/2200</string>
+    <string name="calories">Calories</string>
+    <string name="breakfast">Breakfast:</string>
+    <string name="_650">650</string>
+    <string name="upload_a_photo">Upload a photo</string>
+    <string name="_60">60%</string>
+    <string name="day_1">Day 1</string>
 </resources>
