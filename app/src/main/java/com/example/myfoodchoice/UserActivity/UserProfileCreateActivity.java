@@ -213,6 +213,12 @@ public class UserProfileCreateActivity extends AppCompatActivity
 
             storageTask = storageReference.putFile(selectedImageUri);
 
+            // update user profile based on current user
+            firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                    .setDisplayName(firstNameString + " " + lastNameString).build());
+
+            Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
+
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
             userProfile.setFirstName(firstNameString);
@@ -247,6 +253,11 @@ public class UserProfileCreateActivity extends AppCompatActivity
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
                 databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+
+                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                        .setPhotoUri(Uri.parse(myUri)).build());
+
+                Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }
             else
             {

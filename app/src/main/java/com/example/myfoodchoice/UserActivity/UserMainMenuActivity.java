@@ -99,9 +99,16 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
 
 
         // TODO: set UI components in nav_header
-        Log.d(TAG, "getDisplayName() function is " + firebaseUser.getDisplayName());
+
+        /*
+        firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                .setDisplayName("Default").build());
+
+        firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                .setPhotoUri("//").build());
+         */
+
         Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
-        Log.d(TAG, "getPhotoUrl() function is " + firebaseUser.getPhotoUrl());
         Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
 
         // TODO: for navigation drawer
