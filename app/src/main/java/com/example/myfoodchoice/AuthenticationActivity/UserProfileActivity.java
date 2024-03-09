@@ -73,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity
 
     static final String LABEL = "Registered Users";
 
-    Uri selectedImageUri, defaultImageUri; // TODO: fix me
+    Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -221,6 +221,7 @@ public class UserProfileActivity extends AppCompatActivity
             userProfile.setLastName(lastNameString);
             userProfile.setAge(ageInt);
 
+            // set image here
             storageTask.continueWithTask(task ->
             {
                 if (!task.isSuccessful())
@@ -236,19 +237,22 @@ public class UserProfileActivity extends AppCompatActivity
     {
         return task ->
         {
-            // FIXME: need to test this field, profile picture
+            // FIXME: profile picture task is unsuccessful.
             if (task.isSuccessful())
             {
                 Uri downloadUri = task.getResult();
                 myUri = downloadUri.toString();
 
+                // FIXME:
+
                 userProfile.setProfileImageUrl(myUri);
-                //Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
-                Log.d(TAG, "onNextListener: " + userProfile);
+                // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
+                // Log.d(TAG, "onNextListener: " + userProfile);
                 databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
             }
             else
             {
+                Log.d(TAG, "onCompleteUploadListener: " + myUri);
                 progressBar.setVisibility(ProgressBar.GONE);
                 //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
                 Toast.makeText(UserProfileActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
