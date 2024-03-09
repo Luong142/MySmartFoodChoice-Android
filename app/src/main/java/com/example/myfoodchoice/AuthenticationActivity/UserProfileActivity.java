@@ -73,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity
 
     static final String LABEL = "Registered Users";
 
-    Uri selectedImageUri;
+    Uri selectedImageUri, defaultImageUri; // TODO: fix me
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -194,12 +194,19 @@ public class UserProfileActivity extends AppCompatActivity
             // TODO: to Firebase database.
 
             // check if selectedImageUri is null
-            if (Objects.equals(gender, "Default"))
+            if (selectedImageUri == null)
             {
                 Toast.makeText(UserProfileActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if selectedImageUri is null
+            }
+
+            if (Objects.equals(gender, "Default"))
+            {
+                Toast.makeText(UserProfileActivity.this, "Please select a gender.", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(ProgressBar.GONE);
+                return; // exit the method if gender is not selected
             }
 
             // upload the image to Firebase Storage
@@ -229,6 +236,7 @@ public class UserProfileActivity extends AppCompatActivity
     {
         return task ->
         {
+            // FIXME: need to test this field, profile picture
             if (task.isSuccessful())
             {
                 Uri downloadUri = task.getResult();
@@ -241,6 +249,7 @@ public class UserProfileActivity extends AppCompatActivity
             }
             else
             {
+                progressBar.setVisibility(ProgressBar.GONE);
                 //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
                 Toast.makeText(UserProfileActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
             }
