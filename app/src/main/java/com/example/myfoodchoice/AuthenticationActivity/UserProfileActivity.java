@@ -103,7 +103,7 @@ public class UserProfileActivity extends AppCompatActivity
         femaleImage = findViewById(R.id.femaleImage);
 
         // set gender to male by default
-        gender = "Male";
+        gender = "Default";
         maleImage.setOnClickListener(onMaleClickListener());
         femaleImage.setOnClickListener(onFemaleClickListener());
 
@@ -194,11 +194,12 @@ public class UserProfileActivity extends AppCompatActivity
             // TODO: to Firebase database.
 
             // check if selectedImageUri is null
-            if (selectedImageUri == null) {
+            if (Objects.equals(gender, "Default"))
+            {
                 Toast.makeText(UserProfileActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
-                return; // Exit the method if selectedImageUri is null
+                return; // exit the method if selectedImageUri is null
             }
 
             // upload the image to Firebase Storage

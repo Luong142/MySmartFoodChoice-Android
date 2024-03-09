@@ -6,7 +6,7 @@ public class TensorFlowLiteTest
 {
     TfLiteInitializationOptions options;
 
-    // TODO: we need both OpenCV and TensorFlow Lite
+    // TODO: we need both OpenCV and TensorFlow Lite, or not
     public static void main(String [] args)
     {
 
