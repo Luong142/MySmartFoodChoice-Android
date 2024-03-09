@@ -23,6 +23,9 @@ import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
+
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
@@ -118,6 +121,7 @@ public class LoginActivity extends AppCompatActivity
 
         // check box listener
         rememberMe.setOnCheckedChangeListener(onCheckedListener());
+
     }
 
     // TODO: the purpose is to save data via Paper.
@@ -177,6 +181,7 @@ public class LoginActivity extends AppCompatActivity
             {
                 Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                intent.putExtra("userProfile", userProfile);
                 startActivity(intent);
                 finish();
             }

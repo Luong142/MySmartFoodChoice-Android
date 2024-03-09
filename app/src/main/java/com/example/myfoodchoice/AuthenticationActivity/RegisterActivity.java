@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,15 +57,15 @@ public class RegisterActivity extends AppCompatActivity
 
     static final String LABEL = "Registered Users";
 
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReferenceRegisteredUser;
 
     String email, password, firstName, lastName;
 
-    UserProfile userProfile;
+    UserAccount userAccount;
 
     FirebaseUser firebaseUser;
 
-    Intent intentNavToUserProfileActivity;
+    Intent intentNavToLoginActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -145,10 +147,13 @@ public class RegisterActivity extends AppCompatActivity
                     firebaseUser = firebaseAuth.getCurrentUser();
                     Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
-                    // init user profile
-                    userProfile = new UserProfile(email, password);
+                    // init database reference
+                    databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
 
-                    intentNavToUserProfileActivity = new Intent(RegisterActivity.this, UserProfileActivity.class);
+                    // init user account
+                    userAccount = new UserAccount(email, password);
+
+                    intentNavToLoginActivity = new Intent(RegisterActivity.this, LoginActivity.class);
 
                     // auto create a new path with name as string value and assign to a variable.
                     // databaseReference = firebaseDatabase.getReference(LABEL);
@@ -159,13 +164,7 @@ public class RegisterActivity extends AppCompatActivity
                             // (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
                     // FIXME: not yet to do this, need to set up the user profile before uploading to firebase.
 
-                    Log.d(TAG, "onCompleteListener: " + task.isSuccessful());
-                    // move to user profile for default user profile page.
-                    intentNavToUserProfileActivity.putExtra("userProfile", userProfile);
-                    intentNavToUserProfileActivity.setFlags
-                            (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intentNavToUserProfileActivity);
-                    finish(); // to close the register page.
+                    databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener(onCompleteListener());
                 }
                 else
                 {
@@ -206,6 +205,18 @@ public class RegisterActivity extends AppCompatActivity
         };
     }
 
+    private OnCompleteListener<Void> onCompleteListener()
+    {
+        return v ->
+        {
+            // move to user profile for default user profile page.
+            intentNavToLoginActivity.setFlags
+                    (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intentNavToLoginActivity);
+            finish(); // to close the register page.
+        };
+    }
+
     public ClickableSpan clickableLoginNavSpan()
     {
         {
@@ -222,11 +233,4 @@ public class RegisterActivity extends AppCompatActivity
         }
     }
 
-    public OnCompleteListener<Void> onCompleteListener()
-    {
-        return task ->
-        {
-
-        };
-    }
 }

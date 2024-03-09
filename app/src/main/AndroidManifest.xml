@@ -9,13 +9,20 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
-
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera.any"
         android:required="true" />
@@ -31,10 +38,13 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".UserActivity.UserProfileUpdateActivity"
+            android:exported="false" />
+        <activity
             android:name=".OpenCVTestActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationActivity.UserProfileActivity"
+            android:name=".UserActivity.UserProfileCreateActivity"
             android:exported="false" />
         <activity
             android:name=".GuestActivity.GuestBMIResultActivity"

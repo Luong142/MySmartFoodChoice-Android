@@ -6,9 +6,6 @@ import androidx.annotation.NonNull;
 
 public class UserProfile implements Parcelable // way more efficient to use Parcelable.
 {
-    private String email;
-
-    private String password;
 
     private String firstName;
 
@@ -28,17 +25,9 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         // this constructor is required for Firebase to be able to deserialize the object
     }
 
-    public UserProfile(String email, String password)
-    {
-        this.email = email;
-        this.password = password;
-
-    }
-
     protected UserProfile(Parcel in)
     {
-        email = in.readString();
-        password = in.readString();
+
         firstName = in.readString();
         lastName = in.readString();
         height = in.readString();
@@ -71,8 +60,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeString(email);
-        dest.writeString(password);
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(height);
@@ -87,8 +74,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     @Override
     public String toString() {
         return "UserProfile{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", height='" + height + '\'' +
@@ -106,22 +91,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {

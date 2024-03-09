@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.UserFragment.HomeFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserFragment.MealRecordFragment;
 import com.example.myfoodchoice.UserFragment.ReviewFragment;
-import com.example.myfoodchoice.UserFragment.UserProfileUpdateFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -148,16 +148,17 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                     // check if the dataSnapshot contains the user profile data
                     if (snapshot.exists())
                     {
-                        // extract the user profile
+                        // extract data from firebase database
+                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
                         UserProfile userProfile = snapshot.getValue(UserProfile.class);
-                        Log.d(TAG, "onDataChange: " + userProfile);
-                        if (userProfile != null)
+                        Log.d(TAG, "onDataChange: " + userAccount);
+                        if (userAccount != null)
                         {
                             // set the first name and last name in the UI
-                            String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
-                            headerFullName.setText(fullName);
+                            // String fullName = UserAccount.getFirstName() + " " + UserAccount.getLastName();
+                            // headerFullName.setText(fullName);
                             // set email
-                            String email = userProfile.getEmail();
+                            String email = userAccount.getEmail();
                             headerEmail.setText(email);
                             // set profile picture
                             String profileImageUrl = userProfile.getProfileImageUrl();
@@ -208,8 +209,8 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
         // our plan is to make 2 in 1 manage profile part.
         else if (itemId == R.id.nav_manage_userProfile)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserProfileViewFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace
+                    (R.id.fragment_container, new UserProfileViewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_meal_record)

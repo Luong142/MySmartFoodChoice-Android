@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.AuthenticationActivity;
+package com.example.myfoodchoice.UserActivity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -18,11 +18,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,10 +35,9 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
 import java.util.Objects;
 
-public class UserProfileActivity extends AppCompatActivity
+public class UserProfileCreateActivity extends AppCompatActivity
 {
     // TODO: declare UI components
     EditText firstName, lastName, age;
@@ -71,7 +69,7 @@ public class UserProfileActivity extends AppCompatActivity
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
-    static final String LABEL = "Registered Users";
+    static final String LABEL = "User Profile";
 
     Uri selectedImageUri;
 
@@ -79,7 +77,7 @@ public class UserProfileActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_user_profile_create);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -116,7 +114,7 @@ public class UserProfileActivity extends AppCompatActivity
         // init userProfile
         userProfile = getIntent().getParcelableExtra("userProfile");
         // log debug
-        Log.d(TAG, "onCreate: " + Objects.requireNonNull(userProfile));
+        // Log.d(TAG, "onCreate: " + Objects.requireNonNull(userProfile));
 
         profilePicture.setOnClickListener(onImageClickListener());
 
@@ -196,7 +194,7 @@ public class UserProfileActivity extends AppCompatActivity
             // check if selectedImageUri is null
             if (selectedImageUri == null)
             {
-                Toast.makeText(UserProfileActivity.this,
+                Toast.makeText(UserProfileCreateActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if selectedImageUri is null
@@ -204,7 +202,7 @@ public class UserProfileActivity extends AppCompatActivity
 
             if (Objects.equals(gender, "Default"))
             {
-                Toast.makeText(UserProfileActivity.this, "Please select a gender.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileCreateActivity.this, "Please select a gender.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if gender is not selected
             }
@@ -255,7 +253,7 @@ public class UserProfileActivity extends AppCompatActivity
                 Log.d(TAG, "onCompleteUploadListener: " + myUri);
                 progressBar.setVisibility(ProgressBar.GONE);
                 //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
-                Toast.makeText(UserProfileActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileCreateActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -295,8 +293,8 @@ public class UserProfileActivity extends AppCompatActivity
         {
             return task ->
             {
-                Toast.makeText(UserProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(UserProfileActivity.this, LoginActivity.class);
+                Toast.makeText(UserProfileCreateActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserProfileCreateActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish(); // to close this page.
             };
