@@ -26,8 +26,6 @@ public class UserProfileViewFragment extends Fragment
 
     TextView displayUserProfile;
 
-    UserProfile userProfile;
-
     static final String TAG = "UserProfileViewFragment";
 
     @Override
@@ -35,11 +33,7 @@ public class UserProfileViewFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
-        // get userProfile
-        if (getArguments() != null)
-        {
-            userProfile = getArguments().getParcelable("userProfile");
-        }
+
 
         // TODO: init UI components
         createProfileBtn  = view.findViewById(R.id.createProfileBtn);
@@ -50,7 +44,6 @@ public class UserProfileViewFragment extends Fragment
         createProfileBtn.setOnClickListener(onCreateUserProfileListener());
         updateProfileBtn.setOnClickListener(onUpdateUserProfileListener());
 
-        Log.d(TAG, "userProfile: " + userProfile);
     }
 
     private View.OnClickListener onUpdateUserProfileListener()

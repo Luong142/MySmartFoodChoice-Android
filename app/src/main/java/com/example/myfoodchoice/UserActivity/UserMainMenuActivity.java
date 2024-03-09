@@ -161,14 +161,20 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                         Log.d(TAG, "onDataChange: " + userAccount);
                         if (userAccount != null)
                         {
-                            // set the first name and last name in the UI
-                            // String fullName = UserAccount.getFirstName() + " " + UserAccount.getLastName();
-                            // headerFullName.setText(fullName);
                             // set email
                             String email = userAccount.getEmail();
                             headerEmail.setText(email);
+                        }
+
+                        // set the first name and last name in the UI
+                        if (userProfile != null)
+                        {
+                            String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                            headerFullName.setText(fullName);
+
                             // set profile picture
                             String profileImageUrl = userProfile.getProfileImageUrl();
+
                             Uri profileImageUri = Uri.parse(profileImageUrl);
                             // FIXME: the image doesn't show because the image source is from Gallery within android device.
                             Log.d(TAG, "onDataChange: " + profileImageUri.toString());
@@ -213,7 +219,7 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
         }
 
         // TODO: update and view user profile
-        // our plan is to make 2 in 1 manage profile part.
+        // our plan is to make 3 in 1 manage profile part.
         else if (itemId == R.id.nav_manage_userProfile)
         {
             getSupportFragmentManager().beginTransaction().replace
