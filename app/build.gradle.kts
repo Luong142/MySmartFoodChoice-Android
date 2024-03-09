@@ -39,6 +39,7 @@ dependencies {
     // Tensorflow Lite dependencies
     implementation ("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
     implementation ("com.google.android.gms:play-services-tflite-gpu:16.2.0")
+    implementation("androidx.activity:activity:1.8.0")
     val camerax_version = "1.3.1"
     //noinspection GradleDependency
     implementation ("androidx.camera:camera-camera2:$camerax_version")

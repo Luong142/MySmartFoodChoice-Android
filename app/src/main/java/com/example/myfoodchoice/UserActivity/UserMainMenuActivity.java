@@ -204,13 +204,9 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                     new ReviewFragment()).commit();
         }
 
-        else if (itemId == R.id.nav_update_userProfile)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserProfileUpdateFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_view_userProfile)
+        // TODO: update and view user profile
+        // our plan is to make 2 in 1 manage profile part.
+        else if (itemId == R.id.nav_manage_userProfile)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserProfileViewFragment()).commit();

@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity.WelcomeActivity">
-
+    tools:context=".WelcomeActivity.WelcomeActivity"
+    android:background="@drawable/bg_gradient_color_main"
+    >
     <!-- four text or button:
         Home
         Review
         PartnerShip
-        ContactUs
+        ContactUs, not official here, things might change
      -->
-
     <com.example.myfoodchoice.BackgroundVideo.BackgroundVideoView
         android:id="@+id/backgroundVideoView"
         android:layout_width="match_parent"

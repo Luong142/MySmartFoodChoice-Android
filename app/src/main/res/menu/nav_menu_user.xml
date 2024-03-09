@@ -18,15 +18,10 @@
             />
 
         <item
-            android:id="@+id/nav_update_userProfile"
-            android:title="@string/update_profile"
+            android:id="@+id/nav_manage_userProfile"
+            android:title="@string/manage_profile"
             android:icon="@drawable/update_profile"
             />
-
-        <item
-            android:id="@+id/nav_view_userProfile"
-            android:title="@string/view_profile"
-            android:icon="@drawable/view_profile"/>
 
         <item
             android:id="@+id/nav_review"

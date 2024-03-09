@@ -16,6 +16,7 @@ public class UserProfileViewFragment extends Fragment
 {
     // TODO: declare UI components
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -31,6 +32,6 @@ public class UserProfileViewFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_user_profile, container, false);
+        return inflater.inflate(R.layout.fragment_view_profile, container, false);
     }
 }
