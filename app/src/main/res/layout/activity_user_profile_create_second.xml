@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserActivity.UserProfileCreateActivity"
+    tools:context=".AuthenticationActivity.UserProfileCreateFirstActivity"
     android:background="@drawable/bg_gradient_color_main"
     >
 
     <LinearLayout
-        android:layout_width="340dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_layout_login_page"
         android:gravity="top"
@@ -30,10 +30,6 @@
             android:textSize="35sp"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="15dp"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,10 +38,6 @@
             android:layout_gravity="center"
             android:textAlignment="center"
             />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="15dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,60 +123,13 @@
             android:textColorHint="#FAFAFA"
             android:textSize="15sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gender"
-            android:textSize="30sp"
-            android:layout_gravity="center"
-
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <!-- TODO: update more fields in UserProfile class -->
-        <!-- FIXME: this current field haven't applied logic -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            >
-
-            <ImageView
-                android:id="@+id/maleImage"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
-                android:src="@drawable/male"
-                android:contentDescription="@string/todo" />
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/femaleImage"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
-                android:src="@drawable/female"
-                android:contentDescription="@string/todo" />
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
         <Button
-            android:id="@+id/createProfileBtn"
+            android:id="@+id/nextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/dodger_blue"
-            android:text="@string/create_profile"
+            android:text="@string/next"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />

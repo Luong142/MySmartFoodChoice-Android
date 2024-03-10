@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.UserActivity;
+package com.example.myfoodchoice.AuthenticationActivity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,15 +36,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-public class UserProfileCreateActivity extends AppCompatActivity
+public class UserProfileCreateFirstActivity extends AppCompatActivity
 {
     // TODO: declare UI components
-    EditText firstName, lastName, age;
+    EditText age;
 
     ImageView profilePicture, maleImage, femaleImage;
     ProgressBar progressBar;
 
-    Button createProfileBtn;
+    Button nextBtn;
 
     String firstNameString, lastNameString, myUri, gender;
 
@@ -59,7 +58,7 @@ public class UserProfileCreateActivity extends AppCompatActivity
 
     FirebaseUser firebaseUser;
 
-    DatabaseReference databaseReferenceRegisteredUser;
+    DatabaseReference databaseReferenceUserProfile;
 
     StorageReference storageReferenceProfilePics;
 
@@ -77,7 +76,7 @@ public class UserProfileCreateActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile_create);
+        setContentView(R.layout.activity_user_profile_create_first);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -86,17 +85,15 @@ public class UserProfileCreateActivity extends AppCompatActivity
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
+        databaseReferenceUserProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
         storageReferenceProfilePics =
                 FirebaseStorage.getInstance().getReference().child("ProfilePics");
 
         // TODO: init UI components
-        firstName = findViewById(R.id.firstNameProfile);
-        lastName = findViewById(R.id.lastNameProfile);
         age = findViewById(R.id.ageProfile);
         profilePicture = findViewById(R.id.profilePicture);
         progressBar = findViewById(R.id.progressBar);
-        createProfileBtn = findViewById(R.id.createProfileBtn);
+        nextBtn = findViewById(R.id.nextBtn);
         maleImage = findViewById(R.id.maleImage);
         femaleImage = findViewById(R.id.femaleImage);
 
@@ -109,7 +106,7 @@ public class UserProfileCreateActivity extends AppCompatActivity
         progressBar.setVisibility(ProgressBar.GONE);
 
         // set onClickListener button
-        createProfileBtn.setOnClickListener(onCreateProfileListener());
+        nextBtn.setOnClickListener(onCreateProfileListener());
 
         // init userProfile
         userProfile = getIntent().getParcelableExtra("userProfile");
@@ -143,26 +140,7 @@ public class UserProfileCreateActivity extends AppCompatActivity
         getUserInfo();
     }
 
-    // TODO: update this new field for the user to select to get the gender
-    private View.OnClickListener onFemaleClickListener()
-    {
-        return v ->
-        {
-            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
-            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
-            gender = "Female";
-        };
-    }
 
-    private View.OnClickListener onMaleClickListener()
-    {
-        return v ->
-        {
-            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
-            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
-            gender = "Male";
-        };
-    }
 
     private View.OnClickListener onImageClickListener()
     {
@@ -172,7 +150,6 @@ public class UserProfileCreateActivity extends AppCompatActivity
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             activityResultLauncher.launch(Intent.createChooser(intent, "Select File"));
-
         };
     }
 
@@ -183,8 +160,6 @@ public class UserProfileCreateActivity extends AppCompatActivity
             // make the progress bar appear
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
-            firstNameString = firstName.getText().toString().trim();
-            lastNameString = lastName.getText().toString().trim();
             ageInt = Integer.parseInt(age.getText().toString().trim());
             Log.d(TAG, "onCreateProfileListener: " + gender);
 
@@ -194,7 +169,7 @@ public class UserProfileCreateActivity extends AppCompatActivity
             // check if selectedImageUri is null
             if (selectedImageUri == null)
             {
-                Toast.makeText(UserProfileCreateActivity.this,
+                Toast.makeText(UserProfileCreateFirstActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if selectedImageUri is null
@@ -202,7 +177,7 @@ public class UserProfileCreateActivity extends AppCompatActivity
 
             if (Objects.equals(gender, "Default"))
             {
-                Toast.makeText(UserProfileCreateActivity.this, "Please select a gender.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileCreateFirstActivity.this, "Please select a gender.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if gender is not selected
             }
@@ -221,8 +196,6 @@ public class UserProfileCreateActivity extends AppCompatActivity
 
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
-            userProfile.setFirstName(firstNameString);
-            userProfile.setLastName(lastNameString);
             userProfile.setAge(ageInt);
 
             // set image here
@@ -252,11 +225,10 @@ public class UserProfileCreateActivity extends AppCompatActivity
                 userProfile.setProfileImageUrl(myUri);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
-                databaseReferenceRegisteredUser.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+                databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                         .setPhotoUri(Uri.parse(myUri)).build());
-
                 Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }
             else
@@ -264,14 +236,14 @@ public class UserProfileCreateActivity extends AppCompatActivity
                 Log.d(TAG, "onCompleteUploadListener: " + myUri);
                 progressBar.setVisibility(ProgressBar.GONE);
                 //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
-                Toast.makeText(UserProfileCreateActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileCreateFirstActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
             }
         };
     }
 
     private void getUserInfo()
     {
-        databaseReferenceRegisteredUser.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
+        databaseReferenceUserProfile.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
     }
 
     private ValueEventListener valueEventListener()
@@ -299,13 +271,34 @@ public class UserProfileCreateActivity extends AppCompatActivity
         };
     }
 
+    // TODO: update this new field for the user to select to get the gender
+    private View.OnClickListener onFemaleClickListener()
+    {
+        return v ->
+        {
+            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
+            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
+            gender = "Female";
+        };
+    }
+
+    private View.OnClickListener onMaleClickListener()
+    {
+        return v ->
+        {
+            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
+            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
+            gender = "Male";
+        };
+    }
+
     private OnCompleteListener<Void> onCompleteListener()
     {
         {
             return task ->
             {
-                Toast.makeText(UserProfileCreateActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(UserProfileCreateActivity.this, LoginActivity.class);
+                Toast.makeText(UserProfileCreateFirstActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserProfileCreateFirstActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish(); // to close this page.
             };

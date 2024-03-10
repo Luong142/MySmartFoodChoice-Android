@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,13 +35,13 @@ public class RegisterActivity extends AppCompatActivity
     // TODO: declare UI components
 
     // buttons
-    Button signupBtn;
+    Button nextBtn;
 
     // log in clickable text
     TextView navLoginClick;
 
     // Edit text
-    EditText signupEmailEditText, signupPasswordEditText;
+    EditText signupEmailEditText, signupPasswordEditText, firstNameEditText, lastNameEditText;
 
     // progress bar
     ProgressBar progressBar;
@@ -55,17 +56,23 @@ public class RegisterActivity extends AppCompatActivity
 
     static final String TAG = "RegisterActivity";
 
-    static final String LABEL = "Registered Users";
+    static final String LABEL_USER = "Registered Users";
+
+    static final String LABEL_PROFILE = "User Profile";
 
     DatabaseReference databaseReferenceRegisteredUser;
+
+    DatabaseReference databaseReferenceUserProfile;
 
     String email, password, firstName, lastName;
 
     UserAccount userAccount;
 
+    UserProfile userProfile;
+
     FirebaseUser firebaseUser;
 
-    Intent intentNavToLoginActivity;
+    Intent intentNavToUserProfileFirstActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -85,15 +92,17 @@ public class RegisterActivity extends AppCompatActivity
         // edit text
         signupEmailEditText = findViewById(R.id.sign_up_email);
         signupPasswordEditText = findViewById(R.id.sign_up_password);
+        firstNameEditText = findViewById(R.id.firstNameProfile);
+        lastNameEditText = findViewById(R.id.lastNameProfile);
 
         // progress bar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
         // button
-        signupBtn = findViewById(R.id.signupBtn);
-        signupBtn.setVisibility(View.VISIBLE);
-        signupBtn.setOnClickListener(onSignUpListener());
+        nextBtn = findViewById(R.id.nextBtn);
+        nextBtn.setVisibility(View.VISIBLE);
+        nextBtn.setOnClickListener(onSignUpListener());
 
         // clickable text
         navLoginClick = findViewById(R.id.clickableLoginNavText);
@@ -147,13 +156,30 @@ public class RegisterActivity extends AppCompatActivity
                     firebaseUser = firebaseAuth.getCurrentUser();
                     Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
+                    // retrieve the first name and last name from the user.
+                    firstName = firstNameEditText.getText().toString().trim();
+                    lastName = lastNameEditText.getText().toString().trim();
+
                     // init database reference
-                    databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
+
+                    // for user account
+                    databaseReferenceRegisteredUser =
+                            firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
+
+                    // for user profile
+                    databaseReferenceUserProfile =
+                            firebaseDatabase.getReference(LABEL_PROFILE).child(firebaseUser.getUid());
 
                     // init user account
                     userAccount = new UserAccount(email, password);
 
-                    intentNavToLoginActivity = new Intent(RegisterActivity.this, LoginActivity.class);
+                    // intent to carry this too
+                    userProfile = new UserProfile();
+                    userProfile.setFirstName(firstName);
+                    userProfile.setLastName(lastName);
+
+                    intentNavToUserProfileFirstActivity = new Intent(RegisterActivity.this, UserProfileCreateFirstActivity.class);
+                    intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
 
                     // auto create a new path with name as string value and assign to a variable.
                     // databaseReference = firebaseDatabase.getReference(LABEL);
@@ -164,7 +190,8 @@ public class RegisterActivity extends AppCompatActivity
                             // (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
                     // FIXME: not yet to do this, need to set up the user profile before uploading to firebase.
 
-                    databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener(onCompleteListener());
+                    databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener
+                            (onCompleteUserAccountListener());
                 }
                 else
                 {
@@ -205,14 +232,24 @@ public class RegisterActivity extends AppCompatActivity
         };
     }
 
-    private OnCompleteListener<Void> onCompleteListener()
+    private OnCompleteListener<Void> onCompleteUserAccountListener()
     {
         return v ->
         {
             // move to user profile for default user profile page.
-            intentNavToLoginActivity.setFlags
+            Log.d(TAG, "onCompleteUserAccountListener: " + userProfile);
+            databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteUserProfileListener());
+        };
+    }
+
+    private OnCompleteListener<Void> onCompleteUserProfileListener()
+    {
+        return v ->
+        {
+            // move to user profile for default user profile page.
+            intentNavToUserProfileFirstActivity.setFlags
                     (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intentNavToLoginActivity);
+            startActivity(intentNavToUserProfileFirstActivity);
             finish(); // to close the register page.
         };
     }
@@ -223,7 +260,7 @@ public class RegisterActivity extends AppCompatActivity
             return new ClickableSpan()
             {
                 @Override
-                public void onClick(View widget)
+                public void onClick(@NonNull View widget)
                 {
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -232,5 +269,4 @@ public class RegisterActivity extends AppCompatActivity
             };
         }
     }
-
 }

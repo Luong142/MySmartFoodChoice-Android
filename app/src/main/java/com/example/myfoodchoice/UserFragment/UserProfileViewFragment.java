@@ -7,22 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserActivity.UserProfileCreateActivity;
+import com.example.myfoodchoice.AuthenticationActivity.UserProfileCreateFirstActivity;
 import com.example.myfoodchoice.UserActivity.UserProfileUpdateActivity;
 
 public class UserProfileViewFragment extends Fragment
 {
     // TODO: declare UI components
-    Button createProfileBtn, updateProfileBtn;
+    Button updateProfileBtn;
 
     TextView displayUserProfile;
 
@@ -36,12 +34,12 @@ public class UserProfileViewFragment extends Fragment
 
 
         // TODO: init UI components
-        createProfileBtn  = view.findViewById(R.id.createProfileBtn);
+        //createProfileBtn  = view.findViewById(R.id.createProfileBtn);
         updateProfileBtn = view.findViewById(R.id.updateProfileBtn);
         displayUserProfile = view.findViewById(R.id.displayUserProfile);
 
         // add onClickListener
-        createProfileBtn.setOnClickListener(onCreateUserProfileListener());
+        //createProfileBtn.setOnClickListener(onCreateUserProfileListener());
         updateProfileBtn.setOnClickListener(onUpdateUserProfileListener());
 
     }
@@ -60,7 +58,7 @@ public class UserProfileViewFragment extends Fragment
     {
         return v ->
         {
-            Intent intent = new Intent(getActivity(), UserProfileCreateActivity.class);
+            Intent intent = new Intent(getActivity(), UserProfileCreateFirstActivity.class);
             startActivity(intent);
             // no finish()
         };
