@@ -35,6 +35,8 @@ android {
 
 dependencies {
     // Firebase dependencies.
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("com.github.bumptech.glide:glide:4.14.2")
     implementation ("com.squareup.picasso:picasso:2.71828")
     // Tensorflow Lite dependencies
     implementation ("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")

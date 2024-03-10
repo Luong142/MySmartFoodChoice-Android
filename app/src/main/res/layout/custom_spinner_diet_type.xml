@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+        <ImageView
+            android:id="@+id/dietTypeImage"
+            android:layout_width="107dp"
+            android:layout_height="80dp"
+            android:background="@color/dodger_blue"
+            android:src="@drawable/vege"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="24dp" />
+
+        <TextView
+            android:id="@+id/dietType"
+            android:layout_width="147dp"
+            android:layout_height="match_parent"
+            android:background="@color/dodger_blue"
+            android:gravity="center"
+            android:text="@string/vegetarian"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view_exhibition"
+            tools:layout_editor_absoluteY="24dp" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/drop_down"
+            android:background="@color/dodger_blue"
+            />
+    </LinearLayout>
+</RelativeLayout>

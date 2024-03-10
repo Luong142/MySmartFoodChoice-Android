@@ -18,7 +18,9 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     private String profileImageUrl;
     private String gender;
     private int age;
-    private String dob;
+    private String dietType;
+
+    private int dietTypeImage;
 
     public UserProfile()
     {
@@ -35,7 +37,13 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         profileImageUrl = in.readString();
         gender = in.readString();
         age = in.readInt();
-        dob = in.readString();
+        dietType = in.readString();
+    }
+
+    public UserProfile(String dietType, int dietTypeImage)
+    {
+        this.dietType = dietType;
+        this.dietTypeImage = dietTypeImage;
     }
 
     public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>()
@@ -67,7 +75,15 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         dest.writeString(profileImageUrl);
         dest.writeString(gender);
         dest.writeInt(age);
-        dest.writeString(dob);
+        dest.writeString(dietType);
+    }
+
+    public int getDietTypeImage() {
+        return dietTypeImage;
+    }
+
+    public void setDietTypeImage(int dietTypeImage) {
+        this.dietTypeImage = dietTypeImage;
     }
 
     @NonNull
@@ -81,7 +97,7 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
                 ", profileImage=" + profileImageUrl +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
-                ", dob='" + dob + '\'' +
+                ", dob='" + dietType + '\'' +
                 '}';
     }
 
@@ -142,11 +158,11 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         this.age = age;
     }
 
-    public String getDob() {
-        return dob;
+    public String getDietType() {
+        return dietType;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setDietType(String dietType) {
+        this.dietType = dietType;
     }
 }

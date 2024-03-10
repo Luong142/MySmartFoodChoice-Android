@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,10 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +33,10 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 public class UserProfileCreateFirstActivity extends AppCompatActivity
@@ -64,7 +67,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
     StorageTask<UploadTask.TaskSnapshot> storageTask;
 
-    final static String TAG = "UserProfileActivity";
+    final static String TAG = "UserProfileCreateFirstActivity";
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -186,13 +189,15 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             final StorageReference storageReference = storageReferenceProfilePics.child
                     (firebaseUser.getUid() + ".jpg");
 
-            storageTask = storageReference.putFile(selectedImageUri);
+            // FIXME: the selected image Uri haven't converted to Uri path.
+            storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
 
             // update user profile based on current user
             firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                    .setDisplayName(firstNameString + " " + lastNameString).build());
+                    .setDisplayName(firstNameString + " " + lastNameString).build())
+                    .addOnCompleteListener(onCompleteUpdateProfile());
 
-            Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
+            // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
 
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
@@ -207,6 +212,22 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 }
                 return storageReference.getDownloadUrl();
             }).addOnCompleteListener(onCompleteUploadListener());
+        };
+    }
+
+    private OnCompleteListener<Void> onCompleteUpdateProfile() // FIXME: for debug purpose
+    {
+        return v ->
+        {
+            Log.d(TAG, "onCompleteUpdateProfile: " + v);
+        };
+    }
+
+    private OnFailureListener onFailurePart() // FIXME: for debug purpose
+    {
+        return v ->
+        {
+            Log.d(TAG, "onFailurePart: " + v);
         };
     }
 
@@ -225,7 +246,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 userProfile.setProfileImageUrl(myUri);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
-                databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+                // TODO: set the value based on UserProfile class.
+                // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                         .setPhotoUri(Uri.parse(myUri)).build());
@@ -298,7 +320,9 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             return task ->
             {
                 Toast.makeText(UserProfileCreateFirstActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(UserProfileCreateFirstActivity.this, LoginActivity.class);
+                Intent intent = new Intent(UserProfileCreateFirstActivity.this,
+                        UserProfileCreateSecondActivity.class);
+                intent.putExtra("userProfile", userProfile);
                 startActivity(intent);
                 finish(); // to close this page.
             };

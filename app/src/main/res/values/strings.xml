@@ -92,4 +92,8 @@
     <string name="view_feedback">View Feedback</string>
     <string name="manage_profile">Manage Profile</string>
     <string name="full_name">Full Name</string>
+    <string name="enter_weight">Enter Weight</string>
+    <string name="diet_type">Diet Type</string>
+    <string name="enter_height">Enter Height</string>
+    <string name="vegetarian">Vegetarian</string>
 </resources>
