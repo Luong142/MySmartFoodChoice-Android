@@ -88,17 +88,19 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     @NonNull
     @Override
-    public String toString() {
-        return "UserProfile{" +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", height='" + height + '\'' +
-                ", weight='" + weight + '\'' +
-                ", profileImage=" + profileImageUrl +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                ", Diet Type='" + dietType + '\'' +
-                '}';
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("User Profile\n");
+        sb.append("-------------------\n");
+        sb.append("First Name: ").append(firstName).append("\n");
+        sb.append("Last Name: ").append(lastName).append("\n");
+        sb.append("Height: ").append(height).append(" cm\n");
+        sb.append("Weight: ").append(weight).append(" kg\n");
+        sb.append("Gender: ").append(gender).append("\n");
+        sb.append("Age: ").append(age).append("\n");
+        sb.append("Diet Type: ").append(dietType).append("\n");
+        return sb.toString();
     }
 
     public String getFirstName() {

@@ -61,6 +61,8 @@ public class LoginActivity extends AppCompatActivity
 
     UserProfile userProfile;
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -83,6 +85,11 @@ public class LoginActivity extends AppCompatActivity
         // TODO: init UI components
         loginEmailEditText = findViewById(R.id.login_email);
         loginPasswordEditText = findViewById(R.id.login_password);
+
+        // init user profile
+        intent = getIntent();
+        userProfile = intent.getParcelableExtra("userProfile");
+        // TODO: do we need userProfile here to pass to main-menu?
 
         // check box
         rememberMe = findViewById(R.id.rememberMe_checkBox);
@@ -182,6 +189,7 @@ public class LoginActivity extends AppCompatActivity
                 Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
                 intent.putExtra("userProfile", userProfile);
+                Log.d("userProfile", "userProfile: " + userProfile);
                 startActivity(intent);
                 finish();
             }

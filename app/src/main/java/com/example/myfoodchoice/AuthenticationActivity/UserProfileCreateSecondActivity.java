@@ -42,9 +42,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     DatabaseReference databaseReferenceUserProfile;
 
-    StorageReference storageReferenceProfilePics;
-
-
     final static String TAG = "UserProfileCreateSecondActivity";
 
     final static String LABEL = "User Profile";
@@ -61,8 +58,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     Intent intent, intentToLoginActivity;
 
     Button signUpBtn;
-
-    int weight, height;
 
     ProgressBar progressBar;
 
@@ -97,7 +92,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         // for user profile that has been brought over from the first user profile activity.
         intent = getIntent();
         userProfile = intent.getParcelableExtra("userProfile");
-        Log.d(TAG, "Checking user profile pls: " + userProfile);
+        // Log.d(TAG, "Checking user profile pls: " + userProfile);
 
         // button
         signUpBtn = findViewById(R.id.signUpBtn);
@@ -109,16 +104,33 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     {
         return v ->
         {
-            // validation
+            // for height, centimeter unit.
             if (TextUtils.isEmpty(editIntHeight.getText().toString()))
             {
                 editIntHeight.setError("Please enter your height");
                 return;
             }
 
+            int height = Integer.parseInt(editIntHeight.getText().toString());
+
+            if (height < 50 || height > 250)
+            {
+                editIntHeight.setError("Invalid height value cm");
+                return;
+            }
+
+            // for weight, kg unit
             if (TextUtils.isEmpty(editIntWeight.getText().toString()))
             {
                 editIntWeight.setError("Please enter your weight");
+                return;
+            }
+
+            int weight = Integer.parseInt(editIntWeight.getText().toString());
+
+            if (weight < 20 || weight > 300)
+            {
+                editIntWeight.setError("Invalid weight value kg");
                 return;
             }
 

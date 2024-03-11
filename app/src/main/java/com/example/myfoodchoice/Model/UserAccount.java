@@ -7,6 +7,11 @@ public class UserAccount
     private String email;
     private String password;
 
+    public UserAccount()
+    {
+        // for firebase to paste on this default constructor.
+    }
+
     public UserAccount(String username, String password)
     {
         this.email = username;

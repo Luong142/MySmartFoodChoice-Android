@@ -41,7 +41,9 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
 {
     DrawerLayout drawerLayout;
 
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReferenceRegisteredUser;
+
+    DatabaseReference databaseReferenceUserProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -84,10 +86,15 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
         if (firebaseUser != null)
         {
             userID = firebaseUser.getUid();
-            // TODO: init database reference
-            databaseReference = firebaseDatabase.getReference(LABEL).child(userID);
-            databaseReference.addListenerForSingleValueEvent(valueEventListener());
+            // TODO: init database reference for user account
+            databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(userID);
+            databaseReferenceRegisteredUser.addListenerForSingleValueEvent(valueRegisteredUserEventListener());
+
+            // TODO: init database reference for user profile
+            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+            databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
         }
+
 
         // TODO: init UI component in nav_header and activity_main_menu
         navigationView = findViewById(R.id.nav_view);
@@ -144,7 +151,48 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
 
     }
 
-    private ValueEventListener valueEventListener()
+    private ValueEventListener valueUserProfileEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // FIXME: the problem is that userProfile is null.
+                UserProfile userProfile = snapshot.getValue(UserProfile.class);
+                // Log.d(TAG, "onDataChange: " + userProfile);
+
+                // set the first name and last name in the UI
+                if (userProfile != null)
+                {
+                    // set full name here
+                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                    headerFullName.setText(fullName);
+
+                    // set profile picture here
+                    String profileImageUrl = userProfile.getProfileImageUrl();
+                    Uri profileImageUri = Uri.parse(profileImageUrl);
+                    // FIXME: the image doesn't show because the image source is from Gallery within android device.
+                    // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+                    Picasso.get()
+                            .load(profileImageUri)
+                            .resize(150, 150)
+                            .error(R.drawable.error)
+                            .into(headerProfilePicture);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText
+                        (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
+            }
+        };
+    }
+
+    private ValueEventListener valueRegisteredUserEventListener()
     {
         {
             return new ValueEventListener()
@@ -157,8 +205,8 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                     {
                         // extract data from firebase database
                         UserAccount userAccount = snapshot.getValue(UserAccount.class);
-                        UserProfile userProfile = snapshot.getValue(UserProfile.class);
-                        Log.d(TAG, "onDataChange: " + userAccount);
+                        // Log.d(TAG, "onDataChange: " + userAccount);
+                        // Log.d(TAG, "onDataChange: " + userProfile);
                         if (userAccount != null)
                         {
                             // set email
@@ -166,24 +214,6 @@ public class UserMainMenuActivity extends AppCompatActivity implements Navigatio
                             headerEmail.setText(email);
                         }
 
-                        // set the first name and last name in the UI
-                        if (userProfile != null)
-                        {
-                            String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
-                            headerFullName.setText(fullName);
-
-                            // set profile picture
-                            String profileImageUrl = userProfile.getProfileImageUrl();
-
-                            Uri profileImageUri = Uri.parse(profileImageUrl);
-                            // FIXME: the image doesn't show because the image source is from Gallery within android device.
-                            Log.d(TAG, "onDataChange: " + profileImageUri.toString());
-                            Picasso.get()
-                                    .load(profileImageUri)
-                                    .resize(100, 100)
-                                    .error(R.drawable.error)
-                                    .into(headerProfilePicture);
-                        }
                     }
                 }
                 @Override
