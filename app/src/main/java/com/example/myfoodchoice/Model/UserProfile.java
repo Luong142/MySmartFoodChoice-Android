@@ -97,16 +97,8 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
                 ", profileImage=" + profileImageUrl +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
-                ", dob='" + dietType + '\'' +
+                ", Diet Type='" + dietType + '\'' +
                 '}';
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
     }
 
     public String getFirstName() {
@@ -141,6 +133,13 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         this.weight = weight;
     }
 
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 
     public String getGender() {
         return gender;

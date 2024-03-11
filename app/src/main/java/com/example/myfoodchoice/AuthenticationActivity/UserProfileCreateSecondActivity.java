@@ -4,22 +4,22 @@ import static com.example.myfoodchoice.AuthenticationActivity.UserProfileCreateF
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myfoodchoice.Adapter.DietTypeAdapter;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UserProfileCreateSecondActivity extends AppCompatActivity
 {
@@ -46,6 +47,8 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     final static String TAG = "UserProfileCreateSecondActivity";
 
+    final static String LABEL = "User Profile";
+
     ArrayList<UserProfile> dietTypeArrayList;
 
     String dietType;
@@ -55,21 +58,23 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     // TODO: declare UI component
     Spinner spinnerDietType;
 
-    Intent intent;
+    Intent intent, intentToLoginActivity;
 
     Button signUpBtn;
 
     int weight, height;
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile_create_second);
 
         // TODO: initialize database
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReferenceUserProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
@@ -82,13 +87,15 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         DietTypeAdapter dietTypeAdapter = new DietTypeAdapter(this, dietTypeArrayList);
         spinnerDietType.setAdapter(dietTypeAdapter);
         spinnerDietType.setOnItemSelectedListener(onItemSelectedDietTypeListener);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(ProgressBar.GONE);
 
         // for height and weight
         editIntHeight = findViewById(R.id.heightProfile);
         editIntWeight = findViewById(R.id.weightProfile);
 
         // for user profile that has been brought over from the first user profile activity.
-        intent = new Intent();
+        intent = getIntent();
         userProfile = intent.getParcelableExtra("userProfile");
         Log.d(TAG, "Checking user profile pls: " + userProfile);
 
@@ -102,6 +109,23 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     {
         return v ->
         {
+            // validation
+            if (TextUtils.isEmpty(editIntHeight.getText().toString()))
+            {
+                editIntHeight.setError("Please enter your height");
+                return;
+            }
+
+            if (TextUtils.isEmpty(editIntWeight.getText().toString()))
+            {
+                editIntWeight.setError("Please enter your weight");
+                return;
+            }
+
+            // set progress bar on
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+            signUpBtn.setVisibility(Button.GONE);
+
             weight = Integer.parseInt(editIntWeight.getText().toString());
             height = Integer.parseInt(editIntHeight.getText().toString());
 
@@ -110,9 +134,40 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             userProfile.setHeight(String.valueOf(height));
             userProfile.setDietType(dietType);
 
+            Log.d(TAG, "onSignUpListener: " + userProfile);
+            Log.d(TAG, "onSignUpListener: " + firebaseUser.getUid()); // FIXME: for debug purpose
+            Log.d(TAG, "onSignUpListener: " + firebaseUser.getDisplayName()); // FIXME: for debug purpose
+            Log.d(TAG, "onSignUpListener: " + firebaseUser.getEmail()); // FIXME: for debug purpose
+            Log.d(TAG, "onSignUpListener: " + firebaseUser.getPhotoUrl()); // FIXME: for debug purpose
+            Log.d(TAG, "onSignUpListener: " + firebaseUser.getProviderId()); // FIXME: for debug purpose
+
             // TODO: create user profile through this and add it inside of the firebase
             // TODO: do this tmr
+            databaseReferenceUserProfile.setValue(userProfile)
+                    .addOnCompleteListener(onSignUpCompleteListener());
+        };
+    }
 
+    private OnCompleteListener<Void> onSignUpCompleteListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Log.d(TAG, "onSignUpCompleteListener: " + task); // FIXME: for debug purpose
+                Toast.makeText(UserProfileCreateSecondActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
+                intentToLoginActivity = new Intent(UserProfileCreateSecondActivity.this, LoginActivity.class);
+                intentToLoginActivity.putExtra("userProfile", userProfile);
+                startActivity(intentToLoginActivity);
+                finish(); // to close this page.
+            }
+            else
+            {
+                progressBar.setVisibility(ProgressBar.GONE);
+                signUpBtn.setVisibility(Button.VISIBLE); // to show the button again.
+                Log.d(TAG, "onSignUpFailedListener: " + Objects.requireNonNull(task.getException()).getMessage()); // FIXME: for debug purpose
+                Toast.makeText(UserProfileCreateSecondActivity.this, "Sign up failed", Toast.LENGTH_SHORT).show();
+            }
         };
     }
 
@@ -137,6 +192,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     private void initListDietType()
     {
         dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vege));
-        dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.nonVege));
+        dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.nonvege));
     }
 }

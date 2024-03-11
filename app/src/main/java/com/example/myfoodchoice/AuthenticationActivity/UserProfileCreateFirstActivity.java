@@ -49,7 +49,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
     Button nextBtn;
 
-    String firstNameString, lastNameString, myUri, gender;
+    String myUri, gender;
 
     int ageInt;
 
@@ -114,7 +114,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         // init userProfile
         userProfile = getIntent().getParcelableExtra("userProfile");
         // log debug
-        // Log.d(TAG, "onCreate: " + Objects.requireNonNull(userProfile));
+        Log.d(TAG, "onCreate: " + userProfile);
 
         profilePicture.setOnClickListener(onImageClickListener());
 
@@ -192,10 +192,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             // FIXME: the selected image Uri haven't converted to Uri path.
             storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
 
-            // update user profile based on current user
-            firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                    .setDisplayName(firstNameString + " " + lastNameString).build())
-                    .addOnCompleteListener(onCompleteUpdateProfile());
+
 
             // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
 
@@ -215,13 +212,6 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         };
     }
 
-    private OnCompleteListener<Void> onCompleteUpdateProfile() // FIXME: for debug purpose
-    {
-        return v ->
-        {
-            Log.d(TAG, "onCompleteUpdateProfile: " + v);
-        };
-    }
 
     private OnFailureListener onFailurePart() // FIXME: for debug purpose
     {
@@ -242,7 +232,6 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 myUri = downloadUri.toString();
 
                 // FIXME:
-
                 userProfile.setProfileImageUrl(myUri);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
@@ -250,7 +239,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                        .setPhotoUri(Uri.parse(myUri)).build());
+                        .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteNextListener());
                 Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }
             else
@@ -314,12 +303,11 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         };
     }
 
-    private OnCompleteListener<Void> onCompleteListener()
+    private OnCompleteListener<Void> onCompleteNextListener()
     {
         {
             return task ->
             {
-                Toast.makeText(UserProfileCreateFirstActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(UserProfileCreateFirstActivity.this,
                         UserProfileCreateSecondActivity.class);
                 intent.putExtra("userProfile", userProfile);

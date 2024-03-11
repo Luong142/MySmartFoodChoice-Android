@@ -20,6 +20,7 @@ import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -61,8 +62,6 @@ public class RegisterActivity extends AppCompatActivity
     static final String LABEL_PROFILE = "User Profile";
 
     DatabaseReference databaseReferenceRegisteredUser;
-
-    DatabaseReference databaseReferenceUserProfile;
 
     String email, password, firstName, lastName;
 
@@ -154,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity
                     Toast.makeText(RegisterActivity.this, "User registered successfully.",
                             Toast.LENGTH_SHORT).show();
                     firebaseUser = firebaseAuth.getCurrentUser();
-                    Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
+                    // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
                     // retrieve the first name and last name from the user.
                     firstName = firstNameEditText.getText().toString().trim();
@@ -166,9 +165,6 @@ public class RegisterActivity extends AppCompatActivity
                     databaseReferenceRegisteredUser =
                             firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
 
-                    // for user profile
-                    databaseReferenceUserProfile =
-                            firebaseDatabase.getReference(LABEL_PROFILE).child(firebaseUser.getUid());
 
                     // init user account
                     userAccount = new UserAccount(email, password);
@@ -178,9 +174,14 @@ public class RegisterActivity extends AppCompatActivity
                     userProfile.setFirstName(firstName);
                     userProfile.setLastName(lastName);
 
-                    intentNavToUserProfileFirstActivity = new Intent(RegisterActivity.this, UserProfileCreateFirstActivity.class);
-                    intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
+                    // set display name
+                    firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstName + " " + firstName).build())
+                            .addOnFailureListener(onFailureUpdateDisplayName());
 
+                    // through we move to next if complete
+                    databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener
+                            (onCompleteUserAccountListener());
                     // auto create a new path with name as string value and assign to a variable.
                     // databaseReference = firebaseDatabase.getReference(LABEL);
 
@@ -189,9 +190,6 @@ public class RegisterActivity extends AppCompatActivity
                     // databaseReference.child
                             // (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
                     // FIXME: not yet to do this, need to set up the user profile before uploading to firebase.
-
-                    databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener
-                            (onCompleteUserAccountListener());
                 }
                 else
                 {
@@ -232,25 +230,27 @@ public class RegisterActivity extends AppCompatActivity
         };
     }
 
+    private OnFailureListener onFailureUpdateDisplayName()
+    {
+        return task ->
+        {
+            if (task.getMessage() != null)
+            {
+                Log.d(TAG, "onFailureUpdateDisplayName: " + task.getMessage());
+            }
+        };
+    }
+
     private OnCompleteListener<Void> onCompleteUserAccountListener()
     {
         return v ->
         {
             // move to user profile for default user profile page.
             Log.d(TAG, "onCompleteUserAccountListener: " + userProfile);
-            databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteUserProfileListener());
-        };
-    }
-
-    private OnCompleteListener<Void> onCompleteUserProfileListener()
-    {
-        return v ->
-        {
-            // move to user profile for default user profile page.
-            intentNavToUserProfileFirstActivity.setFlags
-                    (Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            // move
+            intentNavToUserProfileFirstActivity = new Intent(RegisterActivity.this, UserProfileCreateFirstActivity.class);
+            intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
             startActivity(intentNavToUserProfileFirstActivity);
-            finish(); // to close the register page.
         };
     }
 
