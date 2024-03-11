@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.Contract;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -145,6 +148,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
 
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onImageClickListener()
     {
         return v ->
@@ -156,6 +161,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onCreateProfileListener()
     {
         return v ->
@@ -180,9 +187,18 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
             if (Objects.equals(gender, "Default"))
             {
-                Toast.makeText(UserProfileCreateFirstActivity.this, "Please select a gender.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileCreateFirstActivity.this,
+                        "Please select a gender.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if gender is not selected
+            }
+
+            if (TextUtils.isEmpty(age.getText().toString().trim()))
+            {
+                Toast.makeText(UserProfileCreateFirstActivity.this,
+                        "Please enter your age.", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(ProgressBar.GONE);
+                return; // exit the method if age is not entered
             }
 
             // upload the image to Firebase Storage
@@ -191,9 +207,6 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
             // FIXME: the selected image Uri haven't converted to Uri path.
             storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
-
-
-
             // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
 
             // set the download URL to the user profile
@@ -213,6 +226,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     }
 
 
+    @NonNull
+    @Contract(pure = true)
     private OnFailureListener onFailurePart() // FIXME: for debug purpose
     {
         return v ->
@@ -221,6 +236,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private OnCompleteListener<Uri> onCompleteUploadListener()
     {
         return task ->
@@ -257,6 +274,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         databaseReferenceUserProfile.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
     }
 
+    @NonNull
+    @Contract(" -> new")
     private ValueEventListener valueEventListener()
     {
         return new ValueEventListener()
@@ -283,6 +302,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     }
 
     // TODO: update this new field for the user to select to get the gender
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onFemaleClickListener()
     {
         return v ->
@@ -293,6 +314,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onMaleClickListener()
     {
         return v ->
@@ -303,6 +326,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private OnCompleteListener<Void> onCompleteNextListener()
     {
         {

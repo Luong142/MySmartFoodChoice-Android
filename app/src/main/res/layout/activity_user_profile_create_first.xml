@@ -85,7 +85,6 @@
             android:layout_gravity="center"
             android:text="@string/gender"
             android:textSize="30sp"
-
             />
 
         <View
@@ -119,7 +118,6 @@
                 android:contentDescription="@string/todo"
                 android:src="@drawable/female" />
         </LinearLayout>
-
 
         <View
             android:layout_width="match_parent"

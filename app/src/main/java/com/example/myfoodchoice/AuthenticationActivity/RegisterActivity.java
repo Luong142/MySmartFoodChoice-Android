@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -15,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;

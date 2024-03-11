@@ -38,10 +38,13 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".UserActivity.UserProfileUpdateFirstActivity"
+            android:exported="false" />
+        <activity
             android:name=".AuthenticationActivity.UserProfileCreateSecondActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity.UserProfileUpdateActivity"
+            android:name=".UserActivity.UserProfileUpdateSecondActivity"
             android:exported="false" />
         <activity
             android:name=".OpenCVTestActivity"

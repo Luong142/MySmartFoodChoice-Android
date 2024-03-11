@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
-import static com.example.myfoodchoice.AuthenticationActivity.UserProfileCreateFirstActivity.LABEL;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Objects;

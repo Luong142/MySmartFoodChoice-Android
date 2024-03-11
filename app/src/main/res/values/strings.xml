@@ -96,4 +96,5 @@
     <string name="diet_type">Diet Type</string>
     <string name="enter_height">Enter Height</string>
     <string name="vegetarian">Vegetarian</string>
+    <string name="update">Update</string>
 </resources>

@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthenticationActivity.UserProfileCreateSecondActivity"
+    tools:context=".UserActivity.UserProfileUpdateFirstActivity"
     android:background="@drawable/bg_gradient_color_main"
     >
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_layout_login_page"
         android:gravity="top"
@@ -19,47 +20,54 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.59">
+        app:layout_constraintVertical_bias="0.556">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/user_profile"
+            android:text="@string/update_profile"
             android:textAlignment="center"
             android:textSize="35sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/you_can_change_them_at_any_time"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            />
-
         <View
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/weight"
+            android:text="@string/profile_picture"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/profile_picture"
+            android:src="@drawable/default_profile_picture" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/first_name"
             android:textSize="30sp" />
 
         <EditText
-            android:id="@+id/weightProfile"
+            android:id="@+id/firstNameProfile"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:autofillHints="last name"
             android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_weight"
-            android:inputType="number"
+            android:hint="@string/enter_first_name"
+            android:inputType="text"
             android:textAlignment="center"
             android:textColorHint="#FAFAFA"
             android:textSize="20sp" />
@@ -69,19 +77,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/height"
+            android:text="@string/last_name"
             android:textSize="30sp" />
 
         <EditText
-            android:id="@+id/heightProfile"
+            android:id="@+id/lastNameProfile"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:autofillHints="last name"
             android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_height"
-            android:inputType="number"
+            android:hint="@string/enter_last_name"
+            android:inputType="text"
             android:textAlignment="center"
             android:textColorHint="#FAFAFA"
             android:textSize="20sp" />
@@ -90,32 +98,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/diet_type"
+            android:text="@string/age"
             android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/ageProfile"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:autofillHints="age"
+            android:background="@drawable/rounded_layout_editor"
+            android:hint="@string/enter_age"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textColorHint="#FAFAFA"
+            android:textSize="20sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <Spinner
-            android:id="@+id/dietTypeSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_spinner"
-            android:layout_gravity="center"
-            android:minHeight="48dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
         <Button
-            android:id="@+id/signUpBtn"
+            android:id="@+id/nextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/dodger_blue"
-            android:text="@string/sign_up1"
+            android:text="@string/next"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -130,5 +140,4 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
