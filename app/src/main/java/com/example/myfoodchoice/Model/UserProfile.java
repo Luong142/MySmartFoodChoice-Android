@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.Contract;
+
 public class UserProfile implements Parcelable // way more efficient to use Parcelable.
 {
 
@@ -18,6 +20,10 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     private String profileImageUrl;
     private String gender;
     private int age;
+    private int BMI;
+
+    private int calories;
+
     private String dietType;
 
     private int dietTypeImage;
@@ -25,9 +31,11 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     public UserProfile()
     {
         // this constructor is required for Firebase to be able to deserialize the object
+        this.BMI = 0;
+        this.calories = 0;
     }
 
-    protected UserProfile(Parcel in)
+    protected UserProfile(@NonNull Parcel in)
     {
 
         firstName = in.readString();
@@ -48,11 +56,15 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>()
     {
+        @NonNull
+        @Contract("_ -> new")
         @Override
         public UserProfile createFromParcel(Parcel in) {
             return new UserProfile(in);
         }
 
+        @NonNull
+        @Contract(value = "_ -> new", pure = true)
         @Override
         public UserProfile[] newArray(int size) {
             return new UserProfile[size];
@@ -66,7 +78,7 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
+    public void writeToParcel(@NonNull Parcel dest, int flags)
     {
         dest.writeString(firstName);
         dest.writeString(lastName);
@@ -76,6 +88,14 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         dest.writeString(gender);
         dest.writeInt(age);
         dest.writeString(dietType);
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 
     public int getDietTypeImage() {
@@ -101,6 +121,16 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
         return sb.toString();
+    }
+
+    public int getBMI()
+    {
+        return BMI;
+    }
+
+    public void setBMI(int BMI)
+    {
+        this.BMI = BMI;
     }
 
     public String getFirstName() {

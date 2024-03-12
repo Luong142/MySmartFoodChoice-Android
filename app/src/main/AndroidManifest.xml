@@ -38,10 +38,16 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".AuthenticationActivity.RegisterBusinessDieticianActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AuthenticationActivity.RegisterBusinessTrainerActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserActivity.UserProfileUpdateFirstActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationActivity.UserProfileCreateSecondActivity"
+            android:name=".UserProfileCreateActivity.UserProfileCreateSecondActivity"
             android:exported="false" />
         <activity
             android:name=".UserActivity.UserProfileUpdateSecondActivity"
@@ -50,7 +56,7 @@
             android:name=".OpenCVTestActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationActivity.UserProfileCreateFirstActivity"
+            android:name=".UserProfileCreateActivity.UserProfileCreateFirstActivity"
             android:exported="false" />
         <activity
             android:name=".GuestActivity.GuestBMIResultActivity"
@@ -89,7 +95,7 @@
             android:name=".UserActivity.UserMainMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationActivity.RegisterActivity"
+            android:name=".AuthenticationActivity.RegisterUserActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.LoginActivity"

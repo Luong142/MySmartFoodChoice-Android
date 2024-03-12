@@ -227,7 +227,7 @@ public class LoginActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("LoginActivity", "navigating to sign up page! ");
-                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
                     startActivity(intent);
                     finish();
                 }

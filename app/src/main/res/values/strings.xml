@@ -97,4 +97,6 @@
     <string name="enter_height">Enter Height</string>
     <string name="vegetarian">Vegetarian</string>
     <string name="update">Update</string>
+    <string name="food_recipe">Food Recipe</string>
+    <string name="sign_up_user">Sign Up User</string>
 </resources>

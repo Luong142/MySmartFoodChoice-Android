@@ -17,7 +17,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myfoodchoice.AuthenticationActivity.RegisterActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
 import com.example.myfoodchoice.R;
 
 public class GuestBMICalculatorActivity extends AppCompatActivity
@@ -173,7 +173,7 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("GuestMainMenuActivity", "Navigating to register page!");
-                    Intent intent = new Intent(GuestBMICalculatorActivity.this, RegisterActivity.class);
+                    Intent intent = new Intent(GuestBMICalculatorActivity.this, RegisterUserActivity.class);
                     startActivity(intent);
                     finish(); // close this activity and go back to previous activity (LoginActivity)
                 }

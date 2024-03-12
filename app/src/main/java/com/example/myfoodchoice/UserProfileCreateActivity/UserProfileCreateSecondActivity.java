@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.AuthenticationActivity;
+package com.example.myfoodchoice.UserProfileCreateActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Adapter.DietTypeAdapter;
+import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;

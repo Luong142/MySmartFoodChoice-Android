@@ -9,10 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
-import com.example.myfoodchoice.AuthenticationActivity.RegisterActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
@@ -20,20 +21,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.jetbrains.annotations.Contract;
+
 import io.paperdb.Paper;
 
 public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
-    private Button signingBtn, signupBtn;
+     Button signingBtn, signupBtn;
 
-    private BottomNavigationView bottomNavigationView;
 
-    private String emailRememberMe, passwordRememberMe;
+     String emailRememberMe, passwordRememberMe;
 
-    private FirebaseAuth firebaseAuth;
+     FirebaseAuth firebaseAuth;
 
-    private AlertDialog.Builder builder;
+     AlertDialog.Builder builder;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -55,10 +57,6 @@ public class WelcomeActivity extends AppCompatActivity
         signingBtn.setOnClickListener(onSignInListener);
         signupBtn.setOnClickListener(onSignUpListener);
 
-        // init bottom navigation view
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.nav_welcome);
-        bottomNavigationView.setOnItemSelectedListener(onItemClickedListener());
 
         // assign to email and password
         emailRememberMe = Paper.book().read(Prevalent.UserEmailKey);
@@ -76,6 +74,9 @@ public class WelcomeActivity extends AppCompatActivity
                 builder.show();
             }
         }
+
+        // TODO: we have normal user, guest, business vendor with two types
+        //  (Dietitian and Trainer)
     }
 
     private void allowLogin(String email, String password)
@@ -99,51 +100,6 @@ public class WelcomeActivity extends AppCompatActivity
         });
     }
 
-    private NavigationBarView.OnItemSelectedListener onItemClickedListener()
-    {
-        return item ->
-        {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_welcome)
-            {
-                // Handle navigation to Home
-                return true;
-            }
-            else if (itemId == R.id.nav_about_us)
-            {
-                Intent intent = new Intent(WelcomeActivity.this, AboutUsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-            }
-            else if (itemId == R.id.nav_partnership)
-            {
-                Intent intent2 = new Intent(WelcomeActivity.this, PartnershipActivity.class);
-                startActivity(intent2);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-            }
-            else if (itemId == R.id.nav_review)
-            {
-                Intent intent3 = new Intent(WelcomeActivity.this, ReviewActivity.class);
-                startActivity(intent3);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-            }
-            else if (itemId == R.id.nav_contact_us)
-            {
-                Intent intent5 = new Intent(WelcomeActivity.this, ContactUsActivity.class);
-                startActivity(intent5);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-            }
-            return false;
-        };
-    }
 
     private final View.OnClickListener onSignInListener = v ->
     {
@@ -153,7 +109,7 @@ public class WelcomeActivity extends AppCompatActivity
 
     private final View.OnClickListener onSignUpListener = v ->
     {
-        Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(WelcomeActivity.this, RegisterUserActivity.class);
         startActivity(intent);
     };
 }

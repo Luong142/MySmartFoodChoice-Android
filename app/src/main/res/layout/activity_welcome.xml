@@ -13,6 +13,9 @@
         PartnerShip
         ContactUs, not official here, things might change
      -->
+
+
+    <!-- TODO: text for sign up as user, business vendor as dietitian or trainer -->
     <com.example.myfoodchoice.BackgroundVideo.BackgroundVideoView
         android:id="@+id/backgroundVideoView"
         android:layout_width="match_parent"
@@ -46,7 +49,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="173dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="248dp"
         android:background="@drawable/rounded_layout_login_page"
@@ -71,30 +74,12 @@
 
         <Button
             android:id="@+id/signUpBtn"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/dodger_blue"
-            android:text="@string/sign_up1"
+            android:text="@string/sign_up_user"
             android:textColor="@color/black"
             android:textSize="25sp" />
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:background="@drawable/round_nav_bottom_menu"
-        app:itemIconSize="35dp"
-        app:itemIconTint="@drawable/item_selector"
-        app:itemRippleColor="@android:color/transparent"
-        app:labelVisibilityMode="unlabeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

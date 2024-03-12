@@ -1,6 +1,6 @@
 package com.example.myfoodchoice.Model;
 
-public class MealHistory
+public class MealRecord
 {
     private int time;
 

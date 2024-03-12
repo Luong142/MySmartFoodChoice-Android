@@ -239,15 +239,15 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 Uri downloadUri = task.getResult();
                 myUri = downloadUri.toString();
 
-                // FIXME:
+                // TODO: set the value based on UserProfile class.
                 userProfile.setProfileImageUrl(myUri);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
-                // TODO: set the value based on UserProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                         .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteNextListener());
+
                 Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }
             else

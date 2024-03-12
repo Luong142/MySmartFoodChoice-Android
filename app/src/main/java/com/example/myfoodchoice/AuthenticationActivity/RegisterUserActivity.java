@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.UserProfileCreateActivity.UserProfileCreateFirstActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
-public class RegisterActivity extends AppCompatActivity
+public class RegisterUserActivity extends AppCompatActivity
 {
     // TODO: declare UI components
 
@@ -151,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(RegisterActivity.this, "User registered successfully.",
+                    Toast.makeText(RegisterUserActivity.this, "User registered successfully.",
                             Toast.LENGTH_SHORT).show();
                     firebaseUser = firebaseAuth.getCurrentUser();
                     // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
@@ -221,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity
                     {
                         // FIXME: debug purpose
                         Log.d(TAG, "Error: " + e.getMessage());
-                        Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(),
+                        Toast.makeText(RegisterUserActivity.this, "Error: " + e.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                     // to make the progress bar gone.
@@ -249,7 +250,7 @@ public class RegisterActivity extends AppCompatActivity
             // move to user profile for default user profile page.
             Log.d(TAG, "onCompleteUserAccountListener: " + userProfile);
             // move
-            intentNavToUserProfileFirstActivity = new Intent(RegisterActivity.this, UserProfileCreateFirstActivity.class);
+            intentNavToUserProfileFirstActivity = new Intent(RegisterUserActivity.this, UserProfileCreateFirstActivity.class);
             intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
             startActivity(intentNavToUserProfileFirstActivity);
         };
@@ -263,7 +264,7 @@ public class RegisterActivity extends AppCompatActivity
                 @Override
                 public void onClick(@NonNull View widget)
                 {
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }

@@ -37,13 +37,18 @@ dependencies {
     // Firebase dependencies.
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
+
+    // TODO: this one is for API calling, middle man
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // TODO: we need two more APIs like Edamame food api, and Google Cloud Vision api.
+    // implementation
+
     implementation ("com.squareup.picasso:picasso:2.71828")
     // Tensorflow Lite dependencies
-    implementation ("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
-    implementation ("com.google.android.gms:play-services-tflite-gpu:16.2.0")
     implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.activity:activity:1.8.0")
     val camerax_version = "1.3.1"
     //noinspection GradleDependency
     implementation ("androidx.camera:camera-camera2:$camerax_version")
