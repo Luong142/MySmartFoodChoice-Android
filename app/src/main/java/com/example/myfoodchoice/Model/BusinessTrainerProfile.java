@@ -9,7 +9,6 @@ public class BusinessTrainerProfile
 
     private int contactNumber;
 
-    private String accountType;
 
     public BusinessTrainerProfile(String firstName, String lastName, String profileImageUrl, int contactNumber, String businessLabel)
     {
@@ -17,12 +16,11 @@ public class BusinessTrainerProfile
         this.lastName = lastName;
         this.profileImageUrl = profileImageUrl;
         this.contactNumber = contactNumber;
-        this.accountType = businessLabel;
     }
 
     public BusinessTrainerProfile()
     {
-        accountType = "Trainer";
+
     }
 
     public String getFirstName() {
@@ -55,13 +53,5 @@ public class BusinessTrainerProfile
 
     public void setContactNumber(int contactNumber) {
         this.contactNumber = contactNumber;
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
     }
 }

@@ -102,4 +102,7 @@
     <string name="sign_up_as_user">Sign Up As User</string>
     <string name="sign_up_as_dietitian">Sign Up As Dietitian</string>
     <string name="sign_up_as_trainer">Sign Up As Trainer</string>
+    <string name="create_trainer_profile">Create Trainer Profile</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="enter_contact_number">Enter Contact Number</string>
 </resources>

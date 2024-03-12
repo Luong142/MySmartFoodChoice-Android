@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.Date;
+
 public class UserProfile implements Parcelable // way more efficient to use Parcelable.
 {
     private String firstName;
@@ -19,7 +21,11 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     private String profileImageUrl;
     private String gender;
     private int age;
-    private int BMI;
+    private int targetedBMI;
+
+    private int lastRecordedBMI;
+
+    private Date lastRecordedDateBMI;
 
     private int calories;
 
@@ -27,22 +33,14 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     private int dietTypeImage;
 
-    private String accountType;
 
     public UserProfile()
     {
         // this constructor is required for Firebase to be able to deserialize the object
-        this.BMI = 0;
+        this.targetedBMI = 0;
         this.calories = 0;
-        this.accountType = "User";
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
+        this.lastRecordedBMI = 0;
+        this.lastRecordedDateBMI = new Date(); // careful with date
     }
 
     protected UserProfile(@NonNull Parcel in)
@@ -100,22 +98,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         dest.writeString(dietType);
     }
 
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
-
-    public int getDietTypeImage() {
-        return dietTypeImage;
-    }
-
-    public void setDietTypeImage(int dietTypeImage) {
-        this.dietTypeImage = dietTypeImage;
-    }
-
     @NonNull
     @Override
     public String toString()
@@ -133,14 +115,44 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         return sb.toString();
     }
 
-    public int getBMI()
-    {
-        return BMI;
+    public int getTargetedBMI() {
+        return targetedBMI;
     }
 
-    public void setBMI(int BMI)
-    {
-        this.BMI = BMI;
+    public void setTargetedBMI(int targetedBMI) {
+        this.targetedBMI = targetedBMI;
+    }
+
+    public int getLastRecordedBMI() {
+        return lastRecordedBMI;
+    }
+
+    public void setLastRecordedBMI(int lastRecordedBMI) {
+        this.lastRecordedBMI = lastRecordedBMI;
+    }
+
+    public Date getLastRecordedDateBMI() {
+        return lastRecordedDateBMI;
+    }
+
+    public void setLastRecordedDateBMI(Date lastRecordedDateBMI) {
+        this.lastRecordedDateBMI = lastRecordedDateBMI;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    public int getDietTypeImage() {
+        return dietTypeImage;
+    }
+
+    public void setDietTypeImage(int dietTypeImage) {
+        this.dietTypeImage = dietTypeImage;
     }
 
     public String getFirstName() {

@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/sign_up1"
+            android:text="@string/sign_up_as_user"
             android:textAlignment="center"
             android:textSize="35sp"
             android:textStyle="bold" />

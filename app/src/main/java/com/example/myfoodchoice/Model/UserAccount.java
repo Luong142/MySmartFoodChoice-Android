@@ -7,6 +7,8 @@ public class UserAccount
     private String email;
     private String password;
 
+    private String accountType;
+
     public UserAccount()
     {
         // for firebase to paste on this default constructor.
@@ -16,6 +18,14 @@ public class UserAccount
     {
         this.email = username;
         this.password = password;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getEmail()

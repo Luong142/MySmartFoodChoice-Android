@@ -31,6 +31,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Objects;
 
 public class RegisterUserActivity extends AppCompatActivity
@@ -60,8 +62,6 @@ public class RegisterUserActivity extends AppCompatActivity
     static final String TAG = "RegisterActivity";
 
     static final String LABEL_USER = "Registered Users";
-
-    static final String LABEL_PROFILE = "User Profile";
 
     DatabaseReference databaseReferenceRegisteredUser;
 
@@ -145,6 +145,7 @@ public class RegisterUserActivity extends AppCompatActivity
 
             // make the progressBar appear.
             progressBar.setVisibility(View.VISIBLE);
+            nextBtn.setVisibility(View.GONE);
 
             // register user to the firebase.
             // FIXME: the problem is the data is not saved in this realtime database.
@@ -170,6 +171,7 @@ public class RegisterUserActivity extends AppCompatActivity
 
                     // init user account
                     userAccount = new UserAccount(email, password);
+                    userAccount.setAccountType("User");
 
                     // intent to carry this too
                     userProfile = new UserProfile();
@@ -227,11 +229,14 @@ public class RegisterUserActivity extends AppCompatActivity
                     }
                     // to make the progress bar gone.
                     progressBar.setVisibility(View.GONE);
+                    nextBtn.setVisibility(View.VISIBLE);
                 }
             });
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private OnFailureListener onFailureUpdateDisplayName()
     {
         return task ->
@@ -243,6 +248,8 @@ public class RegisterUserActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private OnCompleteListener<Void> onCompleteUserAccountListener()
     {
         return v ->
