@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity
     }
     // TODO: to implement the login functionalities for this activity.
 
-     View.OnClickListener onLoginListener()
+    private View.OnClickListener onLoginListener()
     {
         return v ->
         {

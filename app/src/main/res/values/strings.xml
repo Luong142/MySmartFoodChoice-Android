@@ -99,4 +99,7 @@
     <string name="update">Update</string>
     <string name="food_recipe">Food Recipe</string>
     <string name="sign_up_user">Sign Up User</string>
+    <string name="sign_up_as_user">Sign Up As User</string>
+    <string name="sign_up_as_dietitian">Sign Up As Dietitian</string>
+    <string name="sign_up_as_trainer">Sign Up As Trainer</string>
 </resources>

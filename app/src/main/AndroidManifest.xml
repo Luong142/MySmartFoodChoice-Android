@@ -38,7 +38,7 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
-            android:name=".AuthenticationActivity.RegisterBusinessDieticianActivity"
+            android:name=".AuthenticationActivity.RegisterBusinessDietitianActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.RegisterBusinessTrainerActivity"

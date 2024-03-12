@@ -4,21 +4,24 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessTrainerActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.Contract;
@@ -30,12 +33,17 @@ public class WelcomeActivity extends AppCompatActivity
     // declare buttons
      Button signingBtn, signupBtn;
 
-
      String emailRememberMe, passwordRememberMe;
 
-     FirebaseAuth firebaseAuth;
+     TextView signUpAsUser, signUpAsTrainer, signUpAsDietitian;
 
-     AlertDialog.Builder builder;
+    SpannableString spannableSignUpAsUserNav, spannableSignUpAsTrainer, spannableSignUpAsDietitian;
+
+    FirebaseAuth firebaseAuth;
+
+    static final int INDEXSTART = 0;
+
+    AlertDialog.Builder builder;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -52,11 +60,31 @@ public class WelcomeActivity extends AppCompatActivity
 
         // init buttons
         signingBtn = findViewById(R.id.signInBtn);
-        signupBtn = findViewById(R.id.signUpBtn);
+
+        // init text view.
+        signUpAsUser = findViewById(R.id.signUpAsUser);
+        signUpAsTrainer = findViewById(R.id.signUpAsTrainer);
+        signUpAsDietitian = findViewById(R.id.signUpAsDietitian);
+
+        // nav to sign up page based on text click
+        spannableSignUpAsUserNav = new SpannableString(signUpAsUser.getText());
+        spannableSignUpAsUserNav.setSpan(clickableSignUpAsUser(), 17, signUpAsUser.length(), 0);
+        signUpAsUser.setText(spannableSignUpAsUserNav);
+        signUpAsUser.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // nav to sign up page based on text click
+        spannableSignUpAsTrainer = new SpannableString(signUpAsTrainer.getText());
+        spannableSignUpAsTrainer.setSpan(clickableSignUpAsTrainer(), INDEXSTART, signUpAsTrainer.length(), 0);
+        signUpAsTrainer.setText(spannableSignUpAsTrainer);
+        signUpAsTrainer.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // nav to sign up page based on text click
+        spannableSignUpAsDietitian = new SpannableString(signUpAsDietitian.getText());
+        spannableSignUpAsDietitian.setSpan(clickableSignUpAsDietitian(), INDEXSTART, signUpAsDietitian.length(), 0);
+        signUpAsDietitian.setText(spannableSignUpAsDietitian);
+        signUpAsDietitian.setMovementMethod(LinkMovementMethod.getInstance());
 
         signingBtn.setOnClickListener(onSignInListener);
-        signupBtn.setOnClickListener(onSignUpListener);
-
 
         // assign to email and password
         emailRememberMe = Paper.book().read(Prevalent.UserEmailKey);
@@ -77,6 +105,54 @@ public class WelcomeActivity extends AppCompatActivity
 
         // TODO: we have normal user, guest, business vendor with two types
         //  (Dietitian and Trainer)
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ClickableSpan clickableSignUpAsDietitian()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(View widget)
+            {
+                Intent intent = new Intent(WelcomeActivity.this,
+                        RegisterBusinessTrainerActivity.class);
+                startActivity(intent);
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ClickableSpan clickableSignUpAsTrainer()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(View widget)
+            {
+                Intent intent = new Intent(WelcomeActivity.this,
+                        RegisterBusinessTrainerActivity.class);
+                startActivity(intent);
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ClickableSpan clickableSignUpAsUser()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(View widget)
+            {
+                Intent intent = new Intent(WelcomeActivity.this,
+                        RegisterBusinessTrainerActivity.class);
+                startActivity(intent);
+            }
+        };
     }
 
     private void allowLogin(String email, String password)
@@ -105,11 +181,7 @@ public class WelcomeActivity extends AppCompatActivity
     {
         Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(intent);
+        finish();
     };
 
-    private final View.OnClickListener onSignUpListener = v ->
-    {
-        Intent intent = new Intent(WelcomeActivity.this, RegisterUserActivity.class);
-        startActivity(intent);
-    };
 }
