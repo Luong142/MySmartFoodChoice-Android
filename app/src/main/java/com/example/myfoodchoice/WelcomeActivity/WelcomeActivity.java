@@ -31,7 +31,7 @@ import io.paperdb.Paper;
 public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
-     Button signingBtn, signupBtn;
+     Button signingBtn;
 
      String emailRememberMe, passwordRememberMe;
 
@@ -67,8 +67,9 @@ public class WelcomeActivity extends AppCompatActivity
         signUpAsDietitian = findViewById(R.id.signUpAsDietitian);
 
         // nav to sign up page based on text click
+        // FIXME: the index is out of bound.
         spannableSignUpAsUserNav = new SpannableString(signUpAsUser.getText());
-        spannableSignUpAsUserNav.setSpan(clickableSignUpAsUser(), 17, signUpAsUser.length(), 0);
+        spannableSignUpAsUserNav.setSpan(clickableSignUpAsUser(), INDEXSTART, signUpAsUser.length(), 0);
         signUpAsUser.setText(spannableSignUpAsUserNav);
         signUpAsUser.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -105,6 +106,9 @@ public class WelcomeActivity extends AppCompatActivity
 
         // TODO: we have normal user, guest, business vendor with two types
         //  (Dietitian and Trainer)
+        // TODO: use the attribute to identify which user type.
+        //  (Dietitian = 1, Trainer = 2, Normal User = 3)
+        //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
     @NonNull
@@ -119,6 +123,7 @@ public class WelcomeActivity extends AppCompatActivity
                 Intent intent = new Intent(WelcomeActivity.this,
                         RegisterBusinessTrainerActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }
@@ -135,6 +140,7 @@ public class WelcomeActivity extends AppCompatActivity
                 Intent intent = new Intent(WelcomeActivity.this,
                         RegisterBusinessTrainerActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }
@@ -149,8 +155,9 @@ public class WelcomeActivity extends AppCompatActivity
             public void onClick(View widget)
             {
                 Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterBusinessTrainerActivity.class);
+                        RegisterUserActivity.class);
                 startActivity(intent);
+                finish();
             }
         };
     }

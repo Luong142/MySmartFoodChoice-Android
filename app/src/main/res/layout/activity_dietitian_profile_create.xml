@@ -5,13 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient_color_main"
-    tools:context=".AuthenticationActivity.RegisterBusinessTrainerActivity">
-
-
-
-
-
-
+    tools:context=".CreateProfileActivities.DietitianProfileCreateActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

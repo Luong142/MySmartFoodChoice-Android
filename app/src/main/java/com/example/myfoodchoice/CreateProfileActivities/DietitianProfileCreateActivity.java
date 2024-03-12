@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.AuthenticationActivity;
+package com.example.myfoodchoice.CreateProfileActivities;
 
 import android.os.Bundle;
 
@@ -10,13 +10,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myfoodchoice.R;
 
-public class RegisterBusinessTrainerActivity extends AppCompatActivity
+public class DietitianProfileCreateActivity extends AppCompatActivity
 {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_business_trainer);
+        setContentView(R.layout.activity_dietitian_profile_create);
 
     }
 }

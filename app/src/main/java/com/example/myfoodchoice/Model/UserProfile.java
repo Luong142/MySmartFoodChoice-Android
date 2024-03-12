@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Contract;
 
 public class UserProfile implements Parcelable // way more efficient to use Parcelable.
 {
-
     private String firstName;
 
     private String lastName;
@@ -28,11 +27,22 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     private int dietTypeImage;
 
+    private String accountType;
+
     public UserProfile()
     {
         // this constructor is required for Firebase to be able to deserialize the object
         this.BMI = 0;
         this.calories = 0;
+        this.accountType = "User";
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     protected UserProfile(@NonNull Parcel in)

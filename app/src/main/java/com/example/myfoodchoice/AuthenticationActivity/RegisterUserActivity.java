@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserProfileCreateActivity.UserProfileCreateFirstActivity;
+import com.example.myfoodchoice.CreateProfileActivities.UserProfileCreateFirstActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;

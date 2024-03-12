@@ -8,11 +8,11 @@ public class BusinessDietitianProfile
     private String profileImageUrl;
     private int contactNumber;
 
-    private String businessLabel;
+    private String accountType;
 
     public BusinessDietitianProfile()
     {
-        businessLabel = "Dietitian";
+        accountType = "Dietitian";
     }
 
     public BusinessDietitianProfile(String firstName, String lastName, String profileImageUrl, int contactNumber, String businessLabel) {
@@ -20,7 +20,7 @@ public class BusinessDietitianProfile
         this.lastName = lastName;
         this.profileImageUrl = profileImageUrl;
         this.contactNumber = contactNumber;
-        this.businessLabel = businessLabel;
+        this.accountType = businessLabel;
     }
 
     public String getFirstName() {
@@ -55,11 +55,11 @@ public class BusinessDietitianProfile
         this.contactNumber = contactNumber;
     }
 
-    public String getBusinessLabel() {
-        return businessLabel;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setBusinessLabel(String businessLabel) {
-        this.businessLabel = businessLabel;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 }

@@ -9,7 +9,7 @@ public class BusinessTrainerProfile
 
     private int contactNumber;
 
-    private String businessLabel;
+    private String accountType;
 
     public BusinessTrainerProfile(String firstName, String lastName, String profileImageUrl, int contactNumber, String businessLabel)
     {
@@ -17,12 +17,12 @@ public class BusinessTrainerProfile
         this.lastName = lastName;
         this.profileImageUrl = profileImageUrl;
         this.contactNumber = contactNumber;
-        this.businessLabel = businessLabel;
+        this.accountType = businessLabel;
     }
 
     public BusinessTrainerProfile()
     {
-        businessLabel = "Trainer";
+        accountType = "Trainer";
     }
 
     public String getFirstName() {
@@ -57,11 +57,11 @@ public class BusinessTrainerProfile
         this.contactNumber = contactNumber;
     }
 
-    public String getBusinessLabel() {
-        return businessLabel;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setBusinessLabel(String businessLabel) {
-        this.businessLabel = businessLabel;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 }
