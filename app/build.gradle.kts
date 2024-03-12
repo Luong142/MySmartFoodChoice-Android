@@ -35,7 +35,7 @@ android {
 
 dependencies {
     // Firebase dependencies.
-    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -43,7 +43,7 @@ dependencies {
     // Tensorflow Lite dependencies
     implementation ("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
     implementation ("com.google.android.gms:play-services-tflite-gpu:16.2.0")
-    implementation("androidx.activity:activity:1.8.0")
+    implementation("androidx.activity:activity-ktx:1.8.2")
     val camerax_version = "1.3.1"
     //noinspection GradleDependency
     implementation ("androidx.camera:camera-camera2:$camerax_version")
@@ -57,7 +57,7 @@ dependencies {
     implementation ("androidx.camera:camera-extensions:$camerax_version")
     implementation ("io.github.pilgr:paperdb:2.7.2")
     implementation("com.google.firebase:firebase-storage")
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

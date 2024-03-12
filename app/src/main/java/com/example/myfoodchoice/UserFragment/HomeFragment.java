@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.R;
+
+import org.jetbrains.annotations.Contract;
 
 public class HomeFragment extends Fragment
 {
@@ -39,8 +40,19 @@ public class HomeFragment extends Fragment
 
         // click button upload photo
         uploadPhoto.setOnClickListener(onUploadListener());
+
+        /* TODO: here is the plan
+        * we use two APIs food analysis API and OpenCV API
+        *
+        *
+        *
+        *
+        *
+        * */
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onUploadListener()
     {
         return v ->

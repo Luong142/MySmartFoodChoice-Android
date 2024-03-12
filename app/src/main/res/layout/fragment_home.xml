@@ -125,6 +125,10 @@
             app:layout_constraintVertical_bias="0.478" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- TODO: for this part we need to set image in two modes,
+        TODO: focus and non-focus.
+
+    -->
     <FrameLayout
         android:id="@+id/layoutCheckInReward"
         android:layout_width="match_parent"
