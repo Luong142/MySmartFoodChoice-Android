@@ -99,6 +99,10 @@ public class UserProfileUpdateSecondActivity extends AppCompatActivity
         dietTypeUpdateSpinner.setAdapter(dietTypeAdapter);
         dietTypeUpdateSpinner.setOnItemSelectedListener(onItemSelectedDietTypeListener);
 
+        // set onClick for gender image
+        maleUpdateImage.setOnClickListener(onMaleClickListener());
+        femaleUpdateImage.setOnClickListener(onFemaleClickListener());
+
         // for user profile that has been brought over from the first user profile activity.
         intent = getIntent();
         userProfile = intent.getParcelableExtra("userProfile");
@@ -145,10 +149,10 @@ public class UserProfileUpdateSecondActivity extends AppCompatActivity
             userProfile.setDietType(dietType);
             userProfile.setWeight(weightUpdateString);
             userProfile.setHeight(heightUpdateString);
+            Log.d("UserProfileUpdateSecondActivity", "userProfile: " + userProfile.getProfileImageUrl());
 
             // update the database
             updateUserProfileAndNavigate();
-
         };
     }
 
@@ -160,6 +164,8 @@ public class UserProfileUpdateSecondActivity extends AppCompatActivity
                 if (task.isSuccessful())
                 {
                     // update successful, navigate to the next activity
+                    Toast.makeText(UserProfileUpdateSecondActivity.this,
+                            "Profile updated successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(UserProfileUpdateSecondActivity.this,
                             UserMainMenuActivity.class);
                     startActivity(intent);

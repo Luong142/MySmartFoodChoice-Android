@@ -17,15 +17,24 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myfoodchoice.AuthenticationActivity.UserProfileCreateFirstActivity;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.Contract;
+
+import java.util.Objects;
 
 public class UserProfileUpdateFirstActivity extends AppCompatActivity
 {
@@ -41,13 +50,17 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
     DatabaseReference databaseReferenceUserProfile;
 
+    StorageReference storageReferenceProfilePics;
+
+    StorageTask<UploadTask.TaskSnapshot> storageTask;
+
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase firebaseDatabase;
 
     FirebaseUser firebaseUser;
 
-    String userID, firstName, lastName, profileImageURL;
+    String userID, firstName, lastName, profileImageURL, myUri;
 
     int age;
 
@@ -70,6 +83,9 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        storageReferenceProfilePics =
+                FirebaseStorage.getInstance().getReference().child("ProfilePics");
 
         // TODO: init user id
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -174,16 +190,85 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                     .build()).addOnFailureListener(onFailureListener());
 
             // checking if it is updated.
-            Log.d(TAG, "onNextBtnListener: " + firebaseUser.getPhotoUrl());
-            Log.d(TAG, "onNextBtnListener: " + firebaseUser.getDisplayName());
+            // Log.d(TAG, "onNextBtnListener: " + firebaseUser.getPhotoUrl());
+            // Log.d(TAG, "onNextBtnListener: " + firebaseUser.getDisplayName());
+
+            // upload the image to Firebase Storage
+            final StorageReference storageReference = storageReferenceProfilePics.child
+                    (firebaseUser.getUid() + ".jpg");
+
+            // FIXME: the selected image Uri haven't converted to Uri path.
+            storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
+            // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
 
             // to init and set value
             userProfile = new UserProfile();
             userProfile.setFirstName(firstName);
             userProfile.setLastName(lastName);
             userProfile.setAge(age);
-            userProfile.setProfileImageUrl(profileImageURL);
 
+            // set image here
+            storageTask.continueWithTask(task ->
+            {
+                if (!task.isSuccessful())
+                {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return storageReference.getDownloadUrl();
+            }).addOnCompleteListener(onCompleteUploadListener());
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnFailureListener onFailurePart()
+    {
+        return v ->
+        {
+            Log.d(TAG, "onFailurePart: " + v);
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Uri> onCompleteUploadListener()
+    {
+        return task ->
+        {
+            // FIXME: profile picture task is unsuccessful.
+            if (task.isSuccessful())
+            {
+                Uri downloadUri = task.getResult();
+                myUri = downloadUri.toString();
+
+                // FIXME:
+                userProfile.setProfileImageUrl(myUri);
+                // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
+                // Log.d(TAG, "onNextListener: " + userProfile);
+                // TODO: set the value based on UserProfile class.
+                // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+
+                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                        .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteNextListener());
+                Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteUploadListener: " + myUri);
+                progressBar.setVisibility(ProgressBar.GONE);
+                //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
+                Toast.makeText(UserProfileUpdateFirstActivity.this,
+                        "Image not selected.", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteNextListener()
+    {
+        return task ->
+        {
             // to carry the userProfile for the next update in second one.
             intent = new Intent(UserProfileUpdateFirstActivity.this, UserProfileUpdateSecondActivity.class);
             intent.putExtra("userProfile", userProfile);

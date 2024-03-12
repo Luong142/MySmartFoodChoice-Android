@@ -264,7 +264,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 Log.d(TAG, "onCompleteUploadListener: " + myUri);
                 progressBar.setVisibility(ProgressBar.GONE);
                 //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
-                Toast.makeText(UserProfileCreateFirstActivity.this, "Image not selected.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileCreateFirstActivity.this,
+                        "Image not selected.", Toast.LENGTH_SHORT).show();
             }
         };
     }
