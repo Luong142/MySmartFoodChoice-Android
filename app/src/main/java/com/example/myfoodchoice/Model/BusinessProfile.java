@@ -30,12 +30,16 @@ public class BusinessProfile extends UserProfile
 
     @NonNull
     @Override
-    public String toString() {
-        return "BusinessProfile{" +
-                "role='" + role + '\'' +
-                ", businessImage=" + businessImage +
-                ", contactNumber=" + contactNumber +
-                '}';
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Business Profile\n");
+        sb.append("-------------------\n");
+        sb.append("First Name: ").append(super.getFirstName()).append("\n");
+        sb.append("Last Name: ").append(super.getLastName()).append("\n");
+        sb.append("Role: ").append(role).append("\n");
+        sb.append("Contact Number: ").append(contactNumber).append("\n");
+        return sb.toString();
     }
 
     public int getContactNumber() {

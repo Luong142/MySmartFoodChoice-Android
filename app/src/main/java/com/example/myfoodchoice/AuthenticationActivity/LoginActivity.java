@@ -96,15 +96,12 @@ public class LoginActivity extends AppCompatActivity
                 "https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
         // for testing
         // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
-        firebaseUser = mAuth.getCurrentUser();
 
-        if (firebaseUser != null)
-        {
-            userID = firebaseUser.getUid();
-            databaseReferenceAccountType =
-                    firebaseDatabase.getReference("Registered Businesses").child(userID);
-            databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
-        }
+        // by default is User.
+        accountType = "User";
+
+        // this one is to monitor the auth state changes.
+        mAuth.addAuthStateListener(authStateListener);
 
         // TODO: init UI components
         loginEmailEditText = findViewById(R.id.login_email);
@@ -152,6 +149,21 @@ public class LoginActivity extends AppCompatActivity
         rememberMe.setOnCheckedChangeListener(onCheckedListener());
 
     }
+
+    private final FirebaseAuth.AuthStateListener authStateListener =
+            firebaseAuth ->
+    {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+        {
+            // user signed in
+            Log.d("LoginActivity", "UID here: " + firebaseUser.getUid());
+            userID = firebaseUser.getUid();
+            databaseReferenceAccountType = firebaseDatabase.getReference("Registered Businesses").child(userID);
+            databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
+        }
+
+    };
 
     @NonNull
     @Contract(" -> new") // the purpose to is to recognise the account type
@@ -260,6 +272,7 @@ public class LoginActivity extends AppCompatActivity
 
                     default:
                         Toast.makeText(LoginActivity.this,
+
                                 "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -268,9 +281,19 @@ public class LoginActivity extends AppCompatActivity
             {
                 progressBar.setVisibility(View.GONE);
                 loginBtn.setVisibility(View.VISIBLE);
-                Toast.makeText(LoginActivity.this, "Email or Password incorrect, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,
+                        "Email or Password incorrect, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (mAuth != null) {
+            mAuth.removeAuthStateListener(authStateListener); // avoid memory leaks
+        }
     }
 
     public ClickableSpan clickableForgotPasswordNavSpan()
