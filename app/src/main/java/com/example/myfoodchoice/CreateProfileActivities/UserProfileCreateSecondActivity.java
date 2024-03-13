@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Adapter.DietTypeAdapter;
@@ -23,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -80,6 +83,8 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         DietTypeAdapter dietTypeAdapter = new DietTypeAdapter(this, dietTypeArrayList);
         spinnerDietType.setAdapter(dietTypeAdapter);
         spinnerDietType.setOnItemSelectedListener(onItemSelectedDietTypeListener);
+
+        // for progress bar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(ProgressBar.GONE);
 
@@ -95,9 +100,10 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         // button
         signUpBtn = findViewById(R.id.signUpBtn);
         signUpBtn.setOnClickListener(onSignUpListener());
-
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onSignUpListener()
     {
         return v ->
@@ -158,6 +164,8 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private OnCompleteListener<Void> onSignUpCompleteListener()
     {
         return task ->
@@ -185,7 +193,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             new AdapterView.OnItemSelectedListener()
     {
         @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+        public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
         {
             // the purpose is for spinner to select and apply the string dietType to define the user profile
             UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);

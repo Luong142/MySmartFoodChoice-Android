@@ -105,4 +105,7 @@
     <string name="create_trainer_profile">Create Trainer Profile</string>
     <string name="contact_number">Contact Number</string>
     <string name="enter_contact_number">Enter Contact Number</string>
+    <string name="role">Role</string>
+    <string name="sign_up_as_business_vendor">Sign Up As Business Vendor</string>
+    <string name="trainer">Trainer</string>
 </resources>

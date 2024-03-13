@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
-import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessTrainerActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
@@ -35,9 +35,9 @@ public class WelcomeActivity extends AppCompatActivity
 
      String emailRememberMe, passwordRememberMe;
 
-     TextView signUpAsUser, signUpAsTrainer, signUpAsDietitian;
+     TextView signUpAsUser, signUpAsBusiness;
 
-    SpannableString spannableSignUpAsUserNav, spannableSignUpAsTrainer, spannableSignUpAsDietitian;
+    SpannableString spannableSignUpAsUserNav, spannableSignUpAsBusiness;
 
     FirebaseAuth firebaseAuth;
 
@@ -63,8 +63,7 @@ public class WelcomeActivity extends AppCompatActivity
 
         // init text view.
         signUpAsUser = findViewById(R.id.signUpAsUser);
-        signUpAsTrainer = findViewById(R.id.signUpAsTrainer);
-        signUpAsDietitian = findViewById(R.id.signUpAsDietitian);
+        signUpAsBusiness = findViewById(R.id.signUpAsBusiness);
 
         // nav to sign up page based on text click
         // FIXME: the index is out of bound.
@@ -74,16 +73,10 @@ public class WelcomeActivity extends AppCompatActivity
         signUpAsUser.setMovementMethod(LinkMovementMethod.getInstance());
 
         // nav to sign up page based on text click
-        spannableSignUpAsTrainer = new SpannableString(signUpAsTrainer.getText());
-        spannableSignUpAsTrainer.setSpan(clickableSignUpAsTrainer(), INDEXSTART, signUpAsTrainer.length(), 0);
-        signUpAsTrainer.setText(spannableSignUpAsTrainer);
-        signUpAsTrainer.setMovementMethod(LinkMovementMethod.getInstance());
-
-        // nav to sign up page based on text click
-        spannableSignUpAsDietitian = new SpannableString(signUpAsDietitian.getText());
-        spannableSignUpAsDietitian.setSpan(clickableSignUpAsDietitian(), INDEXSTART, signUpAsDietitian.length(), 0);
-        signUpAsDietitian.setText(spannableSignUpAsDietitian);
-        signUpAsDietitian.setMovementMethod(LinkMovementMethod.getInstance());
+        spannableSignUpAsBusiness = new SpannableString(signUpAsBusiness.getText());
+        spannableSignUpAsBusiness.setSpan(clickableSignUpAsBusiness(), INDEXSTART, signUpAsBusiness.length(), 0);
+        signUpAsBusiness.setText(spannableSignUpAsBusiness);
+        signUpAsBusiness.setMovementMethod(LinkMovementMethod.getInstance());
 
         signingBtn.setOnClickListener(onSignInListener);
 
@@ -111,26 +104,10 @@ public class WelcomeActivity extends AppCompatActivity
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
-    @NonNull
-    @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsDietitian()
-    {
-        return new ClickableSpan()
-        {
-            @Override
-            public void onClick(View widget)
-            {
-                Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterBusinessTrainerActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-    }
 
     @NonNull
     @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsTrainer()
+    private ClickableSpan clickableSignUpAsBusiness()
     {
         return new ClickableSpan()
         {
@@ -138,9 +115,8 @@ public class WelcomeActivity extends AppCompatActivity
             public void onClick(View widget)
             {
                 Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterBusinessTrainerActivity.class);
+                        RegisterBusinessActivity.class);
                 startActivity(intent);
-                finish();
             }
         };
     }
@@ -157,7 +133,6 @@ public class WelcomeActivity extends AppCompatActivity
                 Intent intent = new Intent(WelcomeActivity.this,
                         RegisterUserActivity.class);
                 startActivity(intent);
-                finish();
             }
         };
     }
@@ -182,8 +157,7 @@ public class WelcomeActivity extends AppCompatActivity
             }
         });
     }
-
-
+    
     private final View.OnClickListener onSignInListener = v ->
     {
         Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);

@@ -41,13 +41,13 @@
             android:name=".CreateProfileActivities.DietitianProfileCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProfileActivities.TrainerProfileCreateActivity"
+            android:name=".CreateProfileActivities.BusinessProfileCreateActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.RegisterBusinessDietitianActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationActivity.RegisterBusinessTrainerActivity"
+            android:name=".AuthenticationActivity.RegisterBusinessActivity"
             android:exported="false" />
         <activity
             android:name=".UserActivity.UserProfileUpdateFirstActivity"

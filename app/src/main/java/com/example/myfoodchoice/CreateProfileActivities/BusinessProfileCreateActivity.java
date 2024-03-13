@@ -7,19 +7,25 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.arch.core.internal.SafeIterableMap;
 
+import com.example.myfoodchoice.Adapter.BusinessRoleAdapter;
+import com.example.myfoodchoice.Adapter.DietTypeAdapter;
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
-import com.example.myfoodchoice.Model.BusinessTrainerProfile;
+import com.example.myfoodchoice.Model.BusinessProfile;
+import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,14 +45,18 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class TrainerProfileCreateActivity extends AppCompatActivity
+public class BusinessProfileCreateActivity extends AppCompatActivity
 {
+    private static final String LABEL_USER = "Registered Businesses";
     // TODO: declare UI components
     ImageView profileImage;
 
     EditText firstName, lastName, contactNumber;
+
+    Spinner spinnerRole;
 
     String firstNameString, lastNameString;
 
@@ -58,7 +68,7 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
 
     FirebaseDatabase firebaseDatabase;
 
-    BusinessTrainerProfile businessTrainerProfile;
+    BusinessProfile businessProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -70,20 +80,24 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
 
     StorageTask<UploadTask.TaskSnapshot> storageTask;
 
-    final static String TAG = "TrainerProfileCreateActivity";
+    final static String TAG = "BusinessProfileCreateActivity";
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
-    static final String LABEL = "Trainer Profile";
+    static final String LABEL = "Business Profile";
 
     Uri selectedImageUri;
-    String myUri;
+    String myUri, role;
+    Intent intentRetrieveUserAccount;
+    UserAccount userAccount;
+    ArrayList<BusinessProfile> roleArrayList;
+    DatabaseReference databaseReferenceRegisteredUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trainer_profile_create);
+        setContentView(R.layout.activity_business_profile_create);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -95,19 +109,35 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
         databaseReferenceTrainerProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
         storageReferenceProfilePics =
                 FirebaseStorage.getInstance().getReference().child("ProfilePics");
+        databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
+
+        // init array list
+        roleArrayList = new ArrayList<>();
+
+        // set model class
+        businessProfile = new BusinessProfile();
+        intentRetrieveUserAccount = getIntent();
+        userAccount = intentRetrieveUserAccount.getParcelableExtra("userAccount");
 
         // TODO: init UI components
-        profileImage.findViewById(R.id.profileImage);
-        firstName.findViewById(R.id.firstNameProfile);
-        lastName.findViewById(R.id.lastNameProfile);
-        contactNumber.findViewById(R.id.contactNumberProfile);
-        progressBar.findViewById(R.id.progressBar);
+        profileImage = findViewById(R.id.profileImage);
+        firstName = findViewById(R.id.firstNameProfile);
+        lastName = findViewById(R.id.lastNameProfile);
+        contactNumber = findViewById(R.id.contactNumberProfile);
+        progressBar = findViewById(R.id.progressBar);
 
         // set progress bar to gone
         progressBar.setVisibility(ProgressBar.GONE);
 
+        // TODO: init spinner part
+        initBusinessRole();
+        spinnerRole = findViewById(R.id.roleSpinner);
+        BusinessRoleAdapter businessRoleAdapter = new BusinessRoleAdapter(this, roleArrayList);
+        spinnerRole.setAdapter(businessRoleAdapter);
+        spinnerRole.setOnItemSelectedListener(onItemSelectedRoleListener);
+
         // button
-        createProfileBtn.findViewById(R.id.createProfileBtn);
+        createProfileBtn = findViewById(R.id.createProfileBtn);
         createProfileBtn.setOnClickListener(onCreateProfileListener());
 
         profileImage.setOnClickListener(onImageClickListener());
@@ -150,7 +180,7 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
             // check if selectedImageUri is null
             if (selectedImageUri == null)
             {
-                Toast.makeText(TrainerProfileCreateActivity.this,
+                Toast.makeText(BusinessProfileCreateActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if selectedImageUri is null
@@ -189,12 +219,6 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
             lastNameString = lastName.getText().toString().trim();
             contactNumberInt = Integer.parseInt(contactNumber.getText().toString().trim());
 
-            // set data here
-            businessTrainerProfile = new BusinessTrainerProfile();
-            businessTrainerProfile.setFirstName(firstNameString);
-            businessTrainerProfile.setLastName(lastNameString);
-            businessTrainerProfile.setContactNumber(contactNumberInt);
-
             // set image here
             storageTask.continueWithTask(task ->
             {
@@ -219,27 +243,53 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
                 Uri downloadUri = task.getResult();
                 myUri = downloadUri.toString();
 
-                // FIXME:
-                businessTrainerProfile.setProfileImageUrl(myUri);
+                // set data here
+                businessProfile.setFirstName(firstNameString);
+                businessProfile.setLastName(lastNameString);
+                businessProfile.setContactNumber(contactNumberInt);
+                businessProfile.setRole(role);
+
+                // set business account here
+                userAccount.setAccountType(role);
+
+                // FIXME: set image here based on the model
+                businessProfile.setProfileImageUrl(myUri);
+
+                // Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
+                // Log.d(TAG, "onCompleteUploadListener: " + userAccount);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
-                // Log.d(TAG, "onNextListener: " + userProfile);
+
+
                 // TODO: set the value based on TrainerProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
-                databaseReferenceTrainerProfile.setValue(businessTrainerProfile)
-                        .addOnCompleteListener(onCompleteListener());
-
-                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                        .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteCreateProfileListener());
-                Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
+                databaseReferenceRegisteredUser.setValue(userAccount)
+                        .addOnCompleteListener(onCompleteUserAccountListener())
+                        .addOnFailureListener(onFailurePart());
             }
             else
             {
-                Log.d(TAG, "onCompleteUploadListener: " + myUri);
+                // Log.d(TAG, "onCompleteUploadListener: " + myUri);
                 progressBar.setVisibility(ProgressBar.GONE);
                 //Log.e(TAG, "onCompleteUploadListener: " + task.getException());
-                Toast.makeText(TrainerProfileCreateActivity.this,
+                Toast.makeText(BusinessProfileCreateActivity.this,
                         "Image not selected.", Toast.LENGTH_SHORT).show();
             }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteUserAccountListener()
+    {
+        return task ->
+        {
+            databaseReferenceTrainerProfile.setValue(businessProfile)
+                    .addOnCompleteListener(onCompleteListener())
+                    .addOnFailureListener(onFailurePart());
+
+            firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                    .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteCreateProfileListener());
+            // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
         };
     }
 
@@ -252,16 +302,16 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
             if (task.isSuccessful())
             {
                 // Profile successfully written!
-                Log.d(TAG, "Profile successfully written!");
-                Toast.makeText(TrainerProfileCreateActivity.this,
+                // Log.d(TAG, "Profile successfully written!");
+                Toast.makeText(BusinessProfileCreateActivity.this,
                         "Profile successfully created!", Toast.LENGTH_SHORT).show();
 
             }
             else
             {
                 // If the write failed, display an error message
-                Log.w(TAG, "Error writing profile to database", task.getException());
-                Toast.makeText(TrainerProfileCreateActivity.this,
+                // Log.w(TAG, "Error writing profile to database", task.getException());
+                Toast.makeText(BusinessProfileCreateActivity.this,
                         "Failed to create profile.", Toast.LENGTH_SHORT).show();
             }
         };
@@ -273,12 +323,31 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
     {
         return task ->
         {
-            Intent intent = new Intent(TrainerProfileCreateActivity.this,
+            Intent intent = new Intent(BusinessProfileCreateActivity.this,
                     LoginActivity.class);
             startActivity(intent);
             finish(); // to close this page.
         };
     }
+
+    private final AdapterView.OnItemSelectedListener onItemSelectedRoleListener =
+            new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
+                {
+                    // the purpose is for spinner to select and apply the string dietType to define the user profile
+                    BusinessProfile businessProfile1 = (BusinessProfile) parent.getItemAtPosition(position);
+                    role = businessProfile1.getRole();
+                    // Log.d(TAG, "onItemSelected: " + role);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+
+                }
+            };
 
     @NonNull
     @Contract(pure = true)
@@ -333,5 +402,11 @@ public class TrainerProfileCreateActivity extends AppCompatActivity
 
             }
         };
+    }
+
+    private void initBusinessRole()
+    {
+        roleArrayList.add(new BusinessProfile("Trainer", R.drawable.trainer_icon_pink));
+        roleArrayList.add(new BusinessProfile("Dietitian", R.drawable.dietitian_icon));
     }
 }

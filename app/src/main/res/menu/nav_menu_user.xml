@@ -32,7 +32,7 @@
         <item
             android:id="@+id/nav_review"
             android:title="@string/view_feedback"
-            android:icon="@drawable/review"
+            android:icon="@drawable/review_icon"
             />
 
         <item

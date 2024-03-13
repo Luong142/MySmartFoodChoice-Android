@@ -27,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.342">
+        app:layout_constraintVertical_bias="0.437">
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,15 +40,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="258dp"
-        android:layout_height="309dp"
-        android:layout_marginBottom="148dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="192dp"
         android:background="@drawable/rounded_layout_login_page"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -81,24 +81,17 @@
             android:layout_height="20dp" />
 
         <TextView
-            android:id="@+id/signUpAsTrainer"
+            android:id="@+id/signUpAsBusiness"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_as_trainer"
+            android:text="@string/sign_up_as_business_vendor"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="25sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
-
-        <TextView
-            android:id="@+id/signUpAsDietitian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up_as_dietitian"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
 
     </LinearLayout>
 

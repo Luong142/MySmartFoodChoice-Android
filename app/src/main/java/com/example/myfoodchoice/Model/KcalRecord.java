@@ -1,6 +1,7 @@
 package com.example.myfoodchoice.Model;
 
 import androidx.annotation.NonNull;
+
 import java.util.Locale;
 import java.util.Objects;
 

@@ -11,15 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.Model.BusinessProfile;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class DietTypeAdapter extends ArrayAdapter<UserProfile>
+public class BusinessRoleAdapter extends ArrayAdapter<BusinessProfile>
 {
-    public DietTypeAdapter(Context context, ArrayList<UserProfile> objects)
+    public BusinessRoleAdapter(Context context, ArrayList<BusinessProfile> objects)
     {
         super(context, 0, objects);
     }
@@ -43,20 +43,19 @@ public class DietTypeAdapter extends ArrayAdapter<UserProfile>
         if (convertView == null)
         {
             convertView = LayoutInflater.from(getContext()).inflate
-                    (R.layout.custom_spinner_diet_type, parent, false);
+                    (R.layout.custom_spinner_business_role, parent, false);
         }
 
-        ImageView dietTypeImage = convertView.findViewById(R.id.dietTypeImage);
-        TextView dietTypeText = convertView.findViewById(R.id.dietType);
+        ImageView businessImage = convertView.findViewById(R.id.businessImage);
+        TextView businessText = convertView.findViewById(R.id.businessText);
 
-        UserProfile userProfile = getItem(pos);
+        BusinessProfile businessProfile = getItem(pos);
 
         if (convertView != null)
         {
-            dietTypeImage.setImageResource(Objects.requireNonNull(userProfile).getDietTypeImage());
-            dietTypeText.setText(userProfile.getDietType());
+            businessImage.setImageResource(Objects.requireNonNull(businessProfile).getBusinessImage());
+            businessText.setText(businessProfile.getRole());
         }
-
         return convertView;
     }
 }

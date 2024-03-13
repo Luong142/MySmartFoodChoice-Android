@@ -2,6 +2,7 @@ package com.example.myfoodchoice.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
