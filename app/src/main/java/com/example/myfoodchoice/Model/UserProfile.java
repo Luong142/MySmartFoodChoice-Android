@@ -9,17 +9,12 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Date;
 
-public class UserProfile implements Parcelable // way more efficient to use Parcelable.
+public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
 {
-    private String firstName;
-
-    private String lastName;
-
     private String height;
 
     private String weight;
 
-    private String profileImageUrl;
     private String gender;
     private int age;
     private int targetedBMI;
@@ -38,6 +33,7 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     public UserProfile()
     {
         // this constructor is required for Firebase to be able to deserialize the object
+        super();
         this.targetedBMI = 0;
         this.calories = 0;
         this.lastRecordedBMI = 0;
@@ -46,12 +42,12 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
 
     protected UserProfile(@NonNull Parcel in)
     {
-
-        firstName = in.readString();
-        lastName = in.readString();
+        super();
+        setFirstName(in.readString());
+        setLastName(in.readString());
         height = in.readString();
         weight = in.readString();
-        profileImageUrl = in.readString();
+        setProfileImageUrl(in.readString());
         gender = in.readString();
         age = in.readInt();
         dietType = in.readString();
@@ -89,11 +85,11 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags)
     {
-        dest.writeString(firstName);
-        dest.writeString(lastName);
+        dest.writeString(getFirstName());
+        dest.writeString(getLastName());
         dest.writeString(height);
         dest.writeString(weight);
-        dest.writeString(profileImageUrl);
+        dest.writeString(getProfileImageUrl());
         dest.writeString(gender);
         dest.writeInt(age);
         dest.writeString(dietType);
@@ -106,8 +102,8 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         StringBuilder sb = new StringBuilder();
         sb.append("User Profile\n");
         sb.append("-------------------\n");
-        sb.append("First Name: ").append(firstName).append("\n");
-        sb.append("Last Name: ").append(lastName).append("\n");
+        sb.append("First Name: ").append(getFirstName()).append("\n");
+        sb.append("Last Name: ").append(getLastName()).append("\n");
         sb.append("Height: ").append(height).append(" cm\n");
         sb.append("Weight: ").append(weight).append(" kg\n");
         sb.append("Gender: ").append(gender).append("\n");
@@ -156,21 +152,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         this.dietTypeImage = dietTypeImage;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getHeight() {
         return height;
@@ -188,13 +169,6 @@ public class UserProfile implements Parcelable // way more efficient to use Parc
         this.weight = weight;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
 
     public String getGender() {
         return gender;

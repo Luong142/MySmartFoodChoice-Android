@@ -8,4 +8,7 @@
     android:background="@drawable/bg_gradient_color_main"
     tools:context=".BusinessTrainerActivity.TrainerUpdateProfileActivity">
 
+    <!-- TODO: start from here to do the part -->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

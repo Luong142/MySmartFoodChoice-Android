@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
+import de.javakaffee.kryoserializers.CollectionsEmptyListSerializer;
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
@@ -181,7 +182,10 @@ public class LoginActivity extends AppCompatActivity
                 {
                     accountType = userAccount.getAccountType();
                 }
-                Log.d("LoginActivity", "onDataChange: " + accountType);
+                else
+                {
+                    Log.d("LoginActivity", "onDataChange: " + accountType);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error)

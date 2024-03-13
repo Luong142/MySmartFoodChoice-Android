@@ -2,7 +2,7 @@ package com.example.myfoodchoice.Model;
 
 import androidx.annotation.NonNull;
 
-public class BusinessProfile extends UserProfile
+public class BusinessProfile extends CommonProfile
 {
     private String role;
 
