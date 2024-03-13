@@ -15,16 +15,26 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.GuestActivity.GuestBMICalculatorActivity;
+import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
+import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
+import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
+import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.Contract;
 
 import io.paperdb.Paper;
 
@@ -53,15 +63,19 @@ public class LoginActivity extends AppCompatActivity
     // firebase login
     FirebaseAuth mAuth;
 
+    FirebaseUser firebaseUser;
+
     static final int INDEXSTART = 0;
 
     FirebaseDatabase firebaseDatabase;
 
-    String email, password;
-
-    UserProfile userProfile;
+    String email, password, userID, accountType;
 
     Intent intent;
+
+    UserAccount userAccount;
+
+    DatabaseReference databaseReferenceAccountType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,20 +89,28 @@ public class LoginActivity extends AppCompatActivity
 
         // TODO: init Firebase auth
         mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
 
         // TODO: init Firebase database, paste the correct link as reference.
         firebaseDatabase = FirebaseDatabase.getInstance(
                 "https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
         // for testing
         // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
+        firebaseUser = mAuth.getCurrentUser();
+
+        if (firebaseUser != null)
+        {
+            userID = firebaseUser.getUid();
+            databaseReferenceAccountType =
+                    firebaseDatabase.getReference("Registered Businesses").child(userID);
+            databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
+        }
 
         // TODO: init UI components
         loginEmailEditText = findViewById(R.id.login_email);
         loginPasswordEditText = findViewById(R.id.login_password);
 
         // init user profile
-        intent = getIntent();
-        userProfile = intent.getParcelableExtra("userProfile");
         // TODO: do we need userProfile here to pass to main-menu?
 
         // check box
@@ -131,6 +153,34 @@ public class LoginActivity extends AppCompatActivity
 
     }
 
+    @NonNull
+    @Contract(" -> new") // the purpose to is to recognise the account type
+    // and auto choose the correct layout for normal user, dietitian, trainer.
+    private ValueEventListener valueAccountTypeEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                userAccount = snapshot.getValue(UserAccount.class);
+                accountType = "User"; // by default is user, unless changed.
+                if (userAccount != null)
+                {
+                    accountType = userAccount.getAccountType();
+                }
+                Log.d("LoginActivity", "onDataChange: " + accountType);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText
+                        (LoginActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                // Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
+            }
+        };
+    }
+
     // TODO: the purpose is to save data via Paper.
     public CompoundButton.OnCheckedChangeListener onCheckedListener()
     {
@@ -144,11 +194,12 @@ public class LoginActivity extends AppCompatActivity
                 Paper.book().write(Prevalent.UserEmailKey, email);
                 Paper.book().write(Prevalent.UserPasswordKey, password);
             }
-            
         };
     }
     // TODO: to implement the login functionalities for this activity.
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onLoginListener()
     {
         return v ->
@@ -184,14 +235,34 @@ public class LoginActivity extends AppCompatActivity
         // authentication login
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
         {
+            // check the condition based on the account type.
+            // if the account type is not recognized, then show a toast message.
+            // if the account type is recognized, then navigate to the correct main menu page.
             if (task.isSuccessful())
             {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
-                intent.putExtra("userProfile", userProfile);
-                Log.d("userProfile", "userProfile: " + userProfile);
-                startActivity(intent);
-                finish();
+                switch (accountType)
+                {
+                    case "User":
+                        intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case "Trainer":
+                        intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case "Dietitian":
+                        intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+
+                    default:
+                        Toast.makeText(LoginActivity.this,
+                                "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
             }
             else
             {
@@ -244,7 +315,7 @@ public class LoginActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("LoginActivity", "navigating to guest main menu page! ");
-                    Intent intent = new Intent(LoginActivity.this, GuestBMICalculatorActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                     startActivity(intent);
                     finish();
                 }

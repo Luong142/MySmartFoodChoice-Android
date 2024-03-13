@@ -38,6 +38,15 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".BusinessTrainerActivity.TrainerMainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusinessDietitianActivity.DietitianMainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuestActivity.GuestMainMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateProfileActivities.DietitianProfileCreateActivity"
             android:exported="false" />
         <activity
@@ -89,7 +98,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserActivity.PaymentActivity"
+            android:name=".PaymentActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.ForgotPasswordActivity"

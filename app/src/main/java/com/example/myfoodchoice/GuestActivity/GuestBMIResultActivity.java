@@ -109,7 +109,7 @@ public class GuestBMIResultActivity extends AppCompatActivity
 
         recalculateBMI.setOnClickListener(v ->
         {
-            Intent intent = new Intent(GuestBMIResultActivity.this, GuestBMICalculatorActivity.class);
+            Intent intent = new Intent(GuestBMIResultActivity.this, GuestMainMenuActivity.class);
             startActivity(intent);
             finish();
         });

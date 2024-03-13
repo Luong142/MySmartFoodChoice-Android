@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultCallerLauncher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -23,7 +21,7 @@ import com.example.myfoodchoice.R;
 
 import org.jetbrains.annotations.Contract;
 
-public class HomeFragment extends Fragment
+public class UserHomeFragment extends Fragment
 {
     // TODO: declare UI components
     ProgressBar progressBar;
@@ -98,6 +96,6 @@ public class HomeFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_user_home, container, false);
     }
 }

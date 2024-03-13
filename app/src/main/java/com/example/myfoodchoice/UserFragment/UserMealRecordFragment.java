@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.R;
 
 
-public class MealRecordFragment extends Fragment
+public class UserMealRecordFragment extends Fragment
 {
 
 
@@ -27,6 +27,6 @@ public class MealRecordFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_meal_record, container, false);
+        return inflater.inflate(R.layout.fragment_user_meal_record, container, false);
     }
 }

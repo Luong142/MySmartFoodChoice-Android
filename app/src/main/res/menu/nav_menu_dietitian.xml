@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
 
+    <!-- TODO: update the guest part -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_health_tips"
+            android:title="@string/health_tips"
+            android:icon="@drawable/health_tip"
+            />
+
+        <item
+            android:id="@+id/nav_food_recipe"
+            android:title="@string/recipe"
+            android:icon="@drawable/recipe"
+            />
+
+        <item
+            android:id="@+id/nav_review"
+            android:title="@string/review"
+            android:icon="@drawable/review_icon"/>
+
+        <item
+            android:id="@+id/nav_manage_businessProfile"
+            android:title="@string/manage_profile"
+            android:icon="@drawable/update_profile"/>
+
+        <item
+            android:id="@+id/nav_log_off"
+            android:icon="@drawable/logoff"
+            android:title="@string/log_out"
+            />
+    </group>
 </menu>

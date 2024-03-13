@@ -108,4 +108,14 @@
     <string name="role">Role</string>
     <string name="sign_up_as_business_vendor">Sign Up As Business Vendor</string>
     <string name="trainer">Trainer</string>
+    <string name="guest_home_page">Guest Home Page</string>
+    <string name="work_out">Work Out</string>
+    <string name="health_tips">Health Tips</string>
+    <string name="recipe">Recipe</string>
+    <string name="check_in">Check In</string>
+    <string name="recipes">Recipes</string>
+    <string name="log_my_meal">Log My Meal</string>
+    <string name="meal_records">Meal Records</string>
+    <string name="view_reviews">View Reviews</string>
+    <string name="rewards">Rewards</string>
 </resources>

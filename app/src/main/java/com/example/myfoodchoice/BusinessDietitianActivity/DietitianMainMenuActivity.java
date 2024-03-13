@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.UserActivity;
+package com.example.myfoodchoice.BusinessDietitianActivity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,18 +18,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianRecipeFragment;
+import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
+import com.example.myfoodchoice.BusinessTrainerFragment.TrainerProfileViewFragment;
+import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
+import com.example.myfoodchoice.Model.BusinessProfile;
 import com.example.myfoodchoice.Model.UserAccount;
-import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
-import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
-import com.example.myfoodchoice.UserFragment.UserHomeFragment;
-import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
 import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
-import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
-import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
-import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
-import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,14 +43,14 @@ import org.jetbrains.annotations.Contract;
 
 import io.paperdb.Paper;
 
-public class UserMainMenuActivity extends AppCompatActivity
+public class DietitianMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     DrawerLayout drawerLayout;
 
-    DatabaseReference databaseReferenceRegisteredUser;
+    DatabaseReference databaseReferenceRegisteredBusinesses;
 
-    DatabaseReference databaseReferenceUserProfile;
+    DatabaseReference databaseReferenceDietitianProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -73,15 +71,13 @@ public class UserMainMenuActivity extends AppCompatActivity
 
     final static String TAG = "UserMainMenuActivity";
 
-    final static String LABEL = "Registered Users";
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_main_menu);
+        setContentView(R.layout.activity_dietitian_main_menu);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -96,14 +92,17 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             userID = firebaseUser.getUid();
             // TODO: init database reference for user account
-            databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(userID);
-            databaseReferenceRegisteredUser.addListenerForSingleValueEvent(valueRegisteredUserEventListener());
-
+            databaseReferenceRegisteredBusinesses =
+                    firebaseDatabase.getReference("Registered Businesses").child(userID);
+            databaseReferenceRegisteredBusinesses.addListenerForSingleValueEvent
+                    (valueRegisteredDietitianEventListener());
+            // FIXME: careful with path.
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
-            databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
+            databaseReferenceDietitianProfile =
+                    firebaseDatabase.getReference("Business Profile").child(userID);
+            databaseReferenceDietitianProfile.addListenerForSingleValueEvent
+                    (valueDietitianProfileEventListener());
         }
-
 
         // TODO: init UI component in nav_header and activity_main_menu
         navigationView = findViewById(R.id.nav_view);
@@ -112,7 +111,6 @@ public class UserMainMenuActivity extends AppCompatActivity
         headerEmail = headerView.findViewById(R.id.emailText);
         headerProfilePicture = headerView.findViewById(R.id.profilePicture);
         drawerLayout = findViewById(R.id.drawer_layout);
-
 
         // TODO: set UI components in nav_header
 
@@ -140,7 +138,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeFragment()).commit();
+                    new TrainerWorkOutFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -159,86 +157,6 @@ public class UserMainMenuActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
-    @NonNull
-    @Contract(" -> new")
-    private ValueEventListener valueUserProfileEventListener()
-    {
-        return new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                // FIXME: the problem is that userProfile is null.
-                UserProfile userProfile = snapshot.getValue(UserProfile.class);
-                // Log.d(TAG, "onDataChange: " + userProfile);
-
-                // set the first name and last name in the UI
-                if (userProfile != null)
-                {
-                    // set full name here
-                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
-                    headerFullName.setText(fullName);
-
-                    // set profile picture here
-                    String profileImageUrl = userProfile.getProfileImageUrl();
-                    Uri profileImageUri = Uri.parse(profileImageUrl);
-                    // FIXME: the image doesn't show because the image source is from Gallery within android device.
-                    // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
-                    Picasso.get()
-                            .load(profileImageUri)
-                            .resize(150, 150)
-                            .error(R.drawable.error)
-                            .into(headerProfilePicture);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                Toast.makeText
-                        (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
-            }
-        };
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private ValueEventListener valueRegisteredUserEventListener()
-    {
-        {
-            return new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot)
-                {
-                    // check if the dataSnapshot contains the user profile data
-                    if (snapshot.exists())
-                    {
-                        // extract data from firebase database
-                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
-                        // Log.d(TAG, "onDataChange: " + userAccount);
-                        // Log.d(TAG, "onDataChange: " + userProfile);
-                        if (userAccount != null)
-                        {
-                            // set email
-                            String email = userAccount.getEmail();
-                            headerEmail.setText(email);
-                        }
-
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error)
-                {
-                    Toast.makeText
-                            (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
-                }
-            };
-        }
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
@@ -247,67 +165,31 @@ public class UserMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
 
-        if (itemId == R.id.nav_home)
+        if (itemId == R.id.nav_health_tips)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeFragment()).commit();
+                    new DietitianHealthTipsFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-        }
-
-        else if (itemId == R.id.nav_check_in)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserCheckInFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_log_meal)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealRecordFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_meal_record)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealRecordFragment()).commit();
         }
 
         else if (itemId == R.id.nav_food_recipe)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRecipeFragment()).commit();
+                    new DietitianRecipeFragment()).commit();
         }
 
-        else if (itemId == R.id.nav_health_tips)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHealthTipsFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_work_out)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserWorkOutFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_rewards)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRewardsFragment()).commit();
-        }
-
+        // TODO: update and view user profile
+        // our plan is to make 3 in 1 manage profile part.
         else if (itemId == R.id.nav_review)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ReviewFragment()).commit();
         }
 
-        // TODO: update and view user profile
-        // our plan is to make 3 in 1 manage profile part.
-        else if (itemId == R.id.nav_manage_userProfile)
+        else if (itemId == R.id.nav_manage_businessProfile)
         {
-            getSupportFragmentManager().beginTransaction().replace
-                    (R.id.fragment_container, new UserProfileViewFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianProfileViewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)
@@ -323,5 +205,90 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueDietitianProfileEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // FIXME: the problem is that userProfile is null.
+                BusinessProfile businessProfile = snapshot.getValue(BusinessProfile.class);
+                // Log.d(TAG, "onDataChange: " + userProfile);
+
+                // set the first name and last name in the UI
+                if (businessProfile != null)
+                {
+                    // set full name here
+                    String fullName = businessProfile.getFirstName() + " " + businessProfile.getLastName();
+                    headerFullName.setText(fullName);
+
+                    // set profile picture here
+                    String profileImageUrl = businessProfile.getProfileImageUrl();
+                    Uri profileImageUri = Uri.parse(profileImageUrl);
+                    // FIXME: the image doesn't show because the image source is from Gallery within android device.
+                    // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+                    Picasso.get()
+                            .load(profileImageUri)
+                            .resize(150, 150)
+                            .error(R.drawable.error)
+                            .into(headerProfilePicture);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText
+                        (DietitianMainMenuActivity.this,
+                                "Error database connection", Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueRegisteredDietitianEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // check if the dataSnapshot contains the user profile data
+                if (snapshot.exists())
+                {
+                    // extract data from firebase database
+                    UserAccount userAccount = snapshot.getValue(UserAccount.class);
+                    // Log.d(TAG, "onDataChange: " + userAccount);
+                    // Log.d(TAG, "onDataChange: " + userProfile);
+                    if (userAccount != null)
+                    {
+                        // set email
+                        String email = userAccount.getEmail();
+                        headerEmail.setText(email);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText(DietitianMainMenuActivity.this,
+                        "Error database connection", Toast.LENGTH_SHORT).show();
+                // Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
+            }
+        };
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture)
+    {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

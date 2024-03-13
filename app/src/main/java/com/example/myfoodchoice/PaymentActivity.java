@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.UserActivity;
+package com.example.myfoodchoice;
 
 import android.os.Bundle;
 

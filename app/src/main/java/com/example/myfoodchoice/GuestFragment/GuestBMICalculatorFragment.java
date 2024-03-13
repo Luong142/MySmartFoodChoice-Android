@@ -1,26 +1,32 @@
-package com.example.myfoodchoice.GuestActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+package com.example.myfoodchoice.GuestFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
+import com.example.myfoodchoice.GuestActivity.GuestBMIResultActivity;
 import com.example.myfoodchoice.R;
 
-public class GuestBMICalculatorActivity extends AppCompatActivity
+import org.jetbrains.annotations.Contract;
+
+
+public class GuestBMICalculatorFragment extends Fragment
 {
     // TODO: declare UI components
 
@@ -49,35 +55,31 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
 
     String age = "22";
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest_bmi_calculator);
-        // Objects.requireNonNull(getSupportActionBar()).hide();
+        super.onViewCreated(view, savedInstanceState);
 
         // TODO: init UI components
+        calculateBMIBtn = view.findViewById(R.id.calculateBMIBtn); // button
 
-        calculateBMIBtn = findViewById(R.id.calculateBMIBtn); // button
+        mCurrentHeight = view.findViewById(R.id.currentHeight); // textview
+        mCurrentWeight = view.findViewById(R.id.currentWeight); // textview
+        mCurrentAge = view.findViewById(R.id.currentAge); // textview
+        signUpClickableText = view.findViewById(R.id.signUpClickableText); // textview
 
-        mCurrentHeight = findViewById(R.id.currentHeight); // textview
-        mCurrentWeight = findViewById(R.id.currentWeight); // textview
-        mCurrentAge = findViewById(R.id.currentAge); // textview
-        signUpClickableText = findViewById(R.id.signUpClickableText); // textview
+        mIncrementAge = view.findViewById(R.id.incrementAge); // imageview
+        mIncrementWeight = view.findViewById(R.id.incrementWeight); // imageview
+        mDecrementWeight = view.findViewById(R.id.decrementWeight); // imageview
+        mDecrementAge = view.findViewById(R.id.decrementAge); // imageview
 
-        mIncrementAge = findViewById(R.id.incrementAge); // imageview
-        mIncrementWeight = findViewById(R.id.incrementWeight); // imageview
-        mDecrementWeight = findViewById(R.id.decrementWeight); // imageview
-        mDecrementAge = findViewById(R.id.decrementAge); // imageview
-
-        mSeekbarHeight = findViewById(R.id.seekbarForHeight); // seekbar
+        mSeekbarHeight = view.findViewById(R.id.seekbarForHeight); // seekbar
         mSeekbarHeight.setMax(300);
         mSeekbarHeight.setProgress(170);
         mSeekbarHeight.setOnSeekBarChangeListener(onSeekBarChangeListener());
 
-        male = findViewById(R.id.male); // linear layout
-        female = findViewById(R.id.female); // linear layout
+        male = view.findViewById(R.id.male); // linear layout
+        female = view.findViewById(R.id.female); // linear layout
 
         male.setOnClickListener(onMaleClickListener());
         female.setOnClickListener(onFemaleClickListener());
@@ -91,23 +93,23 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
         });
         mDecrementAge.setOnClickListener(v ->
         {
-           numAge--;
-           age = String.valueOf(numAge);
-           mCurrentAge.setText(age); // set textview
+            numAge--;
+            age = String.valueOf(numAge);
+            mCurrentAge.setText(age); // set textview
         });
 
         mIncrementWeight.setOnClickListener(v ->
         {
-           numWeight++;
-           weight = String.valueOf(numWeight);
-           mCurrentWeight.setText(weight);
+            numWeight++;
+            weight = String.valueOf(numWeight);
+            mCurrentWeight.setText(weight);
         });
 
         mDecrementWeight.setOnClickListener(v ->
         {
-           numWeight--;
-           weight = String.valueOf(numWeight);
-           mCurrentWeight.setText(weight);
+            numWeight--;
+            weight = String.valueOf(numWeight);
+            mCurrentWeight.setText(weight);
         });
 
         // for sign up text
@@ -118,8 +120,11 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
 
         // for bmi calculation button
         calculateBMIBtn.setOnClickListener(onCalculateBMIListener());
+
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onCalculateBMIListener()
     {
         {
@@ -127,43 +132,44 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
             {
                 if (gender.equals("null"))
                 {
-                    Toast.makeText(GuestBMICalculatorActivity.this, "Please select your gender.",
+                    Toast.makeText(getContext(), "Please select your gender.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (mIntHeightProgress.equals("0"))
                 {
-                    Toast.makeText(GuestBMICalculatorActivity.this, "Please select your height.",
+                    Toast.makeText(getContext(), "Please select your height.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (numAge == 0 || numAge < 0)
                 {
-                    Toast.makeText(GuestBMICalculatorActivity.this, "Age is incorrect, please try again.",
+                    Toast.makeText(getContext(), "Age is incorrect, please try again.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (numWeight == 0 || numWeight < 0)
                 {
-                    Toast.makeText(GuestBMICalculatorActivity.this, "Weight is incorrect, please try again.",
+                    Toast.makeText(getContext(), "Weight is incorrect, please try again.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Intent intent = new Intent(GuestBMICalculatorActivity.this, GuestBMIResultActivity.class);
+                Intent intent = new Intent(getContext(), GuestBMIResultActivity.class);
                 Log.d("GuestMainMenuActivity", "Navigating to bmi page!");
                 intent.putExtra("gender", gender);
                 intent.putExtra("height", mIntHeightProgress);
                 intent.putExtra("weight", weight);
                 intent.putExtra("age", age);
                 startActivity(intent);
-                finish(); // close this activity and go back to previous activity
             };
         }
     }
 
+    @NonNull
+    @Contract(" -> new")
     private ClickableSpan clickableLoginAsGuestNavSpan()
     {
         {
@@ -173,14 +179,15 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("GuestMainMenuActivity", "Navigating to register page!");
-                    Intent intent = new Intent(GuestBMICalculatorActivity.this, RegisterUserActivity.class);
+                    Intent intent = new Intent(getContext(), RegisterUserActivity.class);
                     startActivity(intent);
-                    finish(); // close this activity and go back to previous activity (LoginActivity)
                 }
             };
         }
     }
 
+    @NonNull
+    @Contract(" -> new")
     private SeekBar.OnSeekBarChangeListener onSeekBarChangeListener()
     {
         return new SeekBar.OnSeekBarChangeListener()
@@ -207,23 +214,34 @@ public class GuestBMICalculatorActivity extends AppCompatActivity
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onMaleClickListener()
     {
         return v ->
         {
-            male.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
-            female.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
+            male.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.malefemale_focused));
+            female.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.malefemale_notfocused));
             gender = "Male";
         };
     }
 
+    @NonNull
+    @Contract(pure = true)
     private View.OnClickListener onFemaleClickListener()
     {
         return v ->
         {
-            male.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
-            female.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
+            male.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.malefemale_notfocused));
+            female.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.malefemale_focused));
             gender = "Female";
         };
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_guest_b_m_i_calculator, container, false);
     }
 }

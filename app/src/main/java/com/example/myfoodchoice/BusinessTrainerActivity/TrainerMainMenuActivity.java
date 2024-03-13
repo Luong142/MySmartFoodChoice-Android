@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.UserActivity;
+package com.example.myfoodchoice.BusinessTrainerActivity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,18 +18,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.myfoodchoice.BusinessTrainerFragment.TrainerProfileViewFragment;
+import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
+import com.example.myfoodchoice.Model.BusinessProfile;
 import com.example.myfoodchoice.Model.UserAccount;
-import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
-import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
-import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
-import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
-import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
-import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
+import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,14 +42,14 @@ import org.jetbrains.annotations.Contract;
 
 import io.paperdb.Paper;
 
-public class UserMainMenuActivity extends AppCompatActivity
+public class TrainerMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     DrawerLayout drawerLayout;
 
-    DatabaseReference databaseReferenceRegisteredUser;
+    DatabaseReference databaseReferenceRegisteredBusinesses;
 
-    DatabaseReference databaseReferenceUserProfile;
+    DatabaseReference databaseReferenceTrainerProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -73,7 +70,6 @@ public class UserMainMenuActivity extends AppCompatActivity
 
     final static String TAG = "UserMainMenuActivity";
 
-    final static String LABEL = "Registered Users";
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
 
@@ -81,7 +77,7 @@ public class UserMainMenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_main_menu);
+        setContentView(R.layout.activity_trainer_main_menu);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -96,14 +92,17 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             userID = firebaseUser.getUid();
             // TODO: init database reference for user account
-            databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(userID);
-            databaseReferenceRegisteredUser.addListenerForSingleValueEvent(valueRegisteredUserEventListener());
-
+            databaseReferenceRegisteredBusinesses =
+                    firebaseDatabase.getReference("Registered Businesses").child(userID);
+            databaseReferenceRegisteredBusinesses.addListenerForSingleValueEvent
+                    (valueRegisteredTrainerEventListener());
+            // FIXME: careful with path.
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
-            databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
+            databaseReferenceTrainerProfile =
+                    firebaseDatabase.getReference("Business Profile").child(userID);
+            databaseReferenceTrainerProfile.addListenerForSingleValueEvent
+                    (valueTrainerProfileEventListener());
         }
-
 
         // TODO: init UI component in nav_header and activity_main_menu
         navigationView = findViewById(R.id.nav_view);
@@ -112,7 +111,6 @@ public class UserMainMenuActivity extends AppCompatActivity
         headerEmail = headerView.findViewById(R.id.emailText);
         headerProfilePicture = headerView.findViewById(R.id.profilePicture);
         drawerLayout = findViewById(R.id.drawer_layout);
-
 
         // TODO: set UI components in nav_header
 
@@ -140,7 +138,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeFragment()).commit();
+                    new TrainerWorkOutFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -157,11 +155,12 @@ public class UserMainMenuActivity extends AppCompatActivity
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
     @NonNull
     @Contract(" -> new")
-    private ValueEventListener valueUserProfileEventListener()
+    private ValueEventListener valueTrainerProfileEventListener()
     {
         return new ValueEventListener()
         {
@@ -169,18 +168,18 @@ public class UserMainMenuActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 // FIXME: the problem is that userProfile is null.
-                UserProfile userProfile = snapshot.getValue(UserProfile.class);
+                BusinessProfile businessProfile = snapshot.getValue(BusinessProfile.class);
                 // Log.d(TAG, "onDataChange: " + userProfile);
 
                 // set the first name and last name in the UI
-                if (userProfile != null)
+                if (businessProfile != null)
                 {
                     // set full name here
-                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                    String fullName = businessProfile.getFirstName() + " " + businessProfile.getLastName();
                     headerFullName.setText(fullName);
 
                     // set profile picture here
-                    String profileImageUrl = userProfile.getProfileImageUrl();
+                    String profileImageUrl = businessProfile.getProfileImageUrl();
                     Uri profileImageUri = Uri.parse(profileImageUrl);
                     // FIXME: the image doesn't show because the image source is from Gallery within android device.
                     // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
@@ -196,7 +195,8 @@ public class UserMainMenuActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError error)
             {
                 Toast.makeText
-                        (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                        (TrainerMainMenuActivity.this,
+                                "Error database connection", Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
             }
         };
@@ -204,7 +204,7 @@ public class UserMainMenuActivity extends AppCompatActivity
 
     @NonNull
     @Contract(" -> new")
-    private ValueEventListener valueRegisteredUserEventListener()
+    private ValueEventListener valueRegisteredTrainerEventListener()
     {
         {
             return new ValueEventListener()
@@ -225,15 +225,15 @@ public class UserMainMenuActivity extends AppCompatActivity
                             String email = userAccount.getEmail();
                             headerEmail.setText(email);
                         }
-
                     }
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error)
                 {
                     Toast.makeText
-                            (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
+                            (TrainerMainMenuActivity.this,
+                                    "Error database connection", Toast.LENGTH_SHORT).show();
+                    // Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
                 }
             };
         }
@@ -247,53 +247,11 @@ public class UserMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
 
-        if (itemId == R.id.nav_home)
+        if (itemId == R.id.nav_work_out)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeFragment()).commit();
+                    new TrainerWorkOutFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-        }
-
-        else if (itemId == R.id.nav_check_in)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserCheckInFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_log_meal)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealRecordFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_meal_record)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealRecordFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_food_recipe)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRecipeFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_health_tips)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHealthTipsFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_work_out)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserWorkOutFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_rewards)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRewardsFragment()).commit();
         }
 
         else if (itemId == R.id.nav_review)
@@ -304,10 +262,10 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         // TODO: update and view user profile
         // our plan is to make 3 in 1 manage profile part.
-        else if (itemId == R.id.nav_manage_userProfile)
+        else if (itemId == R.id.nav_manage_businessProfile)
         {
-            getSupportFragmentManager().beginTransaction().replace
-                    (R.id.fragment_container, new UserProfileViewFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new TrainerProfileViewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)

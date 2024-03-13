@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GuestActivity.GuestBMICalculatorActivity">
+    android:background="@drawable/bg_gradient_color_main"
+    tools:context=".GuestFragment.GuestBMICalculatorFragment"
+    >
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="52dp"
         android:text="@string/bmi_calculator"
         android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,15 +23,14 @@
         android:id="@+id/male"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/rounded_layout_login_page"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/textMale"
@@ -56,12 +57,12 @@
         android:id="@+id/female"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/rounded_layout_login_page"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.873"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -89,12 +90,12 @@
         android:id="@+id/linearLayout2"
         android:layout_width="350dp"
         android:layout_height="150dp"
-        android:layout_marginTop="316dp"
+        android:layout_marginTop="304dp"
         android:background="@drawable/rounded_layout_login_page"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -137,12 +138,12 @@
             android:progressTint="@color/red" />
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/weight"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="516dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/rounded_layout_login_page"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -201,7 +202,8 @@
         android:id="@+id/age"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="516dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/rounded_layout_login_page"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -260,31 +262,32 @@
         android:id="@+id/calculateBMIBtn"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="668dp"
         android:backgroundTint="@color/dodger_blue"
         android:text="@string/calculate_bmi"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/signUpClickableText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/sign_up_now_to_kick_start_your_fitness_journey_with_us"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/peach_puff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calculateBMIBtn"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.289" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
