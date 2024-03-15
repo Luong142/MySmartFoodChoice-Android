@@ -3,7 +3,6 @@ package com.example.myfoodchoice.GuestActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.myfoodchoice.GuestFragment.GuestBMICalculatorFragment;
 import com.example.myfoodchoice.GuestFragment.GuestHomeFragment;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 

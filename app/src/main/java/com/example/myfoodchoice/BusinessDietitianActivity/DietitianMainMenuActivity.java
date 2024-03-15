@@ -21,8 +21,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianRecipeFragment;
-import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
-import com.example.myfoodchoice.BusinessTrainerFragment.TrainerProfileViewFragment;
 import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
 import com.example.myfoodchoice.Model.BusinessProfile;
 import com.example.myfoodchoice.Model.UserAccount;

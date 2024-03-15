@@ -19,14 +19,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.arch.core.internal.SafeIterableMap;
 
 import com.example.myfoodchoice.Adapter.BusinessRoleAdapter;
-import com.example.myfoodchoice.Adapter.DietTypeAdapter;
-import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.Model.BusinessProfile;
 import com.example.myfoodchoice.Model.UserAccount;
-import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;

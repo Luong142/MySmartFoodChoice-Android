@@ -13,11 +13,12 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="438dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="176dp"
         android:background="@drawable/rounded_grey_calculator"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -129,40 +130,7 @@
         TODO: focus and non-focus.
 
     -->
-    <FrameLayout
-        android:id="@+id/layoutCheckInReward"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/rounded_layout_login_page"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-        app:layout_constraintVertical_bias="0.252">
 
-        <TextView
-            android:id="@+id/checkInTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="20sp"
-            android:text="@string/placeholder"
-            android:textSize="25sp" />
-
-        <Button
-            android:id="@+id/checkInDay1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="25sp"
-            android:layout_marginTop="25sp"
-            android:background="@drawable/rounded_layout_login_page"
-            android:text="@string/day_1" />
-        <!-- continue here, the problem is that the UI with this a bit hard to customize. -->
-    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
