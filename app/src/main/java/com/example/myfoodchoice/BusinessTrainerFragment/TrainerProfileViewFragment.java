@@ -42,7 +42,7 @@ public class TrainerProfileViewFragment extends Fragment
 
     ImageView imageView;
 
-    static final String TAG = "UserProfileViewFragment";
+    static final String TAG = "TrainerProfileView";
 
     DatabaseReference databaseReferenceBusinessProfile;
 

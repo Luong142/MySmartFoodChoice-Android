@@ -4,8 +4,142 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_gradient_color_main"
     android:layout_height="match_parent"
-    tools:context=".BusinessDietitianActivity.DietitianUpdateProfileActivity">
+    tools:context=".BusinessDietitianActivity.DietitianUpdateProfileActivity"
+    android:background="@drawable/bg_gradient_color_main"
+    >
 
+    <LinearLayout
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_layout_login_page"
+        android:gravity="top"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.556">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/update_profile"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/profile_picture"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/profilePictureUpdate"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/profile_picture"
+            android:src="@drawable/default_profile_picture" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/first_name"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/firstNameUpdate"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:autofillHints="last name"
+            android:background="@drawable/rounded_layout_editor"
+            android:hint="@string/enter_first_name"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColorHint="#FAFAFA"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/last_name"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/lastNameUpdate"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:autofillHints="last name"
+            android:background="@drawable/rounded_layout_editor"
+            android:hint="@string/enter_last_name"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColorHint="#FAFAFA"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/contact_number"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/contactNumberUpdate"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:autofillHints="last name"
+            android:background="@drawable/rounded_layout_editor"
+            android:hint="@string/enter_contact_number"
+            android:inputType="number"
+            android:maxLength="8"
+            android:textAlignment="center"
+            android:textColorHint="#FAFAFA"
+            android:textSize="20sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <Button
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/dodger_blue"
+            android:text="@string/update"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -150,12 +150,15 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             userProfile.setHeight(String.valueOf(height));
             userProfile.setDietType(dietType);
 
+            /*
             Log.d(TAG, "onSignUpListener: " + userProfile);
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getUid()); // FIXME: for debug purpose
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getDisplayName()); // FIXME: for debug purpose
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getEmail()); // FIXME: for debug purpose
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getPhotoUrl()); // FIXME: for debug purpose
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getProviderId()); // FIXME: for debug purpose
+
+             */
 
             // TODO: create user profile through this and add it inside of the firebase
             // TODO: do this tmr

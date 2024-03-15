@@ -28,6 +28,7 @@ import com.example.myfoodchoice.Model.BusinessProfile;
 import com.example.myfoodchoice.Model.UserAccount;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -324,7 +325,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
         return task ->
         {
             Intent intent = new Intent(BusinessProfileCreateActivity.this,
-                    LoginActivity.class);
+                    WelcomeActivity.class);
             startActivity(intent);
             finish(); // to close this page.
         };
