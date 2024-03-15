@@ -38,7 +38,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header_user"
+        app:headerLayout="@layout/nav_header_trainer"
         app:menu="@menu/nav_menu_trainer"
         android:background="@drawable/bg_nav_header"
         app:itemIconTint="@color/white"

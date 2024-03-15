@@ -118,4 +118,7 @@
     <string name="meal_records">Meal Records</string>
     <string name="view_reviews">View Reviews</string>
     <string name="rewards">Rewards</string>
+    <string name="user">User</string>
+    <string name="guest">Guest</string>
+    <string name="dietitian">Dietitian</string>
 </resources>

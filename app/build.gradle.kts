@@ -37,11 +37,17 @@ dependencies {
     // Firebase dependencies.
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
-
+    implementation ("com.google.mlkit:image-labeling-custom:17.0.2")
+    implementation ("com.google.android.gms:play-services-mlkit-image-labeling-custom:16.0.0-beta5")
     // TODO: this one is for API calling, middle man
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    // Image labeling feature with model downloaded from Firebase
+    implementation ("com.google.mlkit:image-labeling-custom:17.0.2")
+    // Or use the dynamically downloaded pipeline in Google Play Services
+    // implementation 'com.google.android.gms:play-services-mlkit-image-labeling-custom:16.0.0-beta5'
+    implementation ("com.google.mlkit:linkfirebase:17.0.0")
     // TODO: we need two more APIs like Edamame food api, and Google Cloud Vision api.
     // implementation
 

@@ -37,6 +37,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="custom_ica" />
+        <!-- To use multiple downloads: android:value="custom_ica,download2,download3" -->
+
         <activity
             android:name=".BusinessDietitianActivity.DietitianUpdateProfileActivity"
             android:exported="false" />
@@ -52,14 +58,9 @@
         <activity
             android:name=".GuestActivity.GuestMainMenuActivity"
             android:exported="false" />
-        <activity
-            android:name=".CreateProfileActivities.DietitianProfileCreateActivity"
-            android:exported="false" />
+
         <activity
             android:name=".CreateProfileActivities.BusinessProfileCreateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AuthenticationActivity.RegisterBusinessDietitianActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.RegisterBusinessActivity"
@@ -74,26 +75,12 @@
             android:name=".UserActivity.UserProfileUpdateSecondActivity"
             android:exported="false" />
         <activity
-            android:name=".OpenCVTestActivity"
-            android:exported="false" />
-        <activity
             android:name=".CreateProfileActivities.UserProfileCreateFirstActivity"
             android:exported="false" />
         <activity
             android:name=".GuestActivity.GuestBMIResultActivity"
             android:exported="false" />
-        <activity
-            android:name=".WelcomeActivity.ContactUsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WelcomeActivity.ReviewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WelcomeActivity.PartnershipActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WelcomeActivity.AboutUsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".WelcomeActivity.WelcomeActivity"
             android:exported="true">
@@ -109,9 +96,7 @@
         <activity
             android:name=".AuthenticationActivity.ForgotPasswordActivity"
             android:exported="false" />
-        <activity
-            android:name=".GuestActivity.GuestBMICalculatorActivity"
-            android:exported="false" />
+
         <activity
             android:name=".UserActivity.UserMainMenuActivity"
             android:exported="false" />
