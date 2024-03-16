@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="180dp"
     android:background="@drawable/bg_nav_header"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -18,30 +18,12 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/userType"
+        android:id="@+id/fullNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/guest"
         android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/fullNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/full_name"
-        android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/emailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/put_email_here"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="italic" />
 </LinearLayout>

@@ -1,0 +1,12 @@
+Reason to develop native android app over Web based app.
+1. Performance
+2. stability
+3. less bugs
+4. higher compatibility of Android environment as a native Android app.
+
+
+// to train model use this website.
+https://teachablemachine.withgoogle.com/train
+
+// Food API
+https://developer.edamam.com/login

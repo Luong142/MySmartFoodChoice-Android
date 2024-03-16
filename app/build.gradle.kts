@@ -42,6 +42,12 @@ dependencies {
     // TODO: this one is for API calling, middle man
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.google.android.libraries.healthdata:health-data-api:1.0.0-alpha01")
+
+    // for chart
+    implementation ("androidx.cardview:cardview:1.0.0")
+    implementation ("com.github.blackfizz:eazegraph:1.2.5l@aar")
+    implementation ("com.nineoldandroids:library:2.4.0")
 
     // Image labeling feature with model downloaded from Firebase
     implementation ("com.google.mlkit:image-labeling-custom:17.0.2")
