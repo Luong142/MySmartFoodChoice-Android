@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
 import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
