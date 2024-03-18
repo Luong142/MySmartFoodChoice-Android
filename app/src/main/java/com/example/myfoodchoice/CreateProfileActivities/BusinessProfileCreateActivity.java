@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Adapter.BusinessRoleAdapter;
 import com.example.myfoodchoice.Model.BusinessProfile;
-import com.example.myfoodchoice.Model.UserAccount;
+import com.example.myfoodchoice.Model.Account;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -86,7 +86,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     Uri selectedImageUri;
     String myUri, role;
     Intent intentRetrieveUserAccount;
-    UserAccount userAccount;
+    Account account;
     ArrayList<BusinessProfile> roleArrayList;
     DatabaseReference databaseReferenceRegisteredUser;
 
@@ -114,7 +114,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
         // set model class
         businessProfile = new BusinessProfile();
         intentRetrieveUserAccount = getIntent();
-        userAccount = intentRetrieveUserAccount.getParcelableExtra("userAccount");
+        account = intentRetrieveUserAccount.getParcelableExtra("userAccount");
 
         // TODO: init UI components
         profileImage = findViewById(R.id.profileImage);
@@ -247,7 +247,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 businessProfile.setRole(role);
 
                 // set business account here
-                userAccount.setAccountType(role);
+                account.setAccountType(role);
 
                 // FIXME: set image here based on the model
                 businessProfile.setProfileImageUrl(myUri);
@@ -259,7 +259,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
                 // TODO: set the value based on TrainerProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
-                databaseReferenceRegisteredUser.setValue(userAccount)
+                databaseReferenceRegisteredUser.setValue(account)
                         .addOnCompleteListener(onCompleteUserAccountListener())
                         .addOnFailureListener(onFailurePart());
             }

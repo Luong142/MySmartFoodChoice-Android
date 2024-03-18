@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.CreateProfileActivities.UserProfileCreateFirstActivity;
-import com.example.myfoodchoice.Model.UserAccount;
+import com.example.myfoodchoice.Model.Account;
 import com.example.myfoodchoice.Model.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
-public class RegisterUserActivity extends AppCompatActivity
+public class RegisterGuestActivity extends AppCompatActivity
 {
     // TODO: declare UI components
 
@@ -63,11 +63,10 @@ public class RegisterUserActivity extends AppCompatActivity
 
     static final String LABEL_USER = "Registered Users";
 
-    DatabaseReference databaseReferenceRegisteredUser;
-
+    DatabaseReference databaseReferenceRegisteredGuest;
     String email, password, firstName, lastName;
 
-    UserAccount userAccount;
+    Account account;
 
     UserProfile userProfile;
 
@@ -79,7 +78,7 @@ public class RegisterUserActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_guest);
 
         // init firebase database, paste the correct link as reference.
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -153,7 +152,7 @@ public class RegisterUserActivity extends AppCompatActivity
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(RegisterUserActivity.this, "User registered successfully.",
+                    Toast.makeText(RegisterGuestActivity.this, "Guest registered successfully.",
                             Toast.LENGTH_SHORT).show();
                     firebaseUser = firebaseAuth.getCurrentUser();
                     // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
@@ -165,13 +164,13 @@ public class RegisterUserActivity extends AppCompatActivity
                     // init database reference
 
                     // for user account
-                    databaseReferenceRegisteredUser =
+                    databaseReferenceRegisteredGuest =
                             firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
 
 
                     // init user account
-                    userAccount = new UserAccount(email, password);
-                    userAccount.setAccountType("User");
+                    account = new Account(email, password);
+                    account.setAccountType("Guest");
 
                     // intent to carry this too
                     userProfile = new UserProfile();
@@ -184,7 +183,7 @@ public class RegisterUserActivity extends AppCompatActivity
                             .addOnFailureListener(onFailureUpdateDisplayName());
 
                     // through we move to next if complete
-                    databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener
+                    databaseReferenceRegisteredGuest.setValue(account).addOnCompleteListener
                             (onCompleteUserAccountListener());
                     // auto create a new path with name as string value and assign to a variable.
                     // databaseReference = firebaseDatabase.getReference(LABEL);
@@ -224,7 +223,7 @@ public class RegisterUserActivity extends AppCompatActivity
                     {
                         // FIXME: debug purpose
                         Log.d(TAG, "Error: " + e.getMessage());
-                        Toast.makeText(RegisterUserActivity.this, "Error: " + e.getMessage(),
+                        Toast.makeText(RegisterGuestActivity.this, "Error: " + e.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                     // to make the progress bar gone.
@@ -257,7 +256,7 @@ public class RegisterUserActivity extends AppCompatActivity
             // move to user profile for default user profile page.
             Log.d(TAG, "onCompleteUserAccountListener: " + userProfile);
             // move
-            intentNavToUserProfileFirstActivity = new Intent(RegisterUserActivity.this, UserProfileCreateFirstActivity.class);
+            intentNavToUserProfileFirstActivity = new Intent(RegisterGuestActivity.this, UserProfileCreateFirstActivity.class);
             intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
             startActivity(intentNavToUserProfileFirstActivity);
         };
@@ -271,7 +270,7 @@ public class RegisterUserActivity extends AppCompatActivity
                 @Override
                 public void onClick(@NonNull View widget)
                 {
-                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegisterGuestActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }

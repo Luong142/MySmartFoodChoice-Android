@@ -71,10 +71,10 @@
         <!-- TODO: change to text -->
 
         <TextView
-            android:id="@+id/signUpAsUser"
+            android:id="@+id/signUpAsGuest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_as_user"
+            android:text="@string/sign_up_as_guest"
             android:textColor="@color/black"
             android:textSize="25sp" />
 

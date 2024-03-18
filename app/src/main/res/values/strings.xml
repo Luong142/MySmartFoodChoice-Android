@@ -121,4 +121,11 @@
     <string name="user">User</string>
     <string name="guest">Guest</string>
     <string name="dietitian">Dietitian</string>
+    <string name="sign_up_as_guest">Sign Up As Guest</string>
+    <string name="upgrade_account">Upgrade Account</string>
+    <string name="upgrade_now">Upgrade Now</string>
+    <string name="upgrade_to_user_account">Upgrade to User Account</string>
+    <string name="current_account_guest">Current Account: Guest</string>
+    <string name="to_show_the_current_day_trial">to show the current day (trial)</string>
+    <string name="to_show_the_end_date_trial">to show the end date (trial)</string>
 </resources>

@@ -44,6 +44,9 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.google.android.libraries.healthdata:health-data-api:1.0.0-alpha01")
 
+    implementation ("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
+    implementation ("com.google.android.gms:play-services-tflite-gpu:16.2.0")
+    implementation("androidx.activity:activity:1.8.2")
     // for chart
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation ("com.github.blackfizz:eazegraph:1.2.5l@aar")
@@ -60,7 +63,6 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
     // Tensorflow Lite dependencies
     implementation("androidx.activity:activity-ktx:1.8.2")
-    implementation("androidx.activity:activity:1.8.0")
     val camerax_version = "1.3.1"
     //noinspection GradleDependency
     implementation ("androidx.camera:camera-camera2:$camerax_version")

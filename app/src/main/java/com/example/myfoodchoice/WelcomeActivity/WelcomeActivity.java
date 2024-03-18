@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
-import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
@@ -31,13 +31,12 @@ import io.paperdb.Paper;
 public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
-     Button signingBtn;
+    Button signingBtn;
+    String emailRememberMe, passwordRememberMe;
 
-     String emailRememberMe, passwordRememberMe;
+    TextView signUpAsGuest, signUpAsBusiness;
 
-     TextView signUpAsUser, signUpAsBusiness;
-
-    SpannableString spannableSignUpAsUserNav, spannableSignUpAsBusiness;
+    SpannableString spannableSignUpAsGuestNav, spannableSignUpAsBusiness;
 
     FirebaseAuth firebaseAuth;
 
@@ -62,15 +61,15 @@ public class WelcomeActivity extends AppCompatActivity
         signingBtn = findViewById(R.id.signInBtn);
 
         // init text view.
-        signUpAsUser = findViewById(R.id.signUpAsUser);
+        signUpAsGuest = findViewById(R.id.signUpAsGuest);
         signUpAsBusiness = findViewById(R.id.signUpAsBusiness);
 
         // nav to sign up page based on text click
         // FIXME: the index is out of bound.
-        spannableSignUpAsUserNav = new SpannableString(signUpAsUser.getText());
-        spannableSignUpAsUserNav.setSpan(clickableSignUpAsUser(), INDEXSTART, signUpAsUser.length(), 0);
-        signUpAsUser.setText(spannableSignUpAsUserNav);
-        signUpAsUser.setMovementMethod(LinkMovementMethod.getInstance());
+        spannableSignUpAsGuestNav = new SpannableString(signUpAsGuest.getText());
+        spannableSignUpAsGuestNav.setSpan(clickableSignUpAsGuest(), INDEXSTART, signUpAsGuest.length(), 0);
+        signUpAsGuest.setText(spannableSignUpAsGuestNav);
+        signUpAsGuest.setMovementMethod(LinkMovementMethod.getInstance());
 
         // nav to sign up page based on text click
         spannableSignUpAsBusiness = new SpannableString(signUpAsBusiness.getText());
@@ -123,7 +122,7 @@ public class WelcomeActivity extends AppCompatActivity
 
     @NonNull
     @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsUser()
+    private ClickableSpan clickableSignUpAsGuest()
     {
         return new ClickableSpan()
         {
@@ -131,7 +130,7 @@ public class WelcomeActivity extends AppCompatActivity
             public void onClick(View widget)
             {
                 Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterUserActivity.class);
+                        RegisterGuestActivity.class);
                 startActivity(intent);
             }
         };

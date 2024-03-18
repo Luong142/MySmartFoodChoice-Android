@@ -17,12 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
 import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
-import com.example.myfoodchoice.Model.UserAccount;
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.Model.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
@@ -36,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
-import de.javakaffee.kryoserializers.CollectionsEmptyListSerializer;
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
@@ -53,10 +50,10 @@ public class LoginActivity extends AppCompatActivity
     CheckBox rememberMe;
 
     // clickable text
-    TextView clickableForgotPassword, clickableSignUpNav, clickableLoginAsGuest;
+    TextView clickableForgotPassword, clickableSignUpNav;
 
     // for clickable text
-    SpannableString spannableStringSignUpNav, spannableStringLoginAsGuestNav, spannableStringForgotPassword;
+    SpannableString spannableStringSignUpNav, spannableStringForgotPassword;
 
     // for progress bar
     ProgressBar progressBar;
@@ -74,7 +71,7 @@ public class LoginActivity extends AppCompatActivity
 
     Intent intent;
 
-    UserAccount userAccount;
+    Account account;
 
     DatabaseReference databaseReferenceAccountType;
 
@@ -98,8 +95,8 @@ public class LoginActivity extends AppCompatActivity
         // for testing
         // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
 
-        // by default is User.
-        accountType = "User";
+        // by default is Guest.
+        accountType = "Guest";
 
         // this one is to monitor the auth state changes.
         mAuth.addAuthStateListener(authStateListener);
@@ -117,7 +114,6 @@ public class LoginActivity extends AppCompatActivity
         // clickable text
         clickableForgotPassword = findViewById(R.id.clickableForgotPassword);
         clickableSignUpNav = findViewById(R.id.clickableSignUpNavText);
-        clickableLoginAsGuest = findViewById(R.id.clickableLoginGuestNavText);
 
         // button
         loginBtn = findViewById(R.id.loginBtn);
@@ -129,12 +125,6 @@ public class LoginActivity extends AppCompatActivity
         spannableStringSignUpNav.setSpan(clickableSignUpNavSpan(), 17, clickableSignUpNav.length(), 0);
         clickableSignUpNav.setText(spannableStringSignUpNav);
         clickableSignUpNav.setMovementMethod(LinkMovementMethod.getInstance());
-
-        // nav to guest main menu page based on text click
-        spannableStringLoginAsGuestNav = new SpannableString(clickableLoginAsGuest.getText());
-        spannableStringLoginAsGuestNav.setSpan(clickableLoginAsGuestNavSpan(), INDEXSTART, clickableLoginAsGuest.length(), 0);
-        clickableLoginAsGuest.setText(spannableStringLoginAsGuestNav);
-        clickableLoginAsGuest.setMovementMethod(LinkMovementMethod.getInstance());
 
         // nav to forgot password page based on text click
         spannableStringForgotPassword = new SpannableString(clickableForgotPassword.getText());
@@ -148,7 +138,6 @@ public class LoginActivity extends AppCompatActivity
 
         // check box listener
         rememberMe.setOnCheckedChangeListener(onCheckedListener());
-
     }
 
     private final FirebaseAuth.AuthStateListener authStateListener =
@@ -176,11 +165,11 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
-                userAccount = snapshot.getValue(UserAccount.class);
-                accountType = "User"; // by default is user, unless changed.
-                if (userAccount != null)
+                account = snapshot.getValue(Account.class);
+                accountType = "Guest"; // by default is Guest, unless changed.
+                if (account != null)
                 {
-                    accountType = userAccount.getAccountType();
+                    accountType = account.getAccountType();
                 }
                 else
                 {
@@ -256,10 +245,10 @@ public class LoginActivity extends AppCompatActivity
             // if the account type is recognized, then navigate to the correct main menu page.
             if (task.isSuccessful())
             {
-                switch (accountType)
+                switch (accountType) // FIXME: there is a bug when login, it might inform us.
                 {
-                    case "User":
-                        intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                    case "Guest":
+                        intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                         startActivity(intent);
                         finish();
                         break;
@@ -273,10 +262,14 @@ public class LoginActivity extends AppCompatActivity
                         startActivity(intent);
                         finish();
                         break;
+                    case "User":
+                        intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
 
                     default:
                         Toast.makeText(LoginActivity.this,
-
                                 "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -325,24 +318,7 @@ public class LoginActivity extends AppCompatActivity
                 public void onClick(View widget)
                 {
                     Log.d("LoginActivity", "navigating to sign up page! ");
-                    Intent intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            };
-        }
-    }
-
-    public ClickableSpan clickableLoginAsGuestNavSpan()
-    {
-        {
-            return new ClickableSpan()
-            {
-                @Override
-                public void onClick(View widget)
-                {
-                    Log.d("LoginActivity", "navigating to guest main menu page! ");
-                    Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, RegisterGuestActivity.class);
                     startActivity(intent);
                     finish();
                 }

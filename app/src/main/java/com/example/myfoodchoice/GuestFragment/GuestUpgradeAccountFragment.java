@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.myfoodchoice.R;
 
-public class GuestHomeFragment extends Fragment
+public class GuestUpgradeAccountFragment extends Fragment
 {
 
 
@@ -20,10 +20,10 @@ public class GuestHomeFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_guest_home, container, false);
+        return inflater.inflate(R.layout.fragment_guest_upgrade_account, container, false);
     }
 }

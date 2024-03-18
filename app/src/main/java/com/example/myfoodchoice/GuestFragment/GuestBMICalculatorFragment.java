@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
 import com.example.myfoodchoice.GuestActivity.GuestBMIResultActivity;
 import com.example.myfoodchoice.R;
 
@@ -179,7 +179,7 @@ public class GuestBMICalculatorFragment extends Fragment
                 public void onClick(View widget)
                 {
                     Log.d("GuestMainMenuActivity", "Navigating to register page!");
-                    Intent intent = new Intent(getContext(), RegisterUserActivity.class);
+                    Intent intent = new Intent(getContext(), RegisterGuestActivity.class);
                     startActivity(intent);
                 }
             };

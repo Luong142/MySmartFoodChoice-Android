@@ -21,7 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.myfoodchoice.BusinessTrainerFragment.TrainerProfileViewFragment;
 import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
 import com.example.myfoodchoice.Model.BusinessProfile;
-import com.example.myfoodchoice.Model.UserAccount;
+import com.example.myfoodchoice.Model.Account;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
@@ -213,13 +213,13 @@ public class TrainerMainMenuActivity extends AppCompatActivity
                     if (snapshot.exists())
                     {
                         // extract data from firebase database
-                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
+                        Account account = snapshot.getValue(Account.class);
                         // Log.d(TAG, "onDataChange: " + userAccount);
                         // Log.d(TAG, "onDataChange: " + userProfile);
-                        if (userAccount != null)
+                        if (account != null)
                         {
                             // set email
-                            String email = userAccount.getEmail();
+                            String email = account.getEmail();
                             headerEmail.setText(email);
                         }
                     }

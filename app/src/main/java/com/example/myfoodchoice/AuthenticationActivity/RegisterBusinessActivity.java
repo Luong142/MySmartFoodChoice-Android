@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.CreateProfileActivities.BusinessProfileCreateActivity;
-import com.example.myfoodchoice.Model.UserAccount;
+import com.example.myfoodchoice.Model.Account;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
@@ -51,7 +51,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
 
     ProgressBar progressBar;
 
-    UserAccount userAccount;
+    Account account;
 
     FirebaseUser firebaseUser;
 
@@ -159,7 +159,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
                         // firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
 
                 // init user account
-                userAccount = new UserAccount(email, password); // with email and password
+                account = new Account(email, password); // with email and password
 
                 // through we move to next if complete
                     /*
@@ -177,7 +177,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
 
                 intentNavToBusinessProfileActivity = new Intent(RegisterBusinessActivity.this,
                         BusinessProfileCreateActivity.class);
-                intentNavToBusinessProfileActivity.putExtra("userAccount", userAccount);
+                intentNavToBusinessProfileActivity.putExtra("userAccount", account);
                 startActivity(intentNavToBusinessProfileActivity);
             }
             else

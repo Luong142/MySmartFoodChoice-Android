@@ -101,7 +101,7 @@
             android:name=".UserActivity.UserMainMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticationActivity.RegisterUserActivity"
+            android:name=".AuthenticationActivity.RegisterGuestActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.LoginActivity"

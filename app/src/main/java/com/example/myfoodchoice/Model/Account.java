@@ -7,25 +7,26 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
-public class UserAccount implements Parcelable
+public class Account implements Parcelable
 {
     private String email;
     private String password;
 
     private String accountType;
 
-    public UserAccount()
+    public Account()
     {
         // for firebase to paste on this default constructor.
+        // account type can be guest, user, dietitian, trainer.
     }
 
-    public UserAccount(String username, String password)
+    public Account(String username, String password)
     {
         this.email = username;
         this.password = password;
     }
 
-    public UserAccount(String username, String password, String accountType)
+    public Account(String username, String password, String accountType)
     {
         this.email = username;
         this.password = password;
@@ -36,7 +37,7 @@ public class UserAccount implements Parcelable
         return accountType;
     }
 
-    protected UserAccount(@NonNull Parcel in)
+    protected Account(@NonNull Parcel in)
     {
         email = in.readString();
         password = in.readString();
@@ -54,20 +55,20 @@ public class UserAccount implements Parcelable
                 '}';
     }
 
-    public static final Creator<UserAccount> CREATOR = new Creator<UserAccount>()
+    public static final Creator<Account> CREATOR = new Creator<Account>()
     {
         @NonNull
         @Contract("_ -> new")
         @Override
-        public UserAccount createFromParcel(Parcel in) {
-            return new UserAccount(in);
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
         }
 
         @NonNull
         @Contract(value = "_ -> new", pure = true)
         @Override
-        public UserAccount[] newArray(int size) {
-            return new UserAccount[size];
+        public Account[] newArray(int size) {
+            return new Account[size];
         }
     };
 

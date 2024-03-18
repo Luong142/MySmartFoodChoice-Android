@@ -13,7 +13,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.GuestFragment.GuestBMICalculatorFragment;
-import com.example.myfoodchoice.GuestFragment.GuestHomeFragment;
+import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -52,7 +52,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestHomeFragment()).commit();
+                    new GuestUpgradeAccountFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -82,7 +82,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestHomeFragment()).commit();
+                    new GuestUpgradeAccountFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
