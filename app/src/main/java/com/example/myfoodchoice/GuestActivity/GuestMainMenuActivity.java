@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.GuestFragment.GuestBMICalculatorFragment;
+import com.example.myfoodchoice.GuestFragment.GuestHomeFragment;
 import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
@@ -52,7 +53,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestUpgradeAccountFragment()).commit();
+                    new GuestHomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -82,8 +83,14 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestUpgradeAccountFragment()).commit();
+                    new GuestHomeFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (itemId == R.id.nav_upgrade_account)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new GuestUpgradeAccountFragment()).commit();
         }
 
         else if (itemId == R.id.nav_calculator)

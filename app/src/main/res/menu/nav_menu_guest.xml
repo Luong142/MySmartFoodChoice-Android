@@ -6,16 +6,23 @@
 
     <!-- TODO: update the guest part -->
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_home"
-            android:title="@string/upgrade_account"
-            android:icon="@drawable/upgrade_account"
+            android:title="@string/home"
+            android:icon="@drawable/home"
             />
 
         <item
             android:id="@+id/nav_calculator"
             android:title="@string/bmi_calculator"
             android:icon="@drawable/calculator"
+            />
+
+        <item
+            android:id="@+id/nav_upgrade_account"
+            android:title="@string/upgrade_account"
+            android:icon="@drawable/upgrade_account"
             />
 
         <item

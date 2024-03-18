@@ -1,9 +1,13 @@
 package com.example.myfoodchoice.Model;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+
+import com.example.myfoodchoice.GuestActivity.GuestTrialOverActivity;
 
 import org.jetbrains.annotations.Contract;
 
@@ -18,6 +22,8 @@ public class Account implements Parcelable
     private Date currentDateTrial;
 
     private Date endDateTrial;
+
+    private boolean isGuest;
 
     public Account()
     {
@@ -38,6 +44,41 @@ public class Account implements Parcelable
         this.accountType = accountType;
     }
 
+    public void startGuestTrialPeriod()
+    {
+        this.isGuest = true;
+        if ("Guest".equals(getAccountType()))
+        {
+            currentDateTrial = new Date();
+            endDateTrial = new Date(currentDateTrial.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days later
+        }
+    }
+
+    public boolean isGuestTrialActive() // to check if the guest trial is active or not.
+    {
+        if (currentDateTrial == null)
+        {
+            return false;
+        }
+        if (endDateTrial == null)
+        {
+            return false;
+        }
+
+        Date currentDate = new Date();
+        return currentDate.before(endDateTrial);
+    }
+
+    public void navToTrialOverActivity(Context context)
+    {
+        if (!isGuestTrialActive())
+        {
+            Intent intent = new Intent(context, GuestTrialOverActivity.class);
+            context.startActivity(intent);
+            // FIXME:not working implement this logic directly in GuestMainMenuActivity.
+        }
+    }
+
     public String getAccountType() {
         return accountType;
     }
@@ -47,6 +88,9 @@ public class Account implements Parcelable
         email = in.readString();
         password = in.readString();
         accountType = in.readString();
+        currentDateTrial = (Date) in.readSerializable();
+        endDateTrial = (Date) in.readSerializable();
+        isGuest = in.readByte() != 0;
     }
 
     @NonNull
@@ -131,5 +175,8 @@ public class Account implements Parcelable
         dest.writeString(email);
         dest.writeString(password);
         dest.writeString(accountType);
+        dest.writeSerializable(currentDateTrial);
+        dest.writeSerializable(endDateTrial);
+        dest.writeByte((byte) (isGuest ? 1 : 0));
     }
 }

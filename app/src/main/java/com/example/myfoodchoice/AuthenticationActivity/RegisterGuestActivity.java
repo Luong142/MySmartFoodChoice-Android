@@ -59,9 +59,9 @@ public class RegisterGuestActivity extends AppCompatActivity
     // for database
     FirebaseDatabase firebaseDatabase;
 
-    static final String TAG = "RegisterActivity";
+    static final String TAG = "RegisterGuestActivity";
 
-    static final String LABEL_USER = "Registered Users";
+    static final String LABEL_USER = "Registered Accounts";
 
     DatabaseReference databaseReferenceRegisteredGuest;
     String email, password, firstName, lastName;
@@ -127,18 +127,35 @@ public class RegisterGuestActivity extends AppCompatActivity
             if (TextUtils.isEmpty(email))
             {
                 signupEmailEditText.setError("Email is required.");
+                signupEmailEditText.requestFocus();
                 return;
             }
 
             if (TextUtils.isEmpty(password))
             {
                 signupPasswordEditText.setError("Password is required.");
+                signupPasswordEditText.requestFocus();
                 return;
             }
 
             if (password.length() < 4)
             {
                 signupPasswordEditText.setError("Password must be at least 6 characters.");
+                signupPasswordEditText.requestFocus();
+                return;
+            }
+
+            if (containsNumber(firstNameEditText))
+            {
+                firstNameEditText.setError("First name cannot contain numbers.");
+                firstNameEditText.requestFocus();
+                return;
+            }
+
+            if (containsNumber(lastNameEditText))
+            {
+                lastNameEditText.setError("Last name cannot contain numbers.");
+                lastNameEditText.requestFocus();
                 return;
             }
 
@@ -171,6 +188,10 @@ public class RegisterGuestActivity extends AppCompatActivity
                     // init user account
                     account = new Account(email, password);
                     account.setAccountType("Guest");
+
+                    // start the trial day?
+                    account.startGuestTrialPeriod();
+                    Log.d(TAG, "onCreate: " + account.toString());
 
                     // intent to carry this too
                     userProfile = new UserProfile();
@@ -209,8 +230,8 @@ public class RegisterGuestActivity extends AppCompatActivity
                     }
                     catch(FirebaseAuthInvalidCredentialsException e)
                     {
-                        signupPasswordEditText.setError("Invalid credentials.");
-                        signupPasswordEditText.requestFocus();
+                        signupEmailEditText.setError("Invalid credentials.");
+                        signupEmailEditText.requestFocus();
                     }
                     catch(FirebaseAuthUserCollisionException e)
                     {
@@ -232,6 +253,12 @@ public class RegisterGuestActivity extends AppCompatActivity
                 }
             });
         };
+    }
+
+    public boolean containsNumber(@NonNull EditText editText)
+    {
+        String text = editText.getText().toString();
+        return text.matches(".*\\d.*");
     }
 
     @NonNull
@@ -258,6 +285,7 @@ public class RegisterGuestActivity extends AppCompatActivity
             intentNavToUserProfileFirstActivity = new Intent(RegisterGuestActivity.this, UserProfileCreateFirstActivity.class);
             intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
             startActivity(intentNavToUserProfileFirstActivity);
+            finish();
         };
     }
 

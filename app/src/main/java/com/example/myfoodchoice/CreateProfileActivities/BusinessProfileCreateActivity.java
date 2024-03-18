@@ -47,7 +47,6 @@ import java.util.Objects;
 
 public class BusinessProfileCreateActivity extends AppCompatActivity
 {
-    private static final String LABEL_USER = "Registered Businesses";
     // TODO: declare UI components
     ImageView profileImage;
 
@@ -80,6 +79,8 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     final static String TAG = "BusinessProfileCreateActivity";
 
     ActivityResultLauncher<Intent> activityResultLauncher;
+
+    static final String LABEL_USER = "Registered Accounts";
 
     static final String LABEL = "Business Profile";
 
@@ -168,8 +169,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     {
         return v ->
         {
-            // make the progress bar appear
-            progressBar.setVisibility(ProgressBar.VISIBLE);
 
             // TODO: the user can click on image view and select their profile picture or take new picture to upload
             // TODO: to Firebase database.
@@ -179,30 +178,33 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             {
                 Toast.makeText(BusinessProfileCreateActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(ProgressBar.GONE);
+                // profileImage.requestFocus();
                 return; // exit the method if selectedImageUri is null
             }
 
             if (TextUtils.isEmpty(firstName.getText().toString().trim()))
             {
                 firstName.setError("Please enter your first name.");
-                progressBar.setVisibility(ProgressBar.GONE);
+                firstName.requestFocus();
                 return; // exit the method if age is not entered
             }
 
             if (TextUtils.isEmpty(lastName.getText().toString().trim()))
             {
                 lastName.setError("Please enter your last name.");
-                progressBar.setVisibility(ProgressBar.GONE);
+                lastName.requestFocus();
                 return; // exit the method if age is not entered
             }
 
             if (TextUtils.isEmpty(contactNumber.getText().toString().trim()))
             {
                 contactNumber.setError("Please enter your contact number.");
-                progressBar.setVisibility(ProgressBar.GONE);
+                contactNumber.requestFocus();
                 return; // exit the method if age is not entered
             }
+
+            // make the progress bar appear
+            progressBar.setVisibility(ProgressBar.VISIBLE);
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child
@@ -247,6 +249,12 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 businessProfile.setRole(role);
 
                 // set business account here
+                if (account == null)
+                {
+                    // Handle the case where the account object is null
+                    Toast.makeText(this, "Account object is null", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 account.setAccountType(role);
 
                 // FIXME: set image here based on the model
@@ -255,7 +263,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 // Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
                 // Log.d(TAG, "onCompleteUploadListener: " + userAccount);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
-
 
                 // TODO: set the value based on TrainerProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());

@@ -112,6 +112,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             if (TextUtils.isEmpty(editIntHeight.getText().toString()))
             {
                 editIntHeight.setError("Please enter your height");
+                editIntHeight.requestFocus();
                 return;
             }
 
@@ -120,6 +121,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             if (height < 50 || height > 250)
             {
                 editIntHeight.setError("Invalid height value cm");
+                editIntHeight.requestFocus();
                 return;
             }
 
@@ -127,6 +129,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             if (TextUtils.isEmpty(editIntWeight.getText().toString()))
             {
                 editIntWeight.setError("Please enter your weight");
+                editIntWeight.requestFocus();
                 return;
             }
 
@@ -135,6 +138,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             if (weight < 20 || weight > 300)
             {
                 editIntWeight.setError("Invalid weight value kg");
+                editIntWeight.requestFocus();
                 return;
             }
 
@@ -177,7 +181,8 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             {
                 Log.d(TAG, "onSignUpCompleteListener: " + task); // FIXME: for debug purpose
                 Toast.makeText(UserProfileCreateSecondActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
-                intentToLoginActivity = new Intent(UserProfileCreateSecondActivity.this, LoginActivity.class);
+                intentToLoginActivity = new Intent(UserProfileCreateSecondActivity.this,
+                        LoginActivity.class);
                 intentToLoginActivity.putExtra("userProfile", userProfile);
                 startActivity(intentToLoginActivity);
                 finish(); // to close this page.
@@ -186,7 +191,8 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             {
                 progressBar.setVisibility(ProgressBar.GONE);
                 signUpBtn.setVisibility(Button.VISIBLE); // to show the button again.
-                Log.d(TAG, "onSignUpFailedListener: " + Objects.requireNonNull(task.getException()).getMessage()); // FIXME: for debug purpose
+                Log.d(TAG, "onSignUpFailedListener: " +
+                        Objects.requireNonNull(task.getException()).getMessage()); // FIXME: for debug purpose
                 Toast.makeText(UserProfileCreateSecondActivity.this, "Sign up failed", Toast.LENGTH_SHORT).show();
             }
         };

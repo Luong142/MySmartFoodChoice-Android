@@ -165,9 +165,6 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     {
         return v ->
         {
-            // make the progress bar appear
-            progressBar.setVisibility(ProgressBar.VISIBLE);
-
             ageInt = Integer.parseInt(age.getText().toString().trim());
             Log.d(TAG, "onCreateProfileListener: " + gender);
 
@@ -179,7 +176,6 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             {
                 Toast.makeText(UserProfileCreateFirstActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if selectedImageUri is null
             }
 
@@ -187,17 +183,26 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             {
                 Toast.makeText(UserProfileCreateFirstActivity.this,
                         "Please select a gender.", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(ProgressBar.GONE);
                 return; // exit the method if gender is not selected
+            }
+
+            if (Integer.parseInt(age.getText().toString().trim()) > 100
+                    || Integer.parseInt(age.getText().toString().trim()) < 0)
+            {
+                age.setError("Please enter a valid age.");
+                age.requestFocus();
+                return; // exit the method if age is not entered
             }
 
             if (TextUtils.isEmpty(age.getText().toString().trim()))
             {
-                Toast.makeText(UserProfileCreateFirstActivity.this,
-                        "Please enter your age.", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(ProgressBar.GONE);
+                age.setError("Please enter your age.");
+                age.requestFocus();
                 return; // exit the method if age is not entered
             }
+
+            // make the progress bar appear
+            progressBar.setVisibility(ProgressBar.VISIBLE);
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child

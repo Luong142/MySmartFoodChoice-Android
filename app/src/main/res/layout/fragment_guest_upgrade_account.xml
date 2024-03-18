@@ -40,14 +40,14 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/currentDayTextView"
+                    android:id="@+id/currentDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/to_show_the_current_day_trial"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/trialEndDateTextView"
+                    android:id="@+id/endDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/to_show_the_end_date_trial"
@@ -79,6 +79,7 @@
 
 
                 <Button
+                    android:id="@+id/upgradeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

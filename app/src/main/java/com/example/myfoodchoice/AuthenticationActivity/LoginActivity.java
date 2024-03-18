@@ -98,10 +98,7 @@ public class LoginActivity extends AppCompatActivity
         // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
 
         // by default is Guest.
-        accountType = "Guest";
-
-        // this one is to monitor the auth state changes.
-        mAuth.addAuthStateListener(authStateListener);
+        accountType = "Default";
 
         // TODO: init UI components
         loginEmailEditText = findViewById(R.id.login_email);
@@ -142,20 +139,21 @@ public class LoginActivity extends AppCompatActivity
         rememberMe.setOnCheckedChangeListener(onCheckedListener());
     }
 
-    private final FirebaseAuth.AuthStateListener authStateListener =
-            firebaseAuth ->
-    {
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null)
+    /*
+        private final FirebaseAuth.AuthStateListener authStateListener =
+                firebaseAuth ->
         {
-            // user signed in
-            Log.d("LoginActivity", "UID here: " + firebaseUser.getUid());
-            userID = firebaseUser.getUid();
-            databaseReferenceAccountType = firebaseDatabase.getReference("Registered Businesses").child(userID);
-            databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
-        }
-
-    };
+            firebaseUser = firebaseAuth.getCurrentUser();
+            if (firebaseUser != null)
+            {
+                // user signed in
+                Log.d("LoginActivity", "UID here: " + firebaseUser.getUid());
+                userID = firebaseUser.getUid();
+                databaseReferenceAccountType = firebaseDatabase.getReference("Registered Users").child(userID);
+                databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
+            }
+        };
+     */
 
     @NonNull
     @Contract(" -> new") // the purpose to is to recognise the account type
@@ -168,10 +166,37 @@ public class LoginActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 account = snapshot.getValue(Account.class);
-                accountType = "Guest"; // by default is Guest, unless changed.
                 if (account != null)
                 {
                     accountType = account.getAccountType();
+                    switch (accountType) // FIXME: there is a bug when login, it might inform us.
+                    {
+                        case "Guest":
+                            intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case "Trainer":
+                            intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case "Dietitian":
+                            intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case "User":
+                            intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+
+                        default:
+                            Toast.makeText(LoginActivity.this,
+                                    "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
                 else
                 {
@@ -245,36 +270,14 @@ public class LoginActivity extends AppCompatActivity
             // check the condition based on the account type.
             // if the account type is not recognized, then show a toast message.
             // if the account type is recognized, then navigate to the correct main menu page.
+            // this one is to monitor the auth state changes
+
             if (task.isSuccessful())
             {
-                switch (accountType) // FIXME: there is a bug when login, it might inform us.
-                {
-                    case "Guest":
-                        intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case "Trainer":
-                        intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case "Dietitian":
-                        intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case "User":
-                        intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-
-                    default:
-                        Toast.makeText(LoginActivity.this,
-                                "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
-                        break;
-                }
+                firebaseUser = mAuth.getCurrentUser();
+                userID = firebaseUser.getUid();
+                databaseReferenceAccountType = firebaseDatabase.getReference("Registered Users").child(userID);
+                databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
             }
             else
             {
@@ -286,6 +289,7 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
+    /*
     @Override
     protected void onDestroy()
     {
@@ -294,6 +298,9 @@ public class LoginActivity extends AppCompatActivity
             mAuth.removeAuthStateListener(authStateListener); // avoid memory leaks
         }
     }
+
+
+     */
 
     public ClickableSpan clickableForgotPasswordNavSpan()
     {

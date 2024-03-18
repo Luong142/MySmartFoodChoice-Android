@@ -115,18 +115,21 @@ public class RegisterBusinessActivity extends AppCompatActivity
             if (TextUtils.isEmpty(email))
             {
                 emailEditText.setError("Email is required.");
+                emailEditText.requestFocus();
                 return;
             }
 
             if (TextUtils.isEmpty(password))
             {
                 passwordEditText.setError("Password is required.");
+                passwordEditText.requestFocus();
                 return;
             }
 
             if (password.length() < 4)
             {
                 passwordEditText.setError("Password must be at least 6 characters.");
+                passwordEditText.requestFocus();
                 return;
             }
 
@@ -179,6 +182,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
                         BusinessProfileCreateActivity.class);
                 intentNavToBusinessProfileActivity.putExtra("userAccount", account);
                 startActivity(intentNavToBusinessProfileActivity);
+                finish();
             }
             else
             {
@@ -195,15 +199,14 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 }
                 catch (FirebaseAuthInvalidCredentialsException e)
                 {
-                    passwordEditText.setError("Invalid credentials.");
-                    passwordEditText.requestFocus();
+                    emailEditText.setError("Invalid credentials.");
+                    emailEditText.requestFocus();
                 }
                 catch (FirebaseAuthUserCollisionException e)
                 {
                     // this one is for email I suppose.
                     emailEditText.setError("User is already registered with this email. Use another email");
                     emailEditText.requestFocus();
-
                 }
                 catch (Exception e)
                 {
