@@ -7,12 +7,17 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.Date;
+
 public class Account implements Parcelable
 {
     private String email;
     private String password;
+    private String accountType; // this could be "User", "Guest", "Trainer", "Dietitian", etc.
 
-    private String accountType;
+    private Date currentDateTrial;
+
+    private Date endDateTrial;
 
     public Account()
     {
@@ -48,10 +53,12 @@ public class Account implements Parcelable
     @Override
     public String toString()
     {
-        return "UserAccount{" +
+        return "Account{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", accountType='" + accountType + '\'' +
+                ", currentDateTrial=" + currentDateTrial +
+                ", endDateTrial=" + endDateTrial +
                 '}';
     }
 
@@ -71,6 +78,22 @@ public class Account implements Parcelable
             return new Account[size];
         }
     };
+
+    public Date getCurrentDateTrial() {
+        return currentDateTrial;
+    }
+
+    public void setCurrentDateTrial(Date currentDateTrial) {
+        this.currentDateTrial = currentDateTrial;
+    }
+
+    public Date getEndDateTrial() {
+        return endDateTrial;
+    }
+
+    public void setEndDateTrial(Date endDateTrial) {
+        this.endDateTrial = endDateTrial;
+    }
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;

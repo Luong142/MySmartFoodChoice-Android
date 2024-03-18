@@ -128,4 +128,11 @@
     <string name="current_account_guest">Current Account: Guest</string>
     <string name="to_show_the_current_day_trial">to show the current day (trial)</string>
     <string name="to_show_the_end_date_trial">to show the end date (trial)</string>
+    <string name="myfoodchoice">MyFoodChoice</string>
+    <string name="calories_0">Calories 0</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="night">Night</string>
+    <string name="log_my_meal_view">Log My Meal View</string>
+    <string name="search_for_food_or_drinks">Search for food or drinks</string>
 </resources>

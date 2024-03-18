@@ -37,12 +37,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
+        <activity
+            android:name=".GuestActivity.GuestTrialOverActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="custom_ica" />
-        <!-- To use multiple downloads: android:value="custom_ica,download2,download3" -->
-
+            android:value="custom_ica" /> <!-- To use multiple downloads: android:value="custom_ica,download2,download3" -->
         <activity
             android:name=".BusinessDietitianActivity.DietitianUpdateProfileActivity"
             android:exported="false" />
@@ -58,7 +59,6 @@
         <activity
             android:name=".GuestActivity.GuestMainMenuActivity"
             android:exported="false" />
-
         <activity
             android:name=".CreateProfileActivities.BusinessProfileCreateActivity"
             android:exported="false" />
@@ -80,7 +80,6 @@
         <activity
             android:name=".GuestActivity.GuestBMIResultActivity"
             android:exported="false" />
-
         <activity
             android:name=".WelcomeActivity.WelcomeActivity"
             android:exported="true">
@@ -96,7 +95,6 @@
         <activity
             android:name=".AuthenticationActivity.ForgotPasswordActivity"
             android:exported="false" />
-
         <activity
             android:name=".UserActivity.UserMainMenuActivity"
             android:exported="false" />

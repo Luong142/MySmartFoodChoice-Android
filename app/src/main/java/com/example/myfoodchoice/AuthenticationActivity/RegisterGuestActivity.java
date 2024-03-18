@@ -246,7 +246,6 @@ public class RegisterGuestActivity extends AppCompatActivity
             }
         };
     }
-
     @NonNull
     @Contract(pure = true)
     private OnCompleteListener<Void> onCompleteUserAccountListener()
