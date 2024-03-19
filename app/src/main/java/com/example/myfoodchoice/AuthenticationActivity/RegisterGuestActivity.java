@@ -189,9 +189,10 @@ public class RegisterGuestActivity extends AppCompatActivity
                     account = new Account(email, password);
                     account.setAccountType("Guest");
 
+                    Log.d(TAG, "onCreate: " + account.toString());
+
                     // start the trial day?
                     account.startGuestTrialPeriod();
-                    Log.d(TAG, "onCreate: " + account.toString());
 
                     // intent to carry this too
                     userProfile = new UserProfile();

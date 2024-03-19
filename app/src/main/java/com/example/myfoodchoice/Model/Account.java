@@ -23,7 +23,7 @@ public class Account implements Parcelable
 
     private Date endDateTrial;
 
-    private boolean isGuest;
+    private boolean isGuestTrialActive;
 
     public Account()
     {
@@ -46,7 +46,6 @@ public class Account implements Parcelable
 
     public void startGuestTrialPeriod()
     {
-        this.isGuest = true;
         if ("Guest".equals(getAccountType()))
         {
             currentDateTrial = new Date();
@@ -54,29 +53,27 @@ public class Account implements Parcelable
         }
     }
 
-    public boolean isGuestTrialActive() // to check if the guest trial is active or not.
+    public void updateTrialStartDate()
     {
-        if (currentDateTrial == null)
-        {
-            return false;
-        }
-        if (endDateTrial == null)
-        {
-            return false;
-        }
-
-        Date currentDate = new Date();
-        return currentDate.before(endDateTrial);
+        currentDateTrial = new Date(); // update the current date.
     }
 
-    public void navToTrialOverActivity(Context context)
+    public boolean isGuestTrialActive()
     {
-        if (!isGuestTrialActive())
+        if ("Guest".equals(getAccountType()))
         {
-            Intent intent = new Intent(context, GuestTrialOverActivity.class);
-            context.startActivity(intent);
-            // FIXME:not working implement this logic directly in GuestMainMenuActivity.
+            if (endDateTrial != null)
+            {
+                Date currentDate = new Date();
+                return currentDate.before(endDateTrial); // compare the current date with the end date.
+            }
         }
+        return false; // otherwise will be false by default.
+    }
+
+    public void setGuestTrialActive(boolean guestTrialActive)
+    {
+        isGuestTrialActive = guestTrialActive;
     }
 
     public String getAccountType() {
@@ -90,7 +87,7 @@ public class Account implements Parcelable
         accountType = in.readString();
         currentDateTrial = (Date) in.readSerializable();
         endDateTrial = (Date) in.readSerializable();
-        isGuest = in.readByte() != 0;
+        isGuestTrialActive = in.readByte() != 0;
     }
 
     @NonNull
@@ -103,6 +100,7 @@ public class Account implements Parcelable
                 ", accountType='" + accountType + '\'' +
                 ", currentDateTrial=" + currentDateTrial +
                 ", endDateTrial=" + endDateTrial +
+                ", isGuestTrialActive=" + isGuestTrialActive +
                 '}';
     }
 
@@ -122,6 +120,7 @@ public class Account implements Parcelable
             return new Account[size];
         }
     };
+
 
     public Date getCurrentDateTrial() {
         return currentDateTrial;
@@ -177,6 +176,6 @@ public class Account implements Parcelable
         dest.writeString(accountType);
         dest.writeSerializable(currentDateTrial);
         dest.writeSerializable(endDateTrial);
-        dest.writeByte((byte) (isGuest ? 1 : 0));
+        dest.writeByte((byte) (isGuestTrialActive ? 1 : 0));
     }
 }

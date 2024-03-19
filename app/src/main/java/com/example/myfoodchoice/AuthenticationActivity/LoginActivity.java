@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
 import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
+import com.example.myfoodchoice.GuestActivity.GuestTrialOverActivity;
 import com.example.myfoodchoice.Model.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
@@ -65,7 +66,9 @@ public class LoginActivity extends AppCompatActivity
 
     FirebaseUser firebaseUser;
 
-    static final int INDEXSTART = 0;
+    static final int INDEX_START = 0;
+
+    static final String PATH_DATABASE = "Registered Accounts";
 
     FirebaseDatabase firebaseDatabase;
 
@@ -76,6 +79,8 @@ public class LoginActivity extends AppCompatActivity
     Account account;
 
     DatabaseReference databaseReferenceAccountType;
+
+    boolean isTrialOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -127,7 +132,7 @@ public class LoginActivity extends AppCompatActivity
 
         // nav to forgot password page based on text click
         spannableStringForgotPassword = new SpannableString(clickableForgotPassword.getText());
-        spannableStringForgotPassword.setSpan(clickableForgotPasswordNavSpan(), INDEXSTART, clickableForgotPassword.length(), 0);
+        spannableStringForgotPassword.setSpan(clickableForgotPasswordNavSpan(), INDEX_START, clickableForgotPassword.length(), 0);
         clickableForgotPassword.setText(spannableStringForgotPassword);
         clickableForgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -158,7 +163,7 @@ public class LoginActivity extends AppCompatActivity
     @NonNull
     @Contract(" -> new") // the purpose to is to recognise the account type
     // and auto choose the correct layout for normal user, dietitian, trainer.
-    private ValueEventListener valueAccountTypeEventListener()
+    private ValueEventListener valueAccountTypeEvent()
     {
         return new ValueEventListener()
         {
@@ -166,30 +171,36 @@ public class LoginActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 account = snapshot.getValue(Account.class);
+                // Log.d("LoginActivity", "onDataChange: hello" + account.toString());
                 if (account != null)
                 {
                     accountType = account.getAccountType();
+                    isTrialOver = account.isGuestTrialActive();
+                    // Log.d("LoginActivity", "onDataChange: " + accountType);
+                    // Log.d("LoginActivity", "onDataChange: " + account.isGuestTrialActive());
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
                     {
                         case "Guest":
-                            intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
-                            startActivity(intent);
-                            finish();
+                            if (isTrialOver)
+                            {
+                                intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                            }
+                            else
+                            {
+                                Toast.makeText(LoginActivity.this,
+                                        "Your guest trial period is over, please upgrade your account.",
+                                        Toast.LENGTH_SHORT).show();
+                                intent = new Intent(LoginActivity.this, GuestTrialOverActivity.class);
+                            }
                             break;
                         case "Trainer":
                             intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
-                            startActivity(intent);
-                            finish();
                             break;
                         case "Dietitian":
                             intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
-                            startActivity(intent);
-                            finish();
                             break;
                         case "User":
                             intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
-                            startActivity(intent);
-                            finish();
                             break;
 
                         default:
@@ -197,10 +208,15 @@ public class LoginActivity extends AppCompatActivity
                                     "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
                             break;
                     }
+                    if (intent != null)
+                    {
+                        startActivity(intent);
+                        finish();
+                    }
                 }
                 else
                 {
-                    Log.d("LoginActivity", "onDataChange: " + accountType);
+                    Log.d("LoginActivity", "onDataChange: this is else " + accountType);
                 }
             }
             @Override
@@ -275,9 +291,14 @@ public class LoginActivity extends AppCompatActivity
             if (task.isSuccessful())
             {
                 firebaseUser = mAuth.getCurrentUser();
-                userID = firebaseUser.getUid();
-                databaseReferenceAccountType = firebaseDatabase.getReference("Registered Users").child(userID);
-                databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
+                if (firebaseUser != null)
+                {
+                    userID = firebaseUser.getUid();
+                    // Log.d("LoginActivity", "task is ok: " + firebaseUser.getUid());
+                    databaseReferenceAccountType = firebaseDatabase.getReference
+                            (PATH_DATABASE).child(userID); // FIXME: careful with the name path
+                    databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEvent());
+                }
             }
             else
             {
