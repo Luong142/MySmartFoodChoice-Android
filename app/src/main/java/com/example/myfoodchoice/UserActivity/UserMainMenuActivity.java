@@ -25,6 +25,7 @@ import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserMealHistoryFragment;
 import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
@@ -74,7 +75,7 @@ public class UserMainMenuActivity extends AppCompatActivity
 
     final static String TAG = "UserMainMenuActivity";
 
-    final static String LABEL = "Registered Users";
+    final static String LABEL = "Registered Accounts"; // FIXME: the path need to access the account.
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
 
@@ -261,10 +262,10 @@ public class UserMainMenuActivity extends AppCompatActivity
                     new UserCheckInFragment()).commit();
         }
 
-        else if (itemId == R.id.nav_meal_history)
+        else if (itemId == R.id.nav_log_meal)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealHistoryFragment()).commit();
+                    new UserLogMealFragment()).commit();
         }
 
         else if (itemId == R.id.nav_meal_record)

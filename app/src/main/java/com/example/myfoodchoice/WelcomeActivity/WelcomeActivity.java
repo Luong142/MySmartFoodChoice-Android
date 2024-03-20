@@ -8,25 +8,37 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
+import com.example.myfoodchoice.CallAPI.ChatGPTAPI;
+import com.example.myfoodchoice.CallAPI.ClaudeAPI;
+import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
+import com.example.myfoodchoice.CallAPI.Message;
+import com.example.myfoodchoice.CallAPI.MessageRequest;
+import com.example.myfoodchoice.CallAPI.MessageResponse;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
-
 import org.jetbrains.annotations.Contract;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Objects;
 
 import io.paperdb.Paper;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WelcomeActivity extends AppCompatActivity
 {
@@ -42,7 +54,13 @@ public class WelcomeActivity extends AppCompatActivity
 
     static final int INDEXSTART = 0;
 
+    static final String TAG = "WelcomeActivity";
+
     AlertDialog.Builder builder;
+
+    private static final String BASE_URL = "https://api.anthropic.com/";
+
+    private ClaudeAPIService claudeAPIService;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -50,6 +68,20 @@ public class WelcomeActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        // TODO: test ClaudeAPI part
+        /*
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+         */
+        // claudeAPIService = retrofit.create(ClaudeAPIService.class);
+        // testClaudeAPI(); FIXME: this one failed.
+
+        ChatGPTAPI chatGPTAPI = new ChatGPTAPI();
+        chatGPTAPI.generateOutput("What is the meaning of life?", this);
+
 
         // init paper
         Paper.init(WelcomeActivity.this);
@@ -103,6 +135,35 @@ public class WelcomeActivity extends AppCompatActivity
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
+    private void testClaudeAPI()
+    {
+        String prompt = "What is the capital of France?";
+        ClaudeAPI claudeAPI = new ClaudeAPI();
+        claudeAPI.callAPI(prompt, new Callback()
+        {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e)
+            {
+                Log.e(TAG, "API call failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            {
+                if (response.isSuccessful())
+                {
+                    String apiResponse = Objects.requireNonNull(response.body()).string();
+                    Log.d(TAG, "AI Response: " + apiResponse);
+                    // Do something with the API response
+                }
+                else
+                {
+                    Log.e(TAG, "API call failed with code: " + response.code());
+                    // Log.e(TAG, "API call failed with message: " + response.message());
+                }
+            }
+        });
+    }
 
     @NonNull
     @Contract(" -> new")
