@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
@@ -81,6 +82,8 @@ public class LoginActivity extends AppCompatActivity
     DatabaseReference databaseReferenceAccountType;
 
     boolean isTrialOver;
+
+    AlertDialog alertGuestTrialOverDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -187,10 +190,26 @@ public class LoginActivity extends AppCompatActivity
                             }
                             else
                             {
-                                Toast.makeText(LoginActivity.this,
-                                        "Your guest trial period is over, please upgrade your account.",
-                                        Toast.LENGTH_SHORT).show();
-                                intent = new Intent(LoginActivity.this, GuestTrialOverActivity.class);
+                                alertGuestTrialOverDialog = new
+                                        AlertDialog.Builder(LoginActivity.this).create();
+                                alertGuestTrialOverDialog.setTitle("Trial Over");
+                                alertGuestTrialOverDialog.setMessage
+                                        ("Your trial period is over, please upgrade your account.");
+                                alertGuestTrialOverDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE,
+                                        "Confirm",
+                                        (dialog, which) ->
+                                        {
+                                            // dismiss and move the guest user to login page.
+                                            dialog.dismiss();
+                                            intent = new Intent(LoginActivity.this,
+                                                    GuestTrialOverActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        });
+                                alertGuestTrialOverDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE,
+                                        "Cancel",
+                                        (dialog, which) -> dialog.dismiss());
+                                alertGuestTrialOverDialog.show();
                             }
                             break;
                         case "Trainer":
