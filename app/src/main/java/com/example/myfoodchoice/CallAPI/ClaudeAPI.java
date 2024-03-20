@@ -14,7 +14,7 @@ public class ClaudeAPI // FIXME: the problem is that we can't use the legacy mod
 {
     private static final String API_URL = "https://api.anthropic.com/v1/messages";
     private static final String API_KEY =
-            "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";
+            "put key here";
     // replace with your API key
 
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");

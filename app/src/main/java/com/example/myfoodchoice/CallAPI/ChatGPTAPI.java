@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class ChatGPTAPI
 {
-    public final static String API_KEY = "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"; // for ChatGPT api key here
+    public final static String API_KEY = "put key here"; // for ChatGPT api key here
 
     public final static String API_URL = "https://api.openai.com/v1/completions";
 
