@@ -69,6 +69,8 @@ public class DietitianMainMenuActivity extends AppCompatActivity
 
     final static String TAG = "UserMainMenuActivity";
 
+    final static String PATH_DATABASE = "Registered Accounts";
+
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     @Override
@@ -91,7 +93,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
             userID = firebaseUser.getUid();
             // TODO: init database reference for user account
             databaseReferenceRegisteredBusinesses =
-                    firebaseDatabase.getReference("Registered Businesses").child(userID);
+                    firebaseDatabase.getReference(PATH_DATABASE).child(userID);
             databaseReferenceRegisteredBusinesses.addListenerForSingleValueEvent
                     (valueRegisteredDietitianEventListener());
             // FIXME: careful with path.

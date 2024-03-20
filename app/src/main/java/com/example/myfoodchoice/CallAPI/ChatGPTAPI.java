@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Contract;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ChatGPTAPI
+public class ChatGPTAPI   // TODO: testing this class before using API for health tips and work out plan.
 {
     public final static String API_KEY = "put key here"; // for ChatGPT api key here
 
@@ -45,7 +45,6 @@ public class ChatGPTAPI
                 API_URL, jsonObject, responseListener(), errorListener());
 
         Volley.newRequestQueue(applicationContext).add(jsonObjectRequest);
-
         return answer;
     }
 
