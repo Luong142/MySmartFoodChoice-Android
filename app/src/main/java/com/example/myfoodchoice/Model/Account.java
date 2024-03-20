@@ -65,9 +65,7 @@ public class Account implements Parcelable
             if (endDateTrial != null)
             {
                 Date currentDate = new Date();
-                // TODO: to test the trial date is ended then just return this to true.
-                return false;
-                // return currentDate.before(endDateTrial); // compare the current date with the end date.
+                return currentDate.before(endDateTrial); // compare the current date with the end date.
             }
         }
         return false; // otherwise will be false by default.
