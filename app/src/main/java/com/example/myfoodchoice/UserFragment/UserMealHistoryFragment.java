@@ -15,7 +15,7 @@ import com.example.myfoodchoice.R;
 
 public class UserMealHistoryFragment extends Fragment
 {
-
+    // FIXME: this fragment is not currently in use.
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)

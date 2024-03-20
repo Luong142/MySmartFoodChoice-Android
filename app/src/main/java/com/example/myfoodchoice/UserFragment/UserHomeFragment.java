@@ -45,28 +45,8 @@ public class UserHomeFragment extends Fragment
         progressTextView = view.findViewById(R.id.progressTextView);
         caloriesTextView = view.findViewById(R.id.caloriesNumTextView);
         kcalModelStringTextView = view.findViewById(R.id.kcalModelStringTextView);
-        uploadPhoto = view.findViewById(R.id.uploadPhoto);
 
-        // click button upload photo
-        uploadPhoto.setOnClickListener(onUploadListener());
 
-        // init activity for gallery part.
-        activityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result ->
-                {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        Intent data = result.getData();
-                        if (data != null && data.getData() != null)
-                        {
-                            // get the URI of the selected image
-                            selectedImageUri = data.getData();
-
-                        }
-                    }
-                }
-        );
 
         /* TODO: here is the plan
         * we use two APIs food analysis API and OpenCV API

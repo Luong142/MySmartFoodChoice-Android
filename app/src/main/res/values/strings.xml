@@ -137,4 +137,5 @@
     <string name="search_for_food_or_drinks">Search for food or drinks</string>
     <string name="guest_trial_is_ended">Guest Trial is Ended</string>
     <string name="current_trial_date">"Current Trial Date: "</string>
+    <string name="meal_history">Meal History</string>
 </resources>

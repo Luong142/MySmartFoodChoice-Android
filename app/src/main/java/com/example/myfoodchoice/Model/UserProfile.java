@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
 {
@@ -17,27 +18,19 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private String gender;
     private int age;
-    private int targetedBMI;
-
-    private int lastRecordedBMI;
-
-    private Date lastRecordedDateBMI;
-
-    private int calories;
 
     private String dietType;
 
     private int dietTypeImage;
 
+    private ActivityLevel activityLevel;
+    private List<HealthCondition> healthConditions;
+    private List<Meal> mealHistory;
 
     public UserProfile()
     {
         // this constructor is required for Firebase to be able to deserialize the object
         super();
-        this.targetedBMI = 0;
-        this.calories = 0;
-        this.lastRecordedBMI = 0;
-        this.lastRecordedDateBMI = new Date(); // careful with date
     }
 
     protected UserProfile(@NonNull Parcel in)
@@ -110,38 +103,6 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
         return sb.toString();
-    }
-
-    public int getTargetedBMI() {
-        return targetedBMI;
-    }
-
-    public void setTargetedBMI(int targetedBMI) {
-        this.targetedBMI = targetedBMI;
-    }
-
-    public int getLastRecordedBMI() {
-        return lastRecordedBMI;
-    }
-
-    public void setLastRecordedBMI(int lastRecordedBMI) {
-        this.lastRecordedBMI = lastRecordedBMI;
-    }
-
-    public Date getLastRecordedDateBMI() {
-        return lastRecordedDateBMI;
-    }
-
-    public void setLastRecordedDateBMI(Date lastRecordedDateBMI) {
-        this.lastRecordedDateBMI = lastRecordedDateBMI;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
     }
 
     public int getDietTypeImage() {

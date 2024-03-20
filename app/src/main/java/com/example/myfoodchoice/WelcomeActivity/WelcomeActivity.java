@@ -79,9 +79,9 @@ public class WelcomeActivity extends AppCompatActivity
         // claudeAPIService = retrofit.create(ClaudeAPIService.class);
         // testClaudeAPI(); FIXME: this one failed.
 
-        ChatGPTAPI chatGPTAPI = new ChatGPTAPI();
-        chatGPTAPI.generateOutput("What is the meaning of life?", this);
-
+        // FIXME: this one is not free too.
+        // ChatGPTAPI chatGPTAPI = new ChatGPTAPI();
+        // chatGPTAPI.generateOutput("What is the meaning of life?", this);
 
         // init paper
         Paper.init(WelcomeActivity.this);

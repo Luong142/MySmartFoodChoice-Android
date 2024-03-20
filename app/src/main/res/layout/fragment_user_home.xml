@@ -11,14 +11,14 @@
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="438dp"
-        android:layout_marginTop="176dp"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="188dp"
         android:background="@drawable/rounded_grey_calculator"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -111,26 +111,48 @@
             app:layout_constraintStart_toStartOf="@+id/progressBarKcal"
             app:layout_constraintTop_toTopOf="@+id/progressBarKcal" />
 
-        <Button
-            android:id="@+id/uploadPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:drawableEnd="@drawable/camera_icon"
-            android:text="@string/take_a_photo"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-            app:layout_constraintVertical_bias="0.478" />
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <Button
+            android:id="@+id/logMealBtn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/log_my_meal"
+            android:textSize="25sp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            />
+
+        <Button
+            android:id="@+id/mealHistoryBtn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/meal_history"
+            android:textSize="25sp"
+            />
+    </LinearLayout>
+
 
     <!-- TODO: for this part we need to set image in two modes,
         TODO: focus and non-focus.
-
     -->
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
