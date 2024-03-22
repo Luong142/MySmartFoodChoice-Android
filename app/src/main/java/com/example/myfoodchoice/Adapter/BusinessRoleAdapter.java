@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myfoodchoice.Model.BusinessProfile;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
@@ -51,11 +51,8 @@ public class BusinessRoleAdapter extends ArrayAdapter<BusinessProfile>
 
         BusinessProfile businessProfile = getItem(pos);
 
-        if (convertView != null)
-        {
-            businessImage.setImageResource(Objects.requireNonNull(businessProfile).getBusinessImage());
-            businessText.setText(businessProfile.getRole());
-        }
+        businessImage.setImageResource(Objects.requireNonNull(businessProfile).getBusinessImage());
+        businessText.setText(businessProfile.getRole());
         return convertView;
     }
 }

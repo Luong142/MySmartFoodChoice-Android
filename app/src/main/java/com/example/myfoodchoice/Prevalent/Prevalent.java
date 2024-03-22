@@ -1,6 +1,6 @@
 package com.example.myfoodchoice.Prevalent;
 
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 
 public class Prevalent
 {

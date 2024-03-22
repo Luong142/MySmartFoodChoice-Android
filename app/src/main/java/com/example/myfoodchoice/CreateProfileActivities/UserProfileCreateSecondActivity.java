@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Adapter.DietTypeAdapter;
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;

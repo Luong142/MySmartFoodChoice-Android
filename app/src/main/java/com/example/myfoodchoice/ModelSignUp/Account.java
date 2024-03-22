@@ -1,13 +1,9 @@
-package com.example.myfoodchoice.Model;
+package com.example.myfoodchoice.ModelSignUp;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
-import com.example.myfoodchoice.GuestActivity.GuestTrialOverActivity;
 
 import org.jetbrains.annotations.Contract;
 

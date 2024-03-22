@@ -24,7 +24,7 @@ import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActiv
 import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestTrialOverActivity;
-import com.example.myfoodchoice.Model.Account;
+import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;

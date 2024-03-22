@@ -17,16 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
-import com.example.myfoodchoice.Model.Account;
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.Account;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
-import com.example.myfoodchoice.UserFragment.UserMealHistoryFragment;
 import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
@@ -247,7 +247,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         int itemId = item.getItemId();
 
         // TODO: implement more tab here
-        // TODO: also need to update nav_header with the image and the email
+        // TODO: our task is to follow the wireframe diagram from web and complete more UI for prototype, that is it.
 
         if (itemId == R.id.nav_home)
         {
@@ -325,5 +325,12 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void navigateToFragment(Fragment fragment)
+    {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserProfileUpdateFirstActivity;
 import com.google.firebase.auth.FirebaseAuth;

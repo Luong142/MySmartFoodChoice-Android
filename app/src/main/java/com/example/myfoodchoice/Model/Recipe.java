@@ -2,99 +2,57 @@ package com.example.myfoodchoice.Model;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
+// Recipe.java
 public class Recipe
 {
-    private int id;
+    private int imageId;
     private String name;
-    private String instructions;
-    private List<Ingredient> ingredients;
-    private double calories;
-    private double protein;
-    private double carbs;
-    private double fat;
+    private String description;
 
-    // Getters, setters, and constructors
+    public Recipe()
+    {
 
+    }
+
+    public Recipe(int imageId, String name, String description)
+    {
+        this.imageId = imageId;
+        this.name = name;
+        this.description = description;
+    }
 
     @NonNull
     @Override
     public String toString()
     {
         return "Recipe{" +
-                "id=" + id +
+                "thumbnailResId=" + imageId +
                 ", name='" + name + '\'' +
-                ", instructions='" + instructions + '\'' +
-                ", ingredients=" + ingredients +
-                ", calories=" + calories +
-                ", protein=" + protein +
-                ", carbs=" + carbs +
-                ", fat=" + fat +
+                ", description='" + description + '\'' +
                 '}';
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getInstructions() {
-        return instructions;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public int getImageId() {
+        return imageId;
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public String getName() {
+        return name;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public double getCalories() {
-        return calories;
-    }
-
-    public void setCalories(double calories) {
-        this.calories = calories;
-    }
-
-    public double getProtein() {
-        return protein;
-    }
-
-    public void setProtein(double protein) {
-        this.protein = protein;
-    }
-
-    public double getCarbs() {
-        return carbs;
-    }
-
-    public void setCarbs(double carbs) {
-        this.carbs = carbs;
-    }
-
-    public double getFat() {
-        return fat;
-    }
-
-    public void setFat(double fat) {
-        this.fat = fat;
+    public String getDescription() {
+        return description;
     }
 }

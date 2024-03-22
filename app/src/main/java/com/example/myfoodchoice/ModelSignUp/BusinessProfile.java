@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Model;
+package com.example.myfoodchoice.ModelSignUp;
 
 import androidx.annotation.NonNull;
 

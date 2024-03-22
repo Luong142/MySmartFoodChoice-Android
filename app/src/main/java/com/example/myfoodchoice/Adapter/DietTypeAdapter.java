@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
@@ -51,11 +51,8 @@ public class DietTypeAdapter extends ArrayAdapter<UserProfile>
 
         UserProfile userProfile = getItem(pos);
 
-        if (convertView != null)
-        {
-            dietTypeImage.setImageResource(Objects.requireNonNull(userProfile).getDietTypeImage());
-            dietTypeText.setText(userProfile.getDietType());
-        }
+        dietTypeImage.setImageResource(Objects.requireNonNull(userProfile).getDietTypeImage());
+        dietTypeText.setText(userProfile.getDietType());
 
         return convertView;
     }

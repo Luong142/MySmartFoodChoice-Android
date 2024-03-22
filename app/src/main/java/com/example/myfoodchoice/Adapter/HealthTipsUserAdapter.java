@@ -1,0 +1,80 @@
+package com.example.myfoodchoice.Adapter;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsUserClickListener;
+import com.example.myfoodchoice.Model.HealthTips;
+import com.example.myfoodchoice.R;
+
+import java.util.ArrayList;
+
+public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAdapter.myViewHolder>
+{
+    private final ArrayList<HealthTips> healthTips;
+    private final OnHealthTipsUserClickListener onHealthTipsUserClickListener;
+
+    public HealthTipsUserAdapter(ArrayList<HealthTips> healthTips, OnHealthTipsUserClickListener onHealthTipsUserClickListener)
+    {
+        this.healthTips = healthTips;
+        this.onHealthTipsUserClickListener = onHealthTipsUserClickListener;
+    }
+
+    public static class myViewHolder extends RecyclerView.ViewHolder
+    {
+        public TextView healthTipName;
+        public TextView healthTipDescription;
+
+        public myViewHolder(final View itemView, OnHealthTipsUserClickListener onHealthTipsUserClickListener)
+        {
+            super(itemView);
+            healthTipName = itemView.findViewById(R.id.healthTipTitleTextView);
+            healthTipDescription = itemView.findViewById(R.id.healthTipDescriptionTextView);
+
+            itemView.setOnClickListener(v ->
+            {
+                if (onHealthTipsUserClickListener != null)
+                {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION)
+                    {
+                        onHealthTipsUserClickListener.onHealthTipsUserClick(position);
+                    }
+                }
+            });
+        }
+    }
+
+    @NonNull
+    @Override
+    public HealthTipsUserAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.health_tips_item_layout,
+                parent, false);
+        return new myViewHolder(itemView, onHealthTipsUserClickListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull myViewHolder holder, int position)
+    {
+        HealthTips healthTip = healthTips.get(position);
+        String name = healthTip.getName();
+        String desc = healthTip.getDescription();
+
+        holder.healthTipName.setText(name);
+        holder.healthTipDescription.setText(desc);
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return healthTips.size();
+    }
+
+}

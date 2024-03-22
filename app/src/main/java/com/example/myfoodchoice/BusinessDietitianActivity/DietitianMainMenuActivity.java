@@ -22,8 +22,8 @@ import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFra
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianRecipeFragment;
 import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
-import com.example.myfoodchoice.Model.Account;
-import com.example.myfoodchoice.Model.BusinessProfile;
+import com.example.myfoodchoice.ModelSignUp.Account;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;

@@ -138,4 +138,14 @@
     <string name="guest_trial_is_ended">Guest Trial is Ended</string>
     <string name="current_trial_date">"Current Trial Date: "</string>
     <string name="meal_history">Meal History</string>
+    <string name="search_recipe_hint">Search Recipe Hint</string>
+    <string name="check_in_day_image">Check In Day Image</string>
+    <string name="create_work_out">Create Work Out</string>
+    <string name="start_workout">Start Workout</string>
+    <string name="my_workout_plans">My Workout Plans</string>
+    <string name="workout_plans">Workout Plans</string>
+    <string name="health_title">Health title</string>
+    <string name="health_description">Health Description</string>
+    <string name="redeem">Redeem</string>
+    <string name="reward_image">Reward Image</string>
 </resources>

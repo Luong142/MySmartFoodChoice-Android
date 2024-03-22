@@ -2,6 +2,8 @@ package com.example.myfoodchoice.Model;
 
 import androidx.annotation.NonNull;
 
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
+
 import java.util.List;
 
 public class NutritionPlan

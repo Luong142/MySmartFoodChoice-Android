@@ -1,13 +1,17 @@
-package com.example.myfoodchoice.Model;
+package com.example.myfoodchoice.ModelSignUp;
 
+import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.myfoodchoice.Model.ActivityLevel;
+import com.example.myfoodchoice.Model.HealthCondition;
+import com.example.myfoodchoice.Model.Meal;
+
 import org.jetbrains.annotations.Contract;
 
-import java.util.Date;
 import java.util.List;
 
 public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
@@ -18,6 +22,8 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private String gender;
     private int age;
+
+    private int points;
 
     private String dietType;
 
@@ -31,6 +37,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     {
         // this constructor is required for Firebase to be able to deserialize the object
         super();
+        points = 50; // put the default point here
     }
 
     protected UserProfile(@NonNull Parcel in)
@@ -44,6 +51,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         gender = in.readString();
         age = in.readInt();
         dietType = in.readString();
+        points = in.readInt();
     }
 
     public UserProfile(String dietType, int dietTypeImage)
@@ -86,6 +94,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeString(gender);
         dest.writeInt(age);
         dest.writeString(dietType);
+        dest.writeInt(points);
     }
 
     @NonNull
@@ -102,7 +111,17 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Gender: ").append(gender).append("\n");
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
+        sb.append("Point: ").append(points).append("\n");
+        sb.append("-------------------");
         return sb.toString();
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public int getDietTypeImage() {

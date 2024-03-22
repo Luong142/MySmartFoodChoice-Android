@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.myfoodchoice.Model.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -203,6 +203,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
             // make the progress bar appear
             progressBar.setVisibility(ProgressBar.VISIBLE);
+            nextBtn.setVisibility(Button.GONE);
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child

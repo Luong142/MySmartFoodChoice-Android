@@ -4,27 +4,94 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myfoodchoice.Adapter.RecipeItemAdapter;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnRecipeItemClickListener;
+import com.example.myfoodchoice.Model.Recipe;
 import com.example.myfoodchoice.R;
 
+import java.util.ArrayList;
 
-public class UserRecipeFragment extends Fragment
+
+public class UserRecipeFragment extends Fragment implements OnRecipeItemClickListener
 {
+    // TODO: declare components
+    EditText recipeSearch;
+
+    RecyclerView recipeRecyclerView;
+
+    RecipeItemAdapter recipeItemAdapter;
+
+    private ArrayList<Recipe> recipeList;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
+        // TODO: init firebase components.
+
+
+
+        // TODO: init UI components
+        recipeSearch = view.findViewById(R.id.searchRecipeEditText);
+
+        // Initialize the recipeList
+        recipeList = new ArrayList<>();
+        populateRecipeList();
+
+        // for recycle view
+        recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView);
+        recipeItemAdapter = new RecipeItemAdapter(recipeList, this);
+        setAdapter();
+        recipeRecyclerView.setVerticalScrollBarEnabled(true);
+
+        // Set the adapter to the RecyclerView
+        // recipeRecyclerView.setAdapter(adapter);
+
+        // TODO: Populate the recipeList with your Recipe data
+
+
+        // Notify the adapter that the data has changed
+        // recipeItemAdapter.notifyDataSetChanged();
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onRecipeItemClick(int position)
+    {
+        // TODO: implement onClick
+
+    }
+
+    private void populateRecipeList()
+    {
+        recipeList.add(new Recipe(R.drawable.tomato, "Tomato", "A fruit"));
+        recipeList.add(new Recipe(R.drawable.tomato, "Tomato", "A fruit"));
+        recipeList.add(new Recipe(R.drawable.tomato, "Tomato", "A fruit"));
+    }
+
+    private void setAdapter()
+    {
+        // set the adapter
+        RecyclerView.LayoutManager layoutManager = new
+                LinearLayoutManager(requireActivity().getApplicationContext());
+        recipeRecyclerView.setLayoutManager(layoutManager);
+        recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        recipeRecyclerView.setAdapter(recipeItemAdapter);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment

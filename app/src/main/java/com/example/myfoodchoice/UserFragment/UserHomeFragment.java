@@ -1,8 +1,6 @@
 package com.example.myfoodchoice.UserFragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +10,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 
 import org.jetbrains.annotations.Contract;
 
@@ -29,10 +27,8 @@ public class UserHomeFragment extends Fragment
     TextView caloriesTextView, kcalModelStringTextView, progressTextView, checkInTextView;
 
     // TODO: add in one more button for taking photo I think.
-    Button uploadPhoto, takePhoto;
+    Button logMealBtn, historyMealBtn;
     ActivityResultLauncher<Intent> activityResultLauncher;
-
-    Uri selectedImageUri;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -45,17 +41,32 @@ public class UserHomeFragment extends Fragment
         progressTextView = view.findViewById(R.id.progressTextView);
         caloriesTextView = view.findViewById(R.id.caloriesNumTextView);
         kcalModelStringTextView = view.findViewById(R.id.kcalModelStringTextView);
+        logMealBtn = view.findViewById(R.id.logMealBtn);
+        historyMealBtn = view.findViewById(R.id.historyMealBtn);
 
+        logMealBtn.setOnClickListener(onNavToLogMealListener());
+        historyMealBtn.setOnClickListener(onNavToHistoryMealListener());
+    }
 
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onNavToLogMealListener()
+    {
+        return v ->
+        {
+            ((UserMainMenuActivity) requireActivity()).navigateToFragment(new UserLogMealFragment());
+        };
+    }
 
-        /* TODO: here is the plan
-        * we use two APIs food analysis API and OpenCV API
-        *
-        *
-        *
-        *
-        *
-        * */
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onNavToHistoryMealListener()
+    {
+        return v ->
+        {
+            // TODO: this one is fragment so we need to allocate to the part in UserMainMenuActivity.
+            ((UserMainMenuActivity) requireActivity()).navigateToFragment(new UserMealRecordFragment());
+        };
     }
 
     @NonNull
@@ -72,7 +83,7 @@ public class UserHomeFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
