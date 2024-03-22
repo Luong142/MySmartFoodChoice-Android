@@ -16,6 +16,7 @@ import com.example.myfoodchoice.Adapter.WorkoutPlanAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanClickListener;
 import com.example.myfoodchoice.Model.WorkoutPlan;
 import com.example.myfoodchoice.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,10 @@ import java.util.ArrayList;
 public class TrainerWorkOutFragment extends Fragment implements OnWorkoutPlanClickListener
 {
     // TODO: declare components
+
+    FloatingActionButton createWorkoutPlanBtn;
+
+
     RecyclerView workoutRecyclerView;
 
     WorkoutPlanAdapter workoutPlanAdapter;

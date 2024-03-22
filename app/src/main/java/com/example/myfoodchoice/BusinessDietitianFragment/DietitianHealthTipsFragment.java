@@ -18,6 +18,7 @@ import com.example.myfoodchoice.Adapter.HealthTipsUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
 import com.example.myfoodchoice.Model.HealthTips;
 import com.example.myfoodchoice.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class DietitianHealthTipsFragment extends Fragment implements OnHealthTip
 {
     // TODO: declare components
 
-    Button createHealthTips;
+    FloatingActionButton createHealthTips;
     RecyclerView healthTipsRecyclerView;
 
     HealthTipsUserAdapter healthTipsUserAdapter;
@@ -45,7 +46,7 @@ public class DietitianHealthTipsFragment extends Fragment implements OnHealthTip
 
 
         // TODO: init UI components
-        createHealthTips = view.findViewById(R.id.createHealthTipsButton);
+        createHealthTips = view.findViewById(R.id.createHealthTipsBtn);
 
         // Initialize the recipeList
         healthTips = new ArrayList<>();
