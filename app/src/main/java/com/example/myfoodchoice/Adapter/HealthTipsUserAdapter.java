@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsUserClickListener;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
 import com.example.myfoodchoice.Model.HealthTips;
 import com.example.myfoodchoice.R;
 
@@ -17,12 +17,12 @@ import java.util.ArrayList;
 public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAdapter.myViewHolder>
 {
     private final ArrayList<HealthTips> healthTips;
-    private final OnHealthTipsUserClickListener onHealthTipsUserClickListener;
+    private final OnHealthTipsClickListener onHealthTipsClickListener;
 
-    public HealthTipsUserAdapter(ArrayList<HealthTips> healthTips, OnHealthTipsUserClickListener onHealthTipsUserClickListener)
+    public HealthTipsUserAdapter(ArrayList<HealthTips> healthTips, OnHealthTipsClickListener onHealthTipsClickListener)
     {
         this.healthTips = healthTips;
-        this.onHealthTipsUserClickListener = onHealthTipsUserClickListener;
+        this.onHealthTipsClickListener = onHealthTipsClickListener;
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder
@@ -30,7 +30,7 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
         public TextView healthTipName;
         public TextView healthTipDescription;
 
-        public myViewHolder(final View itemView, OnHealthTipsUserClickListener onHealthTipsUserClickListener)
+        public myViewHolder(final View itemView, OnHealthTipsClickListener onHealthTipsClickListener)
         {
             super(itemView);
             healthTipName = itemView.findViewById(R.id.healthTipTitleTextView);
@@ -38,12 +38,12 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
 
             itemView.setOnClickListener(v ->
             {
-                if (onHealthTipsUserClickListener != null)
+                if (onHealthTipsClickListener != null)
                 {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION)
                     {
-                        onHealthTipsUserClickListener.onHealthTipsUserClick(position);
+                        onHealthTipsClickListener.onHealthTipsClick(position);
                     }
                 }
             });
@@ -57,7 +57,7 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.health_tips_item_layout,
                 parent, false);
-        return new myViewHolder(itemView, onHealthTipsUserClickListener);
+        return new myViewHolder(itemView, onHealthTipsClickListener);
     }
 
     @Override

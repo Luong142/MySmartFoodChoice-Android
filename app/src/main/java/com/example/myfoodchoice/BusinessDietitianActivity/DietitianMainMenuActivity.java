@@ -21,11 +21,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianRecipeFragment;
-import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
+import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -138,7 +137,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new TrainerWorkOutFragment()).commit();
+                    new DietitianHealthTipsFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -183,7 +182,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_review)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ReviewFragment()).commit();
+                    new SharedReviewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_manage_businessProfile)

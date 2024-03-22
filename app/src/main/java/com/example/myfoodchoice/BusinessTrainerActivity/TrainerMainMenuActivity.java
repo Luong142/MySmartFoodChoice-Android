@@ -23,7 +23,7 @@ import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.ReviewFragment.ReviewFragment;
+import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -256,7 +256,7 @@ public class TrainerMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_review)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ReviewFragment()).commit();
+                    new SharedReviewFragment()).commit();
         }
 
         // TODO: update and view user profile

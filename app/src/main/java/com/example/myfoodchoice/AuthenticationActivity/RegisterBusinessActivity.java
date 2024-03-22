@@ -17,7 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.CreateProfileActivities.BusinessProfileCreateActivity;
+import com.example.myfoodchoice.SignUpCreateProfileActivities.BusinessProfileCreateActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.CreateProfileActivities.UserProfileCreateFirstActivity;
+import com.example.myfoodchoice.SignUpCreateProfileActivities.UserProfileCreateFirstActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;

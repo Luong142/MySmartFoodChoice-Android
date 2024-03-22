@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.CreateProfileActivities;
+package com.example.myfoodchoice.SignUpCreateProfileActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -205,6 +205,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
             // make the progress bar appear
             progressBar.setVisibility(ProgressBar.VISIBLE);
+            createProfileBtn.setVisibility(Button.GONE);
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child

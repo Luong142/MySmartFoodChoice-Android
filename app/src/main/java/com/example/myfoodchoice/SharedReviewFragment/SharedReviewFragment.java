@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.ReviewFragment;
+package com.example.myfoodchoice.SharedReviewFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +12,14 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.R;
 
 
-public class ReviewFragment extends Fragment
+public class SharedReviewFragment extends Fragment
 {
     // TODO: declare UI components
+
+    
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -27,7 +32,7 @@ public class ReviewFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateProfileActivities.UserProfileCreateFirstActivity"
+    tools:context=".SignUpCreateProfileActivities.UserProfileCreateFirstActivity"
     android:background="@drawable/bg_gradient_color_main"
     >
 

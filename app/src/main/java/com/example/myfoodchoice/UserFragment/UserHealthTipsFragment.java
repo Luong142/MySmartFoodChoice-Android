@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,14 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.Adapter.HealthTipsUserAdapter;
-import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsUserClickListener;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
 import com.example.myfoodchoice.Model.HealthTips;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
 
 
-public class UserHealthTipsFragment extends Fragment implements OnHealthTipsUserClickListener
+public class UserHealthTipsFragment extends Fragment implements OnHealthTipsClickListener
 {
     // TODO: declare components
     RecyclerView healthTipsRecyclerView;
@@ -62,10 +63,10 @@ public class UserHealthTipsFragment extends Fragment implements OnHealthTipsUser
     }
 
     @Override
-    public void onHealthTipsUserClick(int position)
+    public void onHealthTipsClick(int position)
     {
         // TODO: implement onClick
-
+        Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
     }
 
     private void populateHealthTipsList()

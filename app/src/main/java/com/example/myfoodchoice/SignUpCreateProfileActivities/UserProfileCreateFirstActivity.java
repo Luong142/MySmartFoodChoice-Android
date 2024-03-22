@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.CreateProfileActivities;
+package com.example.myfoodchoice.SignUpCreateProfileActivities;
 
 import android.app.Activity;
 import android.content.Intent;

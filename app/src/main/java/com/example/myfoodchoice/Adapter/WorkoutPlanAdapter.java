@@ -8,21 +8,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanUserClickListener;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanClickListener;
 import com.example.myfoodchoice.Model.WorkoutPlan;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
 
-public class WorkoutPlanUserAdapter extends RecyclerView.Adapter<WorkoutPlanUserAdapter.myViewHolder>
+public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.myViewHolder>
 {
     private final ArrayList<WorkoutPlan> workoutPlans;
-    private final OnWorkoutPlanUserClickListener onWorkoutPlanUserClickListener;
+    private final OnWorkoutPlanClickListener onWorkoutPlanClickListener;
 
-    public WorkoutPlanUserAdapter(ArrayList<WorkoutPlan> workoutPlans, OnWorkoutPlanUserClickListener onWorkoutPlanUserClickListener)
+    public WorkoutPlanAdapter(ArrayList<WorkoutPlan> workoutPlans, OnWorkoutPlanClickListener onWorkoutPlanClickListener)
     {
         this.workoutPlans = workoutPlans;
-        this.onWorkoutPlanUserClickListener = onWorkoutPlanUserClickListener;
+        this.onWorkoutPlanClickListener = onWorkoutPlanClickListener;
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder
@@ -31,7 +31,7 @@ public class WorkoutPlanUserAdapter extends RecyclerView.Adapter<WorkoutPlanUser
         public TextView workoutPlanName;
         public TextView workoutPlanDesc;
 
-        public myViewHolder(final View itemView, OnWorkoutPlanUserClickListener onWorkoutPlanUserClickListener)
+        public myViewHolder(final View itemView, OnWorkoutPlanClickListener onWorkoutPlanClickListener)
         {
             super(itemView);
             workoutPlanName = itemView.findViewById(R.id.workoutNameTextView);
@@ -40,12 +40,12 @@ public class WorkoutPlanUserAdapter extends RecyclerView.Adapter<WorkoutPlanUser
 
             itemView.setOnClickListener(v ->
             {
-                if (onWorkoutPlanUserClickListener != null)
+                if (onWorkoutPlanClickListener != null)
                 {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION)
                     {
-                        onWorkoutPlanUserClickListener.onWorkoutPlanUserClick(position);
+                        onWorkoutPlanClickListener.onWorkoutPlanClick(position);
                     }
                 }
             });
@@ -59,7 +59,7 @@ public class WorkoutPlanUserAdapter extends RecyclerView.Adapter<WorkoutPlanUser
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.work_out_plan_user_layout,
                 parent, false);
-        return new myViewHolder(itemView, onWorkoutPlanUserClickListener);
+        return new myViewHolder(itemView, onWorkoutPlanClickListener);
     }
 
     @Override

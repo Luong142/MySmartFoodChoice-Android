@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,21 +13,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.Adapter.WorkoutPlanUserAdapter;
-import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanUserClickListener;
+import com.example.myfoodchoice.Adapter.WorkoutPlanAdapter;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanClickListener;
 import com.example.myfoodchoice.Model.WorkoutPlan;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
 
 
-public class UserWorkOutFragment extends Fragment implements OnWorkoutPlanUserClickListener
+public class UserWorkOutFragment extends Fragment implements OnWorkoutPlanClickListener
 {
 
     // TODO: declare components
     RecyclerView workoutRecyclerView;
 
-    WorkoutPlanUserAdapter workoutPlanUserAdapter;
+    WorkoutPlanAdapter workoutPlanAdapter;
 
     private ArrayList<WorkoutPlan> workoutPlans;
 
@@ -48,7 +49,7 @@ public class UserWorkOutFragment extends Fragment implements OnWorkoutPlanUserCl
 
         // for init recycle view component
         workoutRecyclerView = view.findViewById(R.id.workoutRecyclerView);
-        workoutPlanUserAdapter = new WorkoutPlanUserAdapter(workoutPlans, this);
+        workoutPlanAdapter = new WorkoutPlanAdapter(workoutPlans, this);
         setAdapter();
         workoutRecyclerView.setVerticalScrollBarEnabled(true);
 
@@ -64,10 +65,10 @@ public class UserWorkOutFragment extends Fragment implements OnWorkoutPlanUserCl
     }
 
     @Override
-    public void onWorkoutPlanUserClick(int position)
+    public void onWorkoutPlanClick(int position)
     {
         // TODO: implement onClick
-        // workoutPlan = workoutPlanList.get(position);
+        Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
     }
 
     private void setAdapter()
@@ -77,7 +78,7 @@ public class UserWorkOutFragment extends Fragment implements OnWorkoutPlanUserCl
                 LinearLayoutManager(requireActivity().getApplicationContext());
         workoutRecyclerView.setLayoutManager(layoutManager);
         workoutRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        workoutRecyclerView.setAdapter(workoutPlanUserAdapter);
+        workoutRecyclerView.setAdapter(workoutPlanAdapter);
     }
 
     private void populateWorkoutList()

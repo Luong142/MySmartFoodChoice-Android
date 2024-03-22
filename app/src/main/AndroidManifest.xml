@@ -60,7 +60,7 @@
             android:name=".GuestActivity.GuestMainMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProfileActivities.BusinessProfileCreateActivity"
+            android:name=".SignUpCreateProfileActivities.BusinessProfileCreateActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.RegisterBusinessActivity"
@@ -69,13 +69,13 @@
             android:name=".UserActivity.UserProfileUpdateFirstActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProfileActivities.UserProfileCreateSecondActivity"
+            android:name=".SignUpCreateProfileActivities.UserProfileCreateSecondActivity"
             android:exported="false" />
         <activity
             android:name=".UserActivity.UserProfileUpdateSecondActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProfileActivities.UserProfileCreateFirstActivity"
+            android:name=".SignUpCreateProfileActivities.UserProfileCreateFirstActivity"
             android:exported="false" />
         <activity
             android:name=".GuestActivity.GuestBMIResultActivity"
