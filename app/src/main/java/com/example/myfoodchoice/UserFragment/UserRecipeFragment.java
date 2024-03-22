@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,7 +71,7 @@ public class UserRecipeFragment extends Fragment implements OnRecipeItemClickLis
     public void onRecipeItemClick(int position)
     {
         // TODO: implement onClick
-
+        Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
     }
 
     private void populateRecipeList()

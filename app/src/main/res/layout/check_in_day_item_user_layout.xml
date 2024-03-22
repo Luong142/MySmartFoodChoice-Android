@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:layout_margin="8dp">
 
-    <ImageView
-        android:id="@+id/checkInDayImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/check_in_day_image"
-        tools:src="@drawable/check_in" />
-
-    <TextView
-        android:id="@+id/checkInDayText"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="14sp"
-        tools:text="Day 1" /> <!-- for now it is day 1 we can increment by 1 for day -->
+        android:orientation="vertical"
+        android:background="@color/peach_puff"
+        android:gravity="center"
+        android:padding="16dp">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/checkInDayImage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/check_in_day_image"
+            app:tint="@color/black"
+            tools:src="@drawable/check_in" />
+
+        <TextView
+            android:id="@+id/checkInDayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Day 1" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

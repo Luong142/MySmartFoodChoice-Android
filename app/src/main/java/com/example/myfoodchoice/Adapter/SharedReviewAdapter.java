@@ -3,8 +3,6 @@ package com.example.myfoodchoice.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -12,11 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnReviewClickListener;
-import com.example.myfoodchoice.AdapterInterfaceListener.OnRewardItemRedeemClickListener;
 import com.example.myfoodchoice.ModelUtilities.Review;
-import com.example.myfoodchoice.ModelUtilities.Reward;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
 
 import java.util.ArrayList;
 

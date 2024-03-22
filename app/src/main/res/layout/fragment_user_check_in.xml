@@ -7,28 +7,31 @@
     android:background="@drawable/bg_gradient_color_main"
     tools:context=".UserFragment.UserCheckInFragment">
 
-    <FrameLayout
-        android:id="@+id/layoutCheckInReward"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="350dp"
-        android:background="@drawable/rounded_layout_login_page"
-        android:orientation="vertical"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.252">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/checkInDaysRecyclerView"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/layoutCheckInReward"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="5"
-            tools:listitem="@layout/check_in_day_item_user_layout" />
+            android:orientation="horizontal">
 
-    </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/checkInDaysRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/check_in_day_item_user_layout" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
