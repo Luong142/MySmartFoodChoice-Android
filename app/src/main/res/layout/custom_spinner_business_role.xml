@@ -15,7 +15,7 @@
             android:id="@+id/businessImage"
             android:layout_width="107dp"
             android:layout_height="80dp"
-            android:background="@color/dodger_blue"
+            android:background="@color/peach_puff"
             android:src="@drawable/trainer_icon_pink"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="24dp" />
@@ -24,7 +24,7 @@
             android:id="@+id/businessText"
             android:layout_width="147dp"
             android:layout_height="match_parent"
-            android:background="@color/dodger_blue"
+            android:background="@color/peach_puff"
             android:gravity="center"
             android:text="@string/trainer"
             android:textColor="@color/black"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/drop_down"
-            android:background="@color/dodger_blue"
+            android:background="@color/peach_puff"
             android:contentDescription="@string/todo" />
     </LinearLayout>
 </RelativeLayout>

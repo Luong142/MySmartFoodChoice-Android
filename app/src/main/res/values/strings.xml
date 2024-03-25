@@ -151,4 +151,5 @@
     <string name="activity_level">Activity Level</string>
     <string name="sedentary">Sedentary</string>
     <string name="guest_profile">Guest Profile</string>
+    <string name="welcome_to_smart_food_choice">Welcome to Smart Food Choice</string>
 </resources>

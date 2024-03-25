@@ -16,7 +16,7 @@
             android:id="@+id/activityLevelImage"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/dodger_blue"
+            android:background="@color/peach_puff"
             android:src="@drawable/sedentary"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="24dp"
@@ -26,7 +26,7 @@
             android:id="@+id/activityLevel"
             android:layout_width="160dp"
             android:layout_height="match_parent"
-            android:background="@color/dodger_blue"
+            android:background="@color/peach_puff"
             android:gravity="center"
             android:text="@string/sedentary"
             android:textColor="@color/black"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/drop_down"
-            android:background="@color/dodger_blue"
+            android:background="@color/peach_puff"
             android:contentDescription="@string/todo" />
     </LinearLayout>
 </RelativeLayout>

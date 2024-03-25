@@ -1,100 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity.WelcomeActivity"
-    android:background="@drawable/bg_gradient_color_main"
-    >
-    <!-- four text or button:
-        Home
-        Review
-        PartnerShip
-        ContactUs, not official here, things might change
-     -->
+    android:background="@drawable/gradient_bg_mainmenu"
+    tools:context=".WelcomeActivity.WelcomeActivity"> <!-- Dynamic background -->
+
+    <!-- Carousel or Testimonials -->
+
+    <!-- Sign In and Sign Up Buttons -->
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="412dp"
+        android:layout_height="286dp"
+        android:src="@drawable/women"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!-- TODO: text for sign up as user, business vendor as dietitian or trainer -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="456dp"
+        android:src="@drawable/foodimage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/welcomeTagline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:layout_gravity="center"
+        android:layout_marginTop="520dp"
+        android:text="@string/welcome_to_smart_food_choice"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.437">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/smart_food_choice"
-            android:textSize="35sp"
-            android:textStyle="italic" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/signInBtn"
+        android:layout_width="377dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="192dp"
-        android:background="@drawable/rounded_layout_login_page"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/dodger_blue"
+        android:text="@string/sign_in"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTagline" />
+
+    <Button
+        android:id="@+id/signUpAsGuestBtn"
+        android:layout_width="377dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="@color/dodger_blue"
+        android:text="@string/sign_up_as_guest"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signInBtn" />
+
+    <Button
+        android:id="@+id/signUpAsBusinessBtn"
+        android:layout_width="377dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/dodger_blue"
+        android:text="@string/sign_up_as_business_vendor"
+        android:textColor="@color/black"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signUpAsGuestBtn" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <Button
-            android:id="@+id/signInBtn"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/dodger_blue"
-            android:text="@string/sign_in"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <!-- TODO: change to text -->
-
-        <TextView
-            android:id="@+id/signUpAsGuest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up_as_guest"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:id="@+id/signUpAsBusiness"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up_as_business_vendor"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

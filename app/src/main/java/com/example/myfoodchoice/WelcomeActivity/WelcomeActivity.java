@@ -43,12 +43,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
-    Button signingBtn;
+    Button signingBtn, signUpAsGuestBtn, signUpAsBusinessBtn;
     String emailRememberMe, passwordRememberMe;
 
-    TextView signUpAsGuest, signUpAsBusiness;
+    // TextView signUpAsGuest, signUpAsBusiness;
 
-    SpannableString spannableSignUpAsGuestNav, spannableSignUpAsBusiness;
+    // SpannableString spannableSignUpAsGuestNav, spannableSignUpAsBusiness;
 
     FirebaseAuth firebaseAuth;
 
@@ -91,23 +91,22 @@ public class WelcomeActivity extends AppCompatActivity
 
         // init buttons
         signingBtn = findViewById(R.id.signInBtn);
+        signUpAsGuestBtn = findViewById(R.id.signUpAsGuestBtn);
+        signUpAsBusinessBtn = findViewById(R.id.signUpAsBusinessBtn);
 
-        // init text view.
-        signUpAsGuest = findViewById(R.id.signUpAsGuest);
-        signUpAsBusiness = findViewById(R.id.signUpAsBusiness);
 
         // nav to sign up page based on text click
         // FIXME: the index is out of bound.
-        spannableSignUpAsGuestNav = new SpannableString(signUpAsGuest.getText());
-        spannableSignUpAsGuestNav.setSpan(clickableSignUpAsGuest(), INDEXSTART, signUpAsGuest.length(), 0);
-        signUpAsGuest.setText(spannableSignUpAsGuestNav);
-        signUpAsGuest.setMovementMethod(LinkMovementMethod.getInstance());
-
-        // nav to sign up page based on text click
-        spannableSignUpAsBusiness = new SpannableString(signUpAsBusiness.getText());
-        spannableSignUpAsBusiness.setSpan(clickableSignUpAsBusiness(), INDEXSTART, signUpAsBusiness.length(), 0);
-        signUpAsBusiness.setText(spannableSignUpAsBusiness);
-        signUpAsBusiness.setMovementMethod(LinkMovementMethod.getInstance());
+        signUpAsGuestBtn.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(WelcomeActivity.this, RegisterGuestActivity.class);
+            startActivity(intent);
+        });
+        signUpAsBusinessBtn.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(WelcomeActivity.this, RegisterBusinessActivity.class);
+            startActivity(intent);
+        });
 
         signingBtn.setOnClickListener(onSignInListener);
 
