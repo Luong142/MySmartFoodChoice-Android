@@ -52,7 +52,7 @@ public class ActivityLevelAdapter extends ArrayAdapter<UserProfile>
         UserProfile userProfile = getItem(pos);
 
         activityLevelImage.setImageResource(Objects.requireNonNull(userProfile).getActivityLevelImage());
-        activityLevel.setText(userProfile.getActivityLevel().name());
+        activityLevel.setText(userProfile.getActivityLevelDisplayName());
 
         return convertView;
     }

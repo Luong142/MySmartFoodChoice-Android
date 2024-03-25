@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.myfoodchoice.Adapter.ActivityLevelAdapter;
+import com.example.myfoodchoice.ModelSignUp.ActivityLevel;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserProfileCreateFirstActivity extends AppCompatActivity
@@ -52,7 +56,11 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     Button nextBtn;
     Spinner spinnerActivity;
 
-    String myUri, gender;
+    ArrayList<UserProfile> activityArrayList;
+
+    String myUri, gender, activityLevel;
+
+    ActivityLevel activityLevelEnum;
 
     int ageInt;
 
@@ -102,7 +110,14 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         nextBtn = findViewById(R.id.nextBtn);
         maleImage = findViewById(R.id.maleImage);
         femaleImage = findViewById(R.id.femaleImage);
+
+        // TODO: init UI component
         spinnerActivity = findViewById(R.id.activitySpinner);
+        activityArrayList = new ArrayList<>();
+        initListActivityLevel();
+        ActivityLevelAdapter activityLevelAdapter = new ActivityLevelAdapter(this, activityArrayList);
+        spinnerActivity.setAdapter(activityLevelAdapter);
+        spinnerActivity.setOnItemSelectedListener(onItemSelectedActivityListener);
 
         // set gender to male by default
         gender = "Default";
@@ -147,19 +162,36 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         getUserInfo();
     }
 
-
-
-    @NonNull
-    @Contract(pure = true)
-    private View.OnClickListener onImageClickListener()
+    private final AdapterView.OnItemSelectedListener onItemSelectedActivityListener
+            = new AdapterView.OnItemSelectedListener()
     {
-        return v ->
+        @Override
+        public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
         {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            activityResultLauncher.launch(Intent.createChooser(intent, "Select File"));
-        };
+            UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);
+            activityLevelEnum = userProfile1.getActivityLevel();
+            activityLevel = activityLevelEnum.name();
+            nextBtn.setEnabled(true);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent)
+        {
+            // show a message or prompt
+            Toast.makeText(getApplicationContext(),
+                    "Please select an activity level.",
+                    Toast.LENGTH_SHORT).show();
+            nextBtn.setEnabled(false);
+        }
+    };
+
+    private void initListActivityLevel()
+    {
+        activityArrayList.add(new UserProfile(ActivityLevel.SEDENTARY, R.drawable.sedentary));
+        activityArrayList.add(new UserProfile(ActivityLevel.LIGHTLY_ACTIVE, R.drawable.lightlyactive));
+        activityArrayList.add(new UserProfile(ActivityLevel.MODERATELY_ACTIVE, R.drawable.moderateactive));
+        activityArrayList.add(new UserProfile(ActivityLevel.VERY_ACTIVE, R.drawable.veryactive__2_));
+        activityArrayList.add(new UserProfile(ActivityLevel.EXTREMELY_ACTIVE, R.drawable.extremeactive));
     }
 
     @NonNull
@@ -210,7 +242,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child
-                    (firebaseUser.getUid() + ".jpg");
+                    (firebaseUser.getUid() + ".jpg"); // FIXME: potential bug.
 
             // FIXME: the selected image Uri haven't converted to Uri path.
             storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
@@ -219,6 +251,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
             userProfile.setAge(ageInt);
+            userProfile.setActivityLevel(activityLevelEnum);
 
             // set image here
             storageTask.continueWithTask(task ->
@@ -304,8 +337,22 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-
+                Toast.makeText(UserProfileCreateFirstActivity.this,
+                        "Error getting user info.", Toast.LENGTH_SHORT).show();
             }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onImageClickListener()
+    {
+        return v ->
+        {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            activityResultLauncher.launch(Intent.createChooser(intent, "Select File"));
         };
     }
 

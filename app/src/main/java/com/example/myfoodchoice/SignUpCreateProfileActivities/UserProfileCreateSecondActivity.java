@@ -207,12 +207,15 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             // the purpose is for spinner to select and apply the string dietType to define the user profile
             UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);
             dietType = userProfile1.getDietType();
+            signUpBtn.setEnabled(true);
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent)
         {
-
+            // show message
+            Toast.makeText(getApplicationContext(), "Please select a diet type.", Toast.LENGTH_SHORT).show();
+            signUpBtn.setEnabled(false);
         }
     };
 

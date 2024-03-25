@@ -150,4 +150,5 @@
     <string name="reward_image">Reward Image</string>
     <string name="activity_level">Activity Level</string>
     <string name="sedentary">Sedentary</string>
+    <string name="guest_profile">Guest Profile</string>
 </resources>

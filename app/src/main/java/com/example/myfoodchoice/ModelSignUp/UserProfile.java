@@ -29,7 +29,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private int activityLevelImage;
 
-    private ArrayList<String> allergies;
+    private ArrayList<String> allergies; // TODO: add this multiple time if possible.
 
     private List<String> favouriteFoods;
 
@@ -61,6 +61,12 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     {
         this.dietType = dietType;
         this.dietTypeImage = dietTypeImage;
+    }
+
+    public UserProfile(ActivityLevel activityLevel, int activityLevelImage)
+    {
+        this.activityLevel = activityLevel;
+        this.activityLevelImage = activityLevelImage;
     }
 
     public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>()
@@ -117,20 +123,29 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
         sb.append("Activity Level: ").append(activityLevel).append("\n");
-        for (String allergy : allergies)
-        {
-            sb.append("Allergies: ").append(allergy).append("\n");
-        }
 
-        for (String favouriteFood : favouriteFoods)
+        if (allergies != null && !allergies.isEmpty() && favouriteFoods != null && !favouriteFoods.isEmpty())
         {
-            sb.append("Favourite Foods: ").append(favouriteFood).append("\n");
+            for (String allergy : allergies)
+            {
+                sb.append("Allergies: ").append(allergy).append("\n");
+            }
+
+            for (String favouriteFood : favouriteFoods)
+            {
+                sb.append("Favourite Foods: ").append(favouriteFood).append("\n");
+            }
         }
 
         sb.append("Favourite Foods: ").append(favouriteFoods).append("\n");
         sb.append("Points: ").append(points).append("\n");
         sb.append("-------------------");
         return sb.toString();
+    }
+
+    public String getActivityLevelDisplayName()
+    {
+        return activityLevel.getDisplayName();
     }
 
     public ActivityLevel getActivityLevel() {

@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Adapter.BusinessRoleAdapter;
-import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.Account;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;

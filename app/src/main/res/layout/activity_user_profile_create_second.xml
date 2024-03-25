@@ -25,18 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/user_profile"
+            android:text="@string/guest_profile"
             android:textAlignment="center"
             android:textSize="35sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="@string/you_can_change_them_at_any_time"
-            android:textAlignment="center"
-            android:textSize="20sp" />
 
         <View
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -178,11 +179,23 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 // (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
                 // FIXME: not yet to do this, need to set up the user profile before uploading to firebase.
 
-                intentNavToBusinessProfileActivity = new Intent(RegisterBusinessActivity.this,
-                        BusinessProfileCreateActivity.class);
-                intentNavToBusinessProfileActivity.putExtra("userAccount", account);
-                startActivity(intentNavToBusinessProfileActivity);
-                finish();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("Security Measure Applied");
+                alertDialog.setMessage("Your data is now secure. " +
+                        "Only authorized vendors can access their personal information. " +
+                        "If you encounter any issues or have questions, please contact support.");
+                alertDialog.setPositiveButton("OK", (dialog, which) -> {
+                    // dismiss the dialog
+                    dialog.dismiss();
+                    // move to business profile for default business profile page.
+                    // FIXME: need to set up the business profile before uploading to firebase.
+                    intentNavToBusinessProfileActivity = new Intent(RegisterBusinessActivity.this,
+                            BusinessProfileCreateActivity.class);
+                    intentNavToBusinessProfileActivity.putExtra("userAccount", account);
+                    startActivity(intentNavToBusinessProfileActivity);
+                    finish();
+                });
+                alertDialog.show();
             }
             else
             {

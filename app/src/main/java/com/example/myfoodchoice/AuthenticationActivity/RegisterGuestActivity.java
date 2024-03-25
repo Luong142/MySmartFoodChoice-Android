@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.AuthenticationActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -280,13 +281,21 @@ public class RegisterGuestActivity extends AppCompatActivity
     {
         return v ->
         {
-            // move to user profile for default user profile page.
-            Log.d(TAG, "onCompleteUserAccountListener: " + userProfile);
-            // move
-            intentNavToUserProfileFirstActivity = new Intent(RegisterGuestActivity.this, UserProfileCreateFirstActivity.class);
-            intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
-            startActivity(intentNavToUserProfileFirstActivity);
-            finish();
+            // Log.d(TAG, "onCompleteUserAccountListener: " + userProfile); // debug message
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Security Measure Applied");
+            alertDialog.setMessage("Your data is now secure. Only authorized users can access their personal information. " +
+                    "If you encounter any issues or have questions, please contact support.");
+            alertDialog.setPositiveButton("OK", (dialog, which) -> {
+                // dismiss the dialog
+                dialog.dismiss();
+                // move to user profile for default user profile page.
+                intentNavToUserProfileFirstActivity = new Intent(RegisterGuestActivity.this, UserProfileCreateFirstActivity.class);
+                intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
+                startActivity(intentNavToUserProfileFirstActivity);
+                finish();
+            });
+            alertDialog.show();
         };
     }
 
