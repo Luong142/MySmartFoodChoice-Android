@@ -42,6 +42,8 @@ import io.paperdb.Paper;
 public class TrainerMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+
+    //  TODO: Trainer actor should not be here, convert everything to react next week.
     DrawerLayout drawerLayout;
 
     DatabaseReference databaseReferenceRegisteredBusinesses;

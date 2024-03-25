@@ -268,7 +268,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         return task ->
         {
             // to carry the userProfile for the next update in second one.
-            intent = new Intent(UserProfileUpdateFirstActivity.this, UserProfileUpdateSecondActivity.class);
+            intent = new Intent(UserProfileUpdateFirstActivity.this, UserMainMenuActivity.class);
             intent.putExtra("userProfile", userProfile);
             startActivity(intent);
             finish();

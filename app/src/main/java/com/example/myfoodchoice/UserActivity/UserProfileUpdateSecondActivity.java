@@ -31,6 +31,8 @@ import java.util.ArrayList;
 public class UserProfileUpdateSecondActivity extends AppCompatActivity
 {
     // TODO: declare UI components
+    // TODO: change of plan, we need to remove this part for only first is remain for lesser update.
+    // TODO: this one is not used currently
     ImageView maleUpdateImage, femaleUpdateImage;
 
     Button updateBtn;

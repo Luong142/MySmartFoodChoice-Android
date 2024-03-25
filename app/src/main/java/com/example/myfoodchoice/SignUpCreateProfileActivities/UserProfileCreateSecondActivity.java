@@ -220,5 +220,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     {
         dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vege));
         dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.nonvege));
+        dietTypeArrayList.add(new UserProfile("Halal", R.drawable.halal));
     }
 }

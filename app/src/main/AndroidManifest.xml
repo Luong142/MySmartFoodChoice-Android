@@ -38,6 +38,9 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".TermAndConditionActivity"
+            android:exported="false" />
+        <activity
             android:name=".GuestActivity.GuestTrialOverActivity"
             android:exported="false" />
 

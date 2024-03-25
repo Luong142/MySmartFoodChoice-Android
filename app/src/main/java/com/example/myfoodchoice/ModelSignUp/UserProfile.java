@@ -1,17 +1,13 @@
 package com.example.myfoodchoice.ModelSignUp;
 
-import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.myfoodchoice.Model.ActivityLevel;
-import com.example.myfoodchoice.Model.HealthCondition;
-import com.example.myfoodchoice.Model.Meal;
-
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
@@ -30,8 +26,10 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     private int dietTypeImage;
 
     private ActivityLevel activityLevel;
-    private List<HealthCondition> healthConditions;
-    private List<Meal> mealHistory;
+
+    private ArrayList<String> allergies;
+
+    private List<String> favouriteFoods;
 
     public UserProfile()
     {
@@ -52,6 +50,8 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         age = in.readInt();
         dietType = in.readString();
         points = in.readInt();
+        allergies = in.createStringArrayList();
+        favouriteFoods = in.createStringArrayList();
     }
 
     public UserProfile(String dietType, int dietTypeImage)
@@ -95,12 +95,14 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeInt(age);
         dest.writeString(dietType);
         dest.writeInt(points);
+        dest.writeSerializable(activityLevel);
+        dest.writeStringList(allergies); // Write allergies
+        dest.writeStringList(favouriteFoods); // Write favourite foods
     }
 
     @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("User Profile\n");
         sb.append("-------------------\n");
@@ -111,7 +113,19 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Gender: ").append(gender).append("\n");
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
-        sb.append("Point: ").append(points).append("\n");
+        sb.append("Activity Level: ").append(activityLevel).append("\n");
+        for (String allergy : allergies)
+        {
+            sb.append("Allergies: ").append(allergy).append("\n");
+        }
+
+        for (String favouriteFood : favouriteFoods)
+        {
+            sb.append("Favourite Foods: ").append(favouriteFood).append("\n");
+        }
+
+        sb.append("Favourite Foods: ").append(favouriteFoods).append("\n");
+        sb.append("Points: ").append(points).append("\n");
         sb.append("-------------------");
         return sb.toString();
     }
