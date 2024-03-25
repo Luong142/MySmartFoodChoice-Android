@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -49,6 +50,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     ProgressBar progressBar;
 
     Button nextBtn;
+    Spinner spinnerActivity;
 
     String myUri, gender;
 
@@ -100,6 +102,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         nextBtn = findViewById(R.id.nextBtn);
         maleImage = findViewById(R.id.maleImage);
         femaleImage = findViewById(R.id.femaleImage);
+        spinnerActivity = findViewById(R.id.activitySpinner);
 
         // set gender to male by default
         gender = "Default";

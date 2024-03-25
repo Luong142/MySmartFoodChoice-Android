@@ -16,10 +16,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.59">
+        app:layout_constraintVertical_bias="0.471">
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,15 +33,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/you_can_change_them_at_any_time"
-            android:textSize="20sp"
             android:layout_gravity="center"
+            android:text="@string/you_can_change_them_at_any_time"
             android:textAlignment="center"
-            />
+            android:textSize="20sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,8 +100,8 @@
             android:id="@+id/dietTypeSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_spinner"
             android:layout_gravity="center"
+            android:background="@drawable/background_spinner"
             android:minHeight="48dp" />
 
         <View

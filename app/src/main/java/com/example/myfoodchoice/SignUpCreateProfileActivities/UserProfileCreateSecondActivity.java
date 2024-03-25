@@ -218,8 +218,11 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     private void initListDietType()
     {
-        dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vege));
-        dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.nonvege));
-        dietTypeArrayList.add(new UserProfile("Halal", R.drawable.halal));
+            dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vegetarian));
+            dietTypeArrayList.add(new UserProfile("Halal", R.drawable.halal));
+            dietTypeArrayList.add(new UserProfile("High-Protein", R.drawable.protein));
+            dietTypeArrayList.add(new UserProfile("Low-Carb", R.drawable.carb));
+            dietTypeArrayList.add(new UserProfile("Low-Fat", R.drawable.fat));
+            dietTypeArrayList.add(new UserProfile("Low-Sugar", R.drawable.sugar));
     }
 }

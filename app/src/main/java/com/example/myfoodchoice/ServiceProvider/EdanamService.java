@@ -1,6 +1,6 @@
 package com.example.myfoodchoice.ServiceProvider;
 
-import com.example.myfoodchoice.Model.FoodParseResponse;
+import com.example.myfoodchoice.EdamamModel.FoodParseResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

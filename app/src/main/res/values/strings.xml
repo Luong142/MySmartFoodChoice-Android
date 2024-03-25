@@ -148,4 +148,6 @@
     <string name="health_description">Health Description</string>
     <string name="redeem">Redeem</string>
     <string name="reward_image">Reward Image</string>
+    <string name="activity_level">Activity Level</string>
+    <string name="sedentary">Sedentary</string>
 </resources>

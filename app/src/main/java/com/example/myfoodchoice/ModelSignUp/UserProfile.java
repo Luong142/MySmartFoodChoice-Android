@@ -27,6 +27,8 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private ActivityLevel activityLevel;
 
+    private int activityLevelImage;
+
     private ArrayList<String> allergies;
 
     private List<String> favouriteFoods;
@@ -50,6 +52,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         age = in.readInt();
         dietType = in.readString();
         points = in.readInt();
+        activityLevel = (ActivityLevel) in.readSerializable();
         allergies = in.createStringArrayList();
         favouriteFoods = in.createStringArrayList();
     }
@@ -128,6 +131,38 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Points: ").append(points).append("\n");
         sb.append("-------------------");
         return sb.toString();
+    }
+
+    public ActivityLevel getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(ActivityLevel activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
+    public int getActivityLevelImage() {
+        return activityLevelImage;
+    }
+
+    public void setActivityLevelImage(int activityLevelImage) {
+        this.activityLevelImage = activityLevelImage;
+    }
+
+    public ArrayList<String> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(ArrayList<String> allergies) {
+        this.allergies = allergies;
+    }
+
+    public List<String> getFavouriteFoods() {
+        return favouriteFoods;
+    }
+
+    public void setFavouriteFoods(List<String> favouriteFoods) {
+        this.favouriteFoods = favouriteFoods;
     }
 
     public int getPoints() {
