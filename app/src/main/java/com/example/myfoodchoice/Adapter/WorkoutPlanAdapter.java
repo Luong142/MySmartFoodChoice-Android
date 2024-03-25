@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanClickListener;
-import com.example.myfoodchoice.Model.WorkoutPlan;
+import com.example.myfoodchoice.ModelBusiness.WorkoutPlan;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.Adapter.HealthTipsUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
-import com.example.myfoodchoice.Model.HealthTips;
+import com.example.myfoodchoice.ModelBusiness.HealthTips;
 import com.example.myfoodchoice.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

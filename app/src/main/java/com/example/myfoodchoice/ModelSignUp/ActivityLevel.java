@@ -1,7 +1,6 @@
 package com.example.myfoodchoice.ModelSignUp;
 
-public enum ActivityLevel
-{
+public enum ActivityLevel {
     SEDENTARY("Sedentary"),
     LIGHTLY_ACTIVE("Lightly Active"),
     MODERATELY_ACTIVE("Moderately Active"),

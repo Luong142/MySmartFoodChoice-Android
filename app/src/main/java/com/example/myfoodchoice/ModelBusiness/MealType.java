@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Model;
+package com.example.myfoodchoice.ModelBusiness;
 
 public enum MealType
 {

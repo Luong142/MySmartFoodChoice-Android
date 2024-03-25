@@ -21,7 +21,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private int points;
 
-    private String dietType;
+    private String dietType; // for diet to recommend
 
     private int dietTypeImage;
 
@@ -29,9 +29,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private int activityLevelImage;
 
-    private ArrayList<String> allergies; // TODO: add this multiple time if possible.
-
-    private List<String> favouriteFoods;
+    private String allergies;
 
     public UserProfile()
     {
@@ -53,8 +51,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dietType = in.readString();
         points = in.readInt();
         activityLevel = (ActivityLevel) in.readSerializable();
-        allergies = in.createStringArrayList();
-        favouriteFoods = in.createStringArrayList();
+        allergies = in.readString();
     }
 
     public UserProfile(String dietType, int dietTypeImage)
@@ -105,8 +102,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeString(dietType);
         dest.writeInt(points);
         dest.writeSerializable(activityLevel);
-        dest.writeStringList(allergies); // Write allergies
-        dest.writeStringList(favouriteFoods); // Write favourite foods
+        dest.writeString(allergies);
     }
 
     @NonNull
@@ -123,21 +119,8 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
         sb.append("Activity Level: ").append(activityLevel).append("\n");
+        sb.append("Allergies: ").append(allergies).append("\n");
 
-        if (allergies != null && !allergies.isEmpty() && favouriteFoods != null && !favouriteFoods.isEmpty())
-        {
-            for (String allergy : allergies)
-            {
-                sb.append("Allergies: ").append(allergy).append("\n");
-            }
-
-            for (String favouriteFood : favouriteFoods)
-            {
-                sb.append("Favourite Foods: ").append(favouriteFood).append("\n");
-            }
-        }
-
-        sb.append("Favourite Foods: ").append(favouriteFoods).append("\n");
         sb.append("Points: ").append(points).append("\n");
         sb.append("-------------------");
         return sb.toString();
@@ -164,20 +147,12 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         this.activityLevelImage = activityLevelImage;
     }
 
-    public ArrayList<String> getAllergies() {
+    public String getAllergies() {
         return allergies;
     }
 
-    public void setAllergies(ArrayList<String> allergies) {
+    public void setAllergies(String allergies) {
         this.allergies = allergies;
-    }
-
-    public List<String> getFavouriteFoods() {
-        return favouriteFoods;
-    }
-
-    public void setFavouriteFoods(List<String> favouriteFoods) {
-        this.favouriteFoods = favouriteFoods;
     }
 
     public int getPoints() {

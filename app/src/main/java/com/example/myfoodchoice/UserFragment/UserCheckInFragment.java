@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.Adapter.CheckInDayAdapter;
-import com.example.myfoodchoice.Adapter.RecipeItemAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDailyCheckInListener;
-import com.example.myfoodchoice.Model.Recipe;
 import com.example.myfoodchoice.ModelUtilities.CheckInDay;
 import com.example.myfoodchoice.R;
 

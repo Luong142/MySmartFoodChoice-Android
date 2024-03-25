@@ -4,43 +4,35 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
-import com.example.myfoodchoice.CallAPI.ChatGPTAPI;
-import com.example.myfoodchoice.CallAPI.ClaudeAPI;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
-import com.example.myfoodchoice.CallAPI.Message;
-import com.example.myfoodchoice.CallAPI.MessageRequest;
-import com.example.myfoodchoice.CallAPI.MessageResponse;
+import com.example.myfoodchoice.ModelEdamam.RecipeResponse;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.ServiceProviderEdamam.EdamamService;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 import org.jetbrains.annotations.Contract;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Objects;
 
 import io.paperdb.Paper;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Response;
 
-public class WelcomeActivity extends AppCompatActivity
+public class WelcomeActivity extends AppCompatActivity implements Callback<RecipeResponse>
 {
     // declare buttons
     Button signingBtn, signUpAsGuestBtn, signUpAsBusinessBtn;
@@ -82,6 +74,13 @@ public class WelcomeActivity extends AppCompatActivity
         // FIXME: this one is not free too.
         // ChatGPTAPI chatGPTAPI = new ChatGPTAPI();
         // chatGPTAPI.generateOutput("What is the meaning of life?", this);
+
+        // Example query
+        String query = "chicken";
+
+        // Create an instance of EdamamService and call searchRecipes
+        EdamamService edamamService = new EdamamService();
+        edamamService.searchRecipes(query);
 
         // init paper
         Paper.init(WelcomeActivity.this);
@@ -134,7 +133,34 @@ public class WelcomeActivity extends AppCompatActivity
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
-    private void testClaudeAPI()
+    // FIXME: no response, no error
+    @Override
+    public void onResponse(Call<RecipeResponse> call, @NonNull Response<RecipeResponse> response)
+    {
+        if (response.isSuccessful())
+        {
+            RecipeResponse recipeResponse = response.body();
+            // Update UI on the main thread
+            runOnUiThread(() ->
+            {
+                // Update your UI here with recipeResponse data
+                Toast.makeText(WelcomeActivity.this, "Recipes found!", Toast.LENGTH_SHORT).show();
+                Log.d("Edamam", "Recipes found: " + recipeResponse);
+            });
+        } else {
+            // Handle the error
+            Log.d("Edamam","Error: " + response.code());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<RecipeResponse> call, @NonNull Throwable t)
+    {
+        Log.d("Edamam","Error: " + t.getMessage());
+    }
+
+    /*
+        private void testClaudeAPI()
     {
         String prompt = "What is the capital of France?";
         ClaudeAPI claudeAPI = new ClaudeAPI();
@@ -163,6 +189,7 @@ public class WelcomeActivity extends AppCompatActivity
             }
         });
     }
+     */
 
     @NonNull
     @Contract(" -> new")

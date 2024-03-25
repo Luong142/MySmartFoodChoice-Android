@@ -24,7 +24,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginBottom="456dp"
+        android:layout_marginBottom="440dp"
         android:src="@drawable/foodimage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="520dp"
+        android:layout_marginTop="448dp"
         android:text="@string/welcome_to_smart_food_choice"
         android:textAlignment="center"
         android:textColor="@color/white"

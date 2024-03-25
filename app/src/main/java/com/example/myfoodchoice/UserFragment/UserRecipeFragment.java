@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.Adapter.RecipeItemAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnRecipeItemClickListener;
-import com.example.myfoodchoice.Model.Recipe;
+import com.example.myfoodchoice.ModelBusiness.Recipe;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;

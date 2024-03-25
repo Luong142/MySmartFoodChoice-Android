@@ -1,0 +1,10 @@
+app id: cc7910a8
+
+app key: b7116fce23fe2a6dabbb5b211be93c1b
+
+base url: https://api.edamam.com
+
+GET("/api/recipes/v2")
+
+
+redo again I failed one to call API for searching recipe "Chicken"

@@ -15,8 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myfoodchoice.Adapter.AllergiesAdapter;
 import com.example.myfoodchoice.Adapter.DietTypeAdapter;
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
+import com.example.myfoodchoice.ModelAdapter.Allergies;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,12 +51,14 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     ArrayList<UserProfile> dietTypeArrayList;
 
-    String dietType;
+    ArrayList<Allergies> allergiesArrayList;
+
+    String dietType, allergies;
 
     EditText editIntHeight, editIntWeight;
 
     // TODO: declare UI component
-    Spinner spinnerDietType;
+    Spinner spinnerDietType, spinnerAllergies;
 
     Intent intent, intentToLoginActivity;
 
@@ -63,8 +67,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     ProgressBar progressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_create_second);
 
@@ -76,6 +79,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         databaseReferenceUserProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
         userProfile = new UserProfile();
         dietTypeArrayList = new ArrayList<>();
+        allergiesArrayList = new ArrayList<>();
 
         // TODO: init UI component
         initListDietType();
@@ -83,6 +87,13 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         DietTypeAdapter dietTypeAdapter = new DietTypeAdapter(this, dietTypeArrayList);
         spinnerDietType.setAdapter(dietTypeAdapter);
         spinnerDietType.setOnItemSelectedListener(onItemSelectedDietTypeListener);
+
+        // TODO: init UI component
+        initListAllergies();
+        spinnerAllergies = findViewById(R.id.allergiesSpinner);
+        AllergiesAdapter allergiesAdapter = new AllergiesAdapter(this, allergiesArrayList);
+        spinnerAllergies.setAdapter(allergiesAdapter);
+        spinnerAllergies.setOnItemSelectedListener(onItemSelectedAllergiesListener);
 
         // for progress bar
         progressBar = findViewById(R.id.progressBar);
@@ -153,6 +164,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             userProfile.setWeight(String.valueOf(weight));
             userProfile.setHeight(String.valueOf(height));
             userProfile.setDietType(dietType);
+            userProfile.setAllergies(allergies);
 
             /*
             Log.d(TAG, "onSignUpListener: " + userProfile);
@@ -161,7 +173,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getEmail()); // FIXME: for debug purpose
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getPhotoUrl()); // FIXME: for debug purpose
             Log.d(TAG, "onSignUpListener: " + firebaseUser.getProviderId()); // FIXME: for debug purpose
-
              */
 
             // TODO: create user profile through this and add it inside of the firebase
@@ -198,6 +209,26 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         };
     }
 
+    private final AdapterView.OnItemSelectedListener onItemSelectedAllergiesListener
+            = new AdapterView.OnItemSelectedListener ()
+    {
+        @Override
+        public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
+        {
+            Allergies allergies1 = (Allergies) parent.getItemAtPosition(position);
+            allergies = allergies1.getName();
+            signUpBtn.setEnabled(true);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent)
+        {
+            // show message
+            Toast.makeText(getApplicationContext(), "Please select allergy.", Toast.LENGTH_SHORT).show();
+            signUpBtn.setEnabled(false);
+        }
+    };
+
     private final AdapterView.OnItemSelectedListener onItemSelectedDietTypeListener =
             new AdapterView.OnItemSelectedListener()
     {
@@ -219,13 +250,22 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         }
     };
 
+    private void initListAllergies()
+    {
+        allergiesArrayList.add(new Allergies("Gluten", R.drawable.gluten_free));
+        allergiesArrayList.add(new Allergies("Dairy", R.drawable.dairy));
+        allergiesArrayList.add(new Allergies("Egg", R.drawable.egg));
+        allergiesArrayList.add(new Allergies("Shellfish", R.drawable.shell)); // Replaced "Tree Nuts" with "Shellfish"
+        allergiesArrayList.add(new Allergies("Peanut", R.drawable.peanut));
+    }
+
     private void initListDietType()
     {
-            dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vegetarian));
-            dietTypeArrayList.add(new UserProfile("Halal", R.drawable.halal));
-            dietTypeArrayList.add(new UserProfile("High-Protein", R.drawable.protein));
-            dietTypeArrayList.add(new UserProfile("Low-Carb", R.drawable.carb));
-            dietTypeArrayList.add(new UserProfile("Low-Fat", R.drawable.fat));
-            dietTypeArrayList.add(new UserProfile("Low-Sugar", R.drawable.sugar));
+        // FIXME: the key in Edamam API are in lower case not upper case
+        dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vegetarian));
+        dietTypeArrayList.add(new UserProfile("High-Protein", R.drawable.protein));
+        dietTypeArrayList.add(new UserProfile("Low-Carb", R.drawable.carb));
+        dietTypeArrayList.add(new UserProfile("Low-Fat", R.drawable.fat));
+        dietTypeArrayList.add(new UserProfile("Sugar-Conscious", R.drawable.sugar));
     }
 }

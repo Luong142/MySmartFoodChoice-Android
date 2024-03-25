@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.ServiceProvider;
+package com.example.myfoodchoice.ServiceProviderEdamam;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

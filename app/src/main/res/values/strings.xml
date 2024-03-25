@@ -152,4 +152,5 @@
     <string name="sedentary">Sedentary</string>
     <string name="guest_profile">Guest Profile</string>
     <string name="welcome_to_smart_food_choice">Welcome to Smart Food Choice</string>
+    <string name="allergies">Allergies</string>
 </resources>
