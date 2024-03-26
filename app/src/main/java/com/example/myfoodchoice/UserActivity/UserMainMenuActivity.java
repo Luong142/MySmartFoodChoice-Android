@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
+import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeFragment;
@@ -131,6 +131,7 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("My Smart Food Choice");
         setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         // TODO: the animation is here in navigation drawer should record this in report file.
@@ -301,7 +302,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_review)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new SharedReviewFragment()).commit();
+                    new ReviewFragment()).commit();
         }
 
         // TODO: update and view user profile

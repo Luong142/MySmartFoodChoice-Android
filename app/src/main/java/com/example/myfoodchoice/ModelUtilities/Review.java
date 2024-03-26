@@ -5,14 +5,14 @@ import androidx.annotation.NonNull;
 public class Review
 {
     private String reviewText;
-    private int rating;
-    private ReviewerType reviewerType;
+    private float rating;
+    private String reviewerType;
     // Add any other relevant properties
 
     // Constructors, getters, and setters
 
 
-    public Review(String reviewText, int rating, ReviewerType reviewerType)
+    public Review(String reviewText, float rating, String reviewerType)
     {
         this.reviewText = reviewText;
         this.rating = rating;
@@ -37,19 +37,19 @@ public class Review
         this.reviewText = reviewText;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
-    public ReviewerType getReviewerType() {
+    public String getReviewerType() {
         return reviewerType;
     }
 
-    public void setReviewerType(ReviewerType reviewerType) {
+    public void setReviewerType(String reviewerType) {
         this.reviewerType = reviewerType;
     }
 }

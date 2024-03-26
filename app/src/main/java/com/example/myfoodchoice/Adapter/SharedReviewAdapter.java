@@ -66,7 +66,7 @@ public class SharedReviewAdapter extends RecyclerView.Adapter<SharedReviewAdapte
     {
         Review review = reviews.get(position);
         holder.reviewText.setText(review.getReviewText());
-        holder.reviewType.setText(review.getReviewerType().name());
+        holder.reviewType.setText(review.getReviewerType());
         holder.ratingBar.setRating(review.getRating());
     }
 

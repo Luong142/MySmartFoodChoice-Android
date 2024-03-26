@@ -15,7 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.myfoodchoice.GuestFragment.GuestHomeFragment;
 import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
+import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
@@ -48,6 +48,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("My Smart Food Choice");
         navigationView.setNavigationItemSelectedListener(this);
         // TODO: the animation is here in navigation drawer should record this in report file.
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -133,7 +134,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_review)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new SharedReviewFragment()).commit();
+                    new ReviewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)

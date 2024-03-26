@@ -154,4 +154,5 @@
     <string name="welcome_to_smart_food_choice">Welcome to Smart Food Choice</string>
     <string name="allergies">Allergies</string>
     <string name="kcal">kcal</string>
+    <string name="enter_your_review_here">Enter your review here</string>
 </resources>

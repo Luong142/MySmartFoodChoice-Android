@@ -23,7 +23,7 @@ import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
+import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,6 +128,7 @@ public class TrainerMainMenuActivity extends AppCompatActivity
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("My Smart Food Choice");
         setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         // TODO: the animation is here in navigation drawer should record this in report file.
@@ -258,7 +259,7 @@ public class TrainerMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_review)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new SharedReviewFragment()).commit();
+                    new ReviewFragment()).commit();
         }
 
         // TODO: update and view user profile

@@ -37,9 +37,10 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
-public class SharedReviewFragment extends Fragment implements OnReviewClickListener
+public class ReviewFragment extends Fragment implements OnReviewClickListener
 {
     // TODO: declare components
 
@@ -63,9 +64,13 @@ public class SharedReviewFragment extends Fragment implements OnReviewClickListe
 
     final static String PATH_ACCOUNT = "Registered Accounts";
 
+    final static String PATH_REVIEW = "Reviews";
+
     DatabaseReference databaseReferenceUserProfile;
 
     DatabaseReference databaseReferenceAccount;
+
+    DatabaseReference databaseReferenceReview;
 
     FirebaseAuth firebaseAuth;
 
@@ -101,6 +106,10 @@ public class SharedReviewFragment extends Fragment implements OnReviewClickListe
             // Todo: init next database reference
             databaseReferenceAccount = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
             databaseReferenceAccount.addListenerForSingleValueEvent(valueAccountEventListener());
+
+            // todo: init database reference for review
+            databaseReferenceReview = firebaseDatabase.getReference(PATH_REVIEW).child(userID);
+            databaseReferenceReview.addListenerForSingleValueEvent(valueReviewEventListener());
         }
 
         // TODO: init UI components
@@ -121,8 +130,29 @@ public class SharedReviewFragment extends Fragment implements OnReviewClickListe
         sharedReviewAdapter = new SharedReviewAdapter(reviewArrayList, this);
         setAdapter();
         reviewRecyclerView.setVerticalScrollBarEnabled(true);
+    }
 
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueReviewEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // todo: update this to show review in recycler view?
+                Review review = snapshot.getValue(Review.class);
+                Log.d(TAG, "onDataChange: " + review);
+                reviewArrayList.add(review);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+
+            }
+        };
     }
 
     @NonNull
@@ -132,8 +162,8 @@ public class SharedReviewFragment extends Fragment implements OnReviewClickListe
         return v ->
         {
             // TODO: create new review here.
-            Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
-
+            ReviewDialogFragment reviewDialogFragment = new ReviewDialogFragment();
+            reviewDialogFragment.show(getChildFragmentManager(), "ReviewDialogFragment");
         };
     }
 
@@ -148,12 +178,12 @@ public class SharedReviewFragment extends Fragment implements OnReviewClickListe
     private void populateReviewList()
     {
         // create 5 more reviews here
-        Review review = new Review("Good App", 5, ReviewerType.USER);
-        Review review1 = new Review("Good App", 4, ReviewerType.DIETITIAN);
-        Review review2 = new Review("Good App", 2, ReviewerType.TRAINER);
-        Review review3 = new Review("Good App", 5, ReviewerType.USER);
-        Review review4 = new Review("Good App", 5, ReviewerType.USER);
-        Review review5 = new Review("Good App", 5, ReviewerType.USER);
+        Review review = new Review("Good App", 5, "User");
+        Review review1 = new Review("Good App", 4, "Guest");
+        Review review2 = new Review("Good App", 2, "Dietitian");
+        Review review3 = new Review("Good App", 5, "Trainer");
+        Review review4 = new Review("Good App", 5, "User");
+        Review review5 = new Review("Good App", 5, "Trainer");
 
 
         reviewArrayList.add(review);
