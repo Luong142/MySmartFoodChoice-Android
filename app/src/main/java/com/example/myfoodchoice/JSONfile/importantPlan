@@ -6,14 +6,34 @@ API key: wtsuGH2MhlYMIeB/1AzfVQ==rDZ1zScWPvwReMqa
 GET("/v1/nutrition")
 
 
+// todo: this is free meal API
+
+API key: 1
+
+
+
+
+
+
+
+
+
+fixme: the below API having some error on their website, choose other API for food database
+todo: for food database from Edamam API
+
+API key: 1143fd5ac200c5e4612afcdfceec67e9
+
+APP ID: 1c3bb580
+
+base url: https://api.edamam.com
+
+GET("api/food-database/v2/parser")
 
 TODO: this API is hard for its JSON format, my brain melted.
 this is for recipe search API Edamam
 app id: cc7910a8
 
 app key: b7116fce23fe2a6dabbb5b211be93c1b
-
-base url: https://api.edamam.com
 
 GET("/api/recipes/v2")
 

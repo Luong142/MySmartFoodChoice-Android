@@ -4,6 +4,9 @@ Reason to develop native android app over Web based app.
 3. less bugs
 4. higher compatibility of Android environment as a native Android app.
 
+todo: need to discuss with team, I am confused with the layout, why there is an image on search recipe?
+todo: instead of the home page, which have calories intake calculation but don't have take the photo?
+
 
 // to train model use this website.
 https://teachablemachine.withgoogle.com/train

@@ -1,6 +1,5 @@
 package com.example.myfoodchoice.WelcomeActivity;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
@@ -23,10 +24,12 @@ import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.jetbrains.annotations.Contract;
+
+import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
-import org.jetbrains.annotations.Contract;
-import io.paperdb.Paper;
 import retrofit2.Response;
 
 public class WelcomeActivity extends AppCompatActivity
