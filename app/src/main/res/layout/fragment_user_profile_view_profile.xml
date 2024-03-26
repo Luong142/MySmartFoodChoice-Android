@@ -8,23 +8,24 @@
     tools:context=".UserFragment.UserProfileViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <ImageView
         android:id="@+id/displayUserImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="@string/put_our_user_profile_image_here"
         android:src="@drawable/login_person"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/put_our_user_profile_image_here" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/displayUserProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="196dp"
         android:text="@string/placeholder"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -36,7 +37,7 @@
         android:id="@+id/updateProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
+        android:layout_marginBottom="56dp"
         android:text="@string/update_profile"
         android:textColor="@color/black"
         android:textSize="25sp"

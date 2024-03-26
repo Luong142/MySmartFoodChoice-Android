@@ -29,15 +29,15 @@ public class SharedReviewAdapter extends RecyclerView.Adapter<SharedReviewAdapte
     public static class myViewHolder extends RecyclerView.ViewHolder
     {
         public TextView reviewText;
-        public TextView reviewType;
+        public TextView reviewName;
 
         public RatingBar  ratingBar;
 
         public myViewHolder(final View itemView, OnReviewClickListener onReviewClickListener)
         {
             super(itemView);
-            reviewType = itemView.findViewById(R.id.reviewTextView);
-            reviewText = itemView.findViewById(R.id.reviewerTypeTextView);
+            reviewText = itemView.findViewById(R.id.reviewTextView);
+            reviewName = itemView.findViewById(R.id.reviewNameTextView);
             ratingBar = itemView.findViewById(R.id.ratingBar);
 
             itemView.setOnClickListener(v ->
@@ -65,9 +65,19 @@ public class SharedReviewAdapter extends RecyclerView.Adapter<SharedReviewAdapte
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
         Review review = reviews.get(position);
-        holder.reviewText.setText(review.getReviewText());
-        holder.reviewType.setText(review.getReviewerType());
-        holder.ratingBar.setRating(review.getRating());
+        if (review != null)
+        {
+            holder.reviewText.setText(review.getReviewText());
+            holder.reviewName.setText(review.getDisplayName());
+            holder.ratingBar.setRating(review.getRating());
+        }
+        else
+        {
+            // Handle the null object, e.g., by setting default text or hiding the view
+            holder.reviewText.setText("No review available");
+            holder.reviewName.setText("");
+            holder.ratingBar.setRating(0);
+        }
     }
 
     @Override

@@ -22,11 +22,11 @@ import com.example.myfoodchoice.AdapterInterfaceListener.OnReviewClickListener;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.ModelUtilities.Review;
-import com.example.myfoodchoice.ModelUtilities.ReviewerType;
 import com.example.myfoodchoice.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -109,8 +109,8 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
             // todo: init database reference for review
             databaseReferenceReview = firebaseDatabase.getReference(PATH_REVIEW).child(userID);
-            databaseReferenceReview.addListenerForSingleValueEvent(valueReviewEventListener());
-        }
+            databaseReferenceReview.addChildEventListener(valueChildReviewEventListener());
+         }
 
         // TODO: init UI components
         userProfileImage = view.findViewById(R.id.userProfileImageView);
@@ -123,7 +123,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
         // Initialize the recipeList
         reviewArrayList = new ArrayList<>();
-        populateReviewList();
+        // populateReviewList();
 
         // for recycle view
         reviewRecyclerView = view.findViewById(R.id.reviewsRecyclerView);
@@ -134,25 +134,83 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
     @NonNull
     @Contract(" -> new")
-    private ValueEventListener valueReviewEventListener()
+    private ChildEventListener valueChildReviewEventListener()
     {
-        return new ValueEventListener()
+        return new ChildEventListener()
         {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                // todo: update this to show review in recycler view?
                 Review review = snapshot.getValue(Review.class);
-                Log.d(TAG, "onDataChange: " + review);
-                reviewArrayList.add(review);
+                if (review != null)
+                {
+                    reviewArrayList.add(review);
+                    if (sharedReviewAdapter != null)
+                    {
+                        // todo: notify to update instantly to the UI.
+                        sharedReviewAdapter.notifyItemInserted(reviewArrayList.size() - 1);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                // todo: unless we want to update the review, we can just ignore it.
+                // todo: for future use if we want to update
+                Review review = snapshot.getValue(Review.class);
+                if (review != null)
+                {
+                    reviewArrayList.set(findReviewIndexById(review.getKey()), review);
+                    if (sharedReviewAdapter != null)
+                    {
+                        // todo: notify to update instantly to the UI.
+                        sharedReviewAdapter.notifyItemChanged(findReviewIndexById(review.getKey()));
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                // todo: unless we want to remove, we can ignore this
+                // todo: for future use if we want to remove
+                Review review = snapshot.getValue(Review.class);
+                if (review != null)
+                {
+                    reviewArrayList.remove(findReviewIndexById(review.getKey()));
+                    if (sharedReviewAdapter != null)
+                    {
+                        // todo: notify to update instantly to the UI.
+                        sharedReviewAdapter.notifyItemRemoved(findReviewIndexById(review.getKey()));
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         };
+    }
+
+    private int findReviewIndexById(String reviewId)
+    {
+        // todo: the purpose is to find the correct review in this list based on the key attribute.
+        for (int i = 0; i < reviewArrayList.size(); i++)
+        {
+            if (reviewArrayList.get(i).getKey().equals(reviewId))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @NonNull
@@ -161,9 +219,15 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
     {
         return v ->
         {
-            // TODO: create new review here.
-            ReviewDialogFragment reviewDialogFragment = new ReviewDialogFragment();
-            reviewDialogFragment.show(getChildFragmentManager(), "ReviewDialogFragment");
+            // Assuming this code is inside a fragment method
+            if (isAdded()) {
+                ReviewDialogFragment reviewDialogFragment = new ReviewDialogFragment();
+                reviewDialogFragment.show(getChildFragmentManager(), "ReviewDialogFragment");
+            } else {
+                Log.e(TAG, "Fragment not attached to an activity, cannot show dialog");
+                // Handle the situation appropriately, e.g., by showing a message to the user
+            }
+
         };
     }
 
@@ -171,27 +235,16 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
     public void onReviewClick(int position)
     {
         // TODO: implement onClick
-        Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
 
     }
 
     private void populateReviewList()
     {
         // create 5 more reviews here
-        Review review = new Review("Good App", 5, "User");
-        Review review1 = new Review("Good App", 4, "Guest");
-        Review review2 = new Review("Good App", 2, "Dietitian");
-        Review review3 = new Review("Good App", 5, "Trainer");
-        Review review4 = new Review("Good App", 5, "User");
-        Review review5 = new Review("Good App", 5, "Trainer");
-
+        Review review = new Review("Test", "full name here", 5);
 
         reviewArrayList.add(review);
-        reviewArrayList.add(review1);
-        reviewArrayList.add(review2);
-        reviewArrayList.add(review3);
-        reviewArrayList.add(review4);
-        reviewArrayList.add(review5);
     }
 
     @NonNull

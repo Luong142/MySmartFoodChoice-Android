@@ -15,6 +15,28 @@ https://teachablemachine.withgoogle.com/train
 https://calorieninjas.com/api
 
 
+todo: JSON FORMAT FOR FIREBASE AND ITS RECOMMENDED STRUCTURE.
+-users
+   -userUid
+      -name: "Ticherhaz"
+      -others: "Master"
+   -userUid2
+      -name: "Pyke"
+      -others: "Bronze"
+-path
+   -userUid
+      -pathUid
+         -achievement: "Eat without using hand"
+         -date: "12/02/2022"
+      -pathUid2
+         -achievement: "Wake up early"
+         -date: "12/02/2022"
+   -userUid2
+      -pathUid3
+         -achievement: "Feeding team"
+         -date: "13/02/2022"
+
+
 public class MainActivity extends AppCompatActivity
 {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;

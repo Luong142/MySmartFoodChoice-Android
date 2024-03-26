@@ -4,29 +4,60 @@ import androidx.annotation.NonNull;
 
 public class Review
 {
+    private String key; // Firebase key
     private String reviewText;
     private float rating;
-    private String reviewerType;
     // Add any other relevant properties
 
     // Constructors, getters, and setters
 
+    private String displayName;
 
-    public Review(String reviewText, float rating, String reviewerType)
+    public Review()
     {
+        // for firebase
+    }
+
+    public Review(String reviewText, String displayName, float rating)
+    {
+        this.displayName = displayName;
         this.reviewText = reviewText;
         this.rating = rating;
-        this.reviewerType = reviewerType;
+    }
+
+    public Review(String key, String reviewText, String displayName, float rating)
+    {
+        this.key = key;
+        this.reviewText = reviewText;
+        this.rating = rating;
+        this.displayName = displayName;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "Review{" +
-                "reviewText='" + reviewText + '\'' +
+                "key='" + key + '\'' +
+                ", reviewText='" + reviewText + '\'' +
                 ", rating=" + rating +
-                ", reviewerType=" + reviewerType +
+                ", displayName='" + displayName + '\'' +
                 '}';
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getReviewText() {
@@ -43,13 +74,5 @@ public class Review
 
     public void setRating(float rating) {
         this.rating = rating;
-    }
-
-    public String getReviewerType() {
-        return reviewerType;
-    }
-
-    public void setReviewerType(String reviewerType) {
-        this.reviewerType = reviewerType;
     }
 }

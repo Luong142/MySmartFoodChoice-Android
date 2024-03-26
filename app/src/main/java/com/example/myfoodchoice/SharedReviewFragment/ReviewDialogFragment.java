@@ -20,6 +20,7 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelUtilities.Review;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,13 +41,15 @@ public class ReviewDialogFragment extends DialogFragment
 
     DatabaseReference databaseReferenceUserType;
 
+    DatabaseReference databaseReferenceNewChild;
+
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase firebaseDatabase;
 
     FirebaseUser firebaseUser;
 
-    String userID, userType;
+    String userID, userType, displayName;
 
     Review review;
 
@@ -56,15 +59,23 @@ public class ReviewDialogFragment extends DialogFragment
 
     final static String PATH_ACCOUNT = "Registered Accounts";
 
+    final static String PATH_PROFILE = "Profile";
+
     final static String TAG = "ReviewDialogFragment";
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
-        Log.d("Debug", "Creating dialog");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        if (getActivity() == null) {
+            Log.e(TAG, "Fragment not attached to an activity");
+            // Handle the error appropriately, e.g., by returning a dummy dialog or not showing the dialog at all
+            return new Dialog(requireContext()); // Fallback to a dummy dialog
+        }
+
+        // Use requireActivity() to ensure a non-null context
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_review, null);
 
         // TODO: init firebase components.
@@ -85,7 +96,11 @@ public class ReviewDialogFragment extends DialogFragment
             databaseReferenceReview = firebaseDatabase.getReference(PATH_REVIEW).child(userID);
 
             // todo: init user type and retrieve it from database reference
-            databaseReferenceUserType =firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
+            databaseReferenceUserType = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
+
+            // get the first name and last name together as display name
+            displayName = firebaseUser.getDisplayName();
+            // Log.d(TAG, "onCreateDialog: " + displayName);
             databaseReferenceUserType.addListenerForSingleValueEvent(valueUserTypeEventListener());
         }
 
@@ -133,10 +148,19 @@ public class ReviewDialogFragment extends DialogFragment
             String reviewText = reviewTextEdit.getText().toString();
             float rating = ratingBar.getRating();
             // TODO: Handle the review submission here.
-            Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
-            review = new Review(reviewText, rating, userType);
-            databaseReferenceReview.setValue(review).addOnCompleteListener(onCompleteSetValueListener());
+            databaseReferenceNewChild = databaseReferenceReview.push();
+            review = new Review(reviewText, displayName, rating);
+            review.setKey(databaseReferenceNewChild.getKey());
+            databaseReferenceNewChild.setValue(review).addOnCompleteListener(onCompleteSetValueListener())
+                    .addOnFailureListener(onFailureSetValueListener());
         };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnFailureListener onFailureSetValueListener()
+    {
+        return e -> Log.d(TAG, "onFailureSetValueListener: " + e.getMessage());
     }
 
     @NonNull
@@ -147,16 +171,7 @@ public class ReviewDialogFragment extends DialogFragment
         {
             if (task.isSuccessful())
             {
-                Toast.makeText(getContext(), "Review submitted successfully", Toast.LENGTH_SHORT).show();
-                dismiss();
-            }
-            else
-            {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Error");
-                builder.setMessage("Failed to submit review");
-                builder.setPositiveButton("OK", (dialog, which) -> dismiss());
-                builder.show();
+                Log.d(TAG, "onCompleteSetValueListener: " + task);
             }
         };
     }
