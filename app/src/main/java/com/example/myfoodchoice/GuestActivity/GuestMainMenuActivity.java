@@ -16,6 +16,12 @@ import com.example.myfoodchoice.GuestFragment.GuestBMICalculatorFragment;
 import com.example.myfoodchoice.GuestFragment.GuestHomeFragment;
 import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.SharedReviewFragment.SharedReviewFragment;
+import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
+import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
+import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
+import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -93,10 +99,42 @@ public class GuestMainMenuActivity extends AppCompatActivity
                     new GuestUpgradeAccountFragment()).commit();
         }
 
-        else if (itemId == R.id.nav_calculator)
+        // TODO: pls take note that Guest can access some User fragment
+
+        else if (itemId == R.id.nav_meal_record)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestBMICalculatorFragment()).commit();
+                    new UserMealRecordFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_log_meal)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserLogMealFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_food_recipe)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserRecipeFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_health_tips)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserHealthTipsFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_work_out)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserWorkOutFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_review)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new SharedReviewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)

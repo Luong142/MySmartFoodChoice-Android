@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "name": "nasi lemak",
+      "calories": 191.3,
+      "serving_size_g": 100,
+      "fat_total_g": 10.9,
+      "fat_saturated_g": 4.6,
+      "protein_g": 6.9,
+      "sodium_mg": 414,
+      "potassium_mg": 102,
+      "cholesterol_mg": 41,
+      "carbohydrates_total_g": 17.4,
+      "fiber_g": 0.7,
+      "sugar_g": 2.4
+    }
+  ]
+}

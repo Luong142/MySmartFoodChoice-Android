@@ -1,3 +1,14 @@
+
+TODO: this is Ninja Calories, Free Nutrition Facts Recipe API, 10000 calls per month cool!!!
+
+API key: wtsuGH2MhlYMIeB/1AzfVQ==rDZ1zScWPvwReMqa
+
+GET("/v1/nutrition")
+
+
+
+TODO: this API is hard for its JSON format, my brain melted.
+this is for recipe search API Edamam
 app id: cc7910a8
 
 app key: b7116fce23fe2a6dabbb5b211be93c1b
@@ -6,5 +17,14 @@ base url: https://api.edamam.com
 
 GET("/api/recipes/v2")
 
-
 redo again I failed one to call API for searching recipe "Chicken"
+
+
+this is for Nutrition Analysis API,
+app id: fbd500da
+
+app key: 874dd0c5ff0ca0e17598c31b7d136bb0
+
+base url: https://api.edamam.com
+
+GET("/api/nutrition-data") // this is the path to this particular nutrition analysis

@@ -10,29 +10,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
-import com.example.myfoodchoice.ModelEdamam.RecipeResponse;
+import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.ServiceProviderEdamam.EdamamService;
+import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
+import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import org.jetbrains.annotations.Contract;
-
 import io.paperdb.Paper;
 import retrofit2.Response;
 
-public class WelcomeActivity extends AppCompatActivity implements Callback<RecipeResponse>
+public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
     Button signingBtn, signUpAsGuestBtn, signUpAsBusinessBtn;
@@ -54,7 +51,10 @@ public class WelcomeActivity extends AppCompatActivity implements Callback<Recip
 
     private ClaudeAPIService claudeAPIService;
 
-    @SuppressLint("NonConstantResourceId")
+    private CaloriesNinjaAPI caloriesNinjaAPI;
+
+    private Call<FoodItem> call;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -75,12 +75,16 @@ public class WelcomeActivity extends AppCompatActivity implements Callback<Recip
         // ChatGPTAPI chatGPTAPI = new ChatGPTAPI();
         // chatGPTAPI.generateOutput("What is the meaning of life?", this);
 
+        // TODO: init ninja api
+        caloriesNinjaAPI = RetrofitClient.getRetrofitInstance().create(CaloriesNinjaAPI.class);
+
         // Example query
         String query = "chicken";
 
-        // Create an instance of EdamamService and call searchRecipes
-        EdamamService edamamService = new EdamamService();
-        edamamService.searchRecipes(query);
+        call = caloriesNinjaAPI.getFoodItem(query);
+        // todo: in this part we can use Ninja API calls.
+        // call.enqueue(callBackResponseFromAPI());
+
 
         // init paper
         Paper.init(WelcomeActivity.this);
@@ -133,63 +137,32 @@ public class WelcomeActivity extends AppCompatActivity implements Callback<Recip
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
-    // FIXME: no response, no error
-    @Override
-    public void onResponse(Call<RecipeResponse> call, @NonNull Response<RecipeResponse> response)
+    @NonNull
+    @Contract(" -> new")
+    private Callback<FoodItem> callBackResponseFromAPI()
     {
-        if (response.isSuccessful())
-        {
-            RecipeResponse recipeResponse = response.body();
-            // Update UI on the main thread
-            runOnUiThread(() ->
-            {
-                // Update your UI here with recipeResponse data
-                Toast.makeText(WelcomeActivity.this, "Recipes found!", Toast.LENGTH_SHORT).show();
-                Log.d("Edamam", "Recipes found: " + recipeResponse);
-            });
-        } else {
-            // Handle the error
-            Log.d("Edamam","Error: " + response.code());
-        }
-    }
-
-    @Override
-    public void onFailure(Call<RecipeResponse> call, @NonNull Throwable t)
-    {
-        Log.d("Edamam","Error: " + t.getMessage());
-    }
-
-    /*
-        private void testClaudeAPI()
-    {
-        String prompt = "What is the capital of France?";
-        ClaudeAPI claudeAPI = new ClaudeAPI();
-        claudeAPI.callAPI(prompt, new Callback()
+        return new Callback<FoodItem>()
         {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e)
-            {
-                Log.e(TAG, "API call failed: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            public void onResponse(@NonNull Call<FoodItem> call, @NonNull Response<FoodItem> response)
             {
                 if (response.isSuccessful())
                 {
-                    String apiResponse = Objects.requireNonNull(response.body()).string();
-                    Log.d(TAG, "AI Response: " + apiResponse);
-                    // Do something with the API response
-                }
-                else
-                {
-                    Log.e(TAG, "API call failed with code: " + response.code());
-                    // Log.e(TAG, "API call failed with message: " + response.message());
+                    FoodItem foodItem = response.body();
+                    if (foodItem != null)
+                    {
+                        Log.d(TAG, "onResponse: " + foodItem);
+                    }
                 }
             }
-        });
+
+            @Override
+            public void onFailure(@NonNull Call<FoodItem> call, @NonNull Throwable t)
+            {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        };
     }
-     */
 
     @NonNull
     @Contract(" -> new")
@@ -249,4 +222,6 @@ public class WelcomeActivity extends AppCompatActivity implements Callback<Recip
         Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(intent);
     };
+
+
 }

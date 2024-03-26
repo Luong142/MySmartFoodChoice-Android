@@ -9,7 +9,7 @@ Reason to develop native android app over Web based app.
 https://teachablemachine.withgoogle.com/train
 
 // Food API
-https://developer.edamam.com/login
+https://calorieninjas.com/api
 
 
 public class MainActivity extends AppCompatActivity
@@ -156,3 +156,61 @@ public class MainActivity extends AppCompatActivity
         resolver.update(photoUri, imageDetails, null, null);
     }
 }
+
+// FIXME: no response, no error
+    @Override
+    public void onResponse(Call<RecipeResponse> call, @NonNull Response<RecipeResponse> response)
+    {
+        if (response.isSuccessful())
+        {
+            RecipeResponse recipeResponse = response.body();
+            // Update UI on the main thread
+            runOnUiThread(() ->
+            {
+                // Update your UI here with recipeResponse data
+                Toast.makeText(WelcomeActivity.this, "Recipes found!", Toast.LENGTH_SHORT).show();
+                Log.d("Edamam", "Recipes found: " + recipeResponse);
+            });
+        } else {
+            // Handle the error
+            Log.d("Edamam","Error: " + response.code());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<RecipeResponse> call, @NonNull Throwable t)
+    {
+        Log.d("Edamam","Error: " + t.getMessage());
+    }
+
+    /*
+        private void testClaudeAPI()
+    {
+        String prompt = "What is the capital of France?";
+        ClaudeAPI claudeAPI = new ClaudeAPI();
+        claudeAPI.callAPI(prompt, new Callback()
+        {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e)
+            {
+                Log.e(TAG, "API call failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            {
+                if (response.isSuccessful())
+                {
+                    String apiResponse = Objects.requireNonNull(response.body()).string();
+                    Log.d(TAG, "AI Response: " + apiResponse);
+                    // Do something with the API response
+                }
+                else
+                {
+                    Log.e(TAG, "API call failed with code: " + response.code());
+                    // Log.e(TAG, "API call failed with message: " + response.message());
+                }
+            }
+        });
+    }
+     */
