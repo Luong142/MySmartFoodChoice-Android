@@ -6,16 +6,18 @@ API key: wtsuGH2MhlYMIeB/1AzfVQ==rDZ1zScWPvwReMqa
 GET("/v1/nutrition")
 
 
+todo: one of the log debug info we can use.
+2024-03-26 22:23:01.043 24725-24725 WelcomeActivity         com.example.myfoodchoice
+D  onResponse:
+FoodItem{items=[Item{name='nasi lemak', calories=191.3, serving_size_g=100.0, fat_total_g=10.9,
+fat_saturated_g=4.6, protein_g=6.9, sodium_mg=414.0, potassium_mg=102.0, cholesterol_mg=41.0,
+carbohydrates_total_g=17.4, fiber_g=0.7, sugar_g=2.4}]}
+
+int maxCalories = 5000; // max of calories
+
 // todo: this is free meal API
 
 API key: 1
-
-
-
-
-
-
-
 
 
 fixme: the below API having some error on their website, choose other API for food database

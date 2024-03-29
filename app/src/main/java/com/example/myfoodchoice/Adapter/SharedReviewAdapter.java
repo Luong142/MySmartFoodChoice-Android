@@ -1,8 +1,11 @@
 package com.example.myfoodchoice.Adapter;
 
+import android.media.Image;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnReviewClickListener;
 import com.example.myfoodchoice.ModelUtilities.Review;
 import com.example.myfoodchoice.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -33,12 +37,15 @@ public class SharedReviewAdapter extends RecyclerView.Adapter<SharedReviewAdapte
 
         public RatingBar  ratingBar;
 
+        public ImageView imageProfile;
+
         public myViewHolder(final View itemView, OnReviewClickListener onReviewClickListener)
         {
             super(itemView);
             reviewText = itemView.findViewById(R.id.reviewTextView);
             reviewName = itemView.findViewById(R.id.reviewNameTextView);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            imageProfile = itemView.findViewById(R.id.profileImage);
 
             itemView.setOnClickListener(v ->
             {
@@ -70,13 +77,20 @@ public class SharedReviewAdapter extends RecyclerView.Adapter<SharedReviewAdapte
             holder.reviewText.setText(review.getReviewText());
             holder.reviewName.setText(review.getDisplayName());
             holder.ratingBar.setRating(review.getRating());
+            Uri image = Uri.parse(review.getProfileImage());
+            Picasso.get()
+                    .load(image)
+                    .resize(150, 150)
+                    .error(R.drawable.error)
+                    .into(holder.imageProfile);
         }
         else
         {
             // Handle the null object, e.g., by setting default text or hiding the view
             holder.reviewText.setText("No review available");
-            holder.reviewName.setText("");
+            holder.reviewName.setText("No name here");
             holder.ratingBar.setRating(0);
+            holder.imageProfile.setImageResource(R.drawable.error);
         }
     }
 

@@ -152,7 +152,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                         {
                             // get the URI of the selected image
                             selectedImageUri = data.getData();
-                            Log.d(TAG, "Selected image URI: " + selectedImageUri);
+                            // Log.d(TAG, "Selected image URI: " + selectedImageUri);
                             // display the selected image in an ImageView.
                             profileImage.setImageURI(selectedImageUri);
                         }
@@ -261,7 +261,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 // FIXME: set image here based on the model
                 businessProfile.setProfileImageUrl(myUri);
 
-                // Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
+                Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
                 // Log.d(TAG, "onCompleteUploadListener: " + userAccount);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
 
@@ -291,6 +291,9 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             databaseReferenceTrainerProfile.setValue(businessProfile)
                     .addOnCompleteListener(onCompleteListener())
                     .addOnFailureListener(onFailurePart());
+
+            firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                            .setDisplayName(firstNameString + " " + lastNameString).build());
 
             firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteCreateProfileListener());

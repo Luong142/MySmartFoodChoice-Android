@@ -3,6 +3,7 @@ package com.example.myfoodchoice.SharedReviewFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.example.myfoodchoice.ModelUtilities.Review;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,11 +51,11 @@ public class ReviewDialogFragment extends DialogFragment
 
     FirebaseUser firebaseUser;
 
-    String userID, userType, displayName;
+    String userID, displayName;
+
+    Uri imageUri;
 
     Review review;
-
-    Account account;
 
     final static String PATH_REVIEW = "Reviews";
 
@@ -99,9 +101,12 @@ public class ReviewDialogFragment extends DialogFragment
             databaseReferenceUserType = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
 
             // get the first name and last name together as display name
-            displayName = firebaseUser.getDisplayName();
+            // displayName = firebaseUser.getDisplayName();
             // Log.d(TAG, "onCreateDialog: " + displayName);
-            databaseReferenceUserType.addListenerForSingleValueEvent(valueUserTypeEventListener());
+
+            imageUri = firebaseUser.getPhotoUrl();
+            displayName = firebaseUser.getDisplayName();
+            Log.d(TAG, "onCreateDialog: " + displayName);
         }
 
         reviewTextEdit = view.findViewById(R.id.reviewEditText);
@@ -115,31 +120,6 @@ public class ReviewDialogFragment extends DialogFragment
     }
 
     @NonNull
-    @Contract(" -> new")
-    private ValueEventListener valueUserTypeEventListener()
-    {
-        return new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                account = snapshot.getValue(Account.class);
-                // get the user type from account
-                if (account != null)
-                {
-                    userType = account.getAccountType();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                Log.d(TAG, "onCancelled: " + error.getMessage());
-            }
-        };
-    }
-
-    @NonNull
     @Contract(pure = true)
     private DialogInterface.OnClickListener onSubmitListener()
     {
@@ -150,7 +130,11 @@ public class ReviewDialogFragment extends DialogFragment
             // TODO: Handle the review submission here.
             databaseReferenceNewChild = databaseReferenceReview.push();
             review = new Review(reviewText, displayName, rating);
+
+            // todo: set the kay and profile image.
             review.setKey(databaseReferenceNewChild.getKey());
+            review.setProfileImage(imageUri.toString());
+
             databaseReferenceNewChild.setValue(review).addOnCompleteListener(onCompleteSetValueListener())
                     .addOnFailureListener(onFailureSetValueListener());
         };
@@ -167,13 +151,8 @@ public class ReviewDialogFragment extends DialogFragment
     @Contract(pure = true)
     private OnCompleteListener<Void> onCompleteSetValueListener()
     {
-        return task ->
-        {
-            if (task.isSuccessful())
-            {
-                Log.d(TAG, "onCompleteSetValueListener: " + task);
-            }
-        };
+        // Log.d(TAG, "onCompleteSetValueListener: " + task);
+        return Task::isSuccessful;
     }
 
     @NonNull

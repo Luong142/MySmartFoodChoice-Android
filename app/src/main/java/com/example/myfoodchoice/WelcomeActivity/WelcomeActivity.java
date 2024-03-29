@@ -81,13 +81,12 @@ public class WelcomeActivity extends AppCompatActivity
         // TODO: init ninja api
         caloriesNinjaAPI = RetrofitClient.getRetrofitInstance().create(CaloriesNinjaAPI.class);
 
-        // Example query
-        String query = "chicken";
+        // fixme: to test the input string name of food.
+        String query = "Nasi Lemak";
 
         call = caloriesNinjaAPI.getFoodItem(query);
         // todo: in this part we can use Ninja API calls.
         // call.enqueue(callBackResponseFromAPI());
-
 
         // init paper
         Paper.init(WelcomeActivity.this);

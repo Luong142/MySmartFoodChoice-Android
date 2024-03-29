@@ -7,11 +7,10 @@ public class Review
     private String key; // Firebase key
     private String reviewText;
     private float rating;
-    // Add any other relevant properties
-
-    // Constructors, getters, and setters
 
     private String displayName;
+
+    private String profileImage;
 
     public Review()
     {
@@ -41,7 +40,16 @@ public class Review
                 ", reviewText='" + reviewText + '\'' +
                 ", rating=" + rating +
                 ", displayName='" + displayName + '\'' +
+                ", profileImage='" + profileImage + '\'' +
                 '}';
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getDisplayName() {

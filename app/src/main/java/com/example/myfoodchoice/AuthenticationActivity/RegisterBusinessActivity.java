@@ -151,7 +151,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
         return task ->
         {
             if (task.isSuccessful()) {
-                Toast.makeText(RegisterBusinessActivity.this, "User registered successfully.",
+                Toast.makeText(RegisterBusinessActivity.this, "Vendor registered successfully.",
                         Toast.LENGTH_SHORT).show();
                 firebaseUser = firebaseAuth.getCurrentUser();
                 // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());

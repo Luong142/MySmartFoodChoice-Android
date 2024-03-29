@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.Adapter.SharedReviewAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnReviewClickListener;
 import com.example.myfoodchoice.ModelSignUp.Account;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.ModelUtilities.Review;
 import com.example.myfoodchoice.R;
@@ -37,7 +38,6 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class ReviewFragment extends Fragment implements OnReviewClickListener
@@ -48,7 +48,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
     FloatingActionButton createReviewBtn;
 
-    ImageView userProfileImage;
+    ImageView profileImage;
 
     TextView fullNameTextView, userRoleTextView;
 
@@ -66,11 +66,17 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
     final static String PATH_REVIEW = "Reviews";
 
+    final static String PATH_BUSINESS_PROFILE = "Business Profile";
+
     DatabaseReference databaseReferenceUserProfile;
 
     DatabaseReference databaseReferenceAccount;
 
+    DatabaseReference databaseReferenceReviewUserID;
+
     DatabaseReference databaseReferenceReview;
+
+    DatabaseReference databaseReferenceBusinessProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -108,12 +114,19 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
             databaseReferenceAccount.addListenerForSingleValueEvent(valueAccountEventListener());
 
             // todo: init database reference for review
-            databaseReferenceReview = firebaseDatabase.getReference(PATH_REVIEW).child(userID);
-            databaseReferenceReview.addChildEventListener(valueChildReviewEventListener());
+            databaseReferenceReviewUserID = firebaseDatabase.getReference(PATH_REVIEW).child(userID);
+            databaseReferenceReview = firebaseDatabase.getReference(PATH_REVIEW);
+
+            databaseReferenceReview.addChildEventListener(valueReviewEventListener());
+            // databaseReferenceReview.addChildEventListener(valueChildReviewEventListener());
+
+            // todo: init database reference for business profile
+            databaseReferenceBusinessProfile = firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(userID);
+            databaseReferenceBusinessProfile.addListenerForSingleValueEvent(valueBusinessProfileEventListener());
          }
 
         // TODO: init UI components
-        userProfileImage = view.findViewById(R.id.userProfileImageView);
+        profileImage = view.findViewById(R.id.userProfileImageView);
         fullNameTextView = view.findViewById(R.id.userNameTextView);
         userRoleTextView = view.findViewById(R.id.userRoleTextView);
         createReviewBtn = view.findViewById(R.id.createReviewBtn);
@@ -134,6 +147,78 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
     @NonNull
     @Contract(" -> new")
+    private ChildEventListener valueReviewEventListener()
+    {
+        return new ChildEventListener()
+        {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                // todo: this one is ok
+                for (DataSnapshot reviewSnapshot : snapshot.getChildren())
+                {
+                    Review review = reviewSnapshot.getValue(Review.class);
+                    if (review != null)
+                    {
+                        reviewArrayList.add(review);
+                        if (sharedReviewAdapter != null)
+                        {
+                            sharedReviewAdapter.notifyItemInserted(reviewArrayList.size() - 1);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                // fixme: this one haven't tested yet.
+                for (DataSnapshot reviewSnapshot : snapshot.getChildren())
+                {
+                    Review review = reviewSnapshot.getValue(Review.class);
+                    if (review != null)
+                    {
+                        reviewArrayList.add(review);
+                        if (sharedReviewAdapter != null)
+                        {
+                            sharedReviewAdapter.notifyItemChanged(findReviewIndexById(review.getKey()));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                for (DataSnapshot reviewSnapshot : snapshot.getChildren())
+                {
+                    Review review = reviewSnapshot.getValue(Review.class);
+                    if (review != null)
+                    {
+                        reviewArrayList.add(review);
+                        if (sharedReviewAdapter != null)
+                        {
+                            sharedReviewAdapter.notifyItemChanged(findReviewIndexById(review.getKey()));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new") // fixme: this one is old child review based on user ID
     private ChildEventListener valueChildReviewEventListener()
     {
         return new ChildEventListener()
@@ -188,7 +273,8 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
             }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
 
             }
 
@@ -220,10 +306,13 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
         return v ->
         {
             // Assuming this code is inside a fragment method
-            if (isAdded()) {
+            if (isAdded())
+            {
                 ReviewDialogFragment reviewDialogFragment = new ReviewDialogFragment();
                 reviewDialogFragment.show(getChildFragmentManager(), "ReviewDialogFragment");
-            } else {
+            }
+            else
+            {
                 Log.e(TAG, "Fragment not attached to an activity, cannot show dialog");
                 // Handle the situation appropriately, e.g., by showing a message to the user
             }
@@ -280,6 +369,47 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
     @NonNull
     @Contract(" -> new")
+    private ValueEventListener valueBusinessProfileEventListener()
+    {
+        return new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                BusinessProfile businessProfile = snapshot.getValue(BusinessProfile.class);
+                // Log.d(TAG, "onDataChange: " + userProfile);
+
+                // set the first name and last name in the UI
+                if (businessProfile != null)
+                {
+                    // set full name here
+                    String fullName = businessProfile.getFirstName() + " " + businessProfile.getLastName();
+                    fullNameTextView.setText(fullName);
+
+                    // set profile picture here
+                    String profileImageUrl = businessProfile.getProfileImageUrl();
+                    Uri profileImageUri = Uri.parse(profileImageUrl);
+                    // FIXME: the image doesn't show because the image source is from Gallery within android device.
+                    // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+                    Picasso.get()
+                            .load(profileImageUri)
+                            .resize(150, 150)
+                            .error(R.drawable.error)
+                            .into(profileImage);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
     private ValueEventListener valueUserProfileEventListener()
     {
         return new ValueEventListener()
@@ -308,7 +438,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
                             .load(profileImageUri)
                             .resize(150, 150)
                             .error(R.drawable.error)
-                            .into(userProfileImage);
+                            .into(profileImage);
                 }
             }
 
