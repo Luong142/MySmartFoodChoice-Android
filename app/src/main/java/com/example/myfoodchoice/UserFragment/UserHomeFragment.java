@@ -18,26 +18,33 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
+import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
-import com.google.mlkit.common.model.LocalModel;
 
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserHomeFragment extends Fragment
 {
@@ -65,6 +72,15 @@ public class UserHomeFragment extends Fragment
 
     int dimension;
 
+    // calling calories ninja API
+    private CaloriesNinjaAPI caloriesNinjaAPI;
+
+    private Call<FoodItem> call;
+
+    private FoodItem foodItem;
+
+    String foodName;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -87,6 +103,9 @@ public class UserHomeFragment extends Fragment
         historyMealBtn.setOnClickListener(onNavToHistoryMealListener());
         uploadPhotoBtn.setOnClickListener(onUploadPhotoListener());
         takePhotoBtn.setOnClickListener(onTakePhotoListener());
+
+        // todo: init API
+        caloriesNinjaAPI = RetrofitClient.getRetrofitInstance().create(CaloriesNinjaAPI.class);
 
         imageSize = 224; // important?
 
@@ -159,6 +178,7 @@ public class UserHomeFragment extends Fragment
                 }
         );
 
+
         // for permission
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
@@ -182,7 +202,7 @@ public class UserHomeFragment extends Fragment
                 });
     }
 
-    public void classifyImage(@NonNull Bitmap image)
+    public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
     {
         try {
             Model model = Model.newInstance(requireActivity().getApplicationContext());
@@ -219,9 +239,12 @@ public class UserHomeFragment extends Fragment
             // find the index of the class with the biggest confidence.
             int maxPos = 0;
             float maxConfidence = 0;
-            for(int i = 0; i < confidences.length; i++){
-                if(confidences[i] > maxConfidence){
-                    maxConfidence = confidences[i];
+            for(int i = 0; i < confidences.length; i++)
+            {
+                if(confidences[i] > maxConfidence)
+                {
+                    // todo: pls note that confidence is currently not being used, only maxPos.
+                    // maxConfidence = confidences[i];
                     maxPos = i;
                 }
             }
@@ -229,7 +252,12 @@ public class UserHomeFragment extends Fragment
                     "Ice cream", "curry puff", "eggs"};
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
-            Log.d(TAG, "The dish name is classified as: " + classes[maxPos]);
+            foodName = classes[maxPos];
+            Log.d(TAG, "The dish name is classified as: " + foodName);
+
+            // call API
+            call = caloriesNinjaAPI.getFoodItem(foodName);
+            call.enqueue(callBackResponseFromAPI());
 
             StringBuilder s = new StringBuilder();
             for(int i = 0; i < classes.length; i++)
@@ -246,6 +274,33 @@ public class UserHomeFragment extends Fragment
             // TODO Handle the exception
             Log.d(TAG, "ClassifyImage: " + e.getMessage());
         }
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private Callback<FoodItem> callBackResponseFromAPI()
+    {
+        return new Callback<FoodItem>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<FoodItem> call, @NonNull Response<FoodItem> response)
+            {
+                if (response.isSuccessful())
+                {
+                    foodItem = response.body();
+                    if (foodItem != null)
+                    {
+                        Log.d(TAG, "onResponse: " + foodItem);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<FoodItem> call, @NonNull Throwable t)
+            {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        };
     }
 
     @NonNull

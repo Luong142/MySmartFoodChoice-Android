@@ -1,6 +1,5 @@
 package com.example.myfoodchoice.Adapter;
 
-import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
