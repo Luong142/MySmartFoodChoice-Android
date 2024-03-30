@@ -131,13 +131,14 @@ public class UserHomeFragment extends Fragment
                         Intent data = result.getData();
                         if (data != null && data.getData() != null)
                         {
-                            Bundle extras = data.getExtras();
-                            if (extras != null)
-                            {
-                                image = (Bitmap) extras.get("data");
+                            Uri selectedImageUri = data.getData();
+                            try {
+                                // Decode the URI to a Bitmap
+                                image = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(),
+                                        selectedImageUri);
                                 if (image != null)
                                 {
-                                    // set dimension
+                                    // Set dimension
                                     dimension = Math.min(image.getWidth(), image.getHeight());
                                     image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
 
@@ -148,6 +149,10 @@ public class UserHomeFragment extends Fragment
 
                                     classifyImage(image);
                                 }
+                            }
+                            catch (IOException e)
+                            {
+                                Log.d(TAG, "error here: " + e);
                             }
                         }
                     }
@@ -186,7 +191,7 @@ public class UserHomeFragment extends Fragment
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
             // todo: a bit hard to do later we will settle this.
-            ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize  * imageSize * 1024);
+            ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize  * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
 
             // what is this code about, using double for loop to put the float value inside of that byteBuffer.
@@ -224,7 +229,7 @@ public class UserHomeFragment extends Fragment
                     "Ice cream", "curry puff", "eggs"};
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
-            Log.d(TAG, "The dish name is " + classes[maxPos]);
+            Log.d(TAG, "The dish name is classified as: " + classes[maxPos]);
 
             StringBuilder s = new StringBuilder();
             for(int i = 0; i < classes.length; i++)
