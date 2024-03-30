@@ -12,11 +12,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.GuestFragment.GuestHomeFragment;
 import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
+import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
@@ -59,7 +59,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestHomeFragment()).commit();
+                    new UserHomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -89,7 +89,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestHomeFragment()).commit();
+                    new UserHomeFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 

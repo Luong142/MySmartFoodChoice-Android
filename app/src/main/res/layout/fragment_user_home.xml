@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserFragment.UserHomeFragment"
     android:background="@drawable/bg_gradient_color_main"
-    >
+    tools:context=".UserFragment.UserHomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="350dp"
         android:layout_height="300dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_grey_calculator"
         android:gravity="center"
         android:orientation="vertical"
@@ -112,14 +112,24 @@
             app:layout_constraintTop_toTopOf="@+id/progressBarKcal" />
 
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/foodPhoto"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="172dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -128,29 +138,49 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <Button
-            android:id="@+id/logMealBtn"
+            android:id="@+id/takePhotoBtn"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:text="@string/take_a_photo"
             android:textColor="@color/black"
-            android:text="@string/log_my_meal"
-            android:textSize="25sp"
-            />
+            android:textSize="25sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            />
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/uploadPhotoBtn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_a_photo"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/logMealBtn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/log_my_meal"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
         <Button
             android:id="@+id/historyMealBtn"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="@string/meal_history"
-            android:textSize="25sp"
-            />
+            android:textColor="@color/black"
+            android:textSize="25sp" />
     </LinearLayout>
-
 
     <!-- TODO: for this part we need to set image in two modes,
         TODO: focus and non-focus.

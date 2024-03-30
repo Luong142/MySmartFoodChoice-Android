@@ -40,7 +40,7 @@ todo: JSON FORMAT FOR FIREBASE AND ITS RECOMMENDED STRUCTURE.
 public class MainActivity extends AppCompatActivity
 {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private  String currentPhotoPath;
+    private String currentPhotoPath;
     private String imageFileName;
     private File imgFile;
     private Button btnSelectImage;

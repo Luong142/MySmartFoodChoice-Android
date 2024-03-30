@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -38,9 +37,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
+
+        <!-- this one is for testing tflite -->
         <activity
-            android:name=".TermAndConditionActivity"
-            android:exported="false" />
+            android:name=".TestTFlite"
+            android:exported="false"/>
         <activity
             android:name=".GuestActivity.GuestTrialOverActivity"
             android:exported="false" />
