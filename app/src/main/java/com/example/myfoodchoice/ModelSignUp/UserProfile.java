@@ -7,9 +7,6 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
 {
     private String height;
@@ -50,7 +47,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         age = in.readInt();
         dietType = in.readString();
         points = in.readInt();
-        activityLevel = (ActivityLevel) in.readSerializable();
+        // activityLevel = (ActivityLevel) in.readSerializable();
         allergies = in.readString();
     }
 
@@ -101,7 +98,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeInt(age);
         dest.writeString(dietType);
         dest.writeInt(points);
-        dest.writeSerializable(activityLevel);
+        // dest.writeSerializable(activityLevel);
         dest.writeString(allergies);
     }
 
@@ -118,7 +115,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Gender: ").append(gender).append("\n");
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
-        sb.append("Activity Level: ").append(activityLevel).append("\n");
+        // sb.append("Activity Level: ").append(activityLevel).append("\n");
         sb.append("Allergies: ").append(allergies).append("\n");
 
         sb.append("Points: ").append(points).append("\n");

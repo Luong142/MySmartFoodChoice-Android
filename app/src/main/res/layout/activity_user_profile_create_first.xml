@@ -74,26 +74,6 @@
             android:textColorHint="#FAFAFA"
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/activity_level"
-            android:textSize="30sp"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Spinner
-            android:id="@+id/activitySpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/background_spinner"
-            android:minHeight="48dp" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />

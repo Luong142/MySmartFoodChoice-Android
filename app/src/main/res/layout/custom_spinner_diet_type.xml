@@ -17,7 +17,7 @@
             android:layout_width="107dp"
             android:layout_height="80dp"
             android:background="@color/peach_puff"
-            android:src="@drawable/vegetarian"
+            android:src="@drawable/vege"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="24dp"
             android:contentDescription="@string/todo" />

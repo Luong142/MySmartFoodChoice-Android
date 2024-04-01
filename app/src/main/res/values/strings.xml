@@ -155,4 +155,6 @@
     <string name="allergies">Allergies</string>
     <string name="kcal">kcal</string>
     <string name="enter_your_review_here">Enter your review here</string>
+    <string name="food_recognition_food_analysis">Food Recognition, Food Analysis</string>
+    <string name="food_recognition_and_analysis">Food recognition and analysis</string>
 </resources>

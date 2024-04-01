@@ -92,15 +92,14 @@ public class UserHomeFragment extends Fragment
         progressTextView = view.findViewById(R.id.progressTextView);
         caloriesTextView = view.findViewById(R.id.caloriesNumTextView);
         kcalModelStringTextView = view.findViewById(R.id.kcalModelStringTextView);
-        logMealBtn = view.findViewById(R.id.logMealBtn);
-        historyMealBtn = view.findViewById(R.id.historyMealBtn);
+
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
         foodImage = view.findViewById(R.id.foodPhoto);
 
         // todo: set onclick here
-        logMealBtn.setOnClickListener(onNavToLogMealListener());
-        historyMealBtn.setOnClickListener(onNavToHistoryMealListener());
+        // logMealBtn.setOnClickListener(onNavToLogMealListener());
+        // historyMealBtn.setOnClickListener(onNavToHistoryMealListener());
         uploadPhotoBtn.setOnClickListener(onUploadPhotoListener());
         takePhotoBtn.setOnClickListener(onTakePhotoListener());
 
@@ -256,8 +255,8 @@ public class UserHomeFragment extends Fragment
                 }
             }
 
-            String[] classes = {"Nasi lemak", "Kaya Toast", "hainanese curry rice",
-                    "Ice cream", "curry puff", "eggs"}; // fixme: eggs need to remove, we can add Laksa
+            String[] classes = {"Nasi lemak", "Kaya Toast", "curry puff", "Sliced fish soup"};
+            // fixme: eggs need to remove, we can add Laksa
 
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.

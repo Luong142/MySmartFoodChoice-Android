@@ -112,12 +112,14 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         femaleImage = findViewById(R.id.femaleImage);
 
         // TODO: init UI component
+        /*
         spinnerActivity = findViewById(R.id.activitySpinner);
         activityArrayList = new ArrayList<>();
         initListActivityLevel();
         ActivityLevelAdapter activityLevelAdapter = new ActivityLevelAdapter(this, activityArrayList);
         spinnerActivity.setAdapter(activityLevelAdapter);
         spinnerActivity.setOnItemSelectedListener(onItemSelectedActivityListener);
+         */
 
         // set gender to male by default
         gender = "Default";
