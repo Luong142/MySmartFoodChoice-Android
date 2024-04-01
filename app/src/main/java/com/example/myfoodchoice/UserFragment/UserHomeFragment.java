@@ -223,8 +223,15 @@ public class UserHomeFragment extends Fragment
                 for (int j = 0; j < imageSize; j++)
                 {
                     int val = intValues[pixel++];
+                    // todo: predefined value to normalize the extraction of RGB.
+
+                    // todo: RED
                     byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255.f));
+
+                    // todo: GREEN
                     byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255.f));
+
+                    // todo: BLUE
                     byteBuffer.putFloat((val & 0xFF) * (1.f / 255.f));
                 }
             }
@@ -244,20 +251,27 @@ public class UserHomeFragment extends Fragment
                 if(confidences[i] > maxConfidence)
                 {
                     // todo: pls note that confidence is currently not being used, only maxPos.
-                    // maxConfidence = confidences[i];
+                    maxConfidence = confidences[i];
                     maxPos = i;
                 }
             }
+
             String[] classes = {"Nasi lemak", "Kaya Toast", "hainanese curry rice",
-                    "Ice cream", "curry puff", "eggs"};
+                    "Ice cream", "curry puff", "eggs"}; // fixme: eggs need to remove, we can add Laksa
+
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
             foodName = classes[maxPos];
             Log.d(TAG, "The dish name is classified as: " + foodName);
 
-            // call API
+            // call API, and get result with that model class.
             call = caloriesNinjaAPI.getFoodItem(foodName);
-            call.enqueue(callBackResponseFromAPI());
+            // todo: uncomment this part below to do get calories info and more from this API.
+            // call.enqueue(callBackResponseFromAPI());
+
+            // todo: input from user when search for recipe,
+            // todo: if the "ingredients" contains the "allergies", we can show warning contains "nuts" to user, best option.
+            // todo: 3 options
 
             StringBuilder s = new StringBuilder();
             for(int i = 0; i < classes.length; i++)
@@ -265,6 +279,7 @@ public class UserHomeFragment extends Fragment
                 s.append(String.format(Locale.ROOT, "%s: %.1f%%\n", classes[i], confidences[i] * 100));
             }
             // confidence.setText(s);
+            Log.d(TAG, "The dish info is: \n" + s);
 
             // Releases model resources if no longer used.
             model.close();
@@ -317,6 +332,8 @@ public class UserHomeFragment extends Fragment
             else
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                PackageManager packageManager = requireContext().getPackageManager();
+
                 if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
                 {
                     takePhotoActivityResultLauncher.launch(cameraIntent);
@@ -343,7 +360,7 @@ public class UserHomeFragment extends Fragment
         return v ->
         {
             // TODO: this one is fragment so we need to allocate to the part in UserMainMenuActivity.
-            ((UserMainMenuActivity) requireActivity()).navigateToFragment(new UserMealRecordFragment());
+            ((UserMainMenuActivity) requireActivity()).navigateToFragment(new UserLogMealSearchFoodFragment());
         };
     }
 

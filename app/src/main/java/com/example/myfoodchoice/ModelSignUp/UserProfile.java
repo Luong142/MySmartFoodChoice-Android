@@ -128,6 +128,10 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     public String getActivityLevelDisplayName()
     {
+        if (activityLevel == null)
+        {
+            return "Default value";
+        }
         return activityLevel.getDisplayName();
     }
 

@@ -72,7 +72,8 @@ public class UserProfileViewFragment extends Fragment
 
             // TODO: init database reference for user profile
             databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
-            databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
+            // databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileSingleEventListener());
+            databaseReferenceUserProfile.addValueEventListener(valueUserProfileEventListener());
         }
 
         // TODO: init UI components
@@ -87,10 +88,11 @@ public class UserProfileViewFragment extends Fragment
 
     @NonNull
     @Contract(" -> new")
-    private ValueEventListener valueUserProfileEventListener() // TODO: the purpose is to retrieve the data and display it.
+    private ValueEventListener valueUserProfileEventListener()
     {
         return new ValueEventListener()
         {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
@@ -101,7 +103,13 @@ public class UserProfileViewFragment extends Fragment
                 if (userProfile != null)
                 {
                     // display user profile info
-                    displayUserProfile.setText(userProfile.toString());
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                    int age = userProfile.getAge();
+                    stringBuilder.append("Full Name: ").append(fullName).append("\n");
+                    stringBuilder.append("Age: ").append(age);
+
+                    displayUserProfile.setText(stringBuilder);
 
                     // set profile picture here
                     String profileImageUrl = userProfile.getProfileImageUrl();
@@ -126,6 +134,57 @@ public class UserProfileViewFragment extends Fragment
         };
     }
 
+    /*
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueUserProfileSingleEventListener() // TODO: the purpose is to retrieve the data and display it.
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // get the data from database.
+                userProfile = snapshot.getValue(UserProfile.class);
+                Log.d(TAG, "onDataChange: " + userProfile);
+
+                if (userProfile != null)
+                {
+                    // display user profile info
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                    int age = userProfile.getAge();
+                    stringBuilder.append("Full Name: ").append(fullName).append("\n");
+                    stringBuilder.append("Age: ").append(age).append("\n");
+
+                    displayUserProfile.setText(stringBuilder);
+
+                    // set profile picture here
+                    String profileImageUrl = userProfile.getProfileImageUrl();
+                    Uri profileImageUri = Uri.parse(profileImageUrl);
+                    // FIXME: the image doesn't show because the image source is from Gallery within android device.
+                    // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+                    Picasso.get()
+                            .load(profileImageUri)
+                            .resize(150, 150)
+                            .error(R.drawable.error)
+                            .into(imageView);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText(getContext(), "Error retrieving data from database " +
+                        error, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onCancelled: " + error.getMessage());
+            }
+        };
+    }
+
+
+
+     */
     @NonNull
     @Contract(pure = true)
     private View.OnClickListener onUpdateUserProfileListener()

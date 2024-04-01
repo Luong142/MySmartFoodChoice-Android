@@ -18,7 +18,8 @@ import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
-import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
+import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
@@ -104,7 +105,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_meal_record)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealRecordFragment()).commit();
+                    new UserLogMealSearchFoodFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_meal)
@@ -135,6 +136,12 @@ public class GuestMainMenuActivity extends AppCompatActivity
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ReviewFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_manage_userProfile)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserProfileViewFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)

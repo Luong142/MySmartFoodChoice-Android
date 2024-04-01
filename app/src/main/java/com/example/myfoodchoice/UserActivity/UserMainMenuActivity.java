@@ -27,7 +27,7 @@ import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
-import com.example.myfoodchoice.UserFragment.UserMealRecordFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
@@ -272,7 +272,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_meal_record)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserMealRecordFragment()).commit();
+                    new UserLogMealSearchFoodFragment()).commit();
         }
 
         else if (itemId == R.id.nav_food_recipe)

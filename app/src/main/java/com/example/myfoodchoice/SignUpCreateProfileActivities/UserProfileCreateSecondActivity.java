@@ -35,6 +35,7 @@ import java.util.Objects;
 public class UserProfileCreateSecondActivity extends AppCompatActivity
 {
     // TODO: declare database
+    // todo: health risks consider, diet type only has vegetarian, non-vegetarian.
     FirebaseDatabase firebaseDatabase;
 
     UserProfile userProfile;

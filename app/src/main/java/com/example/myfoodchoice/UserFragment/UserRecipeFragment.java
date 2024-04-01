@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class UserRecipeFragment extends Fragment implements OnRecipeItemClickListener
 {
-    // TODO: declare components
+    // TODO: declare components, search recipes, but also need to exclude the allergies.
     EditText recipeSearch;
 
     RecyclerView recipeRecyclerView;
@@ -61,10 +61,8 @@ public class UserRecipeFragment extends Fragment implements OnRecipeItemClickLis
 
         // TODO: Populate the recipeList with your Recipe data
 
-
         // Notify the adapter that the data has changed
         // recipeItemAdapter.notifyDataSetChanged();
-
     }
 
     @Override

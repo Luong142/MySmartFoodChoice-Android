@@ -155,6 +155,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
+                reviewArrayList.clear();
                 // todo: this one is ok
                 for (DataSnapshot reviewSnapshot : snapshot.getChildren())
                 {
@@ -173,6 +174,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
+                reviewArrayList.clear();
                 // fixme: this one haven't tested yet.
                 for (DataSnapshot reviewSnapshot : snapshot.getChildren())
                 {
@@ -191,6 +193,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
+                reviewArrayList.clear();
                 for (DataSnapshot reviewSnapshot : snapshot.getChildren())
                 {
                     Review review = reviewSnapshot.getValue(Review.class);

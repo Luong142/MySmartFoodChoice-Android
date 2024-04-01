@@ -175,6 +175,22 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 return; // exit the method if age is empty
             }
 
+            if (ageUpdate.getText().toString().length() > 2)
+            {
+                ageUpdate.setError("Age should be less than 2 digits.");
+                progressBar.setVisibility(ProgressBar.GONE);
+                nextBtn.setVisibility(Button.VISIBLE);
+                return; // exit the method if age is greater than 3 digits
+            }
+
+            if (Integer.parseInt(String.valueOf(ageUpdate.getText())) < 0 || Integer.parseInt(String.valueOf(ageUpdate.getText())) > 100)
+            {
+                ageUpdate.setError("Age should be between 0 and 100.");
+                progressBar.setVisibility(ProgressBar.GONE);
+                nextBtn.setVisibility(Button.VISIBLE);
+                return;
+            }
+
             // init
             firstName = firstNameUpdate.getText().toString().trim();
             lastName = lastNameUpdate.getText().toString().trim();
@@ -243,12 +259,12 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 userProfile.setProfileImageUrl(myUri);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
-                // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+                databaseReferenceUserProfile.setValue(userProfile);
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                         .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteNextListener());
 
-                Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
+                // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }
             else
             {

@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/dodger_blue"
-            android:text="@string/next"
+            android:text="@string/update"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />

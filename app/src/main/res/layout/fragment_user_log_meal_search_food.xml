@@ -6,7 +6,7 @@
     android:background="@drawable/bg_gradient_color_main"
     tools:context=".UserFragment.UserMealHistoryFragment">
 
-
+    <!-- todo: the page should be change to meal record not searching for food or drinks. -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

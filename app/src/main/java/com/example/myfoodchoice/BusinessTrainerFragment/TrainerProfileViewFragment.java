@@ -74,7 +74,10 @@ public class TrainerProfileViewFragment extends Fragment
             // TODO: init database reference for user profile
             databaseReferenceBusinessProfile =
                     firebaseDatabase.getReference("Business Profile").child(userID);
-            databaseReferenceBusinessProfile.addListenerForSingleValueEvent(valueTrainerProfileEventListener());
+
+            databaseReferenceBusinessProfile.addValueEventListener(valueTrainerProfileEventListener());
+            //databaseReferenceBusinessProfile.
+            // addListenerForSingleValueEvent(valueTrainerProfileSingleEventListener());
         }
 
         // TODO: init UI components
@@ -89,6 +92,63 @@ public class TrainerProfileViewFragment extends Fragment
     @NonNull
     @Contract(" -> new")
     private ValueEventListener valueTrainerProfileEventListener()
+    {
+        return new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // get the data from database.
+                businessProfile = snapshot.getValue(BusinessProfile.class);
+                Log.d(TAG, "onDataChange: " + businessProfile);
+
+                if (businessProfile != null)
+                {
+                    if (businessProfile.getRole().equals("Trainer"))
+                    {
+                        // form a display here
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String fullName = businessProfile.getFirstName() + " " + businessProfile.getLastName();
+                        int contactNumber = businessProfile.getContactNumber();
+                        stringBuilder.append("Full Name: ").append(fullName).append("\n");
+                        stringBuilder.append("Contact Number: ").append(contactNumber);
+
+                        // display user profile info
+                        displayTrainerProfile.setText(stringBuilder);
+
+                        // set profile picture here
+                        String profileImageUrl = businessProfile.getProfileImageUrl();
+                        Uri profileImageUri = Uri.parse(profileImageUrl);
+                        // FIXME: the image doesn't show because the image source is from Gallery within android device.
+                        // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+                        Picasso.get()
+                                .load(profileImageUri)
+                                .resize(150, 150)
+                                .error(R.drawable.error)
+                                .into(imageView);
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(),
+                                "Error there is no business vendor as trainer role in the database",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
+            }
+        };
+    }
+
+    /*
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueTrainerProfileSingleEventListener()
     {
         return new ValueEventListener()
         {
@@ -130,10 +190,12 @@ public class TrainerProfileViewFragment extends Fragment
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         };
     }
+
+     */
 
     @NonNull
     @Contract(" -> new")

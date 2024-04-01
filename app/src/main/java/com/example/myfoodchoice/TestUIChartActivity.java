@@ -16,6 +16,7 @@ import org.eazegraph.lib.models.PieModel;
 public class TestUIChartActivity extends AppCompatActivity
 {
     // Create the object of TextView and PieChart class
+    // todo: we can use this for presenting nutrition data
     TextView tvR, tvPython, tvCPP, tvJava;
     PieChart pieChart;
 
@@ -35,6 +36,21 @@ public class TestUIChartActivity extends AppCompatActivity
         setData();
     }
 
+    /* todo: data are all here
+        private String name;
+        private double calories;
+        private double serving_size_g;
+        private double fat_total_g;
+        private double fat_saturated_g;
+        private double protein_g;
+        private double sodium_mg;
+        private double potassium_mg;
+        private double cholesterol_mg;
+        private double carbohydrates_total_g;
+        private double fiber_g;
+        private double sugar_g;
+     */
+
     private void setData()
     {
 
@@ -47,7 +63,7 @@ public class TestUIChartActivity extends AppCompatActivity
         // Set the data and color to the pie chart
         pieChart.addPieSlice(
                 new PieModel(
-                        "R",
+                        "Calories",
                         Integer.parseInt(tvR.getText().toString()),
                         Color.parseColor("#FFA726")));
         pieChart.addPieSlice(
