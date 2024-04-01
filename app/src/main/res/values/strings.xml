@@ -157,4 +157,9 @@
     <string name="enter_your_review_here">Enter your review here</string>
     <string name="food_recognition_food_analysis">Food Recognition, Food Analysis</string>
     <string name="food_recognition_and_analysis">Food recognition and analysis</string>
+    <string name="health_declaration">Health Declaration</string>
+    <string name="diabetes">Diabetes</string>
+    <string name="high_cholesterols">High Cholesterols</string>
+    <string name="high_blood_pressures">High Blood Pressures</string>
+    <string name="health_conditions">Health Conditions</string>
 </resources>

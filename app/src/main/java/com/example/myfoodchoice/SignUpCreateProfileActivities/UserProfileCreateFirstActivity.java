@@ -171,7 +171,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
         {
             UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);
-            activityLevelEnum = userProfile1.getActivityLevel();
+            // activityLevelEnum = userProfile1.getActivityLevel();
             activityLevel = activityLevelEnum.name();
             nextBtn.setEnabled(true);
         }
@@ -189,11 +189,13 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
     private void initListActivityLevel()
     {
+        /*
         activityArrayList.add(new UserProfile(ActivityLevel.SEDENTARY, R.drawable.sedentary));
         activityArrayList.add(new UserProfile(ActivityLevel.LIGHTLY_ACTIVE, R.drawable.lightlyactive));
         activityArrayList.add(new UserProfile(ActivityLevel.MODERATELY_ACTIVE, R.drawable.moderateactive));
         activityArrayList.add(new UserProfile(ActivityLevel.VERY_ACTIVE, R.drawable.veryactive__2_));
         activityArrayList.add(new UserProfile(ActivityLevel.EXTREMELY_ACTIVE, R.drawable.extremeactive));
+         */
     }
 
     @NonNull
@@ -253,7 +255,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
             userProfile.setAge(ageInt);
-            userProfile.setActivityLevel(activityLevelEnum);
+            // userProfile.setActivityLevel(activityLevelEnum);
 
             // set image here
             storageTask.continueWithTask(task ->

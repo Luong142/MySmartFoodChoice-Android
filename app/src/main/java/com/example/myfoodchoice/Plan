@@ -14,6 +14,16 @@ https://teachablemachine.withgoogle.com/train
 // Food API
 https://calorieninjas.com/api
 
+User Declaration
+Diabetes (Don't reccommend if its High Sugar)
+High Cholestrol (Don't reccommend if its High Oil)
+High Blood Pressure (Don't reccommend if its High Salt)
+
+Food Attributes
+-Low, Normal, High Sugar Content
+-Low, Normal, High Oil Content
+-Low, Normal, High Salt Content
+
 list of food able to recognize based on model file.
 0 Nasi lemak
 1 Kaya toast

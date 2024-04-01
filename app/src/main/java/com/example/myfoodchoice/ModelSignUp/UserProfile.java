@@ -22,9 +22,11 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private int dietTypeImage;
 
-    private ActivityLevel activityLevel;
+    private boolean highBloodPressure;
 
-    private int activityLevelImage;
+    private boolean diabetes;
+
+    private boolean highCholesterol;
 
     private String allergies;
 
@@ -48,6 +50,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dietType = in.readString();
         points = in.readInt();
         // activityLevel = (ActivityLevel) in.readSerializable();
+        highBloodPressure = in.readByte() != 0;
+        diabetes = in.readByte() != 0;
+        highCholesterol = in.readByte() != 0;
         allergies = in.readString();
     }
 
@@ -55,12 +60,6 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     {
         this.dietType = dietType;
         this.dietTypeImage = dietTypeImage;
-    }
-
-    public UserProfile(ActivityLevel activityLevel, int activityLevelImage)
-    {
-        this.activityLevel = activityLevel;
-        this.activityLevelImage = activityLevelImage;
     }
 
     public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>()
@@ -99,6 +98,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeString(dietType);
         dest.writeInt(points);
         // dest.writeSerializable(activityLevel);
+        dest.writeByte((byte) (highBloodPressure ? 1 : 0));
+        dest.writeByte((byte) (diabetes ? 1 : 0));
+        dest.writeByte((byte) (highCholesterol ? 1 : 0));
         dest.writeString(allergies);
     }
 
@@ -115,37 +117,38 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Gender: ").append(gender).append("\n");
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
+        sb.append("High Blood Pressure: ").append(highBloodPressure).append("\n");
+        sb.append("Diabetes: ").append(diabetes).append("\n");
+        sb.append("High Cholesterol: ").append(highCholesterol).append("\n");
         // sb.append("Activity Level: ").append(activityLevel).append("\n");
         sb.append("Allergies: ").append(allergies).append("\n");
-
         sb.append("Points: ").append(points).append("\n");
         sb.append("-------------------");
         return sb.toString();
     }
 
-    public String getActivityLevelDisplayName()
-    {
-        if (activityLevel == null)
-        {
-            return "Default value";
-        }
-        return activityLevel.getDisplayName();
+    public boolean isHighBloodPressure() {
+        return highBloodPressure;
     }
 
-    public ActivityLevel getActivityLevel() {
-        return activityLevel;
+    public void setHighBloodPressure(boolean highBloodPressure) {
+        this.highBloodPressure = highBloodPressure;
     }
 
-    public void setActivityLevel(ActivityLevel activityLevel) {
-        this.activityLevel = activityLevel;
+    public boolean isDiabetes() {
+        return diabetes;
     }
 
-    public int getActivityLevelImage() {
-        return activityLevelImage;
+    public void setDiabetes(boolean diabetes) {
+        this.diabetes = diabetes;
     }
 
-    public void setActivityLevelImage(int activityLevelImage) {
-        this.activityLevelImage = activityLevelImage;
+    public boolean isHighCholesterol() {
+        return highCholesterol;
+    }
+
+    public void setHighCholesterol(boolean highCholesterol) {
+        this.highCholesterol = highCholesterol;
     }
 
     public String getAllergies() {
