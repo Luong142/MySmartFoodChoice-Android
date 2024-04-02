@@ -12,13 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myfoodchoice.Adapter.AllergiesAdapter;
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
@@ -26,7 +21,6 @@ import com.example.myfoodchoice.ModelAdapter.Allergies;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -93,6 +87,9 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         highCholesterolCheck = findViewById(R.id.highCholesterolCheckbox);
         highBloodPressureCheck = findViewById(R.id.highBloodPressureCheckbox);
 
+        // set progress bar
+        progressBar.setVisibility(ProgressBar.GONE);
+        signUpBtn.setVisibility(Button.VISIBLE);
 
         // TODO: init UI component
         initListAllergies();
@@ -146,6 +143,8 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
+                Toast.makeText(UserProfileHealthDeclarationActivity.
+                        this, "Sign up successful", Toast.LENGTH_SHORT).show();
                 intentNavToLogin = new Intent(UserProfileHealthDeclarationActivity.this, LoginActivity.class);
                 startActivity(intentNavToLogin);
                 finish();

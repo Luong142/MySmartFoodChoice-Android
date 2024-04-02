@@ -32,6 +32,7 @@ import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
@@ -46,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserHomeFragment extends Fragment
+public class UserLogMealNutritionAnalysisFragment extends Fragment
 {
     final static String TAG = "UserHomeFragment";
     int imageSize;
@@ -56,10 +57,11 @@ public class UserHomeFragment extends Fragment
 
     ImageView foodImage;
 
-    TextView caloriesTextView, kcalModelStringTextView, progressTextView, checkInTextView;
+    TextView caloriesTextView, kcalModelStringTextView, progressTextView, checkInTextView
+            , foodNameTextView;
 
     // TODO: add in one more button for taking photo I think.
-    Button logMealBtn, historyMealBtn, takePhotoBtn, uploadPhotoBtn;
+    FloatingActionButton logMealBtn, historyMealBtn, takePhotoBtn, uploadPhotoBtn;
     ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher;
 
     ActivityResultLauncher<Intent> takePhotoActivityResultLauncher;
@@ -91,7 +93,8 @@ public class UserHomeFragment extends Fragment
         progressBar = view.findViewById(R.id.progressBar);
         progressTextView = view.findViewById(R.id.progressTextView);
         caloriesTextView = view.findViewById(R.id.caloriesNumTextView);
-        kcalModelStringTextView = view.findViewById(R.id.kcalModelStringTextView);
+        // kcalModelStringTextView = view.findViewById(R.id.kcalModelStringTextView);
+        foodNameTextView = view.findViewById(R.id.foodName);
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
@@ -255,13 +258,14 @@ public class UserHomeFragment extends Fragment
                 }
             }
 
-            String[] classes = {"Nasi lemak", "Kaya Toast", "curry puff", "Sliced fish soup"};
+            String[] classes = {"Nasi Lemak", "Kaya Toast", "curry puff", "Sliced fish soup"};
             // fixme: eggs need to remove, we can add Laksa
 
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
             foodName = classes[maxPos];
             Log.d(TAG, "The dish name is classified as: " + foodName);
+            foodNameTextView.setText(foodName);
 
             // call API, and get result with that model class.
             call = caloriesNinjaAPI.getFoodItem(foodName);
@@ -381,6 +385,6 @@ public class UserHomeFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_home, container, false);
+        return inflater.inflate(R.layout.fragment_user_log_meal_nutrition_analysis, container, false);
     }
 }

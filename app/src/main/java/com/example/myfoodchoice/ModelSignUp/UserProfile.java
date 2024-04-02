@@ -22,11 +22,11 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private int dietTypeImage;
 
-    private boolean highBloodPressure;
+    private boolean isHighBloodPressure;
 
-    private boolean diabetes;
+    private boolean isDiabetes;
 
-    private boolean highCholesterol;
+    private boolean isHighCholesterol;
 
     private String allergies;
 
@@ -50,9 +50,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dietType = in.readString();
         points = in.readInt();
         // activityLevel = (ActivityLevel) in.readSerializable();
-        highBloodPressure = in.readByte() != 0;
-        diabetes = in.readByte() != 0;
-        highCholesterol = in.readByte() != 0;
+        isHighBloodPressure = in.readByte() != 0;
+        isDiabetes = in.readByte() != 0;
+        isHighCholesterol = in.readByte() != 0;
         allergies = in.readString();
     }
 
@@ -98,9 +98,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeString(dietType);
         dest.writeInt(points);
         // dest.writeSerializable(activityLevel);
-        dest.writeByte((byte) (highBloodPressure ? 1 : 0));
-        dest.writeByte((byte) (diabetes ? 1 : 0));
-        dest.writeByte((byte) (highCholesterol ? 1 : 0));
+        dest.writeByte((byte) (isHighBloodPressure ? 1 : 0));
+        dest.writeByte((byte) (isDiabetes ? 1 : 0));
+        dest.writeByte((byte) (isHighCholesterol ? 1 : 0));
         dest.writeString(allergies);
     }
 
@@ -117,9 +117,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Gender: ").append(gender).append("\n");
         sb.append("Age: ").append(age).append("\n");
         sb.append("Diet Type: ").append(dietType).append("\n");
-        sb.append("High Blood Pressure: ").append(highBloodPressure).append("\n");
-        sb.append("Diabetes: ").append(diabetes).append("\n");
-        sb.append("High Cholesterol: ").append(highCholesterol).append("\n");
+        sb.append("High Blood Pressure: ").append(isHighBloodPressure).append("\n");
+        sb.append("Diabetes: ").append(isDiabetes).append("\n");
+        sb.append("High Cholesterol: ").append(isHighCholesterol).append("\n");
         // sb.append("Activity Level: ").append(activityLevel).append("\n");
         sb.append("Allergies: ").append(allergies).append("\n");
         sb.append("Points: ").append(points).append("\n");
@@ -128,27 +128,27 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     }
 
     public boolean isHighBloodPressure() {
-        return highBloodPressure;
+        return isHighBloodPressure;
     }
 
     public void setHighBloodPressure(boolean highBloodPressure) {
-        this.highBloodPressure = highBloodPressure;
+        this.isHighBloodPressure = highBloodPressure;
     }
 
     public boolean isDiabetes() {
-        return diabetes;
+        return isDiabetes;
     }
 
     public void setDiabetes(boolean diabetes) {
-        this.diabetes = diabetes;
+        this.isDiabetes = diabetes;
     }
 
     public boolean isHighCholesterol() {
-        return highCholesterol;
+        return isHighCholesterol;
     }
 
     public void setHighCholesterol(boolean highCholesterol) {
-        this.highCholesterol = highCholesterol;
+        this.isHighCholesterol = highCholesterol;
     }
 
     public String getAllergies() {

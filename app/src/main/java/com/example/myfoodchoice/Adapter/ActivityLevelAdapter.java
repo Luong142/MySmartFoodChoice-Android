@@ -15,7 +15,6 @@ import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ActivityLevelAdapter extends ArrayAdapter<UserProfile>
 {

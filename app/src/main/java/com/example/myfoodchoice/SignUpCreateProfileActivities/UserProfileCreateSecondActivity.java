@@ -3,7 +3,6 @@ package com.example.myfoodchoice.SignUpCreateProfileActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,7 +18,6 @@ import com.example.myfoodchoice.Adapter.DietTypeAdapter;
 import com.example.myfoodchoice.ModelAdapter.Allergies;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class UserProfileCreateSecondActivity extends AppCompatActivity
 {
@@ -171,7 +168,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             //databaseReferenceUserProfile.setValue(userProfile)
                     //.addOnCompleteListener(onSignUpCompleteListener());
 
-            Toast.makeText(UserProfileCreateSecondActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
             intentToHealthDeclarationActivity = new Intent(UserProfileCreateSecondActivity.this,
                     UserProfileHealthDeclarationActivity.class);
             intentToHealthDeclarationActivity.putExtra("userProfile", userProfile);

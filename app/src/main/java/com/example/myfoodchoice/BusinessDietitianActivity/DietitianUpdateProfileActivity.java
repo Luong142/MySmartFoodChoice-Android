@@ -172,10 +172,10 @@ public class DietitianUpdateProfileActivity extends AppCompatActivity
 
             if (contactNumUpdate.getText().toString().isEmpty())
             {
-                contactNumUpdate.setError("Please enter your age.");
+                contactNumUpdate.setError("Please enter your contact number.");
                 progressBar.setVisibility(ProgressBar.GONE);
                 updateBtn.setVisibility(Button.VISIBLE);
-                return; // exit the method if age is empty
+                return; // exit the method if contact number is empty
             }
 
             // init

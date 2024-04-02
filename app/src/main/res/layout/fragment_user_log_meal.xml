@@ -6,8 +6,6 @@
     android:padding="16dp"
     android:background="@drawable/bg_gradient_color_main">
 
-
-
     <TextView
         android:id="@+id/caloriesTextView"
         android:layout_width="0dp"

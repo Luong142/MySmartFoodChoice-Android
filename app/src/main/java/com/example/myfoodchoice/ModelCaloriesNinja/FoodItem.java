@@ -49,44 +49,43 @@ public class FoodItem
         private double cholesterol_mg; // todo: this attribute
         private double carbohydrates_total_g;
         private double fiber_g;
-        private double sugar_g; // todo: this attribute, > 12 grams => warning high-sugar, otherwise ok to consume
+        private double sugar_g; // todo: this attribute, > 6 grams => warning high-sugar, otherwise ok to consume
 
-        public String classifySugarContent() // todo: check these attributes to content
+        public String classifyContentBasedOnUserHealth(boolean isHighCholesterol,
+                                                       boolean isHighBloodPressure,
+                                                       boolean isDiabetes)
         {
-            // todo: algo to warm or inform if this food has high sugar content.
-            // if the user has checked high-sugar box, then it will return something to warn the user.
-            // either say  "high sugar" or "low sugar"
-            // if the user has not checked high-sugar box, then it will return nothing.
-            // todo: we need to research the amount of recommended sugar level for "high-sugar" user.
+            StringBuilder recommendation = new StringBuilder();
 
-            // todo: the problem is that the part of UI design parts?
+            // Check for high cholesterol
+            if (isHighCholesterol && cholesterol_mg > 0)
+            {
+                recommendation.append("Warning: High cholesterol detected. Consider reducing cholesterol content. ");
+            }
 
-            return "sugar content: " + sugar_g;
+            // Check for high blood pressure
+            if (isHighBloodPressure && sodium_mg > 6)
+            {
+                recommendation.append("Warning: High blood pressure detected. Consider reducing sodium content. ");
+            }
+
+            // Check for diabetes
+            if (isDiabetes && sugar_g > 12)
+            {
+                recommendation.append("Warning: Diabetes detected. Consider reducing sugar content. ");
+            }
+
+            if (recommendation.length() > 0)
+            {
+                return recommendation.toString();
+            }
+            else
+            {
+                return "It's safe to use this dish.";
+            }
         }
 
-        public String classifyFatContent()
-        {
-            // todo: algo to warm or inform if this food has high fat content.
-            return "fat content: " + fat_total_g;
-        }
 
-        public String classifyCholesterolContent()
-        {
-            // todo: algo to warm or inform if this food has high cholesterol content.
-            return "cholesterol content: " + cholesterol_mg;
-        }
-
-        public String classifySodiumContent()
-        {
-            // todo: algo to warm or inform if this food has high sodium content.
-            return "sodium content: " + sodium_mg;
-        }
-
-        public boolean recommendThisDishBasedOnSugarContent() // todo: we can retrieve the data from user
-                // todo: develop the recommendation mark to user.
-        {
-            return sugar_g > 0.5;
-        }
 
         @NonNull
         @Override

@@ -16,8 +16,8 @@ import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
-import com.example.myfoodchoice.UserFragment.UserHomeFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
@@ -60,7 +60,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeFragment()).commit();
+                    new UserLogMealNutritionAnalysisFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -87,10 +87,10 @@ public class GuestMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
 
-        if (itemId == R.id.nav_home)
+        if (itemId == R.id.nav_log_meal)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeFragment()).commit();
+                    new UserLogMealNutritionAnalysisFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
@@ -106,12 +106,6 @@ public class GuestMainMenuActivity extends AppCompatActivity
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserLogMealSearchFoodFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_log_meal)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealFragment()).commit();
         }
 
         else if (itemId == R.id.nav_food_recipe)
