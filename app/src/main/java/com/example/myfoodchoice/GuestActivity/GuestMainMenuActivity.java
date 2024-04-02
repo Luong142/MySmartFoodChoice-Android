@@ -16,7 +16,6 @@ import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;

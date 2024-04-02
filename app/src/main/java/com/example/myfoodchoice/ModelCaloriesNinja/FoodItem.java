@@ -85,8 +85,6 @@ public class FoodItem
             }
         }
 
-
-
         @NonNull
         @Override
         public String toString()

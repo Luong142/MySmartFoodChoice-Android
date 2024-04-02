@@ -25,7 +25,6 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
@@ -126,8 +125,8 @@ public class UserMainMenuActivity extends AppCompatActivity
                 .setPhotoUri("//").build());
          */
 
-        Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
-        Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
+        // Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
+        // Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);

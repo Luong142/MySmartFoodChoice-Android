@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,12 +26,20 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
@@ -53,11 +60,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     int imageSize;
 
     // TODO: declare UI components
-    ProgressBar progressBar;
+    ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
 
     ImageView foodImage;
 
-    TextView caloriesTextView, kcalModelStringTextView, progressTextView, checkInTextView
+    TextView progressCholesterolTextView,
+            progressSugarTextView,
+            progressSaltTextView,
+            progressCaloriesTextView,
+            checkInTextView
             , foodNameTextView;
 
     // TODO: add in one more button for taking photo I think.
@@ -83,18 +94,69 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
     String foodName;
 
+    // firebase
+
+    DatabaseReference databaseReferenceUserProfile;
+
+    FirebaseAuth firebaseAuth;
+
+    FirebaseDatabase firebaseDatabase;
+
+    FirebaseUser firebaseUser;
+
+    UserProfile userProfile;
+
+    String userID, gender;
+
+    double maxCalories, maxCholesterol, maxSugar, maxSalt;
+
+    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
+
+        // TODO: init Firebase Database
+        firebaseDatabase = FirebaseDatabase.getInstance
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+
+        // TODO: init Firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // TODO: init user id
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+        {
+            gender = "Male"; // fixme: by default value
+            userID = firebaseUser.getUid();
+
+            // TODO: init database reference for user profile
+            databaseReferenceUserProfile =
+                    firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
+
+            databaseReferenceUserProfile.addValueEventListener(onGenderValueListener());
+
+        }
+
+
         // TODO: init UI components
         checkInTextView = view.findViewById(R.id.checkInTextView);
-        progressBar = view.findViewById(R.id.progressBar);
-        progressTextView = view.findViewById(R.id.progressTextView);
-        caloriesTextView = view.findViewById(R.id.caloriesNumTextView);
-        // kcalModelStringTextView = view.findViewById(R.id.kcalModelStringTextView);
         foodNameTextView = view.findViewById(R.id.foodName);
+
+        // for all progress bars
+        progressBarCalories = view.findViewById(R.id.progressBarCalories);
+        progressCaloriesTextView = view.findViewById(R.id.caloriesNumTextView);
+
+        progressBarCholesterol = view.findViewById(R.id.progressBarCholesterol);
+        progressCholesterolTextView = view.findViewById(R.id.progressCholesterolTextView);
+
+        progressBarSalt = view.findViewById(R.id.progressBarSodium);
+        progressSaltTextView = view.findViewById(R.id.progressSodiumTextView);
+
+        progressBarSugar = view.findViewById(R.id.progressBarSugar);
+        progressSugarTextView = view.findViewById(R.id.progressSugarTextView);
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
@@ -204,6 +266,50 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                 });
     }
 
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener onGenderValueListener()
+    {
+        return new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                userProfile = snapshot.getValue(UserProfile.class);
+                if (userProfile != null)
+                {
+                    gender = userProfile.getGender();
+                    switch(gender)
+                    {
+                        case "Male":
+                            maxCalories = 3000; // per calories
+                            maxCholesterol = 300; // per mg
+                            maxSugar = 36; // per grams
+                            maxSalt = 100; // per mg
+                            break;
+                        case "Female":
+                            maxCalories = 2000;
+                            maxCholesterol = 240;
+                            maxSugar = 24;
+                            maxSalt = 2300; // per mg, should be sodium
+                            break;
+                        default:
+                            // wrong gender no default value.
+                            Log.d(TAG, "Unknown gender: " + gender);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Log.d(TAG, "onCancelled: " + error);
+            }
+        };
+    }
+
     public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
     {
         try {
@@ -258,7 +364,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                 }
             }
 
-            String[] classes = {"Nasi Lemak", "Kaya Toast", "curry puff", "Sliced fish soup"};
+            String[] classes = {"Nasi Lemak", "Kaya Toast", "Curry Puff", "Sliced Fish Soup"};
             // fixme: eggs need to remove, we can add Laksa
 
             // result.setText(classes[maxPos]);
@@ -270,7 +376,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             // call API, and get result with that model class.
             call = caloriesNinjaAPI.getFoodItem(foodName);
             // todo: uncomment this part below to do get calories info and more from this API.
-            // call.enqueue(callBackResponseFromAPI());
+            call.enqueue(callBackResponseFromAPI());
 
             // todo: input from user when search for recipe,
             // todo: if the "ingredients" contains the "allergies", we can show warning contains "nuts" to user, best option.
@@ -309,6 +415,44 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                     if (foodItem != null)
                     {
                         Log.d(TAG, "onResponse: " + foodItem);
+                        // todo: set progress bar here
+                        double totalCalories = 0;
+                        double totalCholesterol = 0;
+                        double totalSalt = 0;
+                        double totalSugar = 0;
+                        
+                        // get all total calculations
+                        for (FoodItem.Item item : foodItem.getItems())
+                        {
+                            totalCalories += item.getCalories();
+                            totalCholesterol += item.getCholesterol_mg();
+                            totalSalt += item.getSodium_mg();
+                            totalSugar += item.getSugar_g();
+                        }
+
+                        // calculate percentage
+                        double percentageCalories = (totalCalories / maxCalories) * 100;
+                        double percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                        double percentageSalt = (totalSalt / maxSalt) * 100;
+                        double percentageSugar = (totalSugar / maxSugar) * 100;
+
+                        // todo: need to test these tmr. I sleep
+                        progressBarCalories.setProgress((int) percentageCalories);
+                        progressCaloriesTextView.setText(String.format(Locale.ROOT, "%.1f%%",
+                                percentageCalories));
+
+                        progressBarCholesterol.setProgress((int) percentageCholesterol);
+                        progressCholesterolTextView.setText(String.format(Locale.ROOT, "%.1f%%",
+                                percentageCholesterol));
+
+                        progressBarSalt.setProgress((int) percentageSalt);
+                        progressSaltTextView.setText(String.format(Locale.ROOT, "%.1f%%",
+                                percentageSalt));
+
+                        progressBarSugar.setProgress((int) percentageSugar);
+                        progressSugarTextView.setText(String.format(Locale.ROOT, "%.1f%%",
+                                percentageSugar));
+
                     }
                 }
             }

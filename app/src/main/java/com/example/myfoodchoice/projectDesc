@@ -3,3 +3,35 @@ Project Description:
 The project has the following tasks.
 The application will use the user information to automatically calculate the best food intake for them. The application required to use advanced Image recognize algorism to help users to record their intake just by taking a photo. The application gives the users some advice about their food intake to helps them to maintain their healthy diet. And some additional function has been provided such as clock in and get rewards, recipe suggestion, food comparison.
 The application can be sued by anyone who wants to keeps healthy diets and keep track of their food habits and dietary preferences
+
+
+Calories
+
+    Men: 2,500 to 3,000 calories per day
+    Women: 1,800 to 2,000 calories per day
+
+These recommendations are consistent with global guidelines and
+are designed to support a healthy weight and reduce the risk of chronic diseases.
+
+Cholesterol
+
+    Men: 300 mg per day
+    Women: 240 mg per day
+
+The WHO also recommends a daily cholesterol intake of up to 300 mg for men and 240 mg for women.
+High cholesterol levels can increase the risk of heart disease.
+
+Sugar
+
+    Men: 9 teaspoons (36 grams) per day
+    Women: 6 teaspoons (24 grams) per day
+
+
+Sodium
+
+    Men: 2,300 mg per day
+    Women: 2,300 mg per day
+
+The World Health Organization (WHO) recommends a daily sodium intake of up to
+2,300 mg for adults, which is consistent with the guidelines provided.
+High sodium intake is linked to increased blood pressure and heart disease.

@@ -162,4 +162,10 @@
     <string name="high_cholesterols">High Cholesterols</string>
     <string name="high_blood_pressures">High Blood Pressures</string>
     <string name="health_conditions">Health Conditions</string>
+    <string name="take_photo_to_get">Take photo to get</string>
+    <string name="salt">Salt</string>
+    <string name="nutrition_value">Nutrition Value</string>
+    <string name="cholesterol">Cholesterol</string>
+    <string name="sugar">Sugar</string>
+    <string name="sodium">Sodium</string>
 </resources>
