@@ -38,9 +38,11 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
-            android:name=".SignUpCreateProfileActivities.UserProfileHealthDeclarationActivity"
+            android:name=".UserActivity.UserLogMealActivity"
             android:exported="false" />
-        <!-- this one is for testing tflite -->
+        <activity
+            android:name=".SignUpCreateProfileActivities.UserProfileHealthDeclarationActivity"
+            android:exported="false" /> <!-- this one is for testing tflite -->
         <activity
             android:name=".TestTFlite"
             android:exported="false" />

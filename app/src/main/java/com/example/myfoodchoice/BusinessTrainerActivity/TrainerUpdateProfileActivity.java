@@ -32,6 +32,8 @@ import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class TrainerUpdateProfileActivity extends AppCompatActivity
@@ -248,8 +250,14 @@ public class TrainerUpdateProfileActivity extends AppCompatActivity
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
                 // Log.d(TAG, "onNextListener: " + userProfile);
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("profileImageUrl", myUri);
+                updates.put("contactNumber", contactNumInt);
+                updates.put("firstName", firstName);
+                updates.put("lastName", lastName);
 
-                databaseReferenceBusinessProfile.setValue(businessProfile)
+                // update the children
+                databaseReferenceBusinessProfile.setValue(updates)
                         .addOnCompleteListener(onCompleteListener())
                         .addOnFailureListener(onFailureListener());
 

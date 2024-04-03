@@ -102,6 +102,10 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         intent = getIntent();
         userProfile = intent.getParcelableExtra("userProfile");
         // Log.d(TAG, "Checking user profile pls: " + userProfile);
+        // todo: init boolean value
+        diabetesCheckValue = false;
+        highCholesterolCheckValue = false;
+        highBloodPressureCheckValue = false;
 
         // for sign up button
         signUpBtn.setOnClickListener(onSignUpListener());
@@ -109,8 +113,6 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         diabetesCheck.setOnCheckedChangeListener(onCheckedDiabetesListener());
         highCholesterolCheck.setOnCheckedChangeListener(onCheckedCholesterolListener());
         highBloodPressureCheck.setOnCheckedChangeListener(onCheckedBloodPressureListener());
-
-
     }
 
     @NonNull

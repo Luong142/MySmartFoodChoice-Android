@@ -22,6 +22,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.camera.core.processing.SurfaceProcessorNode;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -30,6 +32,7 @@ import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
+import com.example.myfoodchoice.UserActivity.UserLogMealActivity;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -56,7 +59,7 @@ import retrofit2.Response;
 
 public class UserLogMealNutritionAnalysisFragment extends Fragment
 {
-    final static String TAG = "UserHomeFragment";
+    final static String TAG = "UserLogMealNutritionFragment";
     int imageSize;
 
     // TODO: declare UI components
@@ -72,7 +75,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             , foodNameTextView;
 
     // TODO: add in one more button for taking photo I think.
-    FloatingActionButton logMealBtn, historyMealBtn, takePhotoBtn, uploadPhotoBtn;
+    FloatingActionButton takePhotoBtn, uploadPhotoBtn;
+
+    CardView logMealBtn;
+
     ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher;
 
     ActivityResultLauncher<Intent> takePhotoActivityResultLauncher;
@@ -93,7 +99,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     String foodName;
 
     // firebase
-
     DatabaseReference databaseReferenceUserProfile;
 
     FirebaseAuth firebaseAuth;
@@ -107,6 +112,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     String userID, gender;
 
     double maxCalories, maxCholesterol, maxSugar, maxSalt;
+
+    boolean isDiabetes, isHighBloodPressure, isHighCholesterol;
+
+    Intent intentNavToLogMeal;
 
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
 
@@ -134,8 +143,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             databaseReferenceUserProfile =
                     firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
 
-            databaseReferenceUserProfile.addValueEventListener(onGenderValueListener());
-
+            databaseReferenceUserProfile.addValueEventListener(onGenderHealthValueListener());
         }
 
         // TODO: init UI components
@@ -157,6 +165,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
+        // todo: this is actually a card view.
+        logMealBtn = view.findViewById(R.id.logMealBtn);
+        logMealBtn.setOnClickListener(onNavToLogMealListener());
+
         foodImage = view.findViewById(R.id.foodPhoto);
 
         // todo: set onclick here
@@ -263,9 +275,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                 });
     }
 
+
     @NonNull
     @Contract(" -> new")
-    private ValueEventListener onGenderValueListener()
+    private ValueEventListener onGenderHealthValueListener()
     {
         return new ValueEventListener()
         {
@@ -274,6 +287,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 userProfile = snapshot.getValue(UserProfile.class);
+
                 if (userProfile != null)
                 {
                     gender = userProfile.getGender();
@@ -484,7 +498,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             else
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                PackageManager packageManager = requireContext().getPackageManager();
 
                 if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
                 {
@@ -501,18 +514,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     {
         return v ->
         {
-            ((UserMainMenuActivity) requireActivity()).navigateToFragment(new UserLogMealFragment());
-        };
-    }
-
-    @NonNull
-    @Contract(pure = true)
-    private View.OnClickListener onNavToHistoryMealListener()
-    {
-        return v ->
-        {
-            // TODO: this one is fragment so we need to allocate to the part in UserMainMenuActivity.
-            ((UserMainMenuActivity) requireActivity()).navigateToFragment(new UserLogMealSearchFoodFragment());
+            intentNavToLogMeal = new Intent(requireContext(), UserLogMealActivity.class);
+            intentNavToLogMeal.putExtra("gender", gender);
+            startActivity(intentNavToLogMeal);
+            requireActivity().finish();
         };
     }
 

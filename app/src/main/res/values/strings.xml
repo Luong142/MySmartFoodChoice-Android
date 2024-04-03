@@ -168,4 +168,7 @@
     <string name="cholesterol">Cholesterol</string>
     <string name="sugar">Sugar</string>
     <string name="sodium">Sodium</string>
+    <string name="sodium_0">Sodium 0</string>
+    <string name="cholesterol_0">Cholesterol 0</string>
+    <string name="sugar_0">Sugar 0</string>
 </resources>

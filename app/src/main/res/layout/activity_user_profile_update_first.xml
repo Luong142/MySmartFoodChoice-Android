@@ -94,26 +94,7 @@
             android:textColorHint="#FAFAFA"
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/age"
-            android:textSize="30sp" />
 
-        <EditText
-            android:id="@+id/ageProfile"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="age"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_age"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
 
         <View
             android:layout_width="match_parent"
