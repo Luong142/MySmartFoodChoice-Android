@@ -22,7 +22,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.camera.core.processing.SurfaceProcessorNode;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -33,7 +32,6 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
 import com.example.myfoodchoice.UserActivity.UserLogMealActivity;
-import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -447,15 +445,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         double percentageSalt = (totalSalt / maxSalt) * 100;
                         double percentageSugar = (totalSugar / maxSugar) * 100;
 
-                        Log.d(TAG, "onResponse: " + percentageCalories);
-                        Log.d(TAG, "onResponse: " + percentageCholesterol);
-                        Log.d(TAG, "onResponse: " + percentageSalt);
-                        Log.d(TAG, "onResponse: " + percentageSugar);
+                        // Log.d(TAG, "onResponse: " + percentageCalories);
+                        // Log.d(TAG, "onResponse: " + percentageCholesterol);
+                        // Log.d(TAG, "onResponse: " + percentageSalt);
+                        // Log.d(TAG, "onResponse: " + percentageSugar);
 
                         // fixme: null pointer exception
-
-                        double test = 60;
-
                         progressBarCalories.setProgress((int) percentageCalories);
                         progressCaloriesTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageCalories));
