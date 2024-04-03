@@ -88,8 +88,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     // calling calories ninja API
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
-    private Call<FoodItem> call;
-
     private FoodItem foodItem;
 
     String foodName;
@@ -140,14 +138,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
         }
 
-
         // TODO: init UI components
         checkInTextView = view.findViewById(R.id.checkInTextView);
         foodNameTextView = view.findViewById(R.id.foodName);
 
-        // for all progress bars
+        // fixme: should be matched with the ID.
         progressBarCalories = view.findViewById(R.id.progressBarCalories);
-        progressCaloriesTextView = view.findViewById(R.id.caloriesNumTextView);
+        progressCaloriesTextView = view.findViewById(R.id.progressCaloriesTextView); // id name incorrect
 
         progressBarCholesterol = view.findViewById(R.id.progressBarCholesterol);
         progressCholesterolTextView = view.findViewById(R.id.progressCholesterolTextView);
@@ -374,7 +371,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             foodNameTextView.setText(foodName);
 
             // call API, and get result with that model class.
-            call = caloriesNinjaAPI.getFoodItem(foodName);
+            Call<FoodItem> call = caloriesNinjaAPI.getFoodItem(foodName);
             // todo: uncomment this part below to do get calories info and more from this API.
             call.enqueue(callBackResponseFromAPI());
 
@@ -436,7 +433,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         double percentageSalt = (totalSalt / maxSalt) * 100;
                         double percentageSugar = (totalSugar / maxSugar) * 100;
 
-                        // todo: need to test these tmr. I sleep
+                        Log.d(TAG, "onResponse: " + percentageCalories);
+                        Log.d(TAG, "onResponse: " + percentageCholesterol);
+                        Log.d(TAG, "onResponse: " + percentageSalt);
+                        Log.d(TAG, "onResponse: " + percentageSugar);
+
+                        // fixme: null pointer exception
+
+                        double test = 60;
+
                         progressBarCalories.setProgress((int) percentageCalories);
                         progressCaloriesTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageCalories));
@@ -445,6 +450,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         progressCholesterolTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageCholesterol));
 
+                        // fixme: recalculate sodium percentage
                         progressBarSalt.setProgress((int) percentageSalt);
                         progressSaltTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageSalt));
@@ -452,7 +458,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         progressBarSugar.setProgress((int) percentageSugar);
                         progressSugarTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageSugar));
-
                     }
                 }
             }

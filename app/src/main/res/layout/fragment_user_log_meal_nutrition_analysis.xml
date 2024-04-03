@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_gradient_color_main"
     tools:context=".UserFragment.UserLogMealNutritionAnalysisFragment">
 
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         app:cardCornerRadius="10dp"
@@ -45,8 +45,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,8 +60,7 @@
                     android:layout_width="200sp"
                     android:layout_height="200sp"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/todo"
-                    />
+                    android:contentDescription="@string/todo" />
             </LinearLayout>
 
             <LinearLayout
@@ -92,10 +90,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="200dp"
-        android:backgroundTint="@color/peach_puff"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="250dp"
+        android:backgroundTint="@color/peach_puff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -337,30 +334,34 @@
         android:id="@+id/takePhotoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="36dp"
         android:contentDescription="@string/todo"
-        android:tooltipText="@string/take_a_photo"
-        app:fabSize="normal"
         android:src="@drawable/camera_icon"
         android:tint="@color/pale_violet_red"
+        android:tooltipText="@string/take_a_photo"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.208"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nutritionInfo"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/uploadPhotoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:tooltipText="@string/upload_a_photo"
+        android:layout_marginBottom="36dp"
+        android:contentDescription="@string/todo"
         android:src="@drawable/upload_photo"
+        android:tooltipText="@string/upload_a_photo"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.816"
+        app:layout_constraintHorizontal_bias="0.822"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintTop_toBottomOf="@+id/nutritionInfo"
+        app:layout_constraintVertical_bias="1.0" />
 
     <!-- TODO: for this part we need to set image in two modes,
         TODO: focus and non-focus.
