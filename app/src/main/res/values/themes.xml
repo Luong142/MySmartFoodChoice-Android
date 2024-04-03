@@ -14,8 +14,23 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_out_left</item>
     </style>
 
-    <style name="CircularDeterminateProgressBar">
+    <style name="CircularDeterminateProgressBarCalories">
         <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/circle</item>
+        <item name="android:progressDrawable">@drawable/circle_calories</item>
+    </style>
+
+    <style name="CircularDeterminateProgressBarSodium">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle_sodium</item>
+    </style>
+
+    <style name="CircularDeterminateProgressBarCholesterol">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle_cholesterol</item>
+    </style>
+
+    <style name="CircularDeterminateProgressBarSugar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle_sugar</item>
     </style>
 </resources>

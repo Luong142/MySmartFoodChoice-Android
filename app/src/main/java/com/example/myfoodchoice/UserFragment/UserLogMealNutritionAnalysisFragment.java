@@ -283,7 +283,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                             maxCalories = 3000; // per calories
                             maxCholesterol = 300; // per mg
                             maxSugar = 36; // per grams
-                            maxSalt = 100; // per mg
+                            maxSalt = 2300; // per mg
                             break;
                         case "Female":
                             maxCalories = 2000;
