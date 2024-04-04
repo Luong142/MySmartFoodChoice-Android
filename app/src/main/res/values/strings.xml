@@ -171,4 +171,5 @@
     <string name="sodium_0">Sodium 0</string>
     <string name="cholesterol_0">Cholesterol 0</string>
     <string name="sugar_0">Sugar 0</string>
+    <string name="add_dish">Add Dish</string>
 </resources>

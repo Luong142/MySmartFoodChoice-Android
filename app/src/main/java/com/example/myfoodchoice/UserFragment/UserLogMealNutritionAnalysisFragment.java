@@ -22,11 +22,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
+import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
@@ -61,16 +63,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     int imageSize;
 
     // TODO: declare UI components
-    ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
+    //ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
 
     ImageView foodImage;
 
-    TextView progressCholesterolTextView,
-            progressSugarTextView,
-            progressSaltTextView,
-            progressCaloriesTextView,
-            checkInTextView
-            , foodNameTextView;
+    // TextView progressCholesterolTextView, progressSugarTextView, progressSaltTextView, progressCaloriesTextView;
+
+    TextView checkInTextView, foodNameTextView;
 
     // TODO: add in one more button for taking photo I think.
     FloatingActionButton takePhotoBtn, uploadPhotoBtn;
@@ -117,6 +116,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
 
+    Meal meal;
+    double totalCalories, totalCholesterol, totalSalt, totalSugar;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -142,24 +144,37 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                     firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
 
             databaseReferenceUserProfile.addValueEventListener(onGenderHealthValueListener());
+
+            meal = new Meal();
         }
+
+        // init nutrition value to 0
+        totalCalories = 0;
+        totalCholesterol = 0;
+        totalSalt = 0;
+        totalSugar = 0;
+
+        // todo: init boolean value
+        isDiabetes = false;
+        isHighBloodPressure = false;
+        isHighCholesterol = false;
 
         // TODO: init UI components
         checkInTextView = view.findViewById(R.id.checkInTextView);
         foodNameTextView = view.findViewById(R.id.foodName);
 
         // fixme: should be matched with the ID.
-        progressBarCalories = view.findViewById(R.id.progressBarCalories);
-        progressCaloriesTextView = view.findViewById(R.id.progressCaloriesTextView); // id name incorrect
+        // progressBarCalories = view.findViewById(R.id.progressBarCalories);
+        //progressCaloriesTextView = view.findViewById(R.id.progressCaloriesTextView); // id name incorrect
 
-        progressBarCholesterol = view.findViewById(R.id.progressBarCholesterol);
-        progressCholesterolTextView = view.findViewById(R.id.progressCholesterolTextView);
+        //progressBarCholesterol = view.findViewById(R.id.progressBarCholesterol);
+        //progressCholesterolTextView = view.findViewById(R.id.progressCholesterolTextView);
 
-        progressBarSalt = view.findViewById(R.id.progressBarSodium);
-        progressSaltTextView = view.findViewById(R.id.progressSodiumTextView);
+        //progressBarSalt = view.findViewById(R.id.progressBarSodium);
+        //progressSaltTextView = view.findViewById(R.id.progressSodiumTextView);
 
-        progressBarSugar = view.findViewById(R.id.progressBarSugar);
-        progressSugarTextView = view.findViewById(R.id.progressSugarTextView);
+        //progressBarSugar = view.findViewById(R.id.progressBarSugar);
+        //progressSugarTextView = view.findViewById(R.id.progressSugarTextView);
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
@@ -291,6 +306,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                     gender = userProfile.getGender();
                     switch(gender)
                     {
+                        // todo: important here this should be a goal or something else?
                         case "Male":
                             maxCalories = 3000; // per calories
                             maxCholesterol = 300; // per mg
@@ -307,6 +323,59 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                             // wrong gender no default value.
                             Log.d(TAG, "Unknown gender: " + gender);
                             break;
+                    }
+
+                    // todo: for health
+                    isDiabetes = userProfile.isDiabetes();
+                    isHighBloodPressure = userProfile.isHighBloodPressure();
+                    isHighCholesterol = userProfile.isHighCholesterol();
+
+                    StringBuilder alertDialogMessage = new StringBuilder();
+
+                    if (isDiabetes)
+                    {
+                        maxCalories *= 0.5; // minus 50%
+                        alertDialogMessage.append("Diabetes detected. " +
+                                        "Your calorie limit has been reduced to ")
+                                .append((int) maxCalories)
+                                .append(" calories to help manage your condition.\n");
+                    }
+
+                    if (isHighBloodPressure)
+                    {
+                        maxSalt *= 0.5; // minus 50%
+                        alertDialogMessage.append("High blood pressure detected. " +
+                                        "Your salt intake limit has been reduced to ")
+                                .append((int) maxSalt)
+                                .append(" mg to help manage your condition.\n");
+                    }
+
+                    if (isHighCholesterol)
+                    {
+                        maxCholesterol *= 0.5;
+                        alertDialogMessage.append("High cholesterol detected. " +
+                                        "Your cholesterol limit has been reduced to ")
+                                .append((int) maxCholesterol)
+                                .append(" mg to help manage your condition.\n");
+                    }
+                    if (alertDialogMessage.length() > 0)
+                    {
+                        // Create an AlertDialog Builder
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+                        // Set the message to display
+                        builder.setMessage(alertDialogMessage.toString());
+
+                        // Set the positive button
+                        builder.setPositiveButton("OK", (dialog, which) ->
+                        {
+                            // handle here
+                            dialog.dismiss();
+                        });
+
+                        // Create and show the AlertDialog
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 }
             }
@@ -379,7 +448,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
             foodName = classes[maxPos];
-            Log.d(TAG, "The dish name is classified as: " + foodName);
+            // Log.d(TAG, "The dish name is classified as: " + foodName);
             foodNameTextView.setText(foodName);
 
             // call API, and get result with that model class.
@@ -397,7 +466,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                 s.append(String.format(Locale.ROOT, "%s: %.1f%%\n", classes[i], confidences[i] * 100));
             }
             // confidence.setText(s);
-            Log.d(TAG, "The dish info is: \n" + s);
+            // Log.d(TAG, "The dish info is: \n" + s);
 
             // Releases model resources if no longer used.
             model.close();
@@ -425,10 +494,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                     {
                         Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
-                        double totalCalories = 0;
-                        double totalCholesterol = 0;
-                        double totalSalt = 0;
-                        double totalSugar = 0;
                         
                         // get all total calculations
                         for (FoodItem.Item item : foodItem.getItems())
@@ -451,6 +516,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         // Log.d(TAG, "onResponse: " + percentageSugar);
 
                         // fixme: null pointer exception
+                        /*
                         progressBarCalories.setProgress((int) percentageCalories);
                         progressCaloriesTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageCalories));
@@ -467,6 +533,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         progressBarSugar.setProgress((int) percentageSugar);
                         progressSugarTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageSugar));
+
+                         */
                     }
                 }
             }
@@ -509,8 +577,31 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     {
         return v ->
         {
+            StringBuilder message = new StringBuilder();
+
+            // set the nutrition for the meal if the user log their meal?
+            if(totalCalories == 0 || totalCholesterol == 0 || totalSalt == 0 || totalSugar == 0)
+            {
+                message.append("Food Photo is required before log the meal.");
+                return;
+            }
+
+            if (message.length() > 0)
+            {
+                // Display the message to the user
+                Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
+                return; // Prevent logging the meal
+            }
+
+            meal.setCalories(totalCalories);
+            meal.setCholesterol_mg(totalCholesterol);
+            meal.setSodium_mg(totalSalt);
+            meal.setSugar_g(totalSugar);
+            meal.setName(foodName);
+
             intentNavToLogMeal = new Intent(requireContext(), UserLogMealActivity.class);
             intentNavToLogMeal.putExtra("gender", gender);
+            intentNavToLogMeal.putExtra("meal", meal);
             startActivity(intentNavToLogMeal);
             requireActivity().finish();
         };

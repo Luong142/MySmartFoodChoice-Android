@@ -1,8 +1,17 @@
 package com.example.myfoodchoice.ModelMeal;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
-public class Meal
+import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
+
+import org.jetbrains.annotations.Contract;
+
+import java.util.List;
+
+public class Meal implements Parcelable
 {
     // todo: do the part for log my meal with morning, afternoon, tonight?
 
@@ -19,6 +28,8 @@ public class Meal
     private double cholesterol_mg; // todo: this attribute
 
     private double sugar_g; // todo: this attribute, > 6 grams => warning high-sugar, otherwise ok to consume
+
+    private List<FoodItem.Item> dishes;
 
     public Meal()
     {
@@ -38,6 +49,56 @@ public class Meal
         this.sodium_mg = sodium_mg;
         this.cholesterol_mg = cholesterol_mg;
         this.sugar_g = sugar_g;
+    }
+
+    public static final Creator<Meal> CREATOR = new Creator<Meal>()
+    {
+        @NonNull
+        @Contract("_ -> new")
+        @Override
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
+        }
+
+        @NonNull
+        @Contract(value = "_ -> new", pure = true)
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
+
+    public Meal(@NonNull Parcel in)
+    {
+        setKey(in.readString());
+        this.isMorning = in.readByte() != 0;
+        this.isAfternoon = in.readByte() != 0;
+        this.isNight = in.readByte() != 0;
+        this.name = in.readString();
+        this.calories = in.readDouble();
+        this.sodium_mg = in.readDouble();
+        this.cholesterol_mg = in.readDouble();
+        this.sugar_g = in.readDouble();
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags)
+    {
+        dest.writeString(this.key);
+        dest.writeByte(this.isMorning ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isAfternoon ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isNight ? (byte) 1 : (byte) 0);
+        dest.writeString(this.name);
+        dest.writeDouble(this.calories);
+        dest.writeDouble(this.sodium_mg);
+        dest.writeDouble(this.cholesterol_mg);
+        dest.writeDouble(this.sugar_g);
     }
 
     @NonNull

@@ -55,8 +55,6 @@ public class ReviewDialogFragment extends DialogFragment
 
     final static String PATH_ACCOUNT = "Registered Accounts";
 
-    final static String PATH_PROFILE = "Profile";
-
     final static String TAG = "ReviewDialogFragment";
 
     @NonNull
