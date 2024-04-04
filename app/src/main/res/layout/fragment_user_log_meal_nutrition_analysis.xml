@@ -122,8 +122,10 @@
     </androidx.cardview.widget.CardView>
 
     <GridLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/gridLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
         android:columnCount="2"
         android:rowCount="2"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -132,12 +134,13 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView5">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/caloriesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/peach_puff"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/peach_puff">
+            app:cardElevation="4dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -153,11 +156,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+
+            app:cardBackgroundColor="@color/peach_puff"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/peach_puff">
+            app:cardElevation="4dp">
 
             <TextView
+                android:id="@+id/cholesterolTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -171,14 +176,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+
+            app:cardBackgroundColor="@color/peach_puff"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/peach_puff">
+            app:cardElevation="4dp">
 
             <TextView
+                android:id="@+id/sodiumTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="Item 3"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -188,15 +194,17 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="8dp"
+
+            app:cardBackgroundColor="@color/peach_puff"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/peach_puff">
+            app:cardElevation="4dp">
 
             <TextView
+                android:id="@+id/sugarTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="Item 4"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -265,7 +273,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -338,6 +346,18 @@
                 app:fabSize="normal" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- todo: this one should have image,
+    todo: name of dish, one button to delete -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dishRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="206dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
     <!-- TODO: for this part we need to set image in two modes,
         TODO: focus and non-focus.
