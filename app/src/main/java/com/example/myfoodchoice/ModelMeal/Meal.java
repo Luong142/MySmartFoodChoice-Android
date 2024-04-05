@@ -19,15 +19,6 @@ public class Meal implements Parcelable
 
     private boolean isMorning, isAfternoon, isNight;
 
-    private String name;
-
-    private double calories;
-
-    private double sodium_mg; // todo: this attribute, > 6 grams => warning high-salt, otherwise ok to consume
-
-    private double cholesterol_mg; // todo: this attribute
-
-    private double sugar_g; // todo: this attribute, > 6 grams => warning high-sugar, otherwise ok to consume
 
     private List<FoodItem.Item> dishes;
 
@@ -36,19 +27,13 @@ public class Meal implements Parcelable
 
     }
 
-    public Meal(String key, boolean isMorning, boolean isAfternoon,
-                boolean isNight, String name, double calories,
-                double sodium_mg, double cholesterol_mg, double sugar_g)
+    public Meal(String key, boolean isMorning, boolean isAfternoon, boolean isNight, List<FoodItem.Item> dishes)
     {
         this.key = key;
         this.isMorning = isMorning;
         this.isAfternoon = isAfternoon;
         this.isNight = isNight;
-        this.name = name;
-        this.calories = calories;
-        this.sodium_mg = sodium_mg;
-        this.cholesterol_mg = cholesterol_mg;
-        this.sugar_g = sugar_g;
+        this.dishes = dishes;
     }
 
     public static final Creator<Meal> CREATOR = new Creator<Meal>()
@@ -74,11 +59,7 @@ public class Meal implements Parcelable
         this.isMorning = in.readByte() != 0;
         this.isAfternoon = in.readByte() != 0;
         this.isNight = in.readByte() != 0;
-        this.name = in.readString();
-        this.calories = in.readDouble();
-        this.sodium_mg = in.readDouble();
-        this.cholesterol_mg = in.readDouble();
-        this.sugar_g = in.readDouble();
+        this.dishes = in.createTypedArrayList(FoodItem.Item.CREATOR);
     }
 
     @Override
@@ -94,11 +75,7 @@ public class Meal implements Parcelable
         dest.writeByte(this.isMorning ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isAfternoon ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isNight ? (byte) 1 : (byte) 0);
-        dest.writeString(this.name);
-        dest.writeDouble(this.calories);
-        dest.writeDouble(this.sodium_mg);
-        dest.writeDouble(this.cholesterol_mg);
-        dest.writeDouble(this.sugar_g);
+        dest.writeList(this.dishes);
     }
 
     @NonNull
@@ -110,11 +87,7 @@ public class Meal implements Parcelable
                 ", isMorning=" + isMorning +
                 ", isAfternoon=" + isAfternoon +
                 ", isNight=" + isNight +
-                ", name='" + name + '\'' +
-                ", calories=" + calories +
-                ", sodium_mg=" + sodium_mg +
-                ", cholesterol_mg=" + cholesterol_mg +
-                ", sugar_g=" + sugar_g +
+                ", dishes=" + dishes +
                 '}';
     }
 
@@ -150,43 +123,11 @@ public class Meal implements Parcelable
         isNight = night;
     }
 
-    public String getName() {
-        return name;
+    public List<FoodItem.Item> getDishes() {
+        return dishes;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getCalories() {
-        return calories;
-    }
-
-    public void setCalories(double calories) {
-        this.calories = calories;
-    }
-
-    public double getSodium_mg() {
-        return sodium_mg;
-    }
-
-    public void setSodium_mg(double sodium_mg) {
-        this.sodium_mg = sodium_mg;
-    }
-
-    public double getCholesterol_mg() {
-        return cholesterol_mg;
-    }
-
-    public void setCholesterol_mg(double cholesterol_mg) {
-        this.cholesterol_mg = cholesterol_mg;
-    }
-
-    public double getSugar_g() {
-        return sugar_g;
-    }
-
-    public void setSugar_g(double sugar_g) {
-        this.sugar_g = sugar_g;
+    public void setDishes(List<FoodItem.Item> dishes) {
+        this.dishes = dishes;
     }
 }

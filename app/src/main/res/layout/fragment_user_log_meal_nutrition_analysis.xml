@@ -56,8 +56,8 @@
 
                 <ImageView
                     android:id="@+id/foodPhoto"
-                    android:layout_width="200sp"
-                    android:layout_height="200sp"
+                    android:layout_width="170sp"
+                    android:layout_height="170sp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/todo"
                     android:src="@drawable/food_placeholder" />
@@ -151,7 +151,8 @@
                 android:layout_gravity="center"
                 android:text="@string/calories"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:tooltipText="@string/calories" />
 
         </androidx.cardview.widget.CardView>
 
@@ -170,7 +171,8 @@
                 android:layout_gravity="center"
                 android:text="@string/cholesterol"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:tooltipText="@string/cholesterol" />
 
         </androidx.cardview.widget.CardView>
 
@@ -190,7 +192,8 @@
                 android:text="@string/sodium"
                 android:textAlignment="center"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:tooltipText="@string/sodium" />
 
         </androidx.cardview.widget.CardView>
 
@@ -209,7 +212,8 @@
                 android:layout_gravity="center"
                 android:text="@string/sugar"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:tooltipText="@string/sugar" />
 
         </androidx.cardview.widget.CardView>
 
@@ -219,7 +223,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -235,16 +239,19 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/addDishBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_view_background"
                 android:backgroundTint="@color/peach_puff"
+                android:clickable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:tooltipText="Add your dish here"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
 
                 <LinearLayout
+                    android:id="@+id/addDishBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -285,9 +292,12 @@
                 android:id="@+id/logMealBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_view_background"
                 android:backgroundTint="@color/peach_puff"
+                android:clickable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:tooltipText="Log your meal here"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
 
@@ -350,15 +360,17 @@
     todo: name of dish, one button to delete -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dishRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginBottom="1dp"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout"
-        app:layout_constraintVertical_bias="0.548" />
+        tools:listitem="@layout/dish_item_layout" />
 
     <!-- TODO: for this part we need to set image in two modes,
         TODO: focus and non-focus.

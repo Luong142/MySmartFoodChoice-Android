@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -26,7 +28,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myfoodchoice.Adapter.DishGuestUserAdapter;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
@@ -51,13 +58,16 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserLogMealNutritionAnalysisFragment extends Fragment
+public class UserLogMealNutritionAnalysisFragment extends Fragment implements OnDishClickListener
 {
     final static String TAG = "UserLogMealNutritionFragment";
     int imageSize;
@@ -76,6 +86,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
     CardView logMealBtn;
 
+    LinearLayout addDishBtn;
+
     ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher;
 
     ActivityResultLauncher<Intent> takePhotoActivityResultLauncher;
@@ -92,8 +104,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
     private FoodItem foodItem;
-
-    String foodName;
+    FoodItem.Item  item;
 
     // firebase
     DatabaseReference databaseReferenceUserProfile;
@@ -106,7 +117,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
     UserProfile userProfile;
 
-    String userID, gender;
+    String userID, gender, foodName;
 
     double maxCalories, maxCholesterol, maxSugar, maxSalt;
 
@@ -118,6 +129,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
     Meal meal;
     double totalCalories, totalCholesterol, totalSalt, totalSugar;
+
+    List<FoodItem.Item> foodItems;
+
+    RecyclerView dishRecyclerView;
+
+    DishGuestUserAdapter dishGuestUserAdapter;
+    private Uri selectedImageUri;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -147,6 +165,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
             meal = new Meal();
         }
+
+        item = new FoodItem.Item();
 
         // init nutrition value to 0
         totalCalories = 0;
@@ -184,9 +204,21 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
+
         // todo: this is actually a card view.
         logMealBtn = view.findViewById(R.id.logMealBtn);
         logMealBtn.setOnClickListener(onNavToLogMealListener());
+
+        // init add dish btn card view
+        addDishBtn = view.findViewById(R.id.addDishBtn);
+        addDishBtn.setOnClickListener(onAddDishListener());
+
+        // init and set recycler view
+        foodItems = new ArrayList<>();
+        dishRecyclerView = view.findViewById(R.id.dishRecyclerView);
+        dishGuestUserAdapter = new DishGuestUserAdapter(foodItems, this);
+        setAdapter();
+        dishRecyclerView.setVerticalScrollBarEnabled(true);
 
         foodImage = view.findViewById(R.id.foodPhoto);
 
@@ -203,97 +235,43 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
         // for camera activity
         takePhotoActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        Intent data = result.getData();
-                        if (data != null)
-                        {
-                            Bundle extras = data.getExtras();
-                            if (extras != null)
-                            {
-                                image = (Bitmap) extras.get("data");
-                                if (image != null)
-                                {
-                                    dimension = Math.min(image.getWidth(), image.getHeight());
-                                    image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
-
-                                    // Set the Bitmap to the ImageView
-                                    foodImage.setImageBitmap(image);
-
-                                    // I don't know what is this?
-                                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-
-                                    classifyImage(image);
-                                }
-                            }
-                        }
-                    }
-                });
+                new ActivityResultContracts.StartActivityForResult(), onTakePhotoActivityLauncher());
 
         // for upload photo
         uploadPhotoactivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result ->
-                {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        Intent data = result.getData();
-                        if (data != null && data.getData() != null)
-                        {
-                            Uri selectedImageUri = data.getData();
-                            try {
-                                // Decode the URI to a Bitmap
-                                image = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(),
-                                        selectedImageUri);
-                                if (image != null)
-                                {
-                                    // Set dimension
-                                    dimension = Math.min(image.getWidth(), image.getHeight());
-                                    image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
-
-                                    // Set the Bitmap to the ImageView
-                                    foodImage.setImageBitmap(image);
-
-                                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-
-                                    classifyImage(image);
-                                }
-                            }
-                            catch (IOException e)
-                            {
-                                Log.d(TAG, "error here: " + e);
-                            }
-                        }
-                    }
-                }
-        );
-
+                new ActivityResultContracts.StartActivityForResult(), onUploadPhotoActivityLauncher());
 
         // for permission
         requestPermissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestMultiplePermissions(),
-                permissions ->
-                {
-                    if (Boolean.TRUE.equals(permissions.get(Manifest.permission.CAMERA)))
-                    {
-                        // Permission granted, can now start the camera intent
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                new ActivityResultContracts.RequestMultiplePermissions(), onPermissionLauncher());
 
-                        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
-                        {
-                            takePhotoActivityResultLauncher.launch(cameraIntent);
-                        }
-                    }
-                    else
-                    {
-                        // denied, show toast
-                        Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // populateItem();
     }
 
+    private void populateItem()
+    {
+        // fixme: this test is ok, so next step is to add the real one.
+        FoodItem.Item testItem = new FoodItem.Item(
+                "Test Dish", // name
+                200, // calories
+                100, // serving_size_g
+                10, // fat_total_g
+                5, // fat_saturated_g
+                20, // protein_g
+                100, // sodium_mg
+                50, // potassium_mg
+                5, // cholesterol_mg
+                50, // carbohydrates_total_g
+                10, // fiber_g
+                10 // sugar_g
+        );
+
+        int testImage = R.drawable.about_us_icon;
+
+        testItem.setFoodImage(String.valueOf(testImage));
+
+        foodItems.add(testItem);
+    }
 
     @NonNull
     @Contract(" -> new")
@@ -485,6 +463,35 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
     }
 
     @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onAddDishListener()
+    {
+        return v ->
+        {
+            if (item.getName() == null || item.getFoodImage() == null)
+            {
+                Toast.makeText(requireContext(), "Please select a dish", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // fixme: there might be a problem with the dish
+            Toast.makeText(requireContext(), "Dish is added.", Toast.LENGTH_SHORT).show();
+            foodItems.add(item);
+            // fixme: there is another problem that the food item can be duplicated.
+            // Log.d(TAG, "onAddDishListener: " + foodItems);
+            dishGuestUserAdapter.notifyItemInserted(foodItems.size() - 1);
+        };
+    }
+
+    @Override
+    public void onClickDish(int position)
+    {
+        // todo: to remove the dish from the list.
+        foodItems.remove(position);
+        dishGuestUserAdapter.notifyItemRemoved(position);
+    }
+
+    @NonNull
     @Contract(" -> new")
     private Callback<FoodItem> callBackResponseFromAPI()
     {
@@ -503,49 +510,57 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                     foodItem = response.body();
                     if (foodItem != null)
                     {
-                        Log.d(TAG, "onResponse: " + foodItem);
+                        // assign the variable to the is foodItems array list.
+
+                        // Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
                         
                         // get all total calculations
-                        for (FoodItem.Item item : foodItem.getItems())
+                        for (FoodItem.Item itemLoop : foodItem.getItems())
                         {
-                            totalCalories += item.getCalories();
-                            totalCholesterol += item.getCholesterol_mg();
-                            totalSalt += item.getSodium_mg();
-                            totalSugar += item.getSugar_g();
+                            totalCalories += itemLoop.getCalories();
+                            totalCholesterol += itemLoop.getCholesterol_mg();
+                            totalSalt += itemLoop.getSodium_mg();
+                            totalSugar += itemLoop.getSugar_g();
+
+                            // todo: set the item.
+                            item = itemLoop;
+                            item.setFoodImage(selectedImageUri.toString());
+                            // foodItems.add(itemLoop);
                         }
 
                         // todo: set text
-                        caloriesMessage.append("Calories: ")
+                        caloriesMessage
                                 .append(totalCalories)
                                 .append(" kcal");
                         caloriesTextView.setText(caloriesMessage.toString());
 
-                        cholesterolMessage.append("Cholesterol: ")
+                        cholesterolMessage
                                 .append(totalCholesterol)
                                 .append(" mg");
                         cholesterolTextView.setText(cholesterolMessage.toString());
 
-                        saltMessage.append("Sodium: ")
+                        saltMessage
                                 .append(totalSalt)
                                 .append(" mg");
                         saltTextView.setText(saltMessage.toString());
 
-                        sugarMessage.append("Sugar: ")
+                        sugarMessage
                                 .append(totalSugar)
                                 .append(" g");
                         sugarTextView.setText(sugarMessage.toString());
 
-                        // calculate percentage
-                        double percentageCalories = (totalCalories / maxCalories) * 100;
-                        double percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
-                        double percentageSalt = (totalSalt / maxSalt) * 100;
-                        double percentageSugar = (totalSugar / maxSugar) * 100;
+                        // reset the value
+                        totalCalories = 0;
+                        totalCholesterol = 0;
+                        totalSalt = 0;
+                        totalSugar = 0;
 
-                        // Log.d(TAG, "onResponse: " + percentageCalories);
-                        // Log.d(TAG, "onResponse: " + percentageCholesterol);
-                        // Log.d(TAG, "onResponse: " + percentageSalt);
-                        // Log.d(TAG, "onResponse: " + percentageSugar);
+                        // calculate percentage
+                        //double percentageCalories = (totalCalories / maxCalories) * 100;
+                        //double percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                        //double percentageSalt = (totalSalt / maxSalt) * 100;
+                        //double percentageSugar = (totalSugar / maxSugar) * 100;
 
                         // fixme: null pointer exception
                         /*
@@ -565,7 +580,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                         progressBarSugar.setProgress((int) percentageSugar);
                         progressSugarTextView.setText(String.format(Locale.ROOT, "%.1f%%",
                                 percentageSugar));
-
                          */
                     }
                 }
@@ -602,7 +616,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
         };
     }
 
-
     @NonNull
     @Contract(pure = true)
     private View.OnClickListener onNavToLogMealListener()
@@ -611,31 +624,129 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
         {
             StringBuilder message = new StringBuilder();
 
-            // set the nutrition for the meal if the user log their meal?
-            if(totalCalories == 0 || totalCholesterol == 0 || totalSalt == 0 || totalSugar == 0)
+            if (foodItems.isEmpty())
             {
-                message.append("Food Photo is required before log the meal.");
+                message.append("Dish is required to be added before logging your meal.");
+                Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (message.length() > 0)
-            {
-                // Display the message to the user
-                Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
-                return; // Prevent logging the meal
-            }
-
-            meal.setCalories(totalCalories);
-            meal.setCholesterol_mg(totalCholesterol);
-            meal.setSodium_mg(totalSalt);
-            meal.setSugar_g(totalSugar);
-            meal.setName(foodName);
+            meal.setDishes(foodItems);
+            Log.d(TAG, "onNavToLogMealListener: " + meal);
 
             intentNavToLogMeal = new Intent(requireContext(), UserLogMealActivity.class);
             intentNavToLogMeal.putExtra("gender", gender);
             intentNavToLogMeal.putExtra("meal", meal);
             startActivity(intentNavToLogMeal);
             requireActivity().finish();
+        };
+    }
+
+    private void setAdapter()
+    {
+        // set the adapter
+        RecyclerView.LayoutManager layoutManager = new
+                LinearLayoutManager(requireActivity().getApplicationContext());
+        dishRecyclerView.setLayoutManager(layoutManager);
+        dishRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        dishRecyclerView.setAdapter(dishGuestUserAdapter);
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private ActivityResultCallback<Map<String, Boolean>> onPermissionLauncher()
+    {
+        return permissions ->
+        {
+            if (Boolean.TRUE.equals(permissions.get(Manifest.permission.CAMERA)))
+            {
+                // Permission granted, can now start the camera intent
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
+                {
+                    takePhotoActivityResultLauncher.launch(cameraIntent);
+                }
+            }
+            else
+            {
+                // denied, show toast
+                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private ActivityResultCallback<ActivityResult> onTakePhotoActivityLauncher()
+    {
+        return result ->
+        {
+            if (result.getResultCode() == Activity.RESULT_OK)
+            {
+                Intent data = result.getData();
+                if (data != null && data.getData() != null)
+                {
+                    selectedImageUri = data.getData();
+                    Bundle extras = data.getExtras();
+                    if (extras != null)
+                    {
+                        image = (Bitmap) extras.get("data");
+                        if (image != null)
+                        {
+                            dimension = Math.min(image.getWidth(), image.getHeight());
+                            image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+
+                            // Set the Bitmap to the ImageView
+                            foodImage.setImageBitmap(image);
+
+                            // I don't know what is this?
+                            image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+
+                            classifyImage(image);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private ActivityResultCallback<ActivityResult> onUploadPhotoActivityLauncher()
+    {
+        return result ->
+        {
+            if (result.getResultCode() == Activity.RESULT_OK)
+            {
+                Intent data = result.getData();
+                if (data != null && data.getData() != null)
+                {
+                    selectedImageUri = data.getData();
+                    try {
+                        // Decode the URI to a Bitmap
+                        image = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(),
+                                selectedImageUri);
+                        if (image != null)
+                        {
+                            // Set dimension
+                            dimension = Math.min(image.getWidth(), image.getHeight());
+                            image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+
+                            // Set the Bitmap to the ImageView
+                            foodImage.setImageBitmap(image);
+
+                            image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+
+                            classifyImage(image);
+                        }
+                    }
+                    catch (IOException e)
+                    {
+                        Log.d(TAG, "error here: " + e);
+                    }
+                }
+            }
         };
     }
 
