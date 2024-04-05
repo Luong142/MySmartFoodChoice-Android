@@ -67,7 +67,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
     ImageView foodImage;
 
-    // TextView progressCholesterolTextView, progressSugarTextView, progressSaltTextView, progressCaloriesTextView;
+    TextView cholesterolTextView, sugarTextView, saltTextView, caloriesTextView;
 
     TextView checkInTextView, foodNameTextView;
 
@@ -175,6 +175,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
 
         //progressBarSugar = view.findViewById(R.id.progressBarSugar);
         //progressSugarTextView = view.findViewById(R.id.progressSugarTextView);
+
+        // todo: init text view for nutrition value
+        caloriesTextView = view.findViewById(R.id.caloriesTextView);
+        cholesterolTextView = view.findViewById(R.id.cholesterolTextView);
+        saltTextView = view.findViewById(R.id.sodiumTextView);
+        sugarTextView = view.findViewById(R.id.sugarTextView);
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
@@ -489,6 +495,11 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
             {
                 if (response.isSuccessful())
                 {
+                    StringBuilder caloriesMessage = new StringBuilder();
+                    StringBuilder cholesterolMessage = new StringBuilder();
+                    StringBuilder saltMessage = new StringBuilder();
+                    StringBuilder sugarMessage = new StringBuilder();
+
                     foodItem = response.body();
                     if (foodItem != null)
                     {
@@ -503,6 +514,27 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment
                             totalSalt += item.getSodium_mg();
                             totalSugar += item.getSugar_g();
                         }
+
+                        // todo: set text
+                        caloriesMessage.append("Calories: ")
+                                .append(totalCalories)
+                                .append(" kcal");
+                        caloriesTextView.setText(caloriesMessage.toString());
+
+                        cholesterolMessage.append("Cholesterol: ")
+                                .append(totalCholesterol)
+                                .append(" mg");
+                        cholesterolTextView.setText(cholesterolMessage.toString());
+
+                        saltMessage.append("Sodium: ")
+                                .append(totalSalt)
+                                .append(" mg");
+                        saltTextView.setText(saltMessage.toString());
+
+                        sugarMessage.append("Sugar: ")
+                                .append(totalSugar)
+                                .append(" g");
+                        sugarTextView.setText(sugarMessage.toString());
 
                         // calculate percentage
                         double percentageCalories = (totalCalories / maxCalories) * 100;
