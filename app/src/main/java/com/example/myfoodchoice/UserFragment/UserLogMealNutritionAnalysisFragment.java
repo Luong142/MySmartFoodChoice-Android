@@ -73,8 +73,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     int imageSize;
 
     // TODO: declare UI components
-    //ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
-
+    DatabaseReference databaseReferenceUserProfile,
+            databaseReferenceDailyFoodIntake,
+            databaseReferenceDailyFoodIntakeChild,
+            databaseReferenceAccount;
     ImageView foodImage;
 
     TextView cholesterolTextView, sugarTextView, saltTextView, caloriesTextView;
@@ -108,7 +110,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     List<FoodItem.Item> foodItems;
     // firebase
-    DatabaseReference databaseReferenceUserProfile;
 
     FirebaseAuth firebaseAuth;
 

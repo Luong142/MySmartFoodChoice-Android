@@ -16,6 +16,7 @@ import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
 import com.example.myfoodchoice.UserFragment.UserSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
@@ -59,7 +60,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealNutritionAnalysisFragment()).commit();
+                    new UserLogMealFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -89,7 +90,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (itemId == R.id.nav_log_meal)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealNutritionAnalysisFragment()).commit();
+                    new UserLogMealFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
@@ -153,7 +154,8 @@ public class GuestMainMenuActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void onPointerCaptureChanged(boolean hasCapture)
+    {
         super.onPointerCaptureChanged(hasCapture);
     }
 }

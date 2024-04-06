@@ -88,6 +88,29 @@ public class UserLogMealActivity extends AppCompatActivity
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // init boolean value
+        isMorning = false;
+        isAfternoon = false;
+        isNight = false;
+
+        // TODO: init user id
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+        {
+            gender = "Male"; // fixme: by default value
+            userID = firebaseUser.getUid();
+
+            // TODO: init database reference for user profile
+            databaseReferenceUserProfile =
+                    firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
+
+            databaseReferenceDailyFoodIntake =
+                    firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
+
+            databaseReferenceAccount = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
+            databaseReferenceAccount.addValueEventListener(onAccountTypeListener());
+        }
+
         // todo: init objects
         userProfile = new UserProfile();
         dishes = new FoodItem();
@@ -122,29 +145,6 @@ public class UserLogMealActivity extends AppCompatActivity
             Log.d(TAG, "onCreate: " + totalCholesterol);
             Log.d(TAG, "onCreate: " + totalSugar);
             Log.d(TAG, "onCreate: " + totalSalt);
-        }
-
-        // init boolean value
-        isMorning = false;
-        isAfternoon = false;
-        isNight = false;
-
-        // TODO: init user id
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null)
-        {
-            gender = "Male"; // fixme: by default value
-            userID = firebaseUser.getUid();
-
-            // TODO: init database reference for user profile
-            databaseReferenceUserProfile =
-                    firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
-
-            databaseReferenceDailyFoodIntake =
-                    firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
-
-            databaseReferenceAccount = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
-            databaseReferenceAccount.addValueEventListener(onAccountTypeListener());
         }
 
         // todo: init this part UI
