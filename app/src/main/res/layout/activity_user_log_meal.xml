@@ -28,6 +28,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:backgroundTint="@color/peach_puff"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
@@ -59,6 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/peach_puff"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +92,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/peach_puff"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,13 +123,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/peach_puff"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3">
-
 
         <TextView
             android:id="@+id/sugarTextView"
@@ -140,53 +147,52 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/morningButton"
-        android:layout_width="379dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:background="@android:color/holo_blue_dark"
-        android:drawableLeft="@android:drawable/ic_input_add"
-        android:padding="20dp"
-        android:text="@string/morning"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/afternoonButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/holo_blue_dark"
-        android:drawableLeft="@android:drawable/ic_input_add"
-        android:padding="20dp"
-        android:text="@string/afternoon"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/morningButton" />
+        <Button
+            android:id="@+id/morningButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/peach_puff"
+            android:backgroundTint="@color/peach_puff"
+            android:drawableLeft="@android:drawable/ic_input_add"
+            android:padding="20dp"
+            android:text="@string/morning"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/nightButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/holo_blue_dark"
-        android:drawableLeft="@android:drawable/ic_input_add"
-        android:padding="20dp"
-        android:text="@string/night"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/afternoonButton" />
+        <Button
+            android:id="@+id/afternoonButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/holo_blue_dark"
+            android:drawableLeft="@android:drawable/ic_input_add"
+            android:padding="20dp"
+            android:text="@string/afternoon"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nightButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/holo_blue_dark"
+            android:drawableLeft="@android:drawable/ic_input_add"
+            android:padding="20dp"
+            android:text="@string/night"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

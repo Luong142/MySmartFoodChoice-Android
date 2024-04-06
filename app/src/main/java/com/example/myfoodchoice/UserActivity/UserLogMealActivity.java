@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
+import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
@@ -27,16 +28,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class UserLogMealActivity extends AppCompatActivity
 {
     // todo: declare firebase
-    DatabaseReference databaseReferenceUserProfile;
-
-    DatabaseReference databaseReferenceDailyFoodIntake;
-
-    DatabaseReference databaseReferenceDailyFoodIntakeChild;
-
-    DatabaseReference databaseReferenceAccount;
+    DatabaseReference databaseReferenceUserProfile,
+            databaseReferenceDailyFoodIntake,
+            databaseReferenceDailyFoodIntakeChild,
+            databaseReferenceAccount;
 
     FirebaseAuth firebaseAuth;
 
@@ -47,8 +49,6 @@ public class UserLogMealActivity extends AppCompatActivity
     UserProfile userProfile;
 
     String userID, gender, accountType;
-
-    TextView caloriesText, cholesterolText, sugarText, saltText;
 
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
 
@@ -63,9 +63,15 @@ public class UserLogMealActivity extends AppCompatActivity
 
     AlertDialog morningDialog, afternoonDialog, nightDialog;
 
+    TextView caloriesText, cholesterolText, sugarText, saltText;
+
+    Double totalCalories, totalCholesterol, totalSugar, totalSalt;
+
     boolean isMorning, isAfternoon, isNight;
 
     Meal meal;
+
+    FoodItem dishes;
 
     Intent intent, intentNavToBothMainMenu; // based on account type
 
@@ -74,9 +80,6 @@ public class UserLogMealActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_log_meal);
-
-        // fixme: debug meal object
-        Log.d(TAG, "onCreate: " + meal);
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -87,14 +90,38 @@ public class UserLogMealActivity extends AppCompatActivity
 
         // todo: init objects
         userProfile = new UserProfile();
+        dishes = new FoodItem();
         intent = getIntent();
+
+        totalCalories = 0.0;
+        totalCholesterol = 0.0;
+        totalSugar = 0.0;
+        totalSalt = 0.0;
+
         if (intent != null)
         {
+            // todo: meal here.
             meal = intent.getParcelableExtra("meal");
             if (meal != null)
             {
-                Log.d(TAG, "onCreate: " + meal);
+                Log.d(TAG, "onCreate: " + meal.getDishes());
+                //Log.d(TAG, "onCreate: " + meal.getDishes().size());
+                dishes = meal.getDishes();
+
+                // get individual nutrition attributes.
+                for (FoodItem.Item dish : dishes.getItems())
+                {
+                    totalCalories += dish.getCalories();
+                    totalCholesterol += dish.getCholesterol_mg();
+                    totalSugar += dish.getSugar_g();
+                    totalSalt += dish.getSodium_mg();
+                }
             }
+
+            Log.d(TAG, "onCreate: " + totalCalories);
+            Log.d(TAG, "onCreate: " + totalCholesterol);
+            Log.d(TAG, "onCreate: " + totalSugar);
+            Log.d(TAG, "onCreate: " + totalSalt);
         }
 
         // init boolean value
@@ -126,6 +153,16 @@ public class UserLogMealActivity extends AppCompatActivity
         sugarText = findViewById(R.id.sugarTextView);
         saltText = findViewById(R.id.sodiumTextView);
 
+        // todo: set the text based on the nutrition value
+
+        caloriesText.setText(String.format(Locale.ROOT,
+                "Total Calories: %.02f", totalCalories) + " kcal");
+        cholesterolText.setText(String.format(Locale.ROOT,
+                "Total Cholesterol: %.02f", totalCholesterol) + " mg");
+        sugarText.setText(String.format(Locale.ROOT,
+                "Total Sugar: %.02f", totalSugar) + " g");
+        saltText.setText(String.format(Locale.ROOT,
+                "Total Sodium: %.02f", totalSalt) + " mg");
 
         // TODO: init UI components
         morningBtn = findViewById(R.id.morningButton);
@@ -205,7 +242,6 @@ public class UserLogMealActivity extends AppCompatActivity
                         UserMainMenuActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
-            finish();
         };
     }
 

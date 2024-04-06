@@ -14,6 +14,11 @@ public class FoodItem implements Parcelable
 {
     private List<Item> items;
 
+    public FoodItem()
+    {
+
+    }
+
     public FoodItem.Item createNewDish()
     {
         return new Item();

@@ -106,6 +106,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     private FoodItem foodItem;
     FoodItem.Item  item;
 
+    List<FoodItem.Item> foodItems;
     // firebase
     DatabaseReference databaseReferenceUserProfile;
 
@@ -129,8 +130,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     Meal meal;
     double totalCalories, totalCholesterol, totalSalt, totalSugar;
-
-    List<FoodItem.Item> foodItems;
 
     RecyclerView dishRecyclerView;
 
@@ -162,9 +161,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
 
             databaseReferenceUserProfile.addValueEventListener(onGenderHealthValueListener());
-
-            meal = new Meal();
         }
+
+        meal = new Meal();
+
+        // set the food item in the Meal object
+        foodItem = new FoodItem();
+        meal.setDishes(foodItem);
 
         item = new FoodItem.Item();
 
@@ -245,32 +248,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(), onPermissionLauncher());
 
-        // populateItem();
-    }
-
-    private void populateItem()
-    {
-        // fixme: this test is ok, so next step is to add the real one.
-        FoodItem.Item testItem = new FoodItem.Item(
-                "Test Dish", // name
-                200, // calories
-                100, // serving_size_g
-                10, // fat_total_g
-                5, // fat_saturated_g
-                20, // protein_g
-                100, // sodium_mg
-                50, // potassium_mg
-                5, // cholesterol_mg
-                50, // carbohydrates_total_g
-                10, // fiber_g
-                10 // sugar_g
-        );
-
-        int testImage = R.drawable.about_us_icon;
-
-        testItem.setFoodImage(String.valueOf(testImage));
-
-        foodItems.add(testItem);
     }
 
     @NonNull
@@ -476,7 +453,28 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
             // fixme: there might be a problem with the dish
             Toast.makeText(requireContext(), "Dish is added.", Toast.LENGTH_SHORT).show();
+
+            // Ensure the list is initialized before adding an item
+            if (meal.getDishes().getItems() == null)
+            {
+                meal.getDishes().setItems(new ArrayList<>());
+            }
+
+            // this object for the next activity to record.
+            meal.getDishes().getItems().add(item);
+
+            // this one is for adapter which means for UI to show.
             foodItems.add(item);
+
+            /*
+            for (FoodItem.Item dish : meal.getDishes().getItems())
+            {
+                Log.d(TAG, "real object: " + dish);
+            }
+
+            Log.d(TAG, "adapter object: " + foodItems);
+             */
+
             // fixme: there is another problem that the food item can be duplicated.
             // Log.d(TAG, "onAddDishListener: " + foodItems);
             dishGuestUserAdapter.notifyItemInserted(foodItems.size() - 1);
@@ -487,7 +485,31 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     public void onClickDish(int position)
     {
         // todo: to remove the dish from the list.
+        if (meal.getDishes().getItems() == null)
+        {
+            meal.getDishes().setItems(new ArrayList<>());
+        }
+
+        // this object for the next activity to record.
+        meal.getDishes().getItems().remove(position);
+
+        // this one is for adapter which means for UI to show.
         foodItems.remove(position);
+
+        /*
+        for (FoodItem.Item dish : meal.getDishes().getItems())
+        {
+            Log.d(TAG, "real object: " + dish);
+        }
+
+        if (meal.getDishes().getItems().isEmpty())
+        {
+            Log.d(TAG,"Empty alr: " + meal.getDishes().getItems().isEmpty());
+        }
+
+        Log.d(TAG, "adapter object: " + foodItems);
+
+         */
         dishGuestUserAdapter.notifyItemRemoved(position);
     }
 
@@ -514,7 +536,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
                         // Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
-                        
+
                         // get all total calculations
                         for (FoodItem.Item itemLoop : foodItem.getItems())
                         {
@@ -631,8 +653,20 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 return;
             }
 
-            meal.setDishes(foodItems);
-            Log.d(TAG, "onNavToLogMealListener: " + meal);
+            // fixme: testing
+            List<FoodItem.Item> testFoodItems;
+
+            testFoodItems = meal.getDishes().getItems();
+
+            for (FoodItem.Item dish : testFoodItems)
+            {
+                Log.d(TAG, "onNavToLogMealListener: " + dish.getName());
+                Log.d(TAG, "onNavToLogMealListener: " + dish.getFoodImage());
+                Log.d(TAG, "onNavToLogMealListener: " + dish.getCalories());
+                Log.d(TAG, "onNavToLogMealListener: " + dish.getCholesterol_mg());
+                Log.d(TAG, "onNavToLogMealListener: " + dish.getSodium_mg());
+                Log.d(TAG, "onNavToLogMealListener: " + dish.getSugar_g());
+            }
 
             intentNavToLogMeal = new Intent(requireContext(), UserLogMealActivity.class);
             intentNavToLogMeal.putExtra("gender", gender);
@@ -771,3 +805,32 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         return inflater.inflate(R.layout.fragment_user_log_meal_nutrition_analysis, container, false);
     }
 }
+
+/*
+private void populateItem()
+    {
+        // fixme: this test is ok, so next step is to add the real one.
+        FoodItem.Item testItem = new FoodItem.Item(
+                "Test Dish", // name
+                200, // calories
+                100, // serving_size_g
+                10, // fat_total_g
+                5, // fat_saturated_g
+                20, // protein_g
+                100, // sodium_mg
+                50, // potassium_mg
+                5, // cholesterol_mg
+                50, // carbohydrates_total_g
+                10, // fiber_g
+                10 // sugar_g
+        );
+
+        int testImage = R.drawable.about_us_icon;
+
+        testItem.setFoodImage(String.valueOf(testImage));
+
+        foodItems.add(testItem);
+    }
+
+
+ */

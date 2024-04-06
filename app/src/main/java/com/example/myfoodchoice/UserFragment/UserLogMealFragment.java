@@ -46,7 +46,7 @@ public class UserLogMealFragment extends Fragment
         {
             time = "Morning";
             UserMainMenuActivity activity = (UserMainMenuActivity) requireActivity();
-            activity.navigateToFragment(new UserLogMealSearchFoodFragment());
+            activity.navigateToFragment(new UserSearchFoodFragment());
         };
     }
 
@@ -58,7 +58,7 @@ public class UserLogMealFragment extends Fragment
         {
             time = "Afternoon";
             UserMainMenuActivity activity = (UserMainMenuActivity) requireActivity();
-            activity.navigateToFragment(new UserLogMealSearchFoodFragment());
+            activity.navigateToFragment(new UserSearchFoodFragment());
         };
     }
 
@@ -71,7 +71,7 @@ public class UserLogMealFragment extends Fragment
         {
             time = "Morning";
             UserMainMenuActivity activity = (UserMainMenuActivity) requireActivity();
-            activity.navigateToFragment(new UserLogMealSearchFoodFragment());
+            activity.navigateToFragment(new UserSearchFoodFragment());
         };
     }
 

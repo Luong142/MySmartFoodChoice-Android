@@ -9,6 +9,8 @@ import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 
 import org.jetbrains.annotations.Contract;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 public class Meal implements Parcelable
@@ -19,21 +21,30 @@ public class Meal implements Parcelable
 
     private boolean isMorning, isAfternoon, isNight;
 
+    // todo: should I change this to isBreakfast, isLunch, isDinner?
 
-    private List<FoodItem.Item> dishes;
+    private Time timeStamp;
+
+    private FoodItem dishes;
 
     public Meal()
     {
 
     }
 
-    public Meal(String key, boolean isMorning, boolean isAfternoon, boolean isNight, List<FoodItem.Item> dishes)
+    public Meal(String key, boolean isMorning, boolean isAfternoon, boolean isNight, Time timeStamp, FoodItem dishes)
     {
         this.key = key;
         this.isMorning = isMorning;
         this.isAfternoon = isAfternoon;
         this.isNight = isNight;
+        this.timeStamp = timeStamp;
         this.dishes = dishes;
+    }
+
+    public void startTimeStamp()
+    {
+        this.timeStamp = new Time(new Date().getTime());
     }
 
     public static final Creator<Meal> CREATOR = new Creator<Meal>()
@@ -59,7 +70,16 @@ public class Meal implements Parcelable
         this.isMorning = in.readByte() != 0;
         this.isAfternoon = in.readByte() != 0;
         this.isNight = in.readByte() != 0;
-        this.dishes = in.createTypedArrayList(FoodItem.Item.CREATOR);
+
+        // this will read the object
+        this.dishes = in.readParcelable(FoodItem.class.getClassLoader());
+
+        String timeStampString = in.readString();
+
+        if (timeStampString != null && !timeStampString.isEmpty())
+        {
+            this.timeStamp = Time.valueOf(timeStampString);
+        }
     }
 
     @Override
@@ -75,7 +95,16 @@ public class Meal implements Parcelable
         dest.writeByte(this.isMorning ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isAfternoon ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isNight ? (byte) 1 : (byte) 0);
-        dest.writeList(this.dishes);
+        dest.writeParcelable(this.dishes, flags);        // Check if timeStamp is null before calling toString()
+        if (this.timeStamp != null)
+        {
+            dest.writeString(this.timeStamp.toString());
+        }
+        else
+        {
+            // Handle null timeStamp, e.g., write a default value or an empty string
+            dest.writeString("");
+        }
     }
 
     @NonNull
@@ -87,8 +116,17 @@ public class Meal implements Parcelable
                 ", isMorning=" + isMorning +
                 ", isAfternoon=" + isAfternoon +
                 ", isNight=" + isNight +
+                ", timeStamp=" + timeStamp +
                 ", dishes=" + dishes +
                 '}';
+    }
+
+    public Time getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Time timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public String getKey() {
@@ -123,11 +161,11 @@ public class Meal implements Parcelable
         isNight = night;
     }
 
-    public List<FoodItem.Item> getDishes() {
+    public FoodItem getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<FoodItem.Item> dishes) {
+    public void setDishes(FoodItem dishes) {
         this.dishes = dishes;
     }
 }
