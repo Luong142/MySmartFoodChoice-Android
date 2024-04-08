@@ -4,13 +4,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
@@ -22,15 +19,11 @@ import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
-import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
+import com.example.myfoodchoice.UserActivity.UserMainMenuDeprecatedActivity;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.jetbrains.annotations.Contract;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class WelcomeActivity extends AppCompatActivity
 {
@@ -125,77 +118,22 @@ public class WelcomeActivity extends AppCompatActivity
             {
                 allowLogin(emailRememberMe, passwordRememberMe);
 
-                builder = new AlertDialog.Builder(WelcomeActivity.this);
-                builder.setTitle("Already Logged in");
-                builder.setMessage("Please wait...");
-                builder.show();
+                if (!isFinishing())
+                {
+                    builder = new AlertDialog.Builder(WelcomeActivity.this);
+                    builder.setTitle("Already Logged in");
+                    builder.setMessage("Please wait...");
+                    builder.show();
+                }
             }
         }
+
 
         // TODO: we have normal user, guest, business vendor with two types
         //  (Dietitian and Trainer)
         // TODO: use the attribute to identify which user type.
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private Callback<FoodItem> callBackResponseFromAPI()
-    {
-        return new Callback<FoodItem>()
-        {
-            @Override
-            public void onResponse(@NonNull Call<FoodItem> call, @NonNull Response<FoodItem> response)
-            {
-                if (response.isSuccessful())
-                {
-                    FoodItem foodItem = response.body();
-                    if (foodItem != null)
-                    {
-                        Log.d(TAG, "onResponse: " + foodItem);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<FoodItem> call, @NonNull Throwable t)
-            {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        };
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsBusiness()
-    {
-        return new ClickableSpan()
-        {
-            @Override
-            public void onClick(View widget)
-            {
-                Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterBusinessActivity.class);
-                startActivity(intent);
-            }
-        };
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsGuest()
-    {
-        return new ClickableSpan()
-        {
-            @Override
-            public void onClick(View widget)
-            {
-                Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterGuestActivity.class);
-                startActivity(intent);
-            }
-        };
     }
 
     private void allowLogin(String email, String password)
@@ -208,7 +146,7 @@ public class WelcomeActivity extends AppCompatActivity
             if (task.isSuccessful())
             {
                 Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, UserMainMenuActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, UserMainMenuDeprecatedActivity.class);
                 startActivity(intent);
                 finish();
             }

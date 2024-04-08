@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.UserFragment;
 
+import static com.example.myfoodchoice.ModelMeal.Meal.formatTime;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -40,8 +42,8 @@ import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
-import com.example.myfoodchoice.UserActivity.UserLogMealActivity;
 import com.example.myfoodchoice.ml.Model;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -75,8 +77,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     // TODO: declare UI components
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceDailyFoodIntake,
-            databaseReferenceDailyFoodIntakeChild,
-            databaseReferenceAccount;
+            databaseReferenceDailyFoodIntakeChild;
     ImageView foodImage;
 
     TextView cholesterolTextView, sugarTextView, saltTextView, caloriesTextView;
@@ -90,9 +91,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     LinearLayout addDishBtn;
 
-    ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher;
-
-    ActivityResultLauncher<Intent> takePhotoActivityResultLauncher;
+    ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher, takePhotoActivityResultLauncher;
 
     ActivityResultLauncher<String[]> requestPermissionLauncher;
 
@@ -106,9 +105,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
     private FoodItem foodItem;
-    FoodItem.Item  item;
+    FoodItem.Item itemDisplay;
 
-    List<FoodItem.Item> foodItems;
+    List<FoodItem.Item> foodItemsDisplay;
     // firebase
 
     FirebaseAuth firebaseAuth;
@@ -117,17 +116,11 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     FirebaseUser firebaseUser;
 
-    UserProfile userProfile;
-
     String userID, gender, foodName;
 
-    double maxCalories, maxCholesterol, maxSugar, maxSalt;
-
-    boolean isDiabetes, isHighBloodPressure, isHighCholesterol;
-
-    Intent intentNavToLogMeal;
-
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+
+    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily meal.
 
     Meal meal;
     double totalCalories, totalCholesterol, totalSalt, totalSugar;
@@ -137,11 +130,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     DishGuestUserAdapter dishGuestUserAdapter;
     private Uri selectedImageUri;
 
+    Bundle bundle;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-
 
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -161,16 +155,35 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             databaseReferenceUserProfile =
                     firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
 
-            databaseReferenceUserProfile.addValueEventListener(onGenderHealthValueListener());
+            databaseReferenceDailyFoodIntake =
+                    firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
+
+        }
+        // set the food item in the Meal object
+        // todo: test the meal object
+        bundle = getArguments();
+        if (bundle != null)
+        {
+            meal = bundle.getParcelable("meal");
+            /*
+            if (meal != null)
+            {
+                Log.d(TAG, "onViewCreated: " + meal.getKey());
+                Log.d(TAG, "onViewCreated: " + meal.isAfternoon());
+                Log.d(TAG, "onViewCreated: " + meal.isMorning());
+                Log.d(TAG, "onViewCreated: " + meal.isNight());
+            }
+            todo: test is done
+             */
         }
 
-        meal = new Meal();
-
-        // set the food item in the Meal object
         foodItem = new FoodItem();
-        meal.setDishes(foodItem);
+        if (meal != null)
+        {
+            meal.setDishes(foodItem);
+        }
 
-        item = new FoodItem.Item();
+        itemDisplay = new FoodItem.Item();
 
         // init nutrition value to 0
         totalCalories = 0;
@@ -178,27 +191,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         totalSalt = 0;
         totalSugar = 0;
 
-        // todo: init boolean value
-        isDiabetes = false;
-        isHighBloodPressure = false;
-        isHighCholesterol = false;
-
         // TODO: init UI components
         checkInTextView = view.findViewById(R.id.checkInTextView);
         foodNameTextView = view.findViewById(R.id.foodName);
 
         // fixme: should be matched with the ID.
-        // progressBarCalories = view.findViewById(R.id.progressBarCalories);
-        //progressCaloriesTextView = view.findViewById(R.id.progressCaloriesTextView); // id name incorrect
 
-        //progressBarCholesterol = view.findViewById(R.id.progressBarCholesterol);
-        //progressCholesterolTextView = view.findViewById(R.id.progressCholesterolTextView);
-
-        //progressBarSalt = view.findViewById(R.id.progressBarSodium);
-        //progressSaltTextView = view.findViewById(R.id.progressSodiumTextView);
-
-        //progressBarSugar = view.findViewById(R.id.progressBarSugar);
-        //progressSugarTextView = view.findViewById(R.id.progressSugarTextView);
 
         // todo: init text view for nutrition value
         caloriesTextView = view.findViewById(R.id.caloriesTextView);
@@ -218,17 +216,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         addDishBtn.setOnClickListener(onAddDishListener());
 
         // init and set recycler view
-        foodItems = new ArrayList<>();
+        foodItemsDisplay = new ArrayList<>();
         dishRecyclerView = view.findViewById(R.id.dishRecyclerView);
-        dishGuestUserAdapter = new DishGuestUserAdapter(foodItems, this);
+        dishGuestUserAdapter = new DishGuestUserAdapter(foodItemsDisplay, this);
         setAdapter();
         dishRecyclerView.setVerticalScrollBarEnabled(true);
 
         foodImage = view.findViewById(R.id.foodPhoto);
 
         // todo: set onclick here
-        // logMealBtn.setOnClickListener(onNavToLogMealListener());
-        // historyMealBtn.setOnClickListener(onNavToHistoryMealListener());
         uploadPhotoBtn.setOnClickListener(onUploadPhotoListener());
         takePhotoBtn.setOnClickListener(onTakePhotoListener());
 
@@ -249,105 +245,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(), onPermissionLauncher());
 
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private ValueEventListener onGenderHealthValueListener()
-    {
-        return new ValueEventListener()
-        {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                userProfile = snapshot.getValue(UserProfile.class);
-
-                if (userProfile != null)
-                {
-                    gender = userProfile.getGender();
-                    switch(gender)
-                    {
-                        // todo: important here this should be a goal or something else?
-                        case "Male":
-                            maxCalories = 3000; // per calories
-                            maxCholesterol = 300; // per mg
-                            maxSugar = 36; // per grams
-                            maxSalt = 2300; // per mg
-                            break;
-                        case "Female":
-                            maxCalories = 2000;
-                            maxCholesterol = 240;
-                            maxSugar = 24;
-                            maxSalt = 2300; // per mg, should be sodium
-                            break;
-                        default:
-                            // wrong gender no default value.
-                            Log.d(TAG, "Unknown gender: " + gender);
-                            break;
-                    }
-
-                    // todo: for health
-                    isDiabetes = userProfile.isDiabetes();
-                    isHighBloodPressure = userProfile.isHighBloodPressure();
-                    isHighCholesterol = userProfile.isHighCholesterol();
-
-                    StringBuilder alertDialogMessage = new StringBuilder();
-
-                    if (isDiabetes)
-                    {
-                        maxCalories *= 0.5; // minus 50%
-                        alertDialogMessage.append("Diabetes detected. " +
-                                        "Your calorie limit has been reduced to ")
-                                .append((int) maxCalories)
-                                .append(" calories to help manage your condition.\n");
-                    }
-
-                    if (isHighBloodPressure)
-                    {
-                        maxSalt *= 0.5; // minus 50%
-                        alertDialogMessage.append("High blood pressure detected. " +
-                                        "Your salt intake limit has been reduced to ")
-                                .append((int) maxSalt)
-                                .append(" mg to help manage your condition.\n");
-                    }
-
-                    if (isHighCholesterol)
-                    {
-                        maxCholesterol *= 0.5;
-                        alertDialogMessage.append("High cholesterol detected. " +
-                                        "Your cholesterol limit has been reduced to ")
-                                .append((int) maxCholesterol)
-                                .append(" mg to help manage your condition.\n");
-                    }
-                    if (alertDialogMessage.length() > 0)
-                    {
-                        // Create an AlertDialog Builder
-                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-
-                        // Set the message to display
-                        builder.setMessage(alertDialogMessage.toString());
-
-                        // Set the positive button
-                        builder.setPositiveButton("OK", (dialog, which) ->
-                        {
-                            // handle here
-                            dialog.dismiss();
-                        });
-
-                        // Create and show the AlertDialog
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                Log.d(TAG, "onCancelled: " + error);
-            }
-        };
     }
 
     public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
@@ -446,7 +343,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     {
         return v ->
         {
-            if (item.getName() == null || item.getFoodImage() == null)
+            if (itemDisplay.getName() == null || itemDisplay.getFoodImage() == null)
             {
                 Toast.makeText(requireContext(), "Please select a dish", Toast.LENGTH_SHORT).show();
                 return;
@@ -455,35 +352,26 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             // fixme: there might be a problem with the dish
             Toast.makeText(requireContext(), "Dish is added.", Toast.LENGTH_SHORT).show();
 
-            // Ensure the list is initialized before adding an item
+            // ensure the list is initialized before adding an item
             if (meal.getDishes().getItems() == null)
             {
                 meal.getDishes().setItems(new ArrayList<>());
             }
 
             // this object for the next activity to record.
-            meal.getDishes().getItems().add(item);
+            meal.getDishes().getItems().add(itemDisplay);
 
             // this one is for adapter which means for UI to show.
-            foodItems.add(item);
-
-            /*
-            for (FoodItem.Item dish : meal.getDishes().getItems())
-            {
-                Log.d(TAG, "real object: " + dish);
-            }
-
-            Log.d(TAG, "adapter object: " + foodItems);
-             */
+            foodItemsDisplay.add(itemDisplay);
 
             // fixme: there is another problem that the food item can be duplicated.
             // Log.d(TAG, "onAddDishListener: " + foodItems);
-            dishGuestUserAdapter.notifyItemInserted(foodItems.size() - 1);
+            dishGuestUserAdapter.notifyItemInserted(foodItemsDisplay.size() - 1);
         };
     }
 
     @Override
-    public void onClickDish(int position)
+    public void onRemoveDish(int position) // todo: remove the element
     {
         // todo: to remove the dish from the list.
         if (meal.getDishes().getItems() == null)
@@ -495,22 +383,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         meal.getDishes().getItems().remove(position);
 
         // this one is for adapter which means for UI to show.
-        foodItems.remove(position);
+        foodItemsDisplay.remove(position);
 
-        /*
-        for (FoodItem.Item dish : meal.getDishes().getItems())
-        {
-            Log.d(TAG, "real object: " + dish);
-        }
-
-        if (meal.getDishes().getItems().isEmpty())
-        {
-            Log.d(TAG,"Empty alr: " + meal.getDishes().getItems().isEmpty());
-        }
-
-        Log.d(TAG, "adapter object: " + foodItems);
-
-         */
         dishGuestUserAdapter.notifyItemRemoved(position);
     }
 
@@ -547,8 +421,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             totalSugar += itemLoop.getSugar_g();
 
                             // todo: set the item.
-                            item = itemLoop;
-                            item.setFoodImage(selectedImageUri.toString());
+                            itemDisplay = itemLoop;
+                            itemDisplay.setFoodImage(selectedImageUri.toString());
                             // foodItems.add(itemLoop);
                         }
 
@@ -573,37 +447,17 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                                 .append(" g");
                         sugarTextView.setText(sugarMessage.toString());
 
+                        // todo: set the total calories first.
+                        meal.setTotalCalories(totalCalories);
+                        meal.setTotalCholesterol(totalCholesterol);
+                        meal.setTotalSodium(totalSalt);
+                        meal.setTotalSugar(totalSugar);
+
                         // reset the value
                         totalCalories = 0;
                         totalCholesterol = 0;
                         totalSalt = 0;
                         totalSugar = 0;
-
-                        // calculate percentage
-                        //double percentageCalories = (totalCalories / maxCalories) * 100;
-                        //double percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
-                        //double percentageSalt = (totalSalt / maxSalt) * 100;
-                        //double percentageSugar = (totalSugar / maxSugar) * 100;
-
-                        // fixme: null pointer exception
-                        /*
-                        progressBarCalories.setProgress((int) percentageCalories);
-                        progressCaloriesTextView.setText(String.format(Locale.ROOT, "%.1f%%",
-                                percentageCalories));
-
-                        progressBarCholesterol.setProgress((int) percentageCholesterol);
-                        progressCholesterolTextView.setText(String.format(Locale.ROOT, "%.1f%%",
-                                percentageCholesterol));
-
-                        // fixme: recalculate sodium percentage
-                        progressBarSalt.setProgress((int) percentageSalt);
-                        progressSaltTextView.setText(String.format(Locale.ROOT, "%.1f%%",
-                                percentageSalt));
-
-                        progressBarSugar.setProgress((int) percentageSugar);
-                        progressSugarTextView.setText(String.format(Locale.ROOT, "%.1f%%",
-                                percentageSugar));
-                         */
                     }
                 }
             }
@@ -647,33 +501,67 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         {
             StringBuilder message = new StringBuilder();
 
-            if (foodItems.isEmpty())
+            if (meal.getDishes() == null || meal.getDishes().getItems() == null ||
+                    meal.getDishes().getItems().isEmpty())
             {
                 message.append("Dish is required to be added before logging your meal.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
                 return;
             }
 
-            // fixme: testing
-            List<FoodItem.Item> testFoodItems;
-
-            testFoodItems = meal.getDishes().getItems();
-
-            for (FoodItem.Item dish : testFoodItems)
+            if (meal.getDishes().getItems().size() > 5)
             {
-                Log.d(TAG, "onNavToLogMealListener: " + dish.getName());
-                Log.d(TAG, "onNavToLogMealListener: " + dish.getFoodImage());
-                Log.d(TAG, "onNavToLogMealListener: " + dish.getCalories());
-                Log.d(TAG, "onNavToLogMealListener: " + dish.getCholesterol_mg());
-                Log.d(TAG, "onNavToLogMealListener: " + dish.getSodium_mg());
-                Log.d(TAG, "onNavToLogMealListener: " + dish.getSugar_g());
+                message.append("You can only add up to 5 dishes.");
+                Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
+                return;
             }
 
-            intentNavToLogMeal = new Intent(requireContext(), UserLogMealActivity.class);
-            intentNavToLogMeal.putExtra("gender", gender);
-            intentNavToLogMeal.putExtra("meal", meal);
-            startActivity(intentNavToLogMeal);
-            requireActivity().finish();
+            if (foodItemsDisplay.isEmpty())
+            {
+                message.append("Dish is required to be added before logging your meal.");
+                Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // todo: set the time stamp for meal
+            meal.startDate();
+
+            // todo: set total nutrition value
+
+            // todo: push the data in firebase
+            databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
+
+            meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
+
+            // fixme: testing
+            Log.d(TAG, "onNavToLogMealListener: " + meal);
+            Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
+
+            databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onCompleteLogMealListener());
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteLogMealListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(requireContext(), "Logged your meal.", Toast.LENGTH_LONG).show();
+                bundle.putParcelable("meal", meal);
+
+                // todo: reverse this page change to
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new UserLogMealFragment())
+                        .commit();
+            }
+            else
+            {
+                Toast.makeText(requireContext(), "Error logging your meal.", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onCompleteLogMealListener: " + task.getException());
+            }
         };
     }
 
@@ -806,32 +694,3 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         return inflater.inflate(R.layout.fragment_user_log_meal_nutrition_analysis, container, false);
     }
 }
-
-/*
-private void populateItem()
-    {
-        // fixme: this test is ok, so next step is to add the real one.
-        FoodItem.Item testItem = new FoodItem.Item(
-                "Test Dish", // name
-                200, // calories
-                100, // serving_size_g
-                10, // fat_total_g
-                5, // fat_saturated_g
-                20, // protein_g
-                100, // sodium_mg
-                50, // potassium_mg
-                5, // cholesterol_mg
-                50, // carbohydrates_total_g
-                10, // fiber_g
-                10 // sugar_g
-        );
-
-        int testImage = R.drawable.about_us_icon;
-
-        testItem.setFoodImage(String.valueOf(testImage));
-
-        foodItems.add(testItem);
-    }
-
-
- */

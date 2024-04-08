@@ -50,7 +50,7 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)
                 {
-                    onDishClickListener.onClickDish(position);
+                    onDishClickListener.onRemoveDish(position);
                 }
             });
         }

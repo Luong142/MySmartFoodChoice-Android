@@ -317,7 +317,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 }
                 else
                 {
-                    intent = new Intent(UserProfileUpdateFirstActivity.this, UserMainMenuActivity.class);
+                    intent = new Intent(UserProfileUpdateFirstActivity.this, UserMainMenuDeprecatedActivity.class);
                     intent.putExtra("userProfile", userProfile);
                     startActivity(intent);
                     finish();
@@ -341,7 +341,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Log.d(TAG, "onCompleteNextListener: " + task.getResult());
+                // Log.d(TAG, "onCompleteNextListener: " + task.getResult());
             }
             else
             {

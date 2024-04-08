@@ -28,8 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class UserLogMealActivity extends AppCompatActivity
@@ -239,7 +237,7 @@ public class UserLogMealActivity extends AppCompatActivity
             else
             {
                 intentNavToBothMainMenu = new Intent(UserLogMealActivity.this,
-                        UserMainMenuActivity.class);
+                        UserMainMenuDeprecatedActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
         };
@@ -286,7 +284,7 @@ public class UserLogMealActivity extends AppCompatActivity
             else
             {
                 intentNavToBothMainMenu = new Intent(UserLogMealActivity.this,
-                        UserMainMenuActivity.class);
+                        UserMainMenuDeprecatedActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
             finish();
@@ -334,7 +332,7 @@ public class UserLogMealActivity extends AppCompatActivity
             else
             {
                 intentNavToBothMainMenu = new Intent(UserLogMealActivity.this,
-                        UserMainMenuActivity.class);
+                        UserMainMenuDeprecatedActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
             finish();

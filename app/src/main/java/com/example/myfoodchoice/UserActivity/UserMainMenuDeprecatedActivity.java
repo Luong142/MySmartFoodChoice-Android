@@ -26,11 +26,10 @@ import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
-import com.example.myfoodchoice.UserFragment.UserSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
+import com.example.myfoodchoice.UserFragment.UserSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -47,7 +46,7 @@ import org.jetbrains.annotations.Contract;
 
 import io.paperdb.Paper;
 
-public class UserMainMenuActivity extends AppCompatActivity
+public class UserMainMenuDeprecatedActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     DrawerLayout drawerLayout;
@@ -199,7 +198,7 @@ public class UserMainMenuActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError error)
             {
                 Toast.makeText
-                        (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                        (UserMainMenuDeprecatedActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
             }
         };
@@ -235,7 +234,7 @@ public class UserMainMenuActivity extends AppCompatActivity
                 public void onCancelled(@NonNull DatabaseError error)
                 {
                     Toast.makeText
-                            (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                            (UserMainMenuDeprecatedActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
                 }
             };

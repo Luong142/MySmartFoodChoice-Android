@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 public class Account implements Parcelable
@@ -51,7 +53,8 @@ public class Account implements Parcelable
 
     public void updateTrialStartDate()
     {
-        currentDateTrial = new Date(); // update the current date.
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Singapore"));
+        this.currentDateTrial = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public boolean isGuestTrialActive()

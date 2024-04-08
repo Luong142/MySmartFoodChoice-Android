@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.ModelMeal;
 
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,9 +11,11 @@ import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 
 import org.jetbrains.annotations.Contract;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 
 public class Meal implements Parcelable
 {
@@ -21,9 +25,11 @@ public class Meal implements Parcelable
 
     private boolean isMorning, isAfternoon, isNight;
 
+    private double totalCalories, totalCholesterol, totalSugar, totalSodium;
+
     // todo: should I change this to isBreakfast, isLunch, isDinner?
 
-    private Time timeStamp;
+    private Date date;
 
     private FoodItem dishes;
 
@@ -32,19 +38,27 @@ public class Meal implements Parcelable
 
     }
 
-    public Meal(String key, boolean isMorning, boolean isAfternoon, boolean isNight, Time timeStamp, FoodItem dishes)
+    public Meal(String key, boolean isMorning, boolean isAfternoon,
+                boolean isNight, double totalCalories,
+                double totalCholesterol,
+                double totalSugar, double totalSodium,
+                FoodItem dishes)
     {
         this.key = key;
         this.isMorning = isMorning;
         this.isAfternoon = isAfternoon;
         this.isNight = isNight;
-        this.timeStamp = timeStamp;
+        this.totalCalories = totalCalories;
+        this.totalCholesterol = totalCholesterol;
+        this.totalSugar = totalSugar;
+        this.totalSodium = totalSodium;
         this.dishes = dishes;
     }
 
-    public void startTimeStamp()
+    public void startDate()
     {
-        this.timeStamp = new Time(new Date().getTime());
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Singapore"));
+        this.date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static final Creator<Meal> CREATOR = new Creator<Meal>()
@@ -73,13 +87,11 @@ public class Meal implements Parcelable
 
         // this will read the object
         this.dishes = in.readParcelable(FoodItem.class.getClassLoader());
-
-        String timeStampString = in.readString();
-
-        if (timeStampString != null && !timeStampString.isEmpty())
-        {
-            this.timeStamp = Time.valueOf(timeStampString);
-        }
+        this.date = (Date) in.readSerializable();
+        this.totalCalories = in.readDouble();
+        this.totalCholesterol = in.readDouble();
+        this.totalSugar = in.readDouble();
+        this.totalSodium = in.readDouble();
     }
 
     @Override
@@ -96,37 +108,81 @@ public class Meal implements Parcelable
         dest.writeByte(this.isAfternoon ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isNight ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.dishes, flags);        // Check if timeStamp is null before calling toString()
-        if (this.timeStamp != null)
-        {
-            dest.writeString(this.timeStamp.toString());
-        }
-        else
-        {
-            // Handle null timeStamp, e.g., write a default value or an empty string
-            dest.writeString("");
-        }
+        dest.writeSerializable(this.date);
+        dest.writeDouble(this.totalCalories);
+        dest.writeDouble(this.totalCholesterol);
+        dest.writeDouble(this.totalSugar);
+        dest.writeDouble(this.totalSodium);
     }
 
     @NonNull
     @Override
     public String toString()
     {
+        if (dishes.getItems().isEmpty())
+        {
+            return "No dishes";
+        }
+
         return "Meal{" +
                 "key='" + key + '\'' +
                 ", isMorning=" + isMorning +
                 ", isAfternoon=" + isAfternoon +
                 ", isNight=" + isNight +
-                ", timeStamp=" + timeStamp +
+                ", totalCalories=" + totalCalories +
+                ", totalCholesterol=" + totalCholesterol +
+                ", totalSugar=" + totalSugar +
+                ", totalSodium=" + totalSodium +
+                ", date=" + date +
                 ", dishes=" + dishes +
                 '}';
     }
 
-    public Time getTimeStamp() {
-        return timeStamp;
+    public static String formatTime(Date date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.ROOT);
+        sdf.setTimeZone(TimeZone.getDefault()); // Set the time zone to UTC for consistency
+        return sdf.format(date);
     }
 
-    public void setTimeStamp(Time timeStamp) {
-        this.timeStamp = timeStamp;
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public double getTotalCalories() {
+        return totalCalories;
+    }
+
+    public void setTotalCalories(double totalCalories) {
+        this.totalCalories = totalCalories;
+    }
+
+    public double getTotalCholesterol() {
+        return totalCholesterol;
+    }
+
+    public void setTotalCholesterol(double totalCholesterol) {
+        this.totalCholesterol = totalCholesterol;
+    }
+
+    public double getTotalSugar() {
+        return totalSugar;
+    }
+
+    public void setTotalSugar(double totalSugar) {
+        this.totalSugar = totalSugar;
+    }
+
+    public double getTotalSodium() {
+        return totalSodium;
+    }
+
+    public void setTotalSodium(double totalSodium) {
+        this.totalSodium = totalSodium;
     }
 
     public String getKey() {

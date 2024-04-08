@@ -169,7 +169,7 @@ public class UserProfileUpdateSecondActivity extends AppCompatActivity
                     Toast.makeText(UserProfileUpdateSecondActivity.this,
                             "Profile updated successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(UserProfileUpdateSecondActivity.this,
-                            UserMainMenuActivity.class);
+                            UserMainMenuDeprecatedActivity.class);
                     startActivity(intent);
                     finish();
                 }
