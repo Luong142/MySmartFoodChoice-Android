@@ -26,7 +26,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -38,7 +37,6 @@ import com.example.myfoodchoice.Adapter.DishGuestUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
-import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
@@ -47,11 +45,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
@@ -132,6 +127,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     Bundle bundle;
 
+    StringBuilder caloriesMessage, cholesterolMessage, saltMessage, sugarMessage;
+    double displayCalories, displaySalt, displaySugar, displayCholesterol;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -190,6 +188,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         totalCholesterol = 0;
         totalSalt = 0;
         totalSugar = 0;
+
+        // init message
+        caloriesMessage = new StringBuilder();
+        cholesterolMessage = new StringBuilder();
+        saltMessage = new StringBuilder();
+        sugarMessage = new StringBuilder();
 
         // TODO: init UI components
         checkInTextView = view.findViewById(R.id.checkInTextView);
@@ -399,10 +403,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 if (response.isSuccessful())
                 {
-                    StringBuilder caloriesMessage = new StringBuilder();
-                    StringBuilder cholesterolMessage = new StringBuilder();
-                    StringBuilder saltMessage = new StringBuilder();
-                    StringBuilder sugarMessage = new StringBuilder();
+
 
                     foodItem = response.body();
                     if (foodItem != null)
@@ -423,29 +424,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             // todo: set the item.
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
-                            // foodItems.add(itemLoop);
+
                         }
-
-                        // todo: set text
-                        caloriesMessage
-                                .append(totalCalories)
-                                .append(" kcal");
-                        caloriesTextView.setText(caloriesMessage.toString());
-
-                        cholesterolMessage
-                                .append(totalCholesterol)
-                                .append(" mg");
-                        cholesterolTextView.setText(cholesterolMessage.toString());
-
-                        saltMessage
-                                .append(totalSalt)
-                                .append(" mg");
-                        saltTextView.setText(saltMessage.toString());
-
-                        sugarMessage
-                                .append(totalSugar)
-                                .append(" g");
-                        sugarTextView.setText(sugarMessage.toString());
 
                         // todo: set the total calories first.
                         meal.setTotalCalories(totalCalories);
@@ -453,11 +433,16 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                         meal.setTotalSodium(totalSalt);
                         meal.setTotalSugar(totalSugar);
 
+                        // update the individual nutrition value
+                        updateDishNutritionUI();
+
                         // reset the value
+                        /*
                         totalCalories = 0;
                         totalCholesterol = 0;
                         totalSalt = 0;
                         totalSugar = 0;
+                         */
                     }
                 }
             }
@@ -468,6 +453,49 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         };
+    }
+
+    private void updateDishNutritionUI()
+    {
+        // to display individually
+        displayCalories = totalCalories;
+        displayCholesterol = totalCholesterol;
+        displaySalt = totalSalt;
+        displaySugar = totalSugar;
+        // foodItems.add(itemLoop);
+
+        // todo: set text
+        caloriesMessage
+                .append(displayCalories)
+                .append(" kcal");
+        caloriesTextView.setText(caloriesMessage.toString());
+
+        cholesterolMessage
+                .append(displayCholesterol)
+                .append(" mg");
+        cholesterolTextView.setText(cholesterolMessage.toString());
+
+        saltMessage
+                .append(displaySalt)
+                .append(" mg");
+        saltTextView.setText(saltMessage.toString());
+
+        sugarMessage
+                .append(displaySugar)
+                .append(" g");
+        sugarTextView.setText(sugarMessage.toString());
+
+        // reset string builder
+        caloriesMessage.setLength(0);
+        cholesterolMessage.setLength(0);
+        saltMessage.setLength(0);
+        sugarMessage.setLength(0);
+
+        // reset the value for one dish only
+        displayCalories = 0;
+        displaySalt = 0;
+        displaySugar = 0;
+        displayCholesterol = 0;
     }
 
     @NonNull
@@ -534,8 +562,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
 
             // fixme: testing
-            Log.d(TAG, "onNavToLogMealListener: " + meal);
-            Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
+            //Log.d(TAG, "onNavToLogMealListener: " + meal);
+            //Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
 
             databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onCompleteLogMealListener());
         };

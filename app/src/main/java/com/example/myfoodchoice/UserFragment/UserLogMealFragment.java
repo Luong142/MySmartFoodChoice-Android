@@ -160,7 +160,7 @@ public class UserLogMealFragment extends Fragment
                 Meal meal1 = snapshot.getValue(Meal.class);
                 if (meal1 != null)
                 {
-                    Log.d(TAG, "onChildAdded: " + meal1);
+                    // Log.d(TAG, "onChildAdded: " + meal1);
                     totalCalories += meal1.getTotalCalories();
                     totalCholesterol += meal1.getTotalCholesterol();
                     totalSugar += meal1.getTotalSugar();
