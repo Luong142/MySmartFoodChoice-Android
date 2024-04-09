@@ -38,6 +38,7 @@ import com.example.myfoodchoice.Adapter.DishGuestUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
@@ -46,8 +47,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
@@ -74,6 +78,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceDailyFoodIntake,
             databaseReferenceDailyFoodIntakeChild;
+
+    UserProfile userProfile;
     ImageView foodImage;
 
     TextView cholesterolTextView, sugarTextView, saltTextView, caloriesTextView;
@@ -112,7 +118,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     FirebaseUser firebaseUser;
 
-    String userID, gender, foodName;
+    String userID, foodName;
 
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
 
@@ -131,6 +137,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     StringBuilder caloriesMessage, cholesterolMessage, saltMessage, sugarMessage;
     double displayCalories, displaySalt, displaySugar, displayCholesterol;
 
+    boolean isHighBloodPressure, isHighCholesterol, isDiabetes;
+
+    String dietType;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -147,7 +157,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null)
         {
-            gender = "Male"; // fixme: by default value
             userID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
@@ -157,6 +166,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             databaseReferenceDailyFoodIntake =
                     firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
 
+            databaseReferenceUserProfile.addValueEventListener(onHealthUserProfileListener());
         }
         // set the food item in the Meal object
         // todo: test the meal object
@@ -252,6 +262,36 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     }
 
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener onHealthUserProfileListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                // todo: our plan is to find a correct API to warn if the food contains what allergies to user,
+                //  and diet type
+                userProfile = snapshot.getValue(UserProfile.class);
+
+                if (userProfile != null)
+                {
+                    isHighCholesterol = userProfile.isHighCholesterol();
+                    isHighBloodPressure = userProfile.isHighBloodPressure();
+                    isDiabetes = userProfile.isDiabetes();
+                    dietType = userProfile.getDietType();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
+            }
+        };
+    }
+
     public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
     {
         try {
@@ -306,7 +346,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 }
             }
 
-            String[] classes = {"Nasi Lemak", "Kaya Toast", "Curry Puff", "Sliced Fish Soup"};
+            String[] classes = {"Nasi Lemak", "Kaya Toast", "Curry Puff", "Fish Soup"};
             // fixme: eggs need to remove, we can add Laksa
 
             // result.setText(classes[maxPos]);
@@ -318,7 +358,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             // call API, and get result with that model class.
             Call<FoodItem> call = caloriesNinjaAPI.getFoodItem(foodName);
             // todo: uncomment this part below to do get calories info and more from this API.
-            call.enqueue(callBackResponseFromAPI());
+            call.enqueue(callBackNutritionValueResponseFromAPI());
 
             // todo: input from user when search for recipe,
             // todo: if the "ingredients" contains the "allergies", we can show warning contains "nuts" to user, best option.
@@ -393,9 +433,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         dishGuestUserAdapter.notifyItemRemoved(position);
     }
 
+
     @NonNull
     @Contract(" -> new")
-    private Callback<FoodItem> callBackResponseFromAPI()
+    private Callback<FoodItem> callBackNutritionValueResponseFromAPI()
     {
         return new Callback<FoodItem>()
         {
