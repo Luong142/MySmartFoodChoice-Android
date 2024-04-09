@@ -70,8 +70,6 @@ public class UserLogMealFragment extends Fragment
     Meal meal;
 
     ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
-
-    PieChart pieChartCalories, pieChartCholesterol, pieChartSugar, pieChartSalt;
     // fixme: apply this pie chart instead of progress bar.
 
     Button morningBtn, afternoonBtn, nightBtn;
@@ -196,24 +194,128 @@ public class UserLogMealFragment extends Fragment
                 progressBarSugar.setProgress((int) percentageSugar);
                 sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageSugar));
+
+                //notify();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
+                Meal meal1 = snapshot.getValue(Meal.class);
+                if (meal1 != null)
+                {
+                    // Log.d(TAG, "onChildAdded: " + meal1);
+                    totalCalories += meal1.getTotalCalories();
+                    totalCholesterol += meal1.getTotalCholesterol();
+                    totalSugar += meal1.getTotalSugar();
+                    totalSalt += meal1.getTotalSodium();
+                }
 
+                // calculate percentage
+                percentageCalories = (totalCalories / maxCalories) * 100;
+                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                percentageSalt = (totalSalt / maxSalt) * 100;
+                percentageSugar = (totalSugar / maxSugar) * 100;
+
+
+                // fixme: null pointer exception
+
+                progressBarCalories.setProgress((int) percentageCalories);
+                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCalories));
+
+                progressBarCholesterol.setProgress((int) percentageCholesterol);
+                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCholesterol));
+
+                // fixme: recalculate sodium percentage
+                progressBarSalt.setProgress((int) percentageSalt);
+                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSalt));
+
+                progressBarSugar.setProgress((int) percentageSugar);
+                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSugar));
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
+                Meal meal1 = snapshot.getValue(Meal.class);
+                if (meal1 != null)
+                {
+                    // Log.d(TAG, "onChildAdded: " + meal1);
+                    totalCalories += meal1.getTotalCalories();
+                    totalCholesterol += meal1.getTotalCholesterol();
+                    totalSugar += meal1.getTotalSugar();
+                    totalSalt += meal1.getTotalSodium();
+                }
 
+                // calculate percentage
+                percentageCalories = (totalCalories / maxCalories) * 100;
+                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                percentageSalt = (totalSalt / maxSalt) * 100;
+                percentageSugar = (totalSugar / maxSugar) * 100;
+
+
+                // fixme: null pointer exception
+
+                progressBarCalories.setProgress((int) percentageCalories);
+                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCalories));
+
+                progressBarCholesterol.setProgress((int) percentageCholesterol);
+                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCholesterol));
+
+                // fixme: recalculate sodium percentage
+                progressBarSalt.setProgress((int) percentageSalt);
+                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSalt));
+
+                progressBarSugar.setProgress((int) percentageSugar);
+                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSugar));
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
+                Meal meal1 = snapshot.getValue(Meal.class);
+                if (meal1 != null)
+                {
+                    // Log.d(TAG, "onChildAdded: " + meal1);
+                    totalCalories += meal1.getTotalCalories();
+                    totalCholesterol += meal1.getTotalCholesterol();
+                    totalSugar += meal1.getTotalSugar();
+                    totalSalt += meal1.getTotalSodium();
+                }
 
+                // calculate percentage
+                percentageCalories = (totalCalories / maxCalories) * 100;
+                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                percentageSalt = (totalSalt / maxSalt) * 100;
+                percentageSugar = (totalSugar / maxSugar) * 100;
+
+
+                // fixme: null pointer exception
+
+                progressBarCalories.setProgress((int) percentageCalories);
+                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCalories));
+
+                progressBarCholesterol.setProgress((int) percentageCholesterol);
+                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCholesterol));
+
+                // fixme: recalculate sodium percentage
+                progressBarSalt.setProgress((int) percentageSalt);
+                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSalt));
+
+                progressBarSugar.setProgress((int) percentageSugar);
+                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSugar));
             }
 
             @Override

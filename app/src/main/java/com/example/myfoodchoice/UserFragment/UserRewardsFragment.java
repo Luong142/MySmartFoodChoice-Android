@@ -34,6 +34,9 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemClickListener
@@ -54,15 +57,19 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
 
 
     // TODO: declare firebase components here
-    final static String LABEL = "Registered Accounts"; // FIXME: the path need to access the account.
+    DatabaseReference databaseReferenceUserProfile, databaseReferenceRewards;
 
-    DatabaseReference databaseReferenceUserProfile;
+    final static String PATH_REWARDS = "Rewards";
+
+    final static String PATH_UserProfile = "User Profile";
 
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase firebaseDatabase;
 
     FirebaseUser firebaseUser;
+
+    UserProfile userProfile;
 
     String userID;
 
@@ -86,8 +93,10 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
             userID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
-            databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_UserProfile).child(userID);
+            databaseReferenceRewards = firebaseDatabase.getReference(PATH_REWARDS).child(userID);
+
+            databaseReferenceUserProfile.addValueEventListener(valuePointUserProfileEventListener());
         }
 
         // TODO: init UI components
@@ -116,39 +125,66 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
 
     }
 
-
     @Override
     public void onRewardItemRedeemClick(int position) // click on button not the entire view.
     {
         // TODO: implement onClick
-        Toast.makeText(getContext(), "Redeem is clicked, pls update this next", Toast.LENGTH_SHORT).show();
+        double currentPoint = userProfile.getPoints();
+        Map<String, Object> updates = new HashMap<>();
+
+        // to check if the point <= 0
+        if (currentPoint <= 0 || currentPoint < rewardList.get(position).getPoints())
+        {
+            Toast.makeText(getContext(), "You don't have enough points to redeem", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        updates.put("points", currentPoint - rewardList.get(position).getPoints());
+
+        databaseReferenceUserProfile.updateChildren(updates, onRedeemItemListener());
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private DatabaseReference.CompletionListener onRedeemItemListener()
+    {
+        return (error, ref) ->
+        {
+            if (error != null)
+            {
+                Toast.makeText(getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(getContext(), "Redeem Success", Toast.LENGTH_SHORT).show();
+        };
     }
 
     private void populateRewardList()
     {
         // init here
         Reward reward = new Reward("Discount",
-                "10% off for Disney Land trip", R.drawable.discount, 1000);
+                "10% off for Disney Land trip", R.drawable.discount, 10);
         Reward reward1 = new Reward("Discount",
-                "50% off for RTX 4090", R.drawable.discount, 9000);
+                "50% off for RTX 4090", R.drawable.rtx4090, 50);
 
         Reward reward2 = new Reward("Discount",
-                "20% off for Premium User Account", R.drawable.discount, 3000);
+                "20% off for Premium User Account", R.drawable.premium, 20);
 
         Reward reward3 = new Reward("Discount",
-                "Voucher to get free plastic bottle", R.drawable.voucher, 2000);
+                "Voucher to get free plastic bottle", R.drawable.water_bottle, 30);
 
         Reward reward4 = new Reward("Discount",
-                "Voucher to get free orange", R.drawable.voucher, 2000);
+                "Voucher to get free orange", R.drawable.voucher, 40);
 
         Reward reward5 = new Reward("Discount",
-                "Voucher to get free apple", R.drawable.voucher, 2000);
+                "Voucher to get free apple", R.drawable.voucher, 20);
 
         Reward reward6 = new Reward("Discount",
-                "Voucher to get free banana", R.drawable.voucher, 2000);
+                "Voucher to get free banana", R.drawable.voucher, 10);
 
         Reward reward7 = new Reward("Discount",
-                "Voucher to get free pear", R.drawable.voucher, 2000);
+                "Voucher to get free pear", R.drawable.voucher, 30);
 
         // add here
         rewardList.add(reward);
@@ -163,7 +199,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
 
     @NonNull
     @Contract(" -> new")
-    private ValueEventListener valueUserProfileEventListener()
+    private ValueEventListener valuePointUserProfileEventListener()
     {
         return new ValueEventListener()
         {
@@ -171,7 +207,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 // FIXME: the problem is that userProfile is null.
-                UserProfile userProfile = snapshot.getValue(UserProfile.class);
+                userProfile = snapshot.getValue(UserProfile.class);
                 // Log.d(TAG, "onDataChange: " + userProfile);
 
                 // set the first name and last name in the UI
@@ -180,6 +216,8 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
                     // set full name here
                     String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
                     fullNameTextView.setText(fullName);
+
+                    // todo: set point here
                     userPointsTextView.setText(String.valueOf(userProfile.getPoints()));
 
                     // set profile picture here
@@ -201,7 +239,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
                 Toast.makeText
                         (getContext(),
                                 "Error database connection", Toast.LENGTH_SHORT).show();
-                Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
+                Log.d(TAG, "loadUserProfile:onCancelled ", error.toException());
             }
         };
     }

@@ -24,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/foodPhotoAndName"
         android:layout_width="match_parent"
@@ -166,8 +165,8 @@
 
                 <TextView
                     android:id="@+id/cholesterolTextView"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/cholesterol"
                     android:textAlignment="center"
@@ -208,8 +207,8 @@
 
                 <TextView
                     android:id="@+id/sugarTextView"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/sugar"
                     android:textAlignment="center"

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.icu.text.DecimalFormat;
+import android.icu.text.NumberFormat;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -463,24 +465,26 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         displaySugar = totalSugar;
         // foodItems.add(itemLoop);
 
+        NumberFormat numberFormat = new DecimalFormat("%.2f");
+
         // todo: set text
         caloriesMessage
-                .append(displayCalories)
+                .append(numberFormat.format(displayCalories))
                 .append(" kcal");
         caloriesTextView.setText(caloriesMessage.toString());
 
         cholesterolMessage
-                .append(displayCholesterol)
+                .append(numberFormat.format(displayCholesterol))
                 .append(" mg");
         cholesterolTextView.setText(cholesterolMessage.toString());
 
         saltMessage
-                .append(displaySalt)
+                .append(numberFormat.format(displaySalt))
                 .append(" mg");
         saltTextView.setText(saltMessage.toString());
 
         sugarMessage
-                .append(displaySugar)
+                .append(numberFormat.format(displaySugar))
                 .append(" g");
         sugarTextView.setText(sugarMessage.toString());
 

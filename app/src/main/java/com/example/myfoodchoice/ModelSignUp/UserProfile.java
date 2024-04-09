@@ -34,7 +34,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     {
         // this constructor is required for Firebase to be able to deserialize the object
         super();
-        points = 50; // put the default point here
+        points = 100; // put the default point here
     }
 
     protected UserProfile(@NonNull Parcel in)
