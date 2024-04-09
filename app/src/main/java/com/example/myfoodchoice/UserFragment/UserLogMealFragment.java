@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.eazegraph.lib.charts.PieChart;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Locale;
@@ -69,6 +70,9 @@ public class UserLogMealFragment extends Fragment
     Meal meal;
 
     ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
+
+    PieChart pieChartCalories, pieChartCholesterol, pieChartSugar, pieChartSalt;
+    // fixme: apply this pie chart instead of progress bar.
 
     Button morningBtn, afternoonBtn, nightBtn;
 

@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.UserFragment;
 
-import static com.example.myfoodchoice.ModelMeal.Meal.formatTime;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -513,9 +512,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
+                // todo: test this later.
+                FragmentActivity fragmentActivity = getActivity();
+
+                if (fragmentActivity != null)
                 {
-                    takePhotoActivityResultLauncher.launch(cameraIntent);
+                    if (cameraIntent.resolveActivity(fragmentActivity.getPackageManager()) != null)
+                    {
+                        takePhotoActivityResultLauncher.launch(cameraIntent);
+                    }
                 }
             }
         };
@@ -614,9 +619,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 // Permission granted, can now start the camera intent
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
+                // todo: test this later
+                FragmentActivity fragmentActivity = getActivity();
+
+                if (fragmentActivity != null)
                 {
-                    takePhotoActivityResultLauncher.launch(cameraIntent);
+                    if (cameraIntent.resolveActivity(fragmentActivity.getPackageManager()) != null)
+                    {
+                        takePhotoActivityResultLauncher.launch(cameraIntent);
+                    }
                 }
             }
             else

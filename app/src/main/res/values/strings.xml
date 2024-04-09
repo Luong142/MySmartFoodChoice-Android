@@ -174,4 +174,5 @@
     <string name="add_dish">Add Dish</string>
     <string name="name_of_food">Name of Food</string>
     <string name="remove">Remove</string>
+    <string name="total_nutrition_value">Total Nutrition Value</string>
 </resources>
