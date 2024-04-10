@@ -63,6 +63,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -366,91 +367,44 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     private void checkAllergiesAndDietType(@NonNull List<String> strIngredients)
     {
-        // add more here
-        List<String> allergyList = new ArrayList<>();
-        allergyList.add("eggs");
-        allergyList.add("peanuts");
-        allergyList.add("egg");
-        allergyList.add("peanut");
-        allergyList.add("gluten");
-        allergyList.add("dairy");
-        allergyList.add("lobster");
-        allergyList.add("fish");
-        allergyList.add("crustacean");
-        allergyList.add("shellfish");
-        allergyList.add("anchovy fillet");
+        // update and add in more ingredient that identify these two info.
+        List<String> allergyList = Arrays.asList("eggs", "peanuts", "gluten", "dairy",
+                "lobster", "fish", "crustacean", "shellfish", "anchovy fillet");
 
-        List<String> nonVegeList = new ArrayList<>();
-        nonVegeList.add("meat");
-        nonVegeList.add("chicken");
-        nonVegeList.add("beef");
-        nonVegeList.add("lamb");
-        nonVegeList.add("turkey");
-        nonVegeList.add("pork");
-        nonVegeList.add("ham");
-        nonVegeList.add("sausage");
-        nonVegeList.add("duck");
-        nonVegeList.add("mutton");
-        nonVegeList.add("venison");
-        nonVegeList.add("anchovy fillet");
+        List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
+                "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison", "anchovy fillet");
 
-        // may have more conditions?
-        boolean hasAllergy = false;
+        boolean hasAllergy = strIngredients.stream()
+                .map(String::toLowerCase)
+                .anyMatch(allergyList::contains);
 
-        for (String strIngredient : strIngredients)
-        {
-            if (allergyList.contains(strIngredient.toLowerCase()))
-            {
-                hasAllergy = true;
-                break;
-            }
-        }
+        boolean isVegetarian = strIngredients.stream()
+                .map(String::toLowerCase)
+                .noneMatch(nonVegeList::contains);
 
-        // to check through the ingredient if the ingredient have meat or non-vegetarian ingredient
-        boolean isVegetarian = false;
-
-        for (String strIngredient : strIngredients)
-        {
-            if (nonVegeList.contains(strIngredient.toLowerCase()))
-            {
-                isVegetarian = false;
-                break;
-            }
-            else
-            {
-                isVegetarian = true;
-            }
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        AlertDialog alertDialog;
-
-        // use alert dialog instead
         if (hasAllergy)
         {
-            builder.setTitle("Warning");
-            builder.setMessage("This dish contains allergies to your health profile.");
-            builder.setPositiveButton("OK", (dialog, which) ->
-            {
-                dialog.dismiss();
-            });
-            alertDialog = builder.create();
-            alertDialog.show();
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Warning")
+                    .setMessage("This dish contains allergies to your health profile.")
+                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                    .show();
         }
-
         else
         {
             Toast.makeText(requireContext(), "It's safe to eat this dish.", Toast.LENGTH_LONG).show();
         }
 
-        if (!isVegetarian)
+        dietTypeTextView.setText(isVegetarian ? "Vegetarian Food" : "Non-Vegetarian Food");
+
+        if (dietType.equals("Vegetarian") && !isVegetarian)
         {
-            // to set the diet type in text
-            dietTypeTextView.setText("Non-Vegetarian Food");
-        }
-        else
-        {
-            dietTypeTextView.setText("Vegetarian Food");
+            // warn user if they are vegetarian and the ingredient contain meat, etc..
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Warning")
+                    .setMessage("This dish contains non-vegetarian ingredients.")
+                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                    .show();
         }
     }
 
