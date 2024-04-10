@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.eazegraph.lib.charts.PieChart;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Locale;

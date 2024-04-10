@@ -1,8 +1,8 @@
 package com.example.myfoodchoice.ModelFreeFoodAPI;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
-import java.lang.Object;
-import java.lang.String;
 import java.util.List;
 
 public class Dish implements Serializable
@@ -13,11 +13,30 @@ public class Dish implements Serializable
     return this.meals;
   }
 
+  public Dish(List<Meals> meals) {
+    this.meals = meals;
+  }
+
+  public Dish()
+  {
+
+  }
+
+  @NonNull
+  @Override
+  public String toString()
+  {
+    return "Dish{" +
+            "meals=" + meals +
+            '}';
+  }
+
   public void setMeals(List<Meals> meals) {
     this.meals = meals;
   }
 
-  public static class Meals implements Serializable {
+  public static class Meals implements Serializable
+  {
     private Object strImageSource;
 
     private String strIngredient10;
@@ -123,6 +142,67 @@ public class Dish implements Serializable
     private String strMeasure14;
 
     private String strMeasure15;
+
+    @NonNull
+    @Override
+    public String toString()
+    {
+      return "Meals{" +
+              "strImageSource=" + strImageSource +
+              ", strIngredient10='" + strIngredient10 + '\'' +
+              ", strIngredient12='" + strIngredient12 + '\'' +
+              ", strIngredient11='" + strIngredient11 + '\'' +
+              ", strIngredient14='" + strIngredient14 + '\'' +
+              ", strCategory='" + strCategory + '\'' +
+              ", strIngredient13='" + strIngredient13 + '\'' +
+              ", strIngredient16='" + strIngredient16 + '\'' +
+              ", strIngredient15='" + strIngredient15 + '\'' +
+              ", strIngredient18='" + strIngredient18 + '\'' +
+              ", strIngredient17='" + strIngredient17 + '\'' +
+              ", strArea='" + strArea + '\'' +
+              ", strCreativeCommonsConfirmed=" + strCreativeCommonsConfirmed +
+              ", strIngredient19='" + strIngredient19 + '\'' +
+              ", strTags=" + strTags +
+              ", idMeal='" + idMeal + '\'' +
+              ", strInstructions='" + strInstructions + '\'' +
+              ", strIngredient1='" + strIngredient1 + '\'' +
+              ", strIngredient3='" + strIngredient3 + '\'' +
+              ", strIngredient2='" + strIngredient2 + '\'' +
+              ", strIngredient20='" + strIngredient20 + '\'' +
+              ", strIngredient5='" + strIngredient5 + '\'' +
+              ", strIngredient4='" + strIngredient4 + '\'' +
+              ", strIngredient7='" + strIngredient7 + '\'' +
+              ", strIngredient6='" + strIngredient6 + '\'' +
+              ", strIngredient9='" + strIngredient9 + '\'' +
+              ", strIngredient8='" + strIngredient8 + '\'' +
+              ", strMealThumb='" + strMealThumb + '\'' +
+              ", strMeasure20='" + strMeasure20 + '\'' +
+              ", strYoutube='" + strYoutube + '\'' +
+              ", strMeal='" + strMeal + '\'' +
+              ", strMeasure12='" + strMeasure12 + '\'' +
+              ", strMeasure13='" + strMeasure13 + '\'' +
+              ", strMeasure10='" + strMeasure10 + '\'' +
+              ", strMeasure11='" + strMeasure11 + '\'' +
+              ", dateModified=" + dateModified +
+              ", strDrinkAlternate=" + strDrinkAlternate +
+              ", strSource='" + strSource + '\'' +
+              ", strMeasure9='" + strMeasure9 + '\'' +
+              ", strMeasure7='" + strMeasure7 + '\'' +
+              ", strMeasure8='" + strMeasure8 + '\'' +
+              ", strMeasure5='" + strMeasure5 + '\'' +
+              ", strMeasure6='" + strMeasure6 + '\'' +
+              ", strMeasure3='" + strMeasure3 + '\'' +
+              ", strMeasure4='" + strMeasure4 + '\'' +
+              ", strMeasure1='" + strMeasure1 + '\'' +
+              ", strMeasure18='" + strMeasure18 + '\'' +
+              ", strMeasure2='" + strMeasure2 + '\'' +
+              ", strMeasure19='" + strMeasure19 + '\'' +
+              ", strMeasure16='" + strMeasure16 + '\'' +
+              ", strMeasure17='" + strMeasure17 + '\'' +
+              ", strMeasure14='" + strMeasure14 + '\'' +
+              ", strMeasure15='" + strMeasure15 + '\'' +
+              '}';
+    }
 
     public Object getStrImageSource() {
       return this.strImageSource;

@@ -133,7 +133,6 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 
             // todo: set user profile here
             databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onSignUpCompletedListener());
-
         };
     }
 
@@ -222,7 +221,7 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         allergiesArrayList.add(new Allergies("Gluten", R.drawable.gluten_free));
         allergiesArrayList.add(new Allergies("Dairy", R.drawable.dairy));
         allergiesArrayList.add(new Allergies("Egg", R.drawable.egg));
-        allergiesArrayList.add(new Allergies("Shellfish", R.drawable.shell)); // Replaced "Tree Nuts" with "Shellfish"
+        allergiesArrayList.add(new Allergies("Seafood", R.drawable.fish));
         allergiesArrayList.add(new Allergies("Peanut", R.drawable.peanut));
     }
 }

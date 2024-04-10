@@ -2,11 +2,10 @@ package com.example.myfoodchoice.UserFragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.icu.text.DecimalFormat;
-import android.icu.text.NumberFormat;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,11 +36,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.Adapter.DishGuestUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
+import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
-import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
+import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
+import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -64,6 +66,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +89,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     TextView cholesterolTextView, sugarTextView, saltTextView, caloriesTextView;
 
-    TextView checkInTextView, foodNameTextView;
+    TextView checkInTextView, foodNameTextView, dietTypeTextView;
 
     // TODO: add in one more button for taking photo I think.
     FloatingActionButton takePhotoBtn, uploadPhotoBtn;
@@ -106,19 +111,21 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     // calling calories ninja API
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
+    private FreeFoodAPI freeFoodAPI;
+
     private FoodItem foodItem;
     FoodItem.Item itemDisplay;
 
     List<FoodItem.Item> foodItemsDisplay;
-    // firebase
 
+    // todo: init firebase
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase firebaseDatabase;
 
     FirebaseUser firebaseUser;
 
-    String userID, foodName;
+    String userID, foodName, dietType, allergies;
 
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
 
@@ -135,11 +142,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     Bundle bundle;
 
     StringBuilder caloriesMessage, cholesterolMessage, saltMessage, sugarMessage;
+
     double displayCalories, displaySalt, displaySugar, displayCholesterol;
 
-    boolean isHighBloodPressure, isHighCholesterol, isDiabetes;
+    // todo: this dialog will appear
+    private Dish dishInfo;
 
-    String dietType;
+    private List<String> strIngredients; // todo: our algo is to add in every single ingredient
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -174,16 +183,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         if (bundle != null)
         {
             meal = bundle.getParcelable("meal");
-            /*
-            if (meal != null)
-            {
-                Log.d(TAG, "onViewCreated: " + meal.getKey());
-                Log.d(TAG, "onViewCreated: " + meal.isAfternoon());
-                Log.d(TAG, "onViewCreated: " + meal.isMorning());
-                Log.d(TAG, "onViewCreated: " + meal.isNight());
-            }
-            todo: test is done
-             */
         }
 
         foodItem = new FoodItem();
@@ -218,6 +217,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         cholesterolTextView = view.findViewById(R.id.cholesterolTextView);
         saltTextView = view.findViewById(R.id.sodiumTextView);
         sugarTextView = view.findViewById(R.id.sugarTextView);
+        dietTypeTextView = view.findViewById(R.id.dietType);
 
         takePhotoBtn = view.findViewById(R.id.takePhotoBtn);
         uploadPhotoBtn = view.findViewById(R.id.uploadPhotoBtn);
@@ -243,8 +243,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         uploadPhotoBtn.setOnClickListener(onUploadPhotoListener());
         takePhotoBtn.setOnClickListener(onTakePhotoListener());
 
-        // todo: init API
-        caloriesNinjaAPI = RetrofitClient.getRetrofitInstance().create(CaloriesNinjaAPI.class);
+        // todo: init API for two of them
+        freeFoodAPI = RetrofitFreeFoodClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
+        caloriesNinjaAPI = RetrofitNinjaCaloriesClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
 
         imageSize = 224; // important?
 
@@ -275,13 +276,14 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 //  and diet type
                 userProfile = snapshot.getValue(UserProfile.class);
 
-                if (userProfile != null)
+                if (userProfile == null)
                 {
-                    isHighCholesterol = userProfile.isHighCholesterol();
-                    isHighBloodPressure = userProfile.isHighBloodPressure();
-                    isDiabetes = userProfile.isDiabetes();
-                    dietType = userProfile.getDietType();
+                    Log.d(TAG, "onDataChange: userProfile is null");
+                    return;
                 }
+
+                dietType = userProfile.getDietType();
+                allergies = userProfile.getAllergies();
             }
 
             @Override
@@ -292,15 +294,285 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         };
     }
 
+    @NonNull
+    @Contract(" -> new")
+    private Callback<Dish> callBackDishInfoResponseFromAPI()
+    {
+        return new Callback<Dish>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response)
+            {
+                if (response.isSuccessful())
+                {
+                    // todo: use dishInfo to alert user if they have health problems.
+                    dishInfo = response.body();
+
+                    if (dishInfo == null)
+                    {
+                        Log.d(TAG, "onResponse: dishInfo is null");
+                        return;
+                    }
+
+                    if (dishInfo.getMeals().isEmpty())
+                    {
+                        Log.d(TAG, "onResponse: dishInfo.getMeals() is empty");
+                        return;
+                    }
+
+                    strIngredients = dishInfo.getMeals().stream()
+                            .flatMap(meal -> Stream.of
+                                    (
+                                        meal.getStrIngredient1(), meal.getStrIngredient2(), meal.getStrIngredient3(),
+                                        meal.getStrIngredient4(), meal.getStrIngredient5(), meal.getStrIngredient6(),
+                                        meal.getStrIngredient7(), meal.getStrIngredient8(), meal.getStrIngredient9(),
+                                        meal.getStrIngredient10(), meal.getStrIngredient11(), meal.getStrIngredient12(),
+                                        meal.getStrIngredient13(), meal.getStrIngredient14(), meal.getStrIngredient15(),
+                                        meal.getStrIngredient16(), meal.getStrIngredient17(), meal.getStrIngredient18(),
+                                        meal.getStrIngredient19(), meal.getStrIngredient20()
+                                    ))
+                            .filter(Objects::nonNull) // if null attribute then filter out.
+                            .filter(strIngredient -> !strIngredient.isEmpty()) // if empty then filter out.
+                            .distinct() // if duplicate then filter out.
+                            .collect(Collectors.toList());
+
+                    // todo: testing done
+                    // Log.d(TAG, "onResponse: " + strIngredients);
+
+                    /*
+                    allergiesArrayList.add(new Allergies("Gluten", R.drawable.gluten_free));
+                    allergiesArrayList.add(new Allergies("Dairy", R.drawable.dairy));
+                    allergiesArrayList.add(new Allergies("Egg", R.drawable.egg));
+                    allergiesArrayList.add(new Allergies("Seafood", R.drawable.fish));
+                    allergiesArrayList.add(new Allergies("Peanut", R.drawable.peanut));
+
+                    // FIXME: edamam can't be used.
+                    dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vege));
+                    dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.non_vege));
+                    */
+
+                    // here is the check
+                    checkAllergiesAndDietType(strIngredients);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t)
+            {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        };
+    }
+
+    private void checkAllergiesAndDietType(@NonNull List<String> strIngredients)
+    {
+        // add more here
+        List<String> allergyList = new ArrayList<>();
+        allergyList.add("eggs");
+        allergyList.add("peanuts");
+        allergyList.add("egg");
+        allergyList.add("peanut");
+        allergyList.add("gluten");
+        allergyList.add("dairy");
+        allergyList.add("lobster");
+        allergyList.add("fish");
+        allergyList.add("crustacean");
+        allergyList.add("shellfish");
+        allergyList.add("anchovy fillet");
+
+        List<String> nonVegeList = new ArrayList<>();
+        nonVegeList.add("meat");
+        nonVegeList.add("chicken");
+        nonVegeList.add("beef");
+        nonVegeList.add("lamb");
+        nonVegeList.add("turkey");
+        nonVegeList.add("pork");
+        nonVegeList.add("ham");
+        nonVegeList.add("sausage");
+        nonVegeList.add("duck");
+        nonVegeList.add("mutton");
+        nonVegeList.add("venison");
+        nonVegeList.add("anchovy fillet");
+
+        // may have more conditions?
+        boolean hasAllergy = false;
+
+        for (String strIngredient : strIngredients)
+        {
+            if (allergyList.contains(strIngredient.toLowerCase()))
+            {
+                hasAllergy = true;
+                break;
+            }
+        }
+
+        // to check through the ingredient if the ingredient have meat or non-vegetarian ingredient
+        boolean isVegetarian = false;
+
+        for (String strIngredient : strIngredients)
+        {
+            if (nonVegeList.contains(strIngredient.toLowerCase()))
+            {
+                isVegetarian = false;
+                break;
+            }
+            else
+            {
+                isVegetarian = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        AlertDialog alertDialog;
+
+        // use alert dialog instead
+        if (hasAllergy)
+        {
+            builder.setTitle("Warning");
+            builder.setMessage("This dish contains allergies to your health profile.");
+            builder.setPositiveButton("OK", (dialog, which) ->
+            {
+                dialog.dismiss();
+            });
+            alertDialog = builder.create();
+            alertDialog.show();
+        }
+
+        else
+        {
+            Toast.makeText(requireContext(), "It's safe to eat this dish.", Toast.LENGTH_LONG).show();
+        }
+
+        if (!isVegetarian)
+        {
+            // to set the diet type in text
+            dietTypeTextView.setText("Non-Vegetarian Food");
+        }
+        else
+        {
+            dietTypeTextView.setText("Vegetarian Food");
+        }
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private Callback<FoodItem> callBackNutritionValueResponseFromAPI()
+    {
+        return new Callback<FoodItem>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<FoodItem> call, @NonNull Response<FoodItem> response)
+            {
+                if (response.isSuccessful())
+                {
+
+
+                    foodItem = response.body();
+                    if (foodItem != null)
+                    {
+                        // assign the variable to the is foodItems array list.
+
+                        // Log.d(TAG, "onResponse: " + foodItem);
+                        // todo: set progress bar here
+
+                        // get all total calculations
+                        for (FoodItem.Item itemLoop : foodItem.getItems())
+                        {
+                            totalCalories += itemLoop.getCalories();
+                            totalCholesterol += itemLoop.getCholesterol_mg();
+                            totalSalt += itemLoop.getSodium_mg();
+                            totalSugar += itemLoop.getSugar_g();
+
+                            // todo: set the item.
+                            itemDisplay = itemLoop;
+                            itemDisplay.setFoodImage(selectedImageUri.toString());
+                        }
+
+                        // todo: set the total calories first.
+                        meal.setTotalCalories(totalCalories);
+                        meal.setTotalCholesterol(totalCholesterol);
+                        meal.setTotalSodium(totalSalt);
+                        meal.setTotalSugar(totalSugar);
+
+                        // update the individual nutrition value
+                        updateDishNutritionUI();
+
+                        // reset the value
+                        /*
+                        totalCalories = 0;
+                        totalCholesterol = 0;
+                        totalSalt = 0;
+                        totalSugar = 0;
+                         */
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<FoodItem> call, @NonNull Throwable t)
+            {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        };
+    }
+
+    private void updateDishNutritionUI()
+    {
+        // to display individually
+        displayCalories = totalCalories;
+        displayCholesterol = totalCholesterol;
+        displaySalt = totalSalt;
+        displaySugar = totalSugar;
+        // foodItems.add(itemLoop);
+
+        // todo: set text
+        caloriesMessage
+                .append(displayCalories)
+                .append(" kcal");
+        caloriesTextView.setText(caloriesMessage.toString());
+
+        cholesterolMessage
+                .append(displayCholesterol)
+                .append(" mg");
+        cholesterolTextView.setText(cholesterolMessage.toString());
+
+        saltMessage
+                .append(displaySalt)
+                .append(" mg");
+        saltTextView.setText(saltMessage.toString());
+
+        sugarMessage
+                .append(displaySugar)
+                .append(" g");
+        sugarTextView.setText(sugarMessage.toString());
+
+        // reset string builder
+        caloriesMessage.setLength(0);
+        cholesterolMessage.setLength(0);
+        saltMessage.setLength(0);
+        sugarMessage.setLength(0);
+
+        // reset the value for one dish only
+        displayCalories = 0;
+        displaySalt = 0;
+        displaySugar = 0;
+        displayCholesterol = 0;
+        totalCalories = 0;
+        totalSalt = 0;
+        totalSugar = 0;
+        totalCholesterol = 0;
+    }
+
     public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
     {
         try {
+            // model here
             Model model = Model.newInstance(requireActivity().getApplicationContext());
 
-            // Creates inputs for reference.
+            // what is this?
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
-            // todo: a bit hard to do later we will settle this.
+            // good to go
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize  * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -346,8 +618,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 }
             }
 
+            // todo: add more dishes here, based on the model, we train more food on another model.
             String[] classes = {"Nasi Lemak", "Kaya Toast", "Curry Puff", "Fish Soup"};
-            // fixme: eggs need to remove, we can add Laksa
 
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
@@ -360,6 +632,22 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             // todo: uncomment this part below to do get calories info and more from this API.
             call.enqueue(callBackNutritionValueResponseFromAPI());
 
+            // todo: call free food API for allergies and diet type.
+
+            String modifiedName = "";
+            switch (foodName)
+            {
+                case ("Nasi Lemak"):
+                    modifiedName = "Nasi lemak";
+                    break;
+                case ("Fish Soup"):
+                    modifiedName = "Fish Soup";
+                    break;
+            }
+
+            Call<Dish> dishCall = freeFoodAPI.searchMealByName(modifiedName);
+            dishCall.enqueue(callBackDishInfoResponseFromAPI());
+
             // todo: input from user when search for recipe,
             // todo: if the "ingredients" contains the "allergies", we can show warning contains "nuts" to user, best option.
             // todo: 3 options
@@ -370,9 +658,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 s.append(String.format(Locale.ROOT, "%s: %.1f%%\n", classes[i], confidences[i] * 100));
             }
             // confidence.setText(s);
-            // Log.d(TAG, "The dish info is: \n" + s);
 
-            // Releases model resources if no longer used.
+            // free the model to release memory.
             model.close();
         }
         catch (IOException e)
@@ -431,115 +718,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         foodItemsDisplay.remove(position);
 
         dishGuestUserAdapter.notifyItemRemoved(position);
-    }
-
-
-    @NonNull
-    @Contract(" -> new")
-    private Callback<FoodItem> callBackNutritionValueResponseFromAPI()
-    {
-        return new Callback<FoodItem>()
-        {
-            @Override
-            public void onResponse(@NonNull Call<FoodItem> call, @NonNull Response<FoodItem> response)
-            {
-                if (response.isSuccessful())
-                {
-
-
-                    foodItem = response.body();
-                    if (foodItem != null)
-                    {
-                        // assign the variable to the is foodItems array list.
-
-                        // Log.d(TAG, "onResponse: " + foodItem);
-                        // todo: set progress bar here
-
-                        // get all total calculations
-                        for (FoodItem.Item itemLoop : foodItem.getItems())
-                        {
-                            totalCalories += itemLoop.getCalories();
-                            totalCholesterol += itemLoop.getCholesterol_mg();
-                            totalSalt += itemLoop.getSodium_mg();
-                            totalSugar += itemLoop.getSugar_g();
-
-                            // todo: set the item.
-                            itemDisplay = itemLoop;
-                            itemDisplay.setFoodImage(selectedImageUri.toString());
-
-                        }
-
-                        // todo: set the total calories first.
-                        meal.setTotalCalories(totalCalories);
-                        meal.setTotalCholesterol(totalCholesterol);
-                        meal.setTotalSodium(totalSalt);
-                        meal.setTotalSugar(totalSugar);
-
-                        // update the individual nutrition value
-                        updateDishNutritionUI();
-
-                        // reset the value
-                        /*
-                        totalCalories = 0;
-                        totalCholesterol = 0;
-                        totalSalt = 0;
-                        totalSugar = 0;
-                         */
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<FoodItem> call, @NonNull Throwable t)
-            {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        };
-    }
-
-    private void updateDishNutritionUI()
-    {
-        // to display individually
-        displayCalories = totalCalories;
-        displayCholesterol = totalCholesterol;
-        displaySalt = totalSalt;
-        displaySugar = totalSugar;
-        // foodItems.add(itemLoop);
-
-        NumberFormat numberFormat = new DecimalFormat("%.2f");
-
-        // todo: set text
-        caloriesMessage
-                .append(numberFormat.format(displayCalories))
-                .append(" kcal");
-        caloriesTextView.setText(caloriesMessage.toString());
-
-        cholesterolMessage
-                .append(numberFormat.format(displayCholesterol))
-                .append(" mg");
-        cholesterolTextView.setText(cholesterolMessage.toString());
-
-        saltMessage
-                .append(numberFormat.format(displaySalt))
-                .append(" mg");
-        saltTextView.setText(saltMessage.toString());
-
-        sugarMessage
-                .append(numberFormat.format(displaySugar))
-                .append(" g");
-        sugarTextView.setText(sugarMessage.toString());
-
-        // reset string builder
-        caloriesMessage.setLength(0);
-        cholesterolMessage.setLength(0);
-        saltMessage.setLength(0);
-        sugarMessage.setLength(0);
-
-        // reset the value for one dish only
-        displayCalories = 0;
-        displaySalt = 0;
-        displaySugar = 0;
-        displayCholesterol = 0;
     }
 
     @NonNull

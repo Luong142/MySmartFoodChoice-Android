@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemClickListener

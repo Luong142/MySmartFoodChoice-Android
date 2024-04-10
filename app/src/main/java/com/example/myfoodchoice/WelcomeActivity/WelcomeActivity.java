@@ -4,26 +4,32 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
-import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
+import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
-import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
 import com.example.myfoodchoice.UserActivity.UserMainMenuDeprecatedActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.jetbrains.annotations.Contract;
+
 import io.paperdb.Paper;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WelcomeActivity extends AppCompatActivity
 {
@@ -49,7 +55,13 @@ public class WelcomeActivity extends AppCompatActivity
 
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
-    private Call<FoodItem> call;
+    private FreeFoodAPI freeFoodAPI;
+
+    // private Call<FoodItem> call;
+
+    private Call<Dish> callDish;
+
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -72,14 +84,16 @@ public class WelcomeActivity extends AppCompatActivity
         // chatGPTAPI.generateOutput("What is the meaning of life?", this);
 
         // TODO: init ninja api
-        caloriesNinjaAPI = RetrofitClient.getRetrofitInstance().create(CaloriesNinjaAPI.class);
+        // caloriesNinjaAPI = RetrofitClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
+        //freeFoodAPI = RetrofitClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
 
         // fixme: to test the input string name of food.
-        String query = "Nasi Lemak";
+        String query = "Fish Soup";
 
-        call = caloriesNinjaAPI.getFoodItem(query);
+        // call = caloriesNinjaAPI.getFoodItem(query);
+        //callDish = freeFoodAPI.searchMealByName(query);
         // todo: in this part we can use Ninja API calls.
-        // call.enqueue(callBackResponseFromAPI());
+        //callDish.enqueue(callBackResponseFromAPI());
 
         // init paper
         Paper.init(WelcomeActivity.this);
@@ -123,7 +137,8 @@ public class WelcomeActivity extends AppCompatActivity
                     builder = new AlertDialog.Builder(WelcomeActivity.this);
                     builder.setTitle("Already Logged in");
                     builder.setMessage("Please wait...");
-                    builder.show();
+                    alertDialog = builder.create();
+                    alertDialog.show();
                 }
             }
         }
@@ -134,6 +149,40 @@ public class WelcomeActivity extends AppCompatActivity
         // TODO: use the attribute to identify which user type.
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
+    }
+
+    @NonNull // todo: test me, done successfully.
+    @Contract(" -> new")
+    private Callback<Dish> callBackResponseFromAPI()
+    {
+        return new Callback<Dish>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response)
+            {
+                if (response.isSuccessful())
+                {
+                    Dish dish = response.body();
+                    Log.d(TAG, "onResponse: " + dish);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t)
+            {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        };
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (alertDialog != null && alertDialog.isShowing())
+        {
+            alertDialog.dismiss();
+        }
     }
 
     private void allowLogin(String email, String password)

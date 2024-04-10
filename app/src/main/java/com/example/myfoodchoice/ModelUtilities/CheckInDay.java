@@ -2,8 +2,6 @@ package com.example.myfoodchoice.ModelUtilities;
 
 import androidx.annotation.NonNull;
 
-import java.util.Date;
-
 public class CheckInDay
 {
     private int imageId;
