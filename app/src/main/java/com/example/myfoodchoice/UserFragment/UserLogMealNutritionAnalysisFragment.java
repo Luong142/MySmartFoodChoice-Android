@@ -367,12 +367,18 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     private void checkAllergiesAndDietType(@NonNull List<String> strIngredients)
     {
-        // update and add in more ingredient that identify these two info.
+        // todo: update and add in more ingredient that identify these two info.
+        // todo: retrain the model based on whether both website accept the input or name of food
+        // fixme: https://www.themealdb.com/api/json/v1/1/search.php?s=Fish%20Soup
+        // fixme: https://calorieninjas.com/
         List<String> allergyList = Arrays.asList("eggs", "peanuts", "gluten", "dairy",
-                "lobster", "fish", "crustacean", "shellfish", "anchovy fillet");
+                "lobster", "fish",
+                "crustacean", "shellfish",
+                "anchovy fillet", "fish stock");
 
         List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
-                "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison", "anchovy fillet");
+                "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
+                "anchovy fillet", "fish stock");
 
         boolean hasAllergy = strIngredients.stream()
                 .map(String::toLowerCase)
@@ -450,14 +456,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
                         // update the individual nutrition value
                         updateDishNutritionUI();
-
-                        // reset the value
-                        /*
-                        totalCalories = 0;
-                        totalCholesterol = 0;
-                        totalSalt = 0;
-                        totalSugar = 0;
-                         */
                     }
                 }
             }
