@@ -3,6 +3,7 @@ package com.example.myfoodchoice.UserFragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -64,6 +65,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -126,7 +128,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     FirebaseUser firebaseUser;
 
-    String userID, foodName, dietType, allergies;
+    String userID, foodName, dietType;
+
+    boolean isSeafoodAllergic, isPeanutAllergic, isEggAllergic;
 
     final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
 
@@ -283,7 +287,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 }
 
                 dietType = userProfile.getDietType();
-                allergies = userProfile.getAllergies();
+
+                isSeafoodAllergic = userProfile.isAllergySeafood();
+
+                isPeanutAllergic = userProfile.isAllergyPeanut();
+
+                isEggAllergic = userProfile.isAllergyEgg();
             }
 
             @Override
@@ -370,10 +379,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         // todo: retrain the model based on whether both website accept the input or name of food
         // fixme: https://www.themealdb.com/api/json/v1/1/search.php?s=Fish%20Soup
         // fixme: https://calorieninjas.com/
-        List<String> allergyList = Arrays.asList("eggs", "peanuts", "gluten", "dairy",
-                "lobster", "fish",
-                "crustacean", "shellfish",
-                "anchovy fillet", "fish stock");
+        List<String> allergyEggList = Collections.singletonList("Eggs");
+
+        List<String> allergyPeanutList = Collections.singletonList("Peanuts");
 
         List<String> allergySeafoodList = Arrays.asList("lobster", "fish",
                 "crustacean", "shellfish",
@@ -383,39 +391,81 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
                 "anchovy fillet", "fish stock");
 
-        boolean hasAllergy = strIngredients.stream()
-                .map(String::toLowerCase)
-                .anyMatch(allergyList::contains);
+        String allergen;
+        // todo:
+        /*
+        Log.d(TAG, "allergic egg here: " + isEggAllergic);
 
+        Log.d(TAG, "allergic seafood here: " + isSeafoodAllergic);
+
+        Log.d(TAG, "allergic peanut here: " + isPeanutAllergic);
+         */
+        // fixme: not show
+        if (isEggAllergic)
+        {
+            allergen = checkForAllergyMatch(strIngredients, allergyEggList);
+            if (!allergen.equals("No allergens found in the ingredients."))
+            {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Cautious")
+                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                                allergen))
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        }
+        if (isSeafoodAllergic)
+        {
+            allergen = checkForAllergyMatch(strIngredients, allergySeafoodList);
+            if (!allergen.equals("No allergens found in the ingredients."))
+            {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Cautious")
+                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                                allergen))
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        }
+        if (isPeanutAllergic)
+        {
+            allergen = checkForAllergyMatch(strIngredients, allergyPeanutList);
+            if (!allergen.equals("No allergens found in the ingredients."))
+            {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Cautious")
+                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                                allergen))
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        }
+
+        // todo: done.
         boolean isVegetarian = strIngredients.stream()
                 .map(String::toLowerCase)
                 .noneMatch(nonVegeList::contains);
 
-        if (hasAllergy)
-        {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Warning")
-                    .setMessage(String.format("This dish contains %s allergies.", allergies))
-                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                    .show();
-        }
-        else
-        {
-            Toast.makeText(requireContext(), "It's safe to eat this dish.", Toast.LENGTH_LONG).show();
-        }
-
         dietTypeTextView.setText(isVegetarian ? "Vegetarian Food" : "Non-Vegetarian Food");
-
-        if (dietType.equals("Vegetarian") && !isVegetarian)
-        {
-            // warn user if they are vegetarian and the ingredient contain meat, etc..
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Warning")
-                    .setMessage("This dish contains non-vegetarian ingredients.")
-                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                    .show();
-        }
     }
+
+    private String checkForAllergyMatch(@NonNull List<String> strIngredients,
+                                        @NonNull List<String> allergyList)
+    {
+        List<String> lowerCaseIngredients = strIngredients.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
+
+        for (String allergy : allergyList)
+        {
+            if (lowerCaseIngredients.contains(allergy))
+            {
+                return allergy;
+            }
+        }
+        return "No allergens found in the ingredients.";
+    }
+
 
     @NonNull
     @Contract(" -> new")
@@ -428,8 +478,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 if (response.isSuccessful())
                 {
-
-
                     foodItem = response.body();
                     if (foodItem != null)
                     {

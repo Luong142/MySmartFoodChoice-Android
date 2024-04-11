@@ -10,8 +10,6 @@
 
 
     <!-- todo: put the date here in correct string format using Locale.Root-->
-
-
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
@@ -188,18 +186,18 @@
                         android:id="@+id/caloriesNumTextView"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0/2300"
+                        android:text="0/2300 kcal"
                         android:textAlignment="center"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/sodiumNumTextView"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0/300"
+                        android:text="0/300 mg"
                         android:textAlignment="center"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -324,9 +322,9 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="0/36"
+                        android:text="0/36 mg"
                         android:textAlignment="center"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -334,9 +332,9 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="0/2300"
+                        android:text="0/2300 g"
                         android:textAlignment="center"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

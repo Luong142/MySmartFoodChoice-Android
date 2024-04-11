@@ -20,6 +20,7 @@ public class UserHomeAlvinFragment extends Fragment
     // todo: declare button UI component
     Button logMyMealBtn, mealHistoryBtn;
 
+    // todo: migrate the UI from log meal page to this home fragment.
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -48,7 +49,7 @@ public class UserHomeAlvinFragment extends Fragment
         };
     }
 
-    @Nullable
+    @NonNull
     @Contract(pure = true)
     private View.OnClickListener onLogMyMealListener()
     {
