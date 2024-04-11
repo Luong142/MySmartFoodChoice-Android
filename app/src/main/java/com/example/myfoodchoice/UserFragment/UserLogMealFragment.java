@@ -263,10 +263,10 @@ public class UserLogMealFragment extends Fragment
                 cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalCholesterol, (int) maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                         (int) totalSugar, (int) maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
             }
 
@@ -316,10 +316,10 @@ public class UserLogMealFragment extends Fragment
                 cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalCholesterol, (int) maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                         (int) totalSugar, (int) maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
             }
 
@@ -369,10 +369,10 @@ public class UserLogMealFragment extends Fragment
                 cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalCholesterol, (int) maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                         (int) totalSugar, (int) maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
             }
 
@@ -414,17 +414,17 @@ public class UserLogMealFragment extends Fragment
                             maxCholesterol = 300; // per mg
                             maxSugar = 36; // per grams
                             maxSalt = 2300; // per mg
-                            // display the counter for calories
-                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            // display default UI
+                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
                                     0, (int) maxCalories));
 
-                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                                     0, (int) maxCholesterol));
 
-                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                                     0, (int) maxSugar));
 
-                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                                     0, (int) maxSalt));
                             break;
                         case "Female":
@@ -432,6 +432,18 @@ public class UserLogMealFragment extends Fragment
                             maxCholesterol = 240;
                             maxSugar = 24;
                             maxSalt = 2300; // per mg, should be sodium
+                            // display default UI
+                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
+                                    0, (int) maxCalories));
+
+                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                                    0, (int) maxCholesterol));
+
+                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                                    0, (int) maxSugar));
+
+                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                                    0, (int) maxSalt));
                             break;
                         default:
                             // wrong gender no default value.
