@@ -25,8 +25,8 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
+import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
@@ -142,7 +142,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealNutritionAnalysisFragment()).commit();
+                    new UserHomeAlvinFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -249,10 +249,10 @@ public class UserMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: our task is to follow the wireframe diagram from web and complete more UI for prototype, that is it.
 
-        if (itemId == R.id.nav_log_meal)
+        if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealNutritionAnalysisFragment()).commit();
+                    new UserHomeAlvinFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
@@ -260,12 +260,6 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserCheckInFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_meal_record)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealSearchFoodFragment()).commit();
         }
 
         else if (itemId == R.id.nav_food_recipe)

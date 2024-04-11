@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +16,11 @@ import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
-import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
+import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
-import com.example.myfoodchoice.RetrofitProvider.RetrofitClient;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -56,7 +55,13 @@ public class WelcomeActivity extends AppCompatActivity
 
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
-    private Call<FoodItem> call;
+    private FreeFoodAPI freeFoodAPI;
+
+    // private Call<FoodItem> call;
+
+    private Call<Dish> callDish;
+
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,14 +84,16 @@ public class WelcomeActivity extends AppCompatActivity
         // chatGPTAPI.generateOutput("What is the meaning of life?", this);
 
         // TODO: init ninja api
-        caloriesNinjaAPI = RetrofitClient.getRetrofitInstance().create(CaloriesNinjaAPI.class);
+        // caloriesNinjaAPI = RetrofitClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
+        //freeFoodAPI = RetrofitClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
 
         // fixme: to test the input string name of food.
-        String query = "Nasi Lemak";
+        String query = "Fish Soup";
 
-        call = caloriesNinjaAPI.getFoodItem(query);
+        // call = caloriesNinjaAPI.getFoodItem(query);
+        //callDish = freeFoodAPI.searchMealByName(query);
         // todo: in this part we can use Ninja API calls.
-        // call.enqueue(callBackResponseFromAPI());
+        //callDish.enqueue(callBackResponseFromAPI());
 
         // init paper
         Paper.init(WelcomeActivity.this);
@@ -125,12 +132,17 @@ public class WelcomeActivity extends AppCompatActivity
             {
                 allowLogin(emailRememberMe, passwordRememberMe);
 
-                builder = new AlertDialog.Builder(WelcomeActivity.this);
-                builder.setTitle("Already Logged in");
-                builder.setMessage("Please wait...");
-                builder.show();
+                if (!isFinishing())
+                {
+                    builder = new AlertDialog.Builder(WelcomeActivity.this);
+                    builder.setTitle("Already Logged in");
+                    builder.setMessage("Please wait...");
+                    alertDialog = builder.create();
+                    alertDialog.show();
+                }
             }
         }
+
 
         // TODO: we have normal user, guest, business vendor with two types
         //  (Dietitian and Trainer)
@@ -139,63 +151,38 @@ public class WelcomeActivity extends AppCompatActivity
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
-    @NonNull
+    @NonNull // todo: test me, done successfully.
     @Contract(" -> new")
-    private Callback<FoodItem> callBackResponseFromAPI()
+    private Callback<Dish> callBackResponseFromAPI()
     {
-        return new Callback<FoodItem>()
+        return new Callback<Dish>()
         {
             @Override
-            public void onResponse(@NonNull Call<FoodItem> call, @NonNull Response<FoodItem> response)
+            public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response)
             {
                 if (response.isSuccessful())
                 {
-                    FoodItem foodItem = response.body();
-                    if (foodItem != null)
-                    {
-                        Log.d(TAG, "onResponse: " + foodItem);
-                    }
+                    Dish dish = response.body();
+                    Log.d(TAG, "onResponse: " + dish);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<FoodItem> call, @NonNull Throwable t)
+            public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t)
             {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         };
     }
 
-    @NonNull
-    @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsBusiness()
+    @Override
+    protected void onPause()
     {
-        return new ClickableSpan()
+        super.onPause();
+        if (alertDialog != null && alertDialog.isShowing())
         {
-            @Override
-            public void onClick(View widget)
-            {
-                Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterBusinessActivity.class);
-                startActivity(intent);
-            }
-        };
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private ClickableSpan clickableSignUpAsGuest()
-    {
-        return new ClickableSpan()
-        {
-            @Override
-            public void onClick(View widget)
-            {
-                Intent intent = new Intent(WelcomeActivity.this,
-                        RegisterGuestActivity.class);
-                startActivity(intent);
-            }
-        };
+            alertDialog.dismiss();
+        }
     }
 
     private void allowLogin(String email, String password)

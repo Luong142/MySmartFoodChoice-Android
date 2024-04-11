@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.Adapter.DietTypeAdapter;
-import com.example.myfoodchoice.ModelAdapter.Allergies;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,20 +40,16 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     DatabaseReference databaseReferenceUserProfile;
 
-    final static String TAG = "UserProfileCreateSecondActivity";
-
     final static String PATH_USERPROFILE = "User Profile";
 
     ArrayList<UserProfile> dietTypeArrayList;
-
-    ArrayList<Allergies> allergiesArrayList;
 
     String dietType;
 
     EditText editIntHeight, editIntWeight;
 
     // TODO: declare UI component
-    Spinner spinnerDietType, spinnerAllergies;
+    Spinner spinnerDietType;
 
     Intent intent, intentToHealthDeclarationActivity;
 

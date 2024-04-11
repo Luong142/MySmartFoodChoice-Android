@@ -1,0 +1,517 @@
+Reason to develop native android app over Web based app.
+1. Performance
+2. stability
+3. less bugs
+4. higher compatibility of Android environment as a native Android app.
+
+todo: need to discuss with team, I am confused with the layout, why there is an image on search recipe?
+todo: instead of the home page, which have calories intake calculation but don't have take the photo?
+
+
+// to train model use this website.
+https://teachablemachine.withgoogle.com/train
+
+// Food API
+https://calorieninjas.com/api
+
+User Declaration
+Diabetes (Don't reccommend if its High Sugar)
+High Cholestrol (Don't reccommend if its High Oil)
+High Blood Pressure (Don't reccommend if its High Salt)
+
+Food Attributes
+-Low, Normal, High Sugar Content
+-Low, Normal, High Oil Content
+-Low, Normal, High Salt Content
+
+list of food able to recognize based on model file.
+0 Nasi Lemak
+1 Kaya toast
+4 curry puff
+3 Sliced fish soup
+
+
+todo: remember if Calories Ninja API has limited usage then we need to create another account for it.
+fixme: UI for showing nutrition
+<androidx.cardview.widget.CardView
+        android:id="@+id/nutritionInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="250dp"
+        android:backgroundTint="@color/peach_puff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodPhotoAndName"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/nutrition_value"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center">
+
+                    <ProgressBar
+                        android:id="@+id/progressBarCalories"
+                        style="@style/CircularDeterminateProgressBarCalories"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:progress="50" />
+
+                    <TextView
+                        android:id="@+id/progressCaloriesTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="51dp"
+                        android:layout_marginTop="39dp"
+                        android:layout_marginEnd="53dp"
+                        android:layout_marginBottom="78dp"
+                        android:text="@string/_60"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCalories"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarCalories"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarCalories"
+                        app:layout_constraintTop_toTopOf="@+id/progressBarCalories" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginEnd="39dp"
+                        android:layout_marginBottom="48dp"
+                        android:text="@string/calories"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCalories"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarCalories"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarCalories"
+                        app:layout_constraintTop_toBottomOf="@+id/progressCaloriesTextView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center"
+                    >
+
+                    <ProgressBar
+                        android:id="@+id/progressBarSodium"
+                        style="@style/CircularDeterminateProgressBarSodium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:progress="50" />
+
+                    <TextView
+                        android:id="@+id/progressSodiumTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="51dp"
+                        android:layout_marginTop="39dp"
+                        android:layout_marginEnd="53dp"
+                        android:layout_marginBottom="78dp"
+                        android:text="@string/_60"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSodium"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarSodium"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarSodium"
+                        app:layout_constraintTop_toTopOf="@+id/progressBarSodium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginEnd="39dp"
+                        android:layout_marginBottom="48dp"
+                        android:text="@string/sodium"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSodium"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarSodium"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarSodium"
+                        app:layout_constraintTop_toBottomOf="@+id/progressSodiumTextView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center"
+                    >
+
+                    <ProgressBar
+                        android:id="@+id/progressBarCholesterol"
+                        style="@style/CircularDeterminateProgressBarCholesterol"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:progress="50" />
+
+                    <TextView
+                        android:id="@+id/progressCholesterolTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="51dp"
+                        android:layout_marginTop="39dp"
+                        android:layout_marginEnd="53dp"
+                        android:layout_marginBottom="78dp"
+                        android:text="@string/_60"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCholesterol"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarCholesterol"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarCholesterol"
+                        app:layout_constraintTop_toTopOf="@+id/progressBarCholesterol" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginEnd="39dp"
+                        android:layout_marginBottom="48dp"
+                        android:text="@string/cholesterol"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCholesterol"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarCholesterol"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarCholesterol"
+                        app:layout_constraintTop_toBottomOf="@+id/progressCholesterolTextView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.949"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <ProgressBar
+                        android:id="@+id/progressBarSugar"
+                        style="@style/CircularDeterminateProgressBarSugar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:progress="50" />
+
+                    <TextView
+                        android:id="@+id/progressSugarTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="51dp"
+                        android:layout_marginTop="39dp"
+                        android:layout_marginEnd="53dp"
+                        android:layout_marginBottom="78dp"
+                        android:text="@string/_60"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSugar"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarSugar"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarSugar"
+                        app:layout_constraintTop_toTopOf="@+id/progressBarSugar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginEnd="39dp"
+                        android:layout_marginBottom="48dp"
+                        android:text="@string/sugar"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSugar"
+                        app:layout_constraintEnd_toEndOf="@+id/progressBarSugar"
+                        app:layout_constraintStart_toStartOf="@+id/progressBarSugar"
+                        app:layout_constraintTop_toBottomOf="@+id/progressSugarTextView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+todo: JSON FORMAT FOR FIREBASE AND ITS RECOMMENDED STRUCTURE.
+-users
+   -userUid
+      -name: "Ticherhaz"
+      -others: "Master"
+   -userUid2
+      -name: "Pyke"
+      -others: "Bronze"
+-path
+   -userUid
+      -pathUid
+         -achievement: "Eat without using hand"
+         -date: "12/02/2022"
+      -pathUid2
+         -achievement: "Wake up early"
+         -date: "12/02/2022"
+   -userUid2
+      -pathUid3
+         -achievement: "Feeding team"
+         -date: "13/02/2022"
+
+
+public class MainActivity extends AppCompatActivity
+{
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private String currentPhotoPath;
+    private String imageFileName;
+    private File imgFile;
+    private Button btnSelectImage;
+    private Button btnCaptureImage;
+    private ImageView frame;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        frame = (ImageView) findViewById(R.id.frameImage);
+        btnSelectImage = (Button) findViewById(R.id.btnSelectImage);
+        btnCaptureImage = (Button) findViewById(R.id.btnCaptureImage);
+
+        btnSelectImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                galleryIntent(); //call this when user click the button
+            }
+        });
+
+        btnCaptureImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraIntent(); //call this when user click the button
+            }
+        });
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void galleryIntent()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select File"),SELECT_FILE);
+    }
+
+    private void cameraIntent()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            // Error occurred while creating the File
+            Toast.makeText(this,"Photo file can't be created, please try again", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(this,"com.example.appcamera", photoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            startActivityForResult(intent, REQUEST_CAMERA);
+        }
+    }
+
+    //Checking current Activity Result
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    //If select from Gallery
+    private void onSelectFromGalleryResult(Intent data) {
+        Uri photoUri = null;
+        if (data != null) {
+            photoUri = data.getData();
+        }
+        frame.setImageURI(photoUri);
+    }
+
+    //If use Camera
+    private void onCaptureImageResult(Intent data) {
+        imgFile = new  File(currentPhotoPath);
+        if(imgFile.exists()) {
+            frame.setImageURI(Uri.fromFile(imgFile));
+            //frame.setImageURI(Uri.parse(currentPhotoPath));
+            addPhototoGallery();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private void addPhototoGallery()
+    {
+        ContentResolver resolver = getApplicationContext().getContentResolver();
+
+        //Find all images on the external storage device –
+        // scoped storage introduced in Android 10 / API level 29+
+        //Get the content: style URI for the image media table on the given volume
+
+        Uri photoCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+
+        // Publish a new image
+        ContentValues imageDetails = new ContentValues();
+        imageDetails.put(MediaStore.Audio.Media.DISPLAY_NAME, imageFileName);
+        imageDetails.put(MediaStore.Audio.Media.MIME_TYPE, "image/jpeg");
+        imageDetails.put(MediaStore.Audio.Media.IS_PENDING, 1);
+
+        Uri photoUri = resolver.insert(photoCollection, imageDetails);
+        try {
+            OutputStream imageOut = resolver.openOutputStream(photoUri);
+            Bitmap bitmap = null;
+            bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(imgFile)); //requires API28+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, imageOut);
+        }
+        catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        imageDetails.clear();
+        imageDetails.put(MediaStore.Audio.Media.IS_PENDING, 0); //requires API29+
+        resolver.update(photoUri, imageDetails, null, null);
+    }
+}
+
+// FIXME: no response, no error
+    @Override
+    public void onResponse(Call<RecipeResponse> call, @NonNull Response<RecipeResponse> response)
+    {
+        if (response.isSuccessful())
+        {
+            RecipeResponse recipeResponse = response.body();
+            // Update UI on the main thread
+            runOnUiThread(() ->
+            {
+                // Update your UI here with recipeResponse data
+                Toast.makeText(WelcomeActivity.this, "Recipes found!", Toast.LENGTH_SHORT).show();
+                Log.d("Edamam", "Recipes found: " + recipeResponse);
+            });
+        } else {
+            // Handle the error
+            Log.d("Edamam","Error: " + response.code());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<RecipeResponse> call, @NonNull Throwable t)
+    {
+        Log.d("Edamam","Error: " + t.getMessage());
+    }
+
+    /*
+        private void testClaudeAPI()
+    {
+        String prompt = "What is the capital of France?";
+        ClaudeAPI claudeAPI = new ClaudeAPI();
+        claudeAPI.callAPI(prompt, new Callback()
+        {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e)
+            {
+                Log.e(TAG, "API call failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            {
+                if (response.isSuccessful())
+                {
+                    String apiResponse = Objects.requireNonNull(response.body()).string();
+                    Log.d(TAG, "AI Response: " + apiResponse);
+                    // Do something with the API response
+                }
+                else
+                {
+                    Log.e(TAG, "API call failed with code: " + response.code());
+                    // Log.e(TAG, "API call failed with message: " + response.message());
+                }
+            }
+        });
+    }
+     */

@@ -11,6 +11,8 @@ import org.eazegraph.lib.models.PieModel;
 
 public class TestUIChartActivity extends AppCompatActivity
 {
+    // todo: apply this API chart to our user log meal fragment.
+
     // Create the object of TextView and PieChart class
     // todo: we can use this for presenting nutrition data
     TextView tvR, tvPython, tvCPP, tvJava;

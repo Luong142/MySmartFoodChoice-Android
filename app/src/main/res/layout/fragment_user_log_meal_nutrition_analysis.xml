@@ -24,18 +24,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/foodPhotoAndName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/nutritionInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView">
@@ -57,18 +54,38 @@
 
                 <ImageView
                     android:id="@+id/foodPhoto"
-                    android:layout_width="200sp"
-                    android:layout_height="200sp"
-                    android:src="@drawable/food_placeholder"
+                    android:layout_width="160sp"
+                    android:layout_height="160sp"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/todo" />
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/food_placeholder" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/bg_nav_header"
+                android:background="@color/peach_puff"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <!-- todo: the diet type should warn the user -->
+                <TextView
+                    android:id="@+id/dietType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/diet_type"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/peach_puff"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -77,8 +94,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="@string/name_of_food"
                     android:textColor="@color/black"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -86,286 +104,25 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/nutritionInfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="250dp"
-        android:backgroundTint="@color/peach_puff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foodPhotoAndName"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="10dp">
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:gravity="center"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/nutrition_value"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ProgressBar
-                        android:id="@+id/progressBarCalories"
-                        style="@style/CircularDeterminateProgressBarCalories"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:progress="50" />
-
-                    <TextView
-                        android:id="@+id/progressCaloriesTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="51dp"
-                        android:layout_marginTop="39dp"
-                        android:layout_marginEnd="53dp"
-                        android:layout_marginBottom="78dp"
-                        android:text="@string/_60"
-                        android:textSize="25sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCalories"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarCalories"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarCalories"
-                        app:layout_constraintTop_toTopOf="@+id/progressBarCalories" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="37dp"
-                        android:layout_marginEnd="39dp"
-                        android:layout_marginBottom="48dp"
-                        android:text="@string/calories"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCalories"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarCalories"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarCalories"
-                        app:layout_constraintTop_toBottomOf="@+id/progressCaloriesTextView" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    >
-
-                    <ProgressBar
-                        android:id="@+id/progressBarSodium"
-                        style="@style/CircularDeterminateProgressBarSodium"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0"
-                        tools:progress="50" />
-
-                    <TextView
-                        android:id="@+id/progressSodiumTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="51dp"
-                        android:layout_marginTop="39dp"
-                        android:layout_marginEnd="53dp"
-                        android:layout_marginBottom="78dp"
-                        android:text="@string/_60"
-                        android:textSize="25sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSodium"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarSodium"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarSodium"
-                        app:layout_constraintTop_toTopOf="@+id/progressBarSodium" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="37dp"
-                        android:layout_marginEnd="39dp"
-                        android:layout_marginBottom="48dp"
-                        android:text="@string/sodium"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSodium"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarSodium"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarSodium"
-                        app:layout_constraintTop_toBottomOf="@+id/progressSodiumTextView" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    >
-
-                    <ProgressBar
-                        android:id="@+id/progressBarCholesterol"
-                        style="@style/CircularDeterminateProgressBarCholesterol"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:progress="50" />
-
-                    <TextView
-                        android:id="@+id/progressCholesterolTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="51dp"
-                        android:layout_marginTop="39dp"
-                        android:layout_marginEnd="53dp"
-                        android:layout_marginBottom="78dp"
-                        android:text="@string/_60"
-                        android:textSize="25sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCholesterol"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarCholesterol"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarCholesterol"
-                        app:layout_constraintTop_toTopOf="@+id/progressBarCholesterol" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="37dp"
-                        android:layout_marginEnd="39dp"
-                        android:layout_marginBottom="48dp"
-                        android:text="@string/cholesterol"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarCholesterol"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarCholesterol"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarCholesterol"
-                        app:layout_constraintTop_toBottomOf="@+id/progressCholesterolTextView" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.949"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0">
-
-                    <ProgressBar
-                        android:id="@+id/progressBarSugar"
-                        style="@style/CircularDeterminateProgressBarSugar"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:progress="50" />
-
-                    <TextView
-                        android:id="@+id/progressSugarTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="51dp"
-                        android:layout_marginTop="39dp"
-                        android:layout_marginEnd="53dp"
-                        android:layout_marginBottom="78dp"
-                        android:text="@string/_60"
-                        android:textSize="25sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSugar"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarSugar"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarSugar"
-                        app:layout_constraintTop_toTopOf="@+id/progressBarSugar" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="37dp"
-                        android:layout_marginEnd="39dp"
-                        android:layout_marginBottom="48dp"
-                        android:text="@string/sugar"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/progressBarSugar"
-                        app:layout_constraintEnd_toEndOf="@+id/progressBarSugar"
-                        app:layout_constraintStart_toStartOf="@+id/progressBarSugar"
-                        app:layout_constraintTop_toBottomOf="@+id/progressSugarTextView" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-            
-            
-        </LinearLayout>
-        
-    </androidx.cardview.widget.CardView>
+    <!-- todo: show nutrition of one dish -->
+    <!-- todo: add recycler view to add the food  -->
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="15dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nutritionInfo"
-        app:layout_constraintVertical_bias="0.741">
+        app:layout_constraintTop_toBottomOf="@+id/foodPhotoAndName">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/logMealBtn"
-            android:layout_width="wrap_content"
+            android:id="@+id/cardView5"
+            android:layout_width="379dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/peach_puff"
-            android:gravity="center"
-            android:orientation="horizontal"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp">
 
@@ -374,56 +131,269 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="70sp"
-                    android:layout_height="70sp"
-                    android:contentDescription="@string/todo"
-                    android:src="@drawable/log_meal" />
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/log_my_meal"
+                    android:gravity="center"
+                    android:text="@string/nutrition_value"
                     android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <View
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="351dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="8dp"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:textAlignment="center">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/takePhotoBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/peach_puff"
-            android:contentDescription="@string/todo"
-            android:src="@drawable/camera_icon"
-            android:tint="@color/pale_violet_red"
-            android:tooltipText="@string/take_a_photo"
-            app:fabSize="normal" />
 
-        <View
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
+            <!-- todo: this should be in the middle -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/peach_puff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/uploadPhotoBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/peach_puff"
-            android:contentDescription="@string/todo"
-            android:src="@drawable/upload_photo"
-            android:tooltipText="@string/upload_a_photo"
-            app:fabSize="normal" />
+                <TextView
+                    android:id="@+id/caloriesTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/calories"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:tooltipText="@string/calories" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/peach_puff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
+
+                <TextView
+                    android:id="@+id/cholesterolTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/cholesterol"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:tooltipText="@string/cholesterol" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/peach_puff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
+
+                <TextView
+                    android:id="@+id/sodiumTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/sodium"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:tooltipText="@string/sodium" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/peach_puff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
+
+                <TextView
+                    android:id="@+id/sugarTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/sugar"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:tooltipText="@string/sugar" />
+
+            </androidx.cardview.widget.CardView>
+
+        </GridLayout>
+
+        <!-- todo: this one should have image,
+        todo: name of dish, one button to delete -->
+
+        <!-- TODO: for this part we need to set image in two modes,
+            TODO: focus and non-focus.
+        -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dishRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            tools:listitem="@layout/dish_item_layout" />
     </LinearLayout>
 
-    <!-- TODO: for this part we need to set image in two modes,
-        TODO: focus and non-focus.
-    -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_view_background"
+                android:backgroundTint="@color/peach_puff"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:tooltipText="Add your dish here"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:id="@+id/addDishBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="70sp"
+                        android:layout_height="70sp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/food_placeholder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/add_dish"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/logMealBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_view_background"
+                android:backgroundTint="@color/peach_puff"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:tooltipText="Log your meal here"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="70sp"
+                        android:layout_height="70sp"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/log_meal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/record_meal"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/takePhotoBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/peach_puff"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/camera_icon"
+                android:tint="@color/pale_violet_red"
+                android:tooltipText="@string/take_a_photo"
+                app:fabSize="normal" />
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/uploadPhotoBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/peach_puff"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/upload_photo"
+                android:tooltipText="@string/upload_a_photo"
+                app:fabSize="normal" />
+        </LinearLayout>
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

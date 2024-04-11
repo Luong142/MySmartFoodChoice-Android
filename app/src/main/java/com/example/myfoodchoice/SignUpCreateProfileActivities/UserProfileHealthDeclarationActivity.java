@@ -57,9 +57,9 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 
     Spinner spinnerAllergies;
 
-    CheckBox diabetesCheck, highCholesterolCheck, highBloodPressureCheck;
+    CheckBox diabetesCheck, highCholesterolCheck, highBloodPressureCheck, seafoodCheck, eggCheck, peanutCheck;
 
-    Boolean diabetesCheckValue, highCholesterolCheckValue, highBloodPressureCheckValue;
+    Boolean diabetesCheckValue, highCholesterolCheckValue, highBloodPressureCheckValue, seafoodCheckValue, eggCheckValue, peanutCheckValue;
 
     final static String TAG = "UserProfileHealthDeclaration";
 
@@ -86,17 +86,22 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         diabetesCheck = findViewById(R.id.diabetesCheckbox);
         highCholesterolCheck = findViewById(R.id.highCholesterolCheckbox);
         highBloodPressureCheck = findViewById(R.id.highBloodPressureCheckbox);
+        seafoodCheck = findViewById(R.id.seafoodAllergicCheckBox);
+        eggCheck = findViewById(R.id.eggAllergicCheckBox);
+        peanutCheck = findViewById(R.id.peanutAllergicCheckBox);
 
         // set progress bar
         progressBar.setVisibility(ProgressBar.GONE);
         signUpBtn.setVisibility(Button.VISIBLE);
 
         // TODO: init UI component
+        /*
         initListAllergies();
         spinnerAllergies = findViewById(R.id.allergiesSpinner);
         AllergiesAdapter allergiesAdapter = new AllergiesAdapter(this, allergiesArrayList);
         spinnerAllergies.setAdapter(allergiesAdapter);
         spinnerAllergies.setOnItemSelectedListener(onItemSelectedAllergiesListener());
+         */
 
         // for user profile that has been brought over from the first user profile activity.
         intent = getIntent();
@@ -106,13 +111,50 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         diabetesCheckValue = false;
         highCholesterolCheckValue = false;
         highBloodPressureCheckValue = false;
+        seafoodCheckValue = false;
+        eggCheckValue = false;
+        peanutCheckValue = false;
 
         // for sign up button
         signUpBtn.setOnClickListener(onSignUpListener());
 
+        // set on click for check box
         diabetesCheck.setOnCheckedChangeListener(onCheckedDiabetesListener());
         highCholesterolCheck.setOnCheckedChangeListener(onCheckedCholesterolListener());
         highBloodPressureCheck.setOnCheckedChangeListener(onCheckedBloodPressureListener());
+        seafoodCheck.setOnCheckedChangeListener(onCheckedSeafoodListener());
+        eggCheck.setOnCheckedChangeListener(onCheckedEggListener());
+        peanutCheck.setOnCheckedChangeListener(onCheckedPeanutListener());
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private CompoundButton.OnCheckedChangeListener onCheckedPeanutListener()
+    {
+        return (buttonView, isChecked) ->
+        {
+            peanutCheckValue = isChecked;
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private CompoundButton.OnCheckedChangeListener onCheckedEggListener()
+    {
+        return (buttonView, isChecked) ->
+        {
+            eggCheckValue = isChecked;
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private CompoundButton.OnCheckedChangeListener onCheckedSeafoodListener()
+    {
+        return (buttonView, isChecked) ->
+        {
+            seafoodCheckValue = isChecked;
+        };
     }
 
     @NonNull
@@ -128,12 +170,14 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
             userProfile.setDiabetes(diabetesCheckValue);
             userProfile.setHighCholesterol(highCholesterolCheckValue);
             userProfile.setHighBloodPressure(highBloodPressureCheckValue);
+            userProfile.setAllergyEgg(eggCheckValue);
+            userProfile.setAllergyPeanut(peanutCheckValue);
+            userProfile.setAllergySeafood(seafoodCheckValue);
 
             Log.d(TAG, "onSignUpListener: " + userProfile);
 
             // todo: set user profile here
             databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onSignUpCompletedListener());
-
         };
     }
 
@@ -193,7 +237,7 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         };
     }
 
-    @NonNull
+    @NonNull // todo: deprecated old function
     @Contract(" -> new")
     private AdapterView.OnItemSelectedListener onItemSelectedAllergiesListener()
     {
@@ -222,7 +266,7 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         allergiesArrayList.add(new Allergies("Gluten", R.drawable.gluten_free));
         allergiesArrayList.add(new Allergies("Dairy", R.drawable.dairy));
         allergiesArrayList.add(new Allergies("Egg", R.drawable.egg));
-        allergiesArrayList.add(new Allergies("Shellfish", R.drawable.shell)); // Replaced "Tree Nuts" with "Shellfish"
+        allergiesArrayList.add(new Allergies("Seafood", R.drawable.fish));
         allergiesArrayList.add(new Allergies("Peanut", R.drawable.peanut));
     }
 }

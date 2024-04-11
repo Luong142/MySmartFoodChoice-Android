@@ -98,7 +98,7 @@ public class UserProfileViewFragment extends Fragment
             {
                 // get the data from database.
                 userProfile = snapshot.getValue(UserProfile.class);
-                Log.d(TAG, "onDataChange: " + userProfile);
+                // Log.d(TAG, "onDataChange: " + userProfile);
 
                 if (userProfile != null)
                 {

@@ -18,9 +18,8 @@
                 android:thicknessRatio="16"
                 android:useLevel="true"
                 >
-                <gradient
-                    android:startColor="@color/dodger_blue"
-                    android:centerColor="@color/orchid"
+                <solid
+                    android:color="@color/dark_orchid"
                     />
             </shape>
         </rotate>

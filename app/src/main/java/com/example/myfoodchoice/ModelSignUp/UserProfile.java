@@ -28,13 +28,17 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     private boolean isHighCholesterol;
 
-    private String allergies;
+    private boolean isAllergySeafood;
+
+    private boolean isAllergyPeanut;
+
+    private boolean isAllergyEgg;
 
     public UserProfile()
     {
         // this constructor is required for Firebase to be able to deserialize the object
         super();
-        points = 50; // put the default point here
+        points = 100; // put the default point here
     }
 
     protected UserProfile(@NonNull Parcel in)
@@ -53,7 +57,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         isHighBloodPressure = in.readByte() != 0;
         isDiabetes = in.readByte() != 0;
         isHighCholesterol = in.readByte() != 0;
-        allergies = in.readString();
+        isAllergySeafood = in.readByte() != 0;
+        isAllergyPeanut = in.readByte() != 0;
+        isAllergyEgg = in.readByte() != 0;
     }
 
     public UserProfile(String dietType, int dietTypeImage)
@@ -101,7 +107,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeByte((byte) (isHighBloodPressure ? 1 : 0));
         dest.writeByte((byte) (isDiabetes ? 1 : 0));
         dest.writeByte((byte) (isHighCholesterol ? 1 : 0));
-        dest.writeString(allergies);
+        dest.writeByte((byte) (isAllergySeafood ? 1 : 0));
+        dest.writeByte((byte) (isAllergyPeanut ? 1 : 0));
+        dest.writeByte((byte) (isAllergyEgg ? 1 : 0));
     }
 
     @NonNull
@@ -121,10 +129,36 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Diabetes: ").append(isDiabetes).append("\n");
         sb.append("High Cholesterol: ").append(isHighCholesterol).append("\n");
         // sb.append("Activity Level: ").append(activityLevel).append("\n");
-        sb.append("Allergies: ").append(allergies).append("\n");
+        sb.append("Allergy Seafood: ").append(isAllergySeafood).append("\n");
+        sb.append("Allergy Peanut: ").append(isAllergyPeanut).append("\n");
+        sb.append("Allergy Egg: ").append(isAllergyEgg).append("\n");
         sb.append("Points: ").append(points).append("\n");
         sb.append("-------------------");
         return sb.toString();
+    }
+
+    public boolean isAllergySeafood() {
+        return isAllergySeafood;
+    }
+
+    public void setAllergySeafood(boolean allergySeafood) {
+        isAllergySeafood = allergySeafood;
+    }
+
+    public boolean isAllergyPeanut() {
+        return isAllergyPeanut;
+    }
+
+    public void setAllergyPeanut(boolean allergyPeanut) {
+        isAllergyPeanut = allergyPeanut;
+    }
+
+    public boolean isAllergyEgg() {
+        return isAllergyEgg;
+    }
+
+    public void setAllergyEgg(boolean allergyEgg) {
+        isAllergyEgg = allergyEgg;
     }
 
     public boolean isHighBloodPressure() {
@@ -149,14 +183,6 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     public void setHighCholesterol(boolean highCholesterol) {
         this.isHighCholesterol = highCholesterol;
-    }
-
-    public String getAllergies() {
-        return allergies;
-    }
-
-    public void setAllergies(String allergies) {
-        this.allergies = allergies;
     }
 
     public int getPoints() {

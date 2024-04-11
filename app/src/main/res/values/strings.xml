@@ -171,4 +171,18 @@
     <string name="sodium_0">Sodium 0</string>
     <string name="cholesterol_0">Cholesterol 0</string>
     <string name="sugar_0">Sugar 0</string>
+    <string name="add_dish">Add Dish</string>
+    <string name="name_of_food">Name of Food</string>
+    <string name="remove">Remove</string>
+    <string name="total_nutrition_value">Total Nutrition Value</string>
+    <string name="_0">0%</string>
+    <string name="daily_check_in">Daily Check In</string>
+    <string name="how_to_redeem">How to redeem?</string>
+    <string name="how_to_check_in">How to check in?</string>
+    <string name="guide_checking_in">Guide Checking In</string>
+    <string name="click_on_the_day_part">Click on the Day part.</string>
+    <string name="click_on_the_item_in_the_list">Click on the item in the list.</string>
+    <string name="current_date">Current Date</string>
+    <string name="mysmartfoodchoice">MySmartFoodChoice</string>
+    <string name="record_meal">Record Meal</string>
 </resources>

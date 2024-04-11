@@ -7,6 +7,11 @@ public class CheckInDay
     private int imageId;
     private String day;
 
+    public CheckInDay()
+    {
+
+    }
+
     public CheckInDay(int imageId, String day)
     {
         this.imageId = imageId;

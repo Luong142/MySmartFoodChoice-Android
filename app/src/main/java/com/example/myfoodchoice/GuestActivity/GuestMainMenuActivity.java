@@ -16,8 +16,9 @@ import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealNutritionAnalysisFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealSearchFoodFragment;
+import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
+import com.example.myfoodchoice.UserFragment.UserMealHistoryFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
@@ -59,7 +60,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealNutritionAnalysisFragment()).commit();
+                    new UserHomeAlvinFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -86,10 +87,10 @@ public class GuestMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
 
-        if (itemId == R.id.nav_log_meal)
+        if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealNutritionAnalysisFragment()).commit();
+                    new UserHomeAlvinFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
@@ -100,12 +101,6 @@ public class GuestMainMenuActivity extends AppCompatActivity
         }
 
         // TODO: pls take note that Guest can access some User fragment
-
-        else if (itemId == R.id.nav_meal_record)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealSearchFoodFragment()).commit();
-        }
 
         else if (itemId == R.id.nav_food_recipe)
         {
@@ -153,7 +148,8 @@ public class GuestMainMenuActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void onPointerCaptureChanged(boolean hasCapture)
+    {
         super.onPointerCaptureChanged(hasCapture);
     }
 }

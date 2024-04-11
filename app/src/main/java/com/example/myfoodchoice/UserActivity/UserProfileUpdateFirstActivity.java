@@ -23,7 +23,6 @@ import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -342,7 +341,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Log.d(TAG, "onCompleteNextListener: " + task.getResult());
+                // Log.d(TAG, "onCompleteNextListener: " + task.getResult());
             }
             else
             {
