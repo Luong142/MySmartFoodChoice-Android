@@ -25,11 +25,11 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
+import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
-import com.example.myfoodchoice.UserFragment.UserSearchFoodFragment;
 import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -46,7 +46,7 @@ import org.jetbrains.annotations.Contract;
 
 import io.paperdb.Paper;
 
-public class UserMainMenuDeprecatedActivity extends AppCompatActivity
+public class UserMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     DrawerLayout drawerLayout;
@@ -142,7 +142,7 @@ public class UserMainMenuDeprecatedActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealFragment()).commit();
+                    new UserHomeAlvinFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -198,7 +198,7 @@ public class UserMainMenuDeprecatedActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError error)
             {
                 Toast.makeText
-                        (UserMainMenuDeprecatedActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                        (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
             }
         };
@@ -234,7 +234,7 @@ public class UserMainMenuDeprecatedActivity extends AppCompatActivity
                 public void onCancelled(@NonNull DatabaseError error)
                 {
                     Toast.makeText
-                            (UserMainMenuDeprecatedActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
+                            (UserMainMenuActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "loadUserProfile:onCancelled ", error.toException());
                 }
             };
@@ -249,10 +249,10 @@ public class UserMainMenuDeprecatedActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: our task is to follow the wireframe diagram from web and complete more UI for prototype, that is it.
 
-        if (itemId == R.id.nav_log_meal)
+        if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserLogMealFragment()).commit();
+                    new UserHomeAlvinFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
@@ -260,12 +260,6 @@ public class UserMainMenuDeprecatedActivity extends AppCompatActivity
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserCheckInFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_meal_record)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserSearchFoodFragment()).commit();
         }
 
         else if (itemId == R.id.nav_food_recipe)

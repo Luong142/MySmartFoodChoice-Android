@@ -19,6 +19,8 @@ import java.util.Objects;
 
 public class AllergiesAdapter extends ArrayAdapter<Allergies>
 {
+    // fixme: remove this we will use radio button.
+
     public AllergiesAdapter(Context context, ArrayList<Allergies> objects)
     {
         super(context, 0, objects);

@@ -317,7 +317,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 }
                 else
                 {
-                    intent = new Intent(UserProfileUpdateFirstActivity.this, UserMainMenuDeprecatedActivity.class);
+                    intent = new Intent(UserProfileUpdateFirstActivity.this, UserMainMenuActivity.class);
                     intent.putExtra("userProfile", userProfile);
                     startActivity(intent);
                     finish();

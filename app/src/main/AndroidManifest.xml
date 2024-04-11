@@ -105,7 +105,7 @@
             android:name=".AuthenticationActivity.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity.UserMainMenuDeprecatedActivity"
+            android:name=".UserActivity.UserMainMenuActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.RegisterGuestActivity"

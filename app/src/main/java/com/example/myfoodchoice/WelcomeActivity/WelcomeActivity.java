@@ -21,7 +21,7 @@ import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
-import com.example.myfoodchoice.UserActivity.UserMainMenuDeprecatedActivity;
+import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.Contract;
@@ -195,7 +195,7 @@ public class WelcomeActivity extends AppCompatActivity
             if (task.isSuccessful())
             {
                 Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, UserMainMenuDeprecatedActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, UserMainMenuActivity.class);
                 startActivity(intent);
                 finish();
             }

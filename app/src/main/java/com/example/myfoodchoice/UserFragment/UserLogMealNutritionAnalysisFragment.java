@@ -90,7 +90,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     TextView cholesterolTextView, sugarTextView, saltTextView, caloriesTextView;
 
-    TextView checkInTextView, foodNameTextView, dietTypeTextView;
+    TextView foodNameTextView, dietTypeTextView;
 
     // TODO: add in one more button for taking photo I think.
     FloatingActionButton takePhotoBtn, uploadPhotoBtn;
@@ -207,7 +207,6 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         sugarMessage = new StringBuilder();
 
         // TODO: init UI components
-        checkInTextView = view.findViewById(R.id.checkInTextView);
         foodNameTextView = view.findViewById(R.id.foodName);
 
         // fixme: should be matched with the ID.
@@ -324,13 +323,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     strIngredients = dishInfo.getMeals().stream()
                             .flatMap(meal -> Stream.of
                                     (
-                                        meal.getStrIngredient1(), meal.getStrIngredient2(), meal.getStrIngredient3(),
-                                        meal.getStrIngredient4(), meal.getStrIngredient5(), meal.getStrIngredient6(),
-                                        meal.getStrIngredient7(), meal.getStrIngredient8(), meal.getStrIngredient9(),
-                                        meal.getStrIngredient10(), meal.getStrIngredient11(), meal.getStrIngredient12(),
-                                        meal.getStrIngredient13(), meal.getStrIngredient14(), meal.getStrIngredient15(),
-                                        meal.getStrIngredient16(), meal.getStrIngredient17(), meal.getStrIngredient18(),
-                                        meal.getStrIngredient19(), meal.getStrIngredient20()
+                                    meal.getStrIngredient1(), meal.getStrIngredient2(), meal.getStrIngredient3(),
+                                    meal.getStrIngredient4(), meal.getStrIngredient5(), meal.getStrIngredient6(),
+                                    meal.getStrIngredient7(), meal.getStrIngredient8(), meal.getStrIngredient9(),
+                                    meal.getStrIngredient10(), meal.getStrIngredient11(), meal.getStrIngredient12(),
+                                    meal.getStrIngredient13(), meal.getStrIngredient14(), meal.getStrIngredient15(),
+                                    meal.getStrIngredient16(), meal.getStrIngredient17(), meal.getStrIngredient18(),
+                                    meal.getStrIngredient19(), meal.getStrIngredient20()
                                     ))
                             .filter(Objects::nonNull) // if null attribute then filter out.
                             .filter(strIngredient -> !strIngredient.isEmpty()) // if empty then filter out.
@@ -376,6 +375,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 "crustacean", "shellfish",
                 "anchovy fillet", "fish stock");
 
+        List<String> allergySeafoodList = Arrays.asList("lobster", "fish",
+                "crustacean", "shellfish",
+                "anchovy fillet", "fish stock");
+
         List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
                 "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
                 "anchovy fillet", "fish stock");
@@ -392,7 +395,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Warning")
-                    .setMessage("This dish contains allergies to your health profile.")
+                    .setMessage(String.format("This dish contains %s allergies.", allergies))
                     .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                     .show();
         }

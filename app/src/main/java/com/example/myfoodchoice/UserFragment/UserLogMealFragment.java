@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
@@ -72,6 +70,8 @@ public class UserLogMealFragment extends Fragment
     // fixme: apply this pie chart instead of progress bar.
 
     Button morningBtn, afternoonBtn, nightBtn;
+
+    TextView caloriesCountText, cholesterolCountText, sugarCountText, saltCountText, genderText;
 
     Bundle bundleStore;
 
@@ -143,6 +143,13 @@ public class UserLogMealFragment extends Fragment
         afternoonBtn = view.findViewById(R.id.afternoonButton);
         nightBtn = view.findViewById(R.id.nightButton);
 
+        // for text view
+        caloriesCountText = view.findViewById(R.id.caloriesNumTextView);
+        cholesterolCountText = view.findViewById(R.id.cholesterolNumTextView);
+        sugarCountText = view.findViewById(R.id.sugarNumTextView);
+        saltCountText = view.findViewById(R.id.sodiumNumTextView);
+        genderText = view.findViewById(R.id.genderTextView);
+
         morningBtn.setOnClickListener(onNavToUserMealRecordMorningListener());
         afternoonBtn.setOnClickListener(onNavToUserMealRecordAfternoonListener());
         nightBtn.setOnClickListener(onNavToUserMealRecordNightListener());
@@ -195,6 +202,19 @@ public class UserLogMealFragment extends Fragment
                         percentageSugar));
 
                 //notify();
+
+                // display the counter
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCalories, maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCholesterol, maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSugar, maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSalt, maxSalt));
             }
 
             @Override
@@ -235,6 +255,20 @@ public class UserLogMealFragment extends Fragment
                 progressBarSugar.setProgress((int) percentageSugar);
                 sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageSugar));
+
+                // display the counter for calories
+                caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalCalories, (int) maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalCholesterol, (int) maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalSugar, (int) maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalSalt, (int) maxSalt));
+
             }
 
             @Override
@@ -275,6 +309,19 @@ public class UserLogMealFragment extends Fragment
                 progressBarSugar.setProgress((int) percentageSugar);
                 sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageSugar));
+
+                // display the counter for calories
+                caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalCalories, (int) maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalCholesterol, (int) maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalSugar, (int) maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalSalt, (int) maxSalt));
             }
 
             @Override
@@ -315,6 +362,19 @@ public class UserLogMealFragment extends Fragment
                 progressBarSugar.setProgress((int) percentageSugar);
                 sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageSugar));
+
+                // display the counter for calories
+                caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalCalories, (int) maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalCholesterol, (int) maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalSugar, (int) maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                        (int) totalSalt, (int) maxSalt));
             }
 
             @Override
@@ -348,15 +408,16 @@ public class UserLogMealFragment extends Fragment
                     gender = userProfile.getGender();
                     switch(gender)
                     {
+                        // todo: set text max plus current nutrition value.
                         // todo: important here this should be a goal or something else?
                         case "Male":
-                            maxCalories = 3000; // per calories
+                            maxCalories = 2200; // per calories
                             maxCholesterol = 300; // per mg
                             maxSugar = 36; // per grams
                             maxSalt = 2300; // per mg
                             break;
                         case "Female":
-                            maxCalories = 2000;
+                            maxCalories = 1800;
                             maxCholesterol = 240;
                             maxSugar = 24;
                             maxSalt = 2300; // per mg, should be sodium
@@ -367,6 +428,9 @@ public class UserLogMealFragment extends Fragment
                             break;
                     }
 
+                    // display gender
+                    genderText.setText(String.format(Locale.ROOT, "Gender: %s", gender));
+
                     // todo: for health
                     isDiabetes = userProfile.isDiabetes();
                     isHighBloodPressure = userProfile.isHighBloodPressure();
@@ -374,6 +438,7 @@ public class UserLogMealFragment extends Fragment
 
                     StringBuilder alertDialogMessage = new StringBuilder();
 
+                    // todo: should warn the user if over
                     if (isDiabetes)
                     {
                         maxCalories *= 0.5; // minus 50%

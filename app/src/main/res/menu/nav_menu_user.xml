@@ -5,22 +5,20 @@
     >
 
     <group android:checkableBehavior="single">
+
+        <!-- todo: replace these two log my meal, meal records
+          todo: home page should have two button that go to two of these fragments
+          -->
         <item
-            android:id="@+id/nav_log_meal"
-            android:title="@string/log_my_meal"
-            android:icon="@drawable/log_meal"
+            android:id="@+id/nav_home"
+            android:title="@string/home"
+            android:icon="@drawable/home"
             />
 
         <item
             android:id="@+id/nav_check_in"
             android:title="@string/check_in"
             android:icon="@drawable/check_in"
-            />
-
-        <item
-            android:id="@+id/nav_meal_record"
-            android:title="@string/meal_records"
-            android:icon="@drawable/history"
             />
 
         <item

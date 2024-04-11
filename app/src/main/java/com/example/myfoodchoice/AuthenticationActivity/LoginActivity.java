@@ -27,7 +27,7 @@ import com.example.myfoodchoice.GuestActivity.GuestTrialOverActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserActivity.UserMainMenuDeprecatedActivity;
+import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -219,7 +219,7 @@ public class LoginActivity extends AppCompatActivity
                             intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
                             break;
                         case "User":
-                            intent = new Intent(LoginActivity.this, UserMainMenuDeprecatedActivity.class);
+                            intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
                             break;
 
                         default:

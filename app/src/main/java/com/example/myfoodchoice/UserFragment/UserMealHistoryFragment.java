@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.R;
 
-public class UserSearchFoodFragment extends Fragment
+public class UserMealHistoryFragment extends Fragment
 {
     // TODO: declare
     ImageView cameraImageClick;
@@ -75,6 +75,6 @@ public class UserSearchFoodFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_food, container, false);
+        return inflater.inflate(R.layout.fragment_meal_history, container, false);
     }
 }

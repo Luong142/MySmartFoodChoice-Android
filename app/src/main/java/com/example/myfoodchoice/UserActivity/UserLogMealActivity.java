@@ -237,7 +237,7 @@ public class UserLogMealActivity extends AppCompatActivity
             else
             {
                 intentNavToBothMainMenu = new Intent(UserLogMealActivity.this,
-                        UserMainMenuDeprecatedActivity.class);
+                        UserMainMenuActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
         };
@@ -284,7 +284,7 @@ public class UserLogMealActivity extends AppCompatActivity
             else
             {
                 intentNavToBothMainMenu = new Intent(UserLogMealActivity.this,
-                        UserMainMenuDeprecatedActivity.class);
+                        UserMainMenuActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
             finish();
@@ -332,7 +332,7 @@ public class UserLogMealActivity extends AppCompatActivity
             else
             {
                 intentNavToBothMainMenu = new Intent(UserLogMealActivity.this,
-                        UserMainMenuDeprecatedActivity.class);
+                        UserMainMenuActivity.class);
             }
             startActivity(intentNavToBothMainMenu);
             finish();
