@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Adapter;
+package com.example.myfoodchoice.AdapterRecyclerView;
 
 import android.net.Uri;
 import android.view.LayoutInflater;

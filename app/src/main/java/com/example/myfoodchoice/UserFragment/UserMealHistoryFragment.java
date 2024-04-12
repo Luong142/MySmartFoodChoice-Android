@@ -17,58 +17,63 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UserMealHistoryFragment extends Fragment
 {
-    // TODO: declare
-    ImageView cameraImageClick;
+    // todo: init firebase
+    FirebaseAuth firebaseAuth;
 
-    private ActivityResultLauncher<Intent> cameraResultLauncher;
+    FirebaseDatabase firebaseDatabase;
 
-    private static final int CAMERA_REQUEST_CODE = 100;
+    FirebaseUser firebaseUser;
+
+    DatabaseReference databaseReferenceUserProfile,
+            databaseReferenceMeals,
+            databaseReferenceMealsChildren;
+
+    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+
+    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily meal.
+
+    String userID;
+
+    // TODO: declare UI components
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO: init UI components
-        cameraImageClick = view.findViewById(R.id.cameraImageClick);
+        // TODO: init Firebase Database
+        firebaseDatabase = FirebaseDatabase.getInstance
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
-        // Initialize the ActivityResultLauncher
-        cameraResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result ->
-                {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        Intent data = result.getData();
-                        if (data != null)
-                        {
-                            Bundle extras = data.getExtras();
-                            if (extras != null)
-                            {
-                                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                                // Use the imageBitmap as needed, e.g., set it to an ImageView
-                                cameraImageClick.setImageBitmap(imageBitmap);
-                            }
-                        }
-                    }
-                });
+        // TODO: init Firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        // Set up the camera click listener
-        cameraImageClick.setOnClickListener(v -> openCamera());
-
-    }
-
-    private void openCamera()
-    {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Activity activity = getActivity();
-        if (activity != null && takePictureIntent.resolveActivity(activity.getPackageManager()) != null)
+        // TODO: init user id
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
         {
-            cameraResultLauncher.launch(takePictureIntent);
+            userID = firebaseUser.getUid();
+
+            // TODO: init database reference for user profile
+            databaseReferenceUserProfile =
+                    firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
+
+            databaseReferenceMeals =
+                    firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
+
         }
+
+
+
+        // todo: init UI components
+
     }
 
     @Override

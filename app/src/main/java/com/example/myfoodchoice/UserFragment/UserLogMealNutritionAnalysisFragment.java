@@ -3,7 +3,6 @@ package com.example.myfoodchoice.UserFragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,7 +33,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.Adapter.DishGuestUserAdapter;
+import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
@@ -785,17 +784,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             // todo: set the time stamp for meal
             meal.startDate();
 
-            // todo: set total nutrition value
-
             // todo: push the data in firebase
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
 
             meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
-
             // fixme: testing
             //Log.d(TAG, "onNavToLogMealListener: " + meal);
             //Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
 
+            // todo: set total nutrition value
             databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onCompleteLogMealListener());
         };
     }
@@ -811,9 +808,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 Toast.makeText(requireContext(), "Logged your meal.", Toast.LENGTH_LONG).show();
                 bundle.putParcelable("meal", meal);
 
-                // todo: reverse this page change to
+                // todo: go to the home page.
                 requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new UserLogMealFragment())
+                        .replace(R.id.fragment_container, new UserHomeAlvinFragment())
                         .commit();
             }
             else

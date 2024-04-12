@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
@@ -51,9 +53,6 @@ public class UserLogMealFragment extends Fragment
     final static String TAG = "UserLogMealFragment";
 
     // TODO: declare UI component
-
-    // AlertDialog morningDialog, afternoonDialog, nightDialog;
-
     TextView caloriesText, cholesterolText, sugarText, saltText;
 
     double totalCalories, totalCholesterol, totalSugar, totalSalt;
@@ -537,8 +536,6 @@ public class UserLogMealFragment extends Fragment
             meal.setMorning(false);
             meal.setAfternoon(false);
             meal.setNight(true);
-
-            // not set key yet
 
             // todo: option 1: make a global instance for meal object
             // todo: option 2: setValue() to Firebase realtime database in a temporary path, then

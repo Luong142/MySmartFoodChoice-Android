@@ -186,7 +186,7 @@
                         android:id="@+id/caloriesNumTextView"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0/2300 kcal"
+                        android:text="0/2200.0 kcal"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -195,7 +195,7 @@
                         android:id="@+id/sodiumNumTextView"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0/300 mg"
+                        android:text="0/300.0 mg"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -322,7 +322,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="0/36 mg"
+                        android:text="0/36.0 mg"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -332,7 +332,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="0/2300 g"
+                        android:text="0/2300.0 g"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />

@@ -17,8 +17,6 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
-import com.example.myfoodchoice.UserFragment.UserMealHistoryFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;

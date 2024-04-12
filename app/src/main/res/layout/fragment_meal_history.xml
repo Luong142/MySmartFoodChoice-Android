@@ -18,34 +18,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/searchEditText"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:autofillHints="TODO"
-            android:background="@android:drawable/edit_text"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:ems="10"
-            android:hint="@string/search_for_food_or_drinks"
-            android:inputType="text"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-        <View
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
 
-        <ImageView
-            android:id="@+id/cameraImageClick"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/todo"
-            android:src="@drawable/camera_icon" />
+
     </LinearLayout>
 
     <!-- The rest of your layout goes here -->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

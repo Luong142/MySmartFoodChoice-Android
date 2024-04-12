@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Adapter;
+package com.example.myfoodchoice.AdapterSpinner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,14 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myfoodchoice.ModelSignUp.UserProfile;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class ActivityLevelAdapter extends ArrayAdapter<UserProfile>
+public class BusinessRoleAdapter extends ArrayAdapter<BusinessProfile>
 {
-    public ActivityLevelAdapter(Context context, ArrayList<UserProfile> objects)
+    public BusinessRoleAdapter(Context context, ArrayList<BusinessProfile> objects)
     {
         super(context, 0, objects);
     }
@@ -42,14 +43,16 @@ public class ActivityLevelAdapter extends ArrayAdapter<UserProfile>
         if (convertView == null)
         {
             convertView = LayoutInflater.from(getContext()).inflate
-                    (R.layout.custom_spinner_activity_level, parent, false);
+                    (R.layout.custom_spinner_business_role, parent, false);
         }
 
-        ImageView activityLevelImage = convertView.findViewById(R.id.activityLevelImage);
-        TextView activityLevel = convertView.findViewById(R.id.activityLevel);
+        ImageView businessImage = convertView.findViewById(R.id.businessImage);
+        TextView businessText = convertView.findViewById(R.id.businessText);
 
-        UserProfile userProfile = getItem(pos);
+        BusinessProfile businessProfile = getItem(pos);
 
+        businessImage.setImageResource(Objects.requireNonNull(businessProfile).getBusinessImage());
+        businessText.setText(businessProfile.getRole());
         return convertView;
     }
 }
