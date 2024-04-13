@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterRecyclerView.SharedReviewAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnReviewClickListener;
+import com.example.myfoodchoice.AdapterRecyclerView.SharedReviewAdapter;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;

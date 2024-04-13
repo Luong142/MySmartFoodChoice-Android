@@ -33,8 +33,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
+import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelMeal.Meal;
@@ -767,9 +767,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 return;
             }
 
-            if (meal.getDishes().getItems().size() > 5)
+            if (meal.getDishes().getItems().size() > 3)
             {
-                message.append("You can only add up to 5 dishes.");
+                message.append("You can only add up to 3 dishes.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
                 return;
             }

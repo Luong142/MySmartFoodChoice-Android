@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterRecyclerView.RewardUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnRewardItemRedeemClickListener;
+import com.example.myfoodchoice.AdapterRecyclerView.RewardUserAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.ModelUtilities.Reward;
 import com.example.myfoodchoice.R;

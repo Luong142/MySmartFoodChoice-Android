@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterRecyclerView.CheckInDayAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDailyCheckInListener;
+import com.example.myfoodchoice.AdapterRecyclerView.CheckInDayAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.ModelUtilities.CheckInDay;
 import com.example.myfoodchoice.R;

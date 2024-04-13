@@ -186,4 +186,6 @@
     <string name="mysmartfoodchoice">MySmartFoodChoice</string>
     <string name="record_meal">Record Meal</string>
     <string name="home_page">Home Page</string>
+    <string name="morning_meal">Morning Meal</string>
+    <string name="view">View</string>
 </resources>

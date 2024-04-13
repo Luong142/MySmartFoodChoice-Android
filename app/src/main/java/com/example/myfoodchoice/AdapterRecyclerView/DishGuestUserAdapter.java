@@ -22,12 +22,12 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
 {
     private final List<FoodItem.Item> itemList;
 
-    private final OnDishClickListener onDishClickListener;
+    private final OnDishClickListener onRemoveDishListener;
 
-    public DishGuestUserAdapter(List<FoodItem.Item> itemList, OnDishClickListener onDishClickListener)
+    public DishGuestUserAdapter(List<FoodItem.Item> itemList, OnDishClickListener onRemoveDishListener)
     {
         this.itemList = itemList;
-        this.onDishClickListener = onDishClickListener;
+        this.onRemoveDishListener = onRemoveDishListener;
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder
@@ -63,7 +63,7 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.dish_item_layout,
                 parent, false);
-        return new DishGuestUserAdapter.myViewHolder(itemView, onDishClickListener);
+        return new DishGuestUserAdapter.myViewHolder(itemView, onRemoveDishListener);
     }
 
     @Override
