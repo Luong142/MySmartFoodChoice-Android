@@ -53,13 +53,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     ProgressBar progressBar;
 
     Button nextBtn;
-    Spinner spinnerActivity;
 
-    ArrayList<UserProfile> activityArrayList;
-
-    String myUri, gender, activityLevel;
-
-    ActivityLevel activityLevelEnum;
+    String myUri, gender;
 
     int ageInt;
 
@@ -161,40 +156,6 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         // TODO: this is to display the profile picture in here
         // we can reference this function to UserMainMenuActivity and use it to display the profile picture.
         getUserInfo();
-    }
-
-    private final AdapterView.OnItemSelectedListener onItemSelectedActivityListener
-            = new AdapterView.OnItemSelectedListener()
-    {
-        @Override
-        public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
-        {
-            UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);
-            // activityLevelEnum = userProfile1.getActivityLevel();
-            activityLevel = activityLevelEnum.name();
-            nextBtn.setEnabled(true);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent)
-        {
-            // show a message or prompt
-            Toast.makeText(getApplicationContext(),
-                    "Please select an activity level.",
-                    Toast.LENGTH_SHORT).show();
-            nextBtn.setEnabled(false);
-        }
-    };
-
-    private void initListActivityLevel()
-    {
-        /*
-        activityArrayList.add(new UserProfile(ActivityLevel.SEDENTARY, R.drawable.sedentary));
-        activityArrayList.add(new UserProfile(ActivityLevel.LIGHTLY_ACTIVE, R.drawable.lightlyactive));
-        activityArrayList.add(new UserProfile(ActivityLevel.MODERATELY_ACTIVE, R.drawable.moderateactive));
-        activityArrayList.add(new UserProfile(ActivityLevel.VERY_ACTIVE, R.drawable.veryactive__2_));
-        activityArrayList.add(new UserProfile(ActivityLevel.EXTREMELY_ACTIVE, R.drawable.extremeactive));
-         */
     }
 
     @NonNull

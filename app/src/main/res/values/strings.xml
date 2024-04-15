@@ -188,4 +188,10 @@
     <string name="home_page">Home Page</string>
     <string name="morning_meal">Morning Meal</string>
     <string name="view">View</string>
+    <string name="show_meal_num">Show Meal Num</string>
+    <string name="show_date">Show Date</string>
+    <string name="show_time">Show Time</string>
+    <string name="all">All</string>
+    <string name="food_name">Food Name</string>
+    <string name="food_details">Food Details</string>
 </resources>

@@ -143,7 +143,6 @@ public class WelcomeActivity extends AppCompatActivity
             }
         }
 
-
         // TODO: we have normal user, guest, business vendor with two types
         //  (Dietitian and Trainer)
         // TODO: use the attribute to identify which user type.

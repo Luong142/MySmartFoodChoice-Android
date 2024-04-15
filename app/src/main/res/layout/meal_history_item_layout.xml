@@ -3,39 +3,72 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/peach_puff"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
 
-
         <TextView
-            android:id="@+id/timeMealText"
-            android:layout_width="wrap_content"
+            android:id="@+id/mealNumText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Show Time"
+            android:text="@string/show_meal_num"
             android:textSize="18sp"
-            android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceBody1"
-            android:textStyle="bold"
+            android:textStyle="italic"
             />
 
-        <Button
-            android:id="@+id/removeBtn"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="@string/remove"
-            android:textStyle="bold"
-            android:textAppearance="?attr/textAppearanceBody1"
-            />
+            android:orientation="horizontal"
+            android:layout_gravity="start"
+            android:gravity="start"
+            >
+
+            <TextView
+                android:id="@+id/dateMealText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/show_date"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="bold"
+                />
+
+            <View
+                android:layout_height="match_parent"
+                android:layout_width="50dp"/>
+
+            <TextView
+                android:id="@+id/timeMealText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_time"
+                android:textSize="18sp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodDetailsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            tools:listitem="@layout/meal_detail_item_layout"
+            android:gravity="center"/>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

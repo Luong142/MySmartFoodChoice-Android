@@ -118,12 +118,8 @@ public class Meal implements Parcelable
     @Override
     public String toString()
     {
-        if (dishes.getItems().isEmpty())
-        {
-            return "No dishes";
-        }
-
-        return "Meal{" +
+        return "Meal" +
+                "{" +
                 "key='" + key + '\'' +
                 ", isMorning=" + isMorning +
                 ", isAfternoon=" + isAfternoon +

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -227,7 +226,6 @@ public class UserLogMealFragment extends Fragment
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
-
                 if (totalCalories > maxCalories)
                 {
                     alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");

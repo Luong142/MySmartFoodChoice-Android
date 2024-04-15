@@ -1,6 +1,7 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
         FoodItem.Item item = itemList.get(position);
+
         if (item != null)
         {
             holder.foodName.setText(item.getName());

@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.UserFragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -75,6 +78,9 @@ public class UserHomeAlvinFragment extends Fragment
     Bundle bundleStore;
 
     UserLogMealNutritionAnalysisFragment userLogMealNutritionAnalysisFragment;
+    private StringBuilder alertDialogMessage;
+
+    View view;
 
     // todo: migrate the UI from log meal page to this home fragment.
 
@@ -151,6 +157,10 @@ public class UserHomeAlvinFragment extends Fragment
         cholesterolCountText = view.findViewById(R.id.cholesterolNumTextView);
         sugarCountText = view.findViewById(R.id.sugarNumTextView);
         saltCountText = view.findViewById(R.id.sodiumNumTextView);
+
+        // todo: init view and string builder
+        this.view = view;
+        alertDialogMessage = new StringBuilder();
     }
 
     @NonNull
@@ -318,6 +328,37 @@ public class UserHomeAlvinFragment extends Fragment
 
                 saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
                         totalSalt, maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                // fixme: the error is here view is gone if we use snack bar.
+                if (alertDialogMessage.length() > 0)
+                {
+                    Toast.makeText(requireContext(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -371,6 +412,41 @@ public class UserHomeAlvinFragment extends Fragment
 
                 saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                if (alertDialogMessage.length() > 0)
+                {
+                    Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
+                            .setAction("OK", v ->
+                            {
+                                // do nothing
+                            })
+                            .show();
+                }
             }
 
             @Override
@@ -424,6 +500,43 @@ public class UserHomeAlvinFragment extends Fragment
 
                 saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                if (alertDialogMessage.length() > 0)
+                {
+                    if (view != null)
+                    {
+                        Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
+                                .setAction("OK", v ->
+                                {
+                                    // do nothing
+                                }).setActionTextColor(Color.RED)
+                                .show();
+                    }
+                }
             }
 
             @Override
