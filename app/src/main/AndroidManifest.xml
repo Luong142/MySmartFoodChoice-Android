@@ -44,9 +44,6 @@
             android:name=".SignUpCreateProfileActivities.UserProfileHealthDeclarationActivity"
             android:exported="false" /> <!-- this one is for testing tflite -->
         <activity
-            android:name=".TestTFlite"
-            android:exported="false" />
-        <activity
             android:name=".GuestActivity.GuestTrialOverActivity"
             android:exported="false" />
 

@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.Adapter.HealthTipsUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
+import com.example.myfoodchoice.AdapterRecyclerView.HealthTipsUserAdapter;
 import com.example.myfoodchoice.ModelBusiness.HealthTips;
 import com.example.myfoodchoice.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

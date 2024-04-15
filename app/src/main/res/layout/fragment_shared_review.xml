@@ -71,9 +71,7 @@
                     tools:text="@string/placeholder" />
 
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView

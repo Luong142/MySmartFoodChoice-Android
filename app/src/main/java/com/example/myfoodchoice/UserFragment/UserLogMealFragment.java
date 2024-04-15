@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.UserFragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -51,9 +55,6 @@ public class UserLogMealFragment extends Fragment
     final static String TAG = "UserLogMealFragment";
 
     // TODO: declare UI component
-
-    // AlertDialog morningDialog, afternoonDialog, nightDialog;
-
     TextView caloriesText, cholesterolText, sugarText, saltText;
 
     double totalCalories, totalCholesterol, totalSugar, totalSalt;
@@ -76,6 +77,10 @@ public class UserLogMealFragment extends Fragment
     Bundle bundleStore;
 
     UserLogMealNutritionAnalysisFragment userLogMealNutritionAnalysisFragment;
+
+    View view;
+
+    StringBuilder alertDialogMessage;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -153,6 +158,10 @@ public class UserLogMealFragment extends Fragment
         morningBtn.setOnClickListener(onNavToUserMealRecordMorningListener());
         afternoonBtn.setOnClickListener(onNavToUserMealRecordAfternoonListener());
         nightBtn.setOnClickListener(onNavToUserMealRecordNightListener());
+
+        // init view
+        this.view = view;
+        alertDialogMessage = new StringBuilder();
     }
 
     @NonNull
@@ -215,6 +224,41 @@ public class UserLogMealFragment extends Fragment
 
                 saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
                         totalSalt, maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                if (alertDialogMessage.length() > 0)
+                {
+                    Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
+                            .setAction("OK", v ->
+                            {
+                                // do nothing
+                            })
+                            .show();
+                }
             }
 
             @Override
@@ -263,11 +307,45 @@ public class UserLogMealFragment extends Fragment
                 cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalCholesterol, (int) maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                         (int) totalSugar, (int) maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
+
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                if (alertDialogMessage.length() > 0)
+                {
+                    Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
+                            .setAction("OK", v ->
+                            {
+                                // do nothing
+                            })
+                            .show();
+                }
             }
 
             @Override
@@ -316,11 +394,45 @@ public class UserLogMealFragment extends Fragment
                 cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalCholesterol, (int) maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                         (int) totalSugar, (int) maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
+
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                if (alertDialogMessage.length() > 0)
+                {
+                    Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
+                            .setAction("OK", v ->
+                            {
+                                // do nothing
+                            })
+                            .show();
+                }
             }
 
             @Override
@@ -369,10 +481,10 @@ public class UserLogMealFragment extends Fragment
                 cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalCholesterol, (int) maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                         (int) totalSugar, (int) maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                         (int) totalSalt, (int) maxSalt));
             }
 
@@ -414,17 +526,17 @@ public class UserLogMealFragment extends Fragment
                             maxCholesterol = 300; // per mg
                             maxSugar = 36; // per grams
                             maxSalt = 2300; // per mg
-                            // display the counter for calories
-                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            // display default UI
+                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
                                     0, (int) maxCalories));
 
-                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                                     0, (int) maxCholesterol));
 
-                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
                                     0, (int) maxSugar));
 
-                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d",
+                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
                                     0, (int) maxSalt));
                             break;
                         case "Female":
@@ -432,6 +544,18 @@ public class UserLogMealFragment extends Fragment
                             maxCholesterol = 240;
                             maxSugar = 24;
                             maxSalt = 2300; // per mg, should be sodium
+                            // display default UI
+                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
+                                    0, (int) maxCalories));
+
+                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                                    0, (int) maxCholesterol));
+
+                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                                    0, (int) maxSugar));
+
+                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                                    0, (int) maxSalt));
                             break;
                         default:
                             // wrong gender no default value.
@@ -447,13 +571,13 @@ public class UserLogMealFragment extends Fragment
                     isHighBloodPressure = userProfile.isHighBloodPressure();
                     isHighCholesterol = userProfile.isHighCholesterol();
 
-                    StringBuilder alertDialogMessage = new StringBuilder();
+                    StringBuilder alertSnackBarMessage = new StringBuilder();
 
                     // todo: should warn the user if over
                     if (isDiabetes)
                     {
                         maxCalories *= 0.5; // minus 50%
-                        alertDialogMessage.append("Diabetes detected. " +
+                        alertSnackBarMessage.append("Diabetes detected. " +
                                         "Your calorie limit has been reduced to ")
                                 .append((int) maxCalories)
                                 .append(" calories to help manage your condition.\n");
@@ -462,7 +586,7 @@ public class UserLogMealFragment extends Fragment
                     if (isHighBloodPressure)
                     {
                         maxSalt *= 0.5; // minus 50%
-                        alertDialogMessage.append("High blood pressure detected. " +
+                        alertSnackBarMessage.append("High blood pressure detected. " +
                                         "Your salt intake limit has been reduced to ")
                                 .append((int) maxSalt)
                                 .append(" mg to help manage your condition.\n");
@@ -471,29 +595,44 @@ public class UserLogMealFragment extends Fragment
                     if (isHighCholesterol)
                     {
                         maxCholesterol *= 0.5;
-                        alertDialogMessage.append("High cholesterol detected. " +
+                        alertSnackBarMessage.append("High cholesterol detected. " +
                                         "Your cholesterol limit has been reduced to ")
                                 .append((int) maxCholesterol)
                                 .append(" mg to help manage your condition.\n");
                     }
-                    if (alertDialogMessage.length() > 0)
+
+                    // fixme: later we can change the message as it is too long snack bar to show.
+                    if (alertSnackBarMessage.length() > 0)
                     {
-                        // Create an AlertDialog Builder
-                        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-
-                        // Set the message to display
-                        builder.setMessage(alertDialogMessage.toString());
-
-                        // Set the positive button
-                        builder.setPositiveButton("OK", (dialog, which) ->
+                        if (view != null)
                         {
-                            // handle here
-                            dialog.dismiss();
-                        });
+                            /*
+                            // It's safe to use the view variable here
+                            Snackbar.make(view, alertSnackBarMessage.toString(), Snackbar.LENGTH_LONG)
+                                    .setAction("OK", v ->
+                                    {
+                                        // do nothing
+                                    })
+                                    .show();
 
-                        // Create and show the AlertDialog
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                             */
+                            // todo: now replace with AlertDialog
+                            // Create an AlertDialog Builder
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+                            // Set the message to display
+                            builder.setMessage(alertSnackBarMessage.toString());
+
+                            // Set the positive button
+                            builder.setPositiveButton("OK", (dialog, which) ->
+                            {
+                                dialog.dismiss();
+                            });
+
+                            // Create and show the AlertDialog
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        }
                     }
                 }
             }
@@ -525,8 +664,6 @@ public class UserLogMealFragment extends Fragment
             meal.setMorning(false);
             meal.setAfternoon(false);
             meal.setNight(true);
-
-            // not set key yet
 
             // todo: option 1: make a global instance for meal object
             // todo: option 2: setValue() to Firebase realtime database in a temporary path, then
@@ -583,6 +720,14 @@ public class UserLogMealFragment extends Fragment
                     .replace(R.id.fragment_container, userLogMealNutritionAnalysisFragment)
                     .commit();
         };
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        // clear the reference to the view to avoid memory leaks
+        this.view = null;
     }
 
     @Override

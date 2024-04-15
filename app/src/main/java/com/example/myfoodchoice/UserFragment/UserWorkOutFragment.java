@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.Adapter.WorkoutPlanAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnWorkoutPlanClickListener;
+import com.example.myfoodchoice.AdapterRecyclerView.WorkoutPlanAdapter;
 import com.example.myfoodchoice.ModelBusiness.WorkoutPlan;
 import com.example.myfoodchoice.R;
 

@@ -3,7 +3,6 @@ package com.example.myfoodchoice.UserFragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,8 +33,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.Adapter.DishGuestUserAdapter;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
+import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelMeal.Meal;
@@ -47,6 +46,8 @@ import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,6 +56,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
@@ -86,6 +91,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceDailyFoodIntake,
             databaseReferenceDailyFoodIntakeChild;
+
+    StorageReference storageReferenceFoodImage;
 
     UserProfile userProfile;
     ImageView foodImage;
@@ -181,6 +188,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
 
             databaseReferenceUserProfile.addValueEventListener(onHealthUserProfileListener());
+
+            storageReferenceFoodImage = FirebaseStorage.getInstance().getReference().child("FoodImages")
+                    .child(userID);
         }
         // set the food item in the Meal object
         // todo: test the meal object
@@ -497,6 +507,20 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             // todo: set the item.
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
+                            // todo: set storage task here
+                            StorageTask<UploadTask.TaskSnapshot> storageTask =
+                                    storageReferenceFoodImage.putFile(selectedImageUri)
+                                    .addOnFailureListener(onFailureUploadFoodImage());
+
+                            // set image here
+                            storageTask.continueWithTask(task ->
+                            {
+                                if (!task.isSuccessful())
+                                {
+                                    throw Objects.requireNonNull(task.getException());
+                                }
+                                return storageReferenceFoodImage.getDownloadUrl();
+                            }).addOnCompleteListener(onCompleteUploadUriListener());
                         }
 
                         // todo: set the total calories first.
@@ -516,6 +540,32 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private OnCompleteListener<Uri> onCompleteUploadUriListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Uri downloadUri = task.getResult();
+
+                //Log.d(TAG, "onCompleteUploadListener: " + meal);
+                itemDisplay.setFoodImage(downloadUri.toString());
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnFailureListener onFailureUploadFoodImage()
+    {
+        return e ->
+        {
+            Log.d(TAG, "onFailureUploadFoodImage: " + e.getMessage());
         };
     }
 
@@ -768,9 +818,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 return;
             }
 
-            if (meal.getDishes().getItems().size() > 5)
+            if (meal.getDishes().getItems().size() > 3)
             {
-                message.append("You can only add up to 5 dishes.");
+                message.append("You can only add up to 3 dishes.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
                 return;
             }
@@ -785,17 +835,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             // todo: set the time stamp for meal
             meal.startDate();
 
-            // todo: set total nutrition value
-
             // todo: push the data in firebase
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
 
             meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
-
             // fixme: testing
             //Log.d(TAG, "onNavToLogMealListener: " + meal);
             //Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
 
+            // todo: set total nutrition value
             databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onCompleteLogMealListener());
         };
     }
@@ -811,9 +859,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 Toast.makeText(requireContext(), "Logged your meal.", Toast.LENGTH_LONG).show();
                 bundle.putParcelable("meal", meal);
 
-                // todo: reverse this page change to
+                // todo: go to the home page.
                 requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new UserLogMealFragment())
+                        .replace(R.id.fragment_container, new UserHomeAlvinFragment())
                         .commit();
             }
             else

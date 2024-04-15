@@ -18,6 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
@@ -26,7 +28,6 @@ import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
-import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
@@ -246,6 +247,8 @@ public class UserMainMenuActivity extends AppCompatActivity
     {
         int itemId = item.getItemId();
 
+        Fragment fragment = null;
+        String fragmentTag = null;
         // TODO: implement more tab here
         // TODO: our task is to follow the wireframe diagram from web and complete more UI for prototype, that is it.
 
@@ -253,51 +256,50 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserHomeAlvinFragment()).commit();
-            // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
         else if (itemId == R.id.nav_check_in)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserCheckInFragment()).commit();
+            fragment = new UserCheckInFragment();
+            fragmentTag = "UserCheckInFragment";
         }
 
         else if (itemId == R.id.nav_food_recipe)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRecipeFragment()).commit();
+            fragment = new UserRecipeFragment();
+            fragmentTag = "UserRecipeFragment";
         }
 
         else if (itemId == R.id.nav_health_tips)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHealthTipsFragment()).commit();
+            fragment = new UserHealthTipsFragment();
+            fragmentTag = "UserHealthTipsFragment";
         }
 
         else if (itemId == R.id.nav_work_out)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserWorkOutFragment()).commit();
+            fragment = new UserWorkOutFragment();
+            fragmentTag = "UserWorkOutFragment";
         }
 
         else if (itemId == R.id.nav_rewards)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRewardsFragment()).commit();
+            fragment = new UserRewardsFragment();
+            fragmentTag = "UserRewardsFragment";
         }
 
         else if (itemId == R.id.nav_review)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ReviewFragment()).commit();
+            fragment = new ReviewFragment();
+            fragmentTag = "ReviewFragment";
         }
 
         // TODO: update and view user profile
         // our plan is to make 3 in 1 manage profile part.
         else if (itemId == R.id.nav_manage_userProfile)
         {
-            getSupportFragmentManager().beginTransaction().replace
-                    (R.id.fragment_container, new UserProfileViewFragment()).commit();
+            fragment = new UserProfileViewFragment();
+            fragmentTag = "UserProfileViewFragment";
         }
 
         else if (itemId == R.id.nav_log_off)
@@ -309,6 +311,27 @@ public class UserMainMenuActivity extends AppCompatActivity
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
             finish();
+        }
+
+        if (fragment != null)
+        {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            // fixme: this will help to increase the performance by reusing the old fragment, not init new one.
+            Fragment existingFragment = fragmentManager.findFragmentByTag(fragmentTag);
+            if (existingFragment != null)
+            {
+                // If it exists, show the existing fragment
+                transaction.show(existingFragment);
+            }
+            else
+            {
+                // If not, add the fragment to the back stack
+                transaction.replace(R.id.fragment_container, fragment, fragmentTag);
+                transaction.addToBackStack(null);
+            }
+            transaction.commit();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

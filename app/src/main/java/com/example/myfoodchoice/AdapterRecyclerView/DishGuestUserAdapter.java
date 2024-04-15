@@ -1,6 +1,7 @@
-package com.example.myfoodchoice.Adapter;
+package com.example.myfoodchoice.AdapterRecyclerView;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,12 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
 {
     private final List<FoodItem.Item> itemList;
 
-    private final OnDishClickListener onDishClickListener;
+    private final OnDishClickListener onRemoveDishListener;
 
-    public DishGuestUserAdapter(List<FoodItem.Item> itemList, OnDishClickListener onDishClickListener)
+    public DishGuestUserAdapter(List<FoodItem.Item> itemList, OnDishClickListener onRemoveDishListener)
     {
         this.itemList = itemList;
-        this.onDishClickListener = onDishClickListener;
+        this.onRemoveDishListener = onRemoveDishListener;
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder
@@ -63,13 +64,14 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.dish_item_layout,
                 parent, false);
-        return new DishGuestUserAdapter.myViewHolder(itemView, onDishClickListener);
+        return new DishGuestUserAdapter.myViewHolder(itemView, onRemoveDishListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
         FoodItem.Item item = itemList.get(position);
+
         if (item != null)
         {
             holder.foodName.setText(item.getName());

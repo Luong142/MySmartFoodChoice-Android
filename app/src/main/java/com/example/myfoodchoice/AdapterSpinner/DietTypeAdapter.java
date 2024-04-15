@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.Adapter;
+package com.example.myfoodchoice.AdapterSpinner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,17 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myfoodchoice.ModelAdapter.Allergies;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class AllergiesAdapter extends ArrayAdapter<Allergies>
+public class DietTypeAdapter extends ArrayAdapter<UserProfile>
 {
-    // fixme: remove this we will use radio button.
-
-    public AllergiesAdapter(Context context, ArrayList<Allergies> objects)
+    public DietTypeAdapter(Context context, ArrayList<UserProfile> objects)
     {
         super(context, 0, objects);
     }
@@ -45,16 +43,16 @@ public class AllergiesAdapter extends ArrayAdapter<Allergies>
         if (convertView == null)
         {
             convertView = LayoutInflater.from(getContext()).inflate
-                    (R.layout.custom_spinner_allergies, parent, false);
+                    (R.layout.custom_spinner_diet_type, parent, false);
         }
 
-        ImageView allergiesImage = convertView.findViewById(R.id.allergiesImage);
-        TextView allergiesText = convertView.findViewById(R.id.allergiesText);
+        ImageView dietTypeImage = convertView.findViewById(R.id.dietTypeImage);
+        TextView dietTypeText = convertView.findViewById(R.id.dietType);
 
-        Allergies allergies = getItem(pos);
+        UserProfile userProfile = getItem(pos);
 
-        allergiesImage.setImageResource(Objects.requireNonNull(allergies).getImage());
-        allergiesText.setText(allergies.getName());
+        dietTypeImage.setImageResource(Objects.requireNonNull(userProfile).getDietTypeImage());
+        dietTypeText.setText(userProfile.getDietType());
 
         return convertView;
     }
