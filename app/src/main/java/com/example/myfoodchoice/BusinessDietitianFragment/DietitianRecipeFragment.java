@@ -14,7 +14,7 @@ import com.example.myfoodchoice.R;
 
 public class DietitianRecipeFragment extends Fragment
 {
-
+    // todo: start here with the dietitian
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)

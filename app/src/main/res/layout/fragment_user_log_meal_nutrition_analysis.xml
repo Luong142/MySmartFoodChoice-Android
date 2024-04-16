@@ -114,9 +114,12 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foodPhotoAndName">
+        app:layout_constraintTop_toBottomOf="@+id/foodPhotoAndName"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView5"
@@ -139,8 +142,7 @@
                     android:gravity="center"
                     android:text="@string/nutrition_value"
                     android:textSize="25sp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -251,7 +253,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dishRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="165dp"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -291,15 +293,15 @@
 
                 <LinearLayout
                     android:id="@+id/addDishBtn"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="70sp"
-                        android:layout_height="70sp"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
                         android:contentDescription="@string/todo"
                         android:src="@drawable/food_placeholder" />
 
@@ -308,11 +310,33 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/add_dish"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <ProgressBar
+                    android:id="@+id/loadingAddDish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/peach_puff"
+                    />
+
             </androidx.cardview.widget.CardView>
+            <View
+                android:layout_width="40dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/takePhotoBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/peach_puff"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/camera_icon"
+                android:tint="@color/pale_violet_red"
+                android:tooltipText="@string/take_a_photo"
+                app:fabSize="normal" />
 
         </LinearLayout>
 
@@ -328,7 +352,6 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/logMealBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_view_background"
@@ -341,15 +364,16 @@
                 app:cardElevation="10dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/logMealBtn"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="70sp"
-                        android:layout_height="70sp"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
                         android:contentDescription="@string/todo"
                         android:src="@drawable/log_meal" />
 
@@ -358,30 +382,25 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/record_meal"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <ProgressBar
+                    android:id="@+id/loadingLogMeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/peach_puff"
+                    android:layout_gravity="center"
+                    />
+
             </androidx.cardview.widget.CardView>
 
-            <View
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/takePhotoBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/peach_puff"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/camera_icon"
-                android:tint="@color/pale_violet_red"
-                android:tooltipText="@string/take_a_photo"
-                app:fabSize="normal" />
 
             <View
-                android:layout_width="20dp"
+                android:layout_width="40dp"
                 android:layout_height="match_parent" />
+
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/uploadPhotoBtn"

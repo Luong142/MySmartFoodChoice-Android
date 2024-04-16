@@ -1,18 +1,19 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterInterfaceListener.OnActionDetailMealListener;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionMealListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
@@ -91,7 +92,13 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
             timeText = itemView.findViewById(R.id.timeMealText);
             dateText = itemView.findViewById(R.id.dateMealText);
             mealNumText = itemView.findViewById(R.id.mealNumText);
+
+            // init the normal adapter
             foodDetailRecyclerView = itemView.findViewById(R.id.foodDetailsRecyclerView);
+            // set the adapter
+            //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity.
+                    // getApplicationContext());
+            // foodDetailRecyclerView.setLayoutManager(layoutManager);
             foodDetailRecyclerView.setVisibility(View.GONE);
 
             itemView.setOnClickListener(v ->
@@ -157,10 +164,18 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
 
         }
 
-        // Set up the inner RecyclerView
+        // set up the inner RecyclerView
         holder.foodDetailRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
+        holder.foodDetailRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        // fixme: the problem is that in all meal should display picture correctly.
         List<FoodItem.Item> items = meal.getDishes().getItems();
-        MealDetailHistoryAdapter innerAdapter = new MealDetailHistoryAdapter(items); // Assuming Meal has a getDishes() method that returns a list of dishes
+        for (FoodItem.Item item : items)
+        {
+            Log.d("MealHistoryAdapter", "Item: " + item);
+        }
+
+        MealDetailHistoryAdapter innerAdapter = new MealDetailHistoryAdapter(items);
         holder.foodDetailRecyclerView.setAdapter(innerAdapter);
 
         holder.dateText.setText(formattedDate);
