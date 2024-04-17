@@ -28,6 +28,7 @@ import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
+import com.example.myfoodchoice.UserFragment.UserMyRewardsViewFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
@@ -280,6 +281,12 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             fragment = new UserWorkOutFragment();
             fragmentTag = "UserWorkOutFragment";
+        }
+
+        else if (itemId == R.id.nav_view_user_redeemed_reward)
+        {
+            fragment = new UserMyRewardsViewFragment();
+            fragmentTag = "UserMyRewardsViewFragment";
         }
 
         else if (itemId == R.id.nav_rewards)

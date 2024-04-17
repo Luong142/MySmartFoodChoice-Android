@@ -39,8 +39,13 @@
             android:icon="@drawable/workout"/>
 
         <item
+            android:id="@+id/nav_view_user_redeemed_reward"
+            android:title="@string/view_rewards"
+            android:icon="@drawable/voucher_beauty"/>
+
+        <item
             android:id="@+id/nav_rewards"
-            android:title="@string/rewards"
+            android:title="@string/redeem_rewards"
             android:icon="@drawable/rewards"
             />
 

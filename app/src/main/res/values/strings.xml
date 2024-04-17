@@ -196,4 +196,6 @@
     <string name="food_details">Food Details</string>
     <string name="create_recipe">Create Recipe</string>
     <string name="my_rewards">My Rewards</string>
+    <string name="view_rewards">View Rewards</string>
+    <string name="redeem_rewards">Redeem Rewards</string>
 </resources>

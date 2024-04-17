@@ -24,8 +24,8 @@
         android:id="@+id/userCardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     tools:text="John Doe" />
 
@@ -68,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
+                    android:textSize="18sp"
                     tools:text="Points: 500" />
 
             </LinearLayout>

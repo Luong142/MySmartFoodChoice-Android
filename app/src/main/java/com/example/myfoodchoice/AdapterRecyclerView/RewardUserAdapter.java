@@ -1,7 +1,6 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnRewardItemRedeemClickListener;
 import com.example.myfoodchoice.ModelUtilities.Reward;
 import com.example.myfoodchoice.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
