@@ -1,20 +1,27 @@
-package com.example.myfoodchoice.BusinessDietitianFragment;
+package com.example.myfoodchoice.UserFragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.myfoodchoice.R;
 
 
-public class DietitianRecipeFragment extends Fragment
+public class UserMyRewardsViewFragment extends Fragment
 {
-    // todo: start here with the dietitian
+    /* fixme:Is it possible for you to add a ‘My Rewards’ page after you redeem the rewards.
+    Because right now user are unable to see the rewards they have claimed.
+     */
+    private static final String TAG = "UserMyRewardsFragment";
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -29,6 +36,6 @@ public class DietitianRecipeFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dietitian_recipe, container, false);
+        return inflater.inflate(R.layout.fragment_user_my_rewards_view, container, false);
     }
 }

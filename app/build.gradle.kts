@@ -71,6 +71,8 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
     // Tensorflow Lite dependencies
     implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
 
     val camerax_version = "1.3.1"
     //noinspection GradleDependency

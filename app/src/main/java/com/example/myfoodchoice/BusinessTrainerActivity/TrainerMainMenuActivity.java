@@ -23,7 +23,7 @@ import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
+import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;

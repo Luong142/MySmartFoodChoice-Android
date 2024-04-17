@@ -18,13 +18,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianCreateRecipeFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianRecipeFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianSearchRecipeFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewFragment.ReviewFragment;
+import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -172,10 +173,16 @@ public class DietitianMainMenuActivity extends AppCompatActivity
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
-        else if (itemId == R.id.nav_food_recipe)
+        else if (itemId == R.id.nav_create_food_recipe)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianRecipeFragment()).commit();
+                    new DietitianCreateRecipeFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_search_food_recipe)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianSearchRecipeFragment()).commit();
         }
 
         // TODO: update and view user profile

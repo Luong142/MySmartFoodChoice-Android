@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -59,9 +60,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+
 import org.jetbrains.annotations.Contract;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -75,6 +78,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -526,7 +530,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
                             // Log.d(TAG, "onResponse: " + selectedImageUri);
 
-                            // todo: set storage task here
+                            // todo: set storage task here, there is a bug here.
+                            // fixme: not stable to upload the file, if fail then the image is content instead of
+                            // URL format
                             storageTask = storageReference.putFile(selectedImageUri).
                                     addOnFailureListener(onFailureUploadFoodImage());
 

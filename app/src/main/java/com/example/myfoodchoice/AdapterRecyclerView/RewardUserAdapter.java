@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnRewardItemRedeemClickListener;
 import com.example.myfoodchoice.ModelUtilities.Reward;
 import com.example.myfoodchoice.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -61,10 +65,28 @@ public class RewardUserAdapter extends RecyclerView.Adapter<RewardUserAdapter.my
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
         Reward reward = rewards.get(position);
-        holder.rewardImage.setImageResource(reward.getImageId());
-        holder.rewardName.setText(reward.getName());
-        holder.rewardDescription.setText(reward.getDescription());
-        holder.rewardPoints.setText(String.valueOf(reward.getPoints()));
+        // Log.d("RewardAdapter", "onDataChange: " + reward);
+        // todo: check here later.
+        if (reward != null)
+        {
+            // set profile picture here
+            String rewardImageUrl = reward.getRewardImageUrl();
+            Uri rewardUri = Uri.parse(rewardImageUrl);
+            // Log.d("RewardAdapter", "onDataChange: " + rewardUri.toString());
+
+            // FIXME: the image doesn't show because the image source is from Gallery within android device.
+            // fixme: another problem is that the picture is black color, hence we need to load again
+            // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
+            Picasso.get()
+                    .load(rewardUri)
+                    .resize(50, 50)
+                    .error(R.drawable.error)
+                    .into(holder.rewardImage);
+            
+            holder.rewardName.setText(reward.getName());
+            holder.rewardDescription.setText(reward.getDescription());
+            holder.rewardPoints.setText(String.valueOf(reward.getPoints()));
+        }
     }
 
     @NonNull

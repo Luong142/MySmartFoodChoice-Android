@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,6 +106,9 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
         mealHistoryAdapter = new MealHistoryAdapter(mealArrayList, this);
         setAdapter();
     }
+
+    // fixme: there is a bug that the meal can be duplicated when it read.
+    // fixme: the problem is that array list has been replaced not correctly.
 
     @NonNull
     @Contract(pure = true)

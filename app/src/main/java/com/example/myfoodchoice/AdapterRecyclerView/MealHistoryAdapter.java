@@ -1,7 +1,6 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,17 +37,25 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
         this.onActionMealListener = onActionMealListener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateMeals(@NonNull ArrayList<Meal> newMeals)
     {
+        this.mealArrayList = newMeals;
+        // fixme: there is a bug that the meal can be duplicated when it read.
+        // fixme: the problem is that array list has been replaced not correctly.
+
+        // fixme this is not efficient, use this for more accurate result.
+        this.notifyDataSetChanged();
+
+        // this below algo is not accurate.
+        /*
+
         int oldSize = this.mealArrayList.size();
         int newSize = newMeals.size();
-
-        this.mealArrayList = newMeals;
-
         // Notify the adapter of the changes
         if (oldSize == 0)
         {
-            notifyDataSetChanged(); // this is not efficient
+
         }
         else
         // this is more efficient way
@@ -57,20 +64,21 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
             if (newSize > oldSize)
             {
                 // If the new list is larger, notify the adapter of the added items
-                notifyItemRangeInserted(oldSize, newSize - oldSize);
+                this.notifyItemRangeInserted(oldSize, newSize - oldSize);
             }
             else if
             (newSize < oldSize)
             {
                 // If the new list is smaller, notify the adapter of the removed items
-                notifyItemRangeRemoved(newSize, oldSize - newSize);
+                this.notifyItemRangeRemoved(newSize, oldSize - newSize);
             }
             else
             {
                 // If the list sizes are the same, notify the adapter of the changed items
-                notifyItemRangeChanged(0, newSize);
+                this.notifyItemRangeChanged(0, newSize);
             }
         }
+         */
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder

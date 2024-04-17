@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.SharedReviewFragment;
+package com.example.myfoodchoice.SharedReviewAllActorsFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
