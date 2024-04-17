@@ -1,18 +1,18 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterInterfaceListener.OnActionDetailMealListener;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionMealListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
@@ -37,17 +37,25 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
         this.onActionMealListener = onActionMealListener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateMeals(@NonNull ArrayList<Meal> newMeals)
     {
+        this.mealArrayList = newMeals;
+        // fixme: there is a bug that the meal can be duplicated when it read.
+        // fixme: the problem is that array list has been replaced not correctly.
+
+        // fixme this is not efficient, use this for more accurate result.
+        this.notifyDataSetChanged();
+
+        // this below algo is not accurate.
+        /*
+
         int oldSize = this.mealArrayList.size();
         int newSize = newMeals.size();
-
-        this.mealArrayList = newMeals;
-
         // Notify the adapter of the changes
         if (oldSize == 0)
         {
-            notifyDataSetChanged(); // this is not efficient
+
         }
         else
         // this is more efficient way
@@ -56,20 +64,21 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
             if (newSize > oldSize)
             {
                 // If the new list is larger, notify the adapter of the added items
-                notifyItemRangeInserted(oldSize, newSize - oldSize);
+                this.notifyItemRangeInserted(oldSize, newSize - oldSize);
             }
             else if
             (newSize < oldSize)
             {
                 // If the new list is smaller, notify the adapter of the removed items
-                notifyItemRangeRemoved(newSize, oldSize - newSize);
+                this.notifyItemRangeRemoved(newSize, oldSize - newSize);
             }
             else
             {
                 // If the list sizes are the same, notify the adapter of the changed items
-                notifyItemRangeChanged(0, newSize);
+                this.notifyItemRangeChanged(0, newSize);
             }
         }
+         */
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder
@@ -91,7 +100,13 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
             timeText = itemView.findViewById(R.id.timeMealText);
             dateText = itemView.findViewById(R.id.dateMealText);
             mealNumText = itemView.findViewById(R.id.mealNumText);
+
+            // init the normal adapter
             foodDetailRecyclerView = itemView.findViewById(R.id.foodDetailsRecyclerView);
+            // set the adapter
+            //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity.
+                    // getApplicationContext());
+            // foodDetailRecyclerView.setLayoutManager(layoutManager);
             foodDetailRecyclerView.setVisibility(View.GONE);
 
             itemView.setOnClickListener(v ->
@@ -157,10 +172,18 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
 
         }
 
-        // Set up the inner RecyclerView
+        // set up the inner RecyclerView
         holder.foodDetailRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
+        holder.foodDetailRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        // fixme: the problem is that in all meal should display picture correctly.
         List<FoodItem.Item> items = meal.getDishes().getItems();
-        MealDetailHistoryAdapter innerAdapter = new MealDetailHistoryAdapter(items); // Assuming Meal has a getDishes() method that returns a list of dishes
+        for (FoodItem.Item item : items)
+        {
+            Log.d("MealHistoryAdapter", "Item: " + item);
+        }
+
+        MealDetailHistoryAdapter innerAdapter = new MealDetailHistoryAdapter(items);
         holder.foodDetailRecyclerView.setAdapter(innerAdapter);
 
         holder.dateText.setText(formattedDate);

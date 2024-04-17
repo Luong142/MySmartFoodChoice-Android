@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -30,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -81,6 +81,8 @@ public class UserHomeAlvinFragment extends Fragment
     private StringBuilder alertDialogMessage;
 
     View view;
+
+    private final HashMap<String, Meal> mealCache = new HashMap<>();
 
     // todo: migrate the UI from log meal page to this home fragment.
 
@@ -152,6 +154,11 @@ public class UserHomeAlvinFragment extends Fragment
         totalSugar = 0.0;
         totalSalt = 0.0;
 
+        maxCalories = 2200;
+        maxCholesterol = 300;
+        maxSugar = 36;
+        maxSalt = 2300;
+
         // for text view
         caloriesCountText = view.findViewById(R.id.caloriesNumTextView);
         cholesterolCountText = view.findViewById(R.id.cholesterolNumTextView);
@@ -161,111 +168,6 @@ public class UserHomeAlvinFragment extends Fragment
         // todo: init view and string builder
         this.view = view;
         alertDialogMessage = new StringBuilder();
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private ValueEventListener onGenderHealthValueListener()
-    {
-        return new ValueEventListener()
-        {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                if (!isAdded())
-                {
-                    // Fragment is not currently added to its activity, so we don't perform any operations
-                    return;
-                }
-
-                userProfile = snapshot.getValue(UserProfile.class);
-
-                if (userProfile != null)
-                {
-                    gender = userProfile.getGender();
-                    switch(gender)
-                    {
-                        // todo: set text max plus current nutrition value.
-                        // todo: important here this should be a goal or something else?
-                        case "Male":
-                            maxCalories = 2200; // per calories
-                            maxCholesterol = 300; // per mg
-                            maxSugar = 36; // per grams
-                            maxSalt = 2300; // per mg
-                            // display default UI
-                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
-                                    0, (int) maxCalories));
-
-                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                                    0, (int) maxCholesterol));
-
-                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
-                                    0, (int) maxSugar));
-
-                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                                    0, (int) maxSalt));
-                            break;
-                        case "Female":
-                            maxCalories = 1800;
-                            maxCholesterol = 240;
-                            maxSugar = 24;
-                            maxSalt = 2300; // per mg, should be sodium
-                            // display default UI
-                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
-                                    0, (int) maxCalories));
-
-                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                                    0, (int) maxCholesterol));
-
-                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
-                                    0, (int) maxSugar));
-
-                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                                    0, (int) maxSalt));
-                            break;
-                        default:
-                            // wrong gender no default value.
-                            Log.d(TAG, "Unknown gender: " + gender);
-                            break;
-                    }
-
-                    // todo: for health
-                    isDiabetes = userProfile.isDiabetes();
-                    isHighBloodPressure = userProfile.isHighBloodPressure();
-                    isHighCholesterol = userProfile.isHighCholesterol();
-
-                    // todo: should warn the user if over
-                    if (isDiabetes)
-                    {
-                        maxCalories *= 0.5; // minus 50%
-                    }
-
-                    if (isHighBloodPressure)
-                    {
-                        maxSalt *= 0.5; // minus 50%
-
-                    }
-
-                    if (isHighCholesterol)
-                    {
-                        maxCholesterol *= 0.5;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                if (!isAdded())
-                {
-                    // Fragment is not currently added to its activity, so we don't perform any operations
-                    return;
-                }
-
-                Log.d(TAG, "onCancelled: " + error);
-            }
-        };
     }
 
     @NonNull
@@ -281,11 +183,234 @@ public class UserHomeAlvinFragment extends Fragment
                 Meal meal1 = snapshot.getValue(Meal.class);
                 if (meal1 != null)
                 {
+                    mealCache.put(snapshot.getKey(), meal);
                     // Log.d(TAG, "onChildAdded: " + meal1);
                     totalCalories += meal1.getTotalCalories();
                     totalCholesterol += meal1.getTotalCholesterol();
                     totalSugar += meal1.getTotalSugar();
                     totalSalt += meal1.getTotalSodium();
+                }
+
+                // calculate percentage
+                percentageCalories = (totalCalories / maxCalories) * 100;
+                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                percentageSalt = (totalSalt / maxSalt) * 100;
+                percentageSugar = (totalSugar / maxSugar) * 100;
+
+                // fixme: null pointer exception
+
+                progressBarCalories.setProgress((int) percentageCalories);
+                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCalories));
+
+                progressBarCholesterol.setProgress((int) percentageCholesterol);
+                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCholesterol));
+
+                // fixme: recalculate sodium percentage
+                progressBarSalt.setProgress((int) percentageSalt);
+                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSalt));
+
+                progressBarSugar.setProgress((int) percentageSugar);
+                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSugar));
+
+                //notify();
+
+                // display the counter
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCalories, maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCholesterol, maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSugar, maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSalt, maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                // fixme: the error is here view is gone if we use snack bar.
+                if (alertDialogMessage.length() > 0)
+                {
+                    if (alertDialogMessage.length() > 0)
+                    {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                // todo: improve this system if over 7 days.
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                Meal meal1 = snapshot.getValue(Meal.class);
+                if (meal1 != null)
+                {
+                    Meal oldMeal = mealCache.get(snapshot.getKey());
+                    if (oldMeal != null) {
+                        // Subtract the old values
+                        totalCalories -= oldMeal.getTotalCalories();
+                        totalCholesterol -= oldMeal.getTotalCholesterol();
+                        totalSugar -= oldMeal.getTotalSugar();
+                        totalSalt -= oldMeal.getTotalSodium();
+                    }
+                    // Update the cache with the new meal
+                    mealCache.put(snapshot.getKey(), meal1);
+                    // Add the new values
+                    totalCalories += meal1.getTotalCalories();
+                    totalCholesterol += meal1.getTotalCholesterol();
+                    totalSugar += meal1.getTotalSugar();
+                    totalSalt += meal1.getTotalSodium();
+                }
+
+                // the bug is that we should reset the
+                /*
+                Log.d(TAG, "onChildChanged totalcalories: " + totalCalories);
+                Log.d(TAG, "onChildChanged: totalcholesterol" + totalCholesterol);
+                Log.d(TAG, "onChildChanged: totalsugar" + totalSugar);
+                Log.d(TAG, "onChildChanged: totalsalt" + totalSalt);
+                 */
+
+                // calculate percentage
+                percentageCalories = (totalCalories / maxCalories) * 100;
+                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                percentageSalt = (totalSalt / maxSalt) * 100;
+                percentageSugar = (totalSugar / maxSugar) * 100;
+
+
+                // fixme: null pointer exception
+                progressBarCalories.setProgress((int) percentageCalories);
+                if (percentageCalories == 0)
+                {
+                    progressBarCalories.setProgress(0);
+                }
+                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCalories));
+
+                progressBarCholesterol.setProgress((int) percentageCholesterol);
+                if (percentageCholesterol == 0)
+                {
+                    progressBarCholesterol.setProgress(0);
+                }
+                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCholesterol));
+
+                // fixme: recalculate sodium percentage
+                progressBarSalt.setProgress((int) percentageSalt);
+                if (percentageSalt == 0)
+                {
+                    progressBarSalt.setProgress(0);
+                }
+                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSalt));
+
+                progressBarSugar.setProgress((int) percentageSugar);
+                if (totalSugar == 0)
+                {
+                    progressBarSugar.setProgress(0);
+                }
+                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSugar));
+
+                //notify();
+
+                // display the counter
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCalories, maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCholesterol, maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSugar, maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSalt, maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                // fixme: the error is here view is gone if we use snack bar.
+                if (alertDialogMessage.length() > 0)
+                {
+                    if (alertDialogMessage.length() > 0)
+                    {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                Meal meal1 = snapshot.getValue(Meal.class);
+                if (meal1 != null)
+                {
+                    Meal oldMeal = mealCache.get(snapshot.getKey());
+                    if (oldMeal != null)
+                    {
+                        // Subtract the old values
+                        totalCalories -= oldMeal.getTotalCalories();
+                        totalCholesterol -= oldMeal.getTotalCholesterol();
+                        totalSugar -= oldMeal.getTotalSugar();
+                        totalSalt -= oldMeal.getTotalSodium();
+                    }
+                    // Remove the meal from the cache
+                    mealCache.remove(snapshot.getKey());
                 }
 
                 // calculate percentage
@@ -332,209 +457,36 @@ public class UserHomeAlvinFragment extends Fragment
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
                 if (totalCalories > maxCalories)
                 {
-                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
                     progressBarCalories.setBackgroundColor(Color.RED);
                 }
 
                 if (totalCholesterol > maxCholesterol)
                 {
-                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
                     progressBarCholesterol.setBackgroundColor(Color.RED);
                 }
 
                 if (totalSugar > maxSugar)
                 {
-                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
                     progressBarSugar.setBackgroundColor(Color.RED);
                 }
 
                 if (totalSalt > maxSalt)
                 {
-                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
                     progressBarSalt.setBackgroundColor(Color.RED);
                 }
 
                 // fixme: the error is here view is gone if we use snack bar.
                 if (alertDialogMessage.length() > 0)
                 {
-                    Toast.makeText(requireContext(), alertDialogMessage, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
-            {
-                Meal meal1 = snapshot.getValue(Meal.class);
-                if (meal1 != null)
-                {
-                    // Log.d(TAG, "onChildAdded: " + meal1);
-                    totalCalories += meal1.getTotalCalories();
-                    totalCholesterol += meal1.getTotalCholesterol();
-                    totalSugar += meal1.getTotalSugar();
-                    totalSalt += meal1.getTotalSodium();
-                }
-
-                // calculate percentage
-                percentageCalories = (totalCalories / maxCalories) * 100;
-                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
-                percentageSalt = (totalSalt / maxSalt) * 100;
-                percentageSugar = (totalSugar / maxSugar) * 100;
-
-
-                // fixme: null pointer exception
-
-                progressBarCalories.setProgress((int) percentageCalories);
-                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageCalories));
-
-                progressBarCholesterol.setProgress((int) percentageCholesterol);
-                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageCholesterol));
-
-                // fixme: recalculate sodium percentage
-                progressBarSalt.setProgress((int) percentageSalt);
-                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageSalt));
-
-                progressBarSugar.setProgress((int) percentageSugar);
-                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageSugar));
-
-                // display the counter for calories
-                caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
-                        (int) totalCalories, (int) maxCalories));
-
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                        (int) totalCholesterol, (int) maxCholesterol));
-
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
-                        (int) totalSugar, (int) maxSugar));
-
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                        (int) totalSalt, (int) maxSalt));
-
-                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
-                if (totalCalories > maxCalories)
-                {
-                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
-                    progressBarCalories.setBackgroundColor(Color.RED);
-                }
-
-                if (totalCholesterol > maxCholesterol)
-                {
-                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
-                    progressBarCholesterol.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSugar > maxSugar)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
-                    progressBarSugar.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSalt > maxSalt)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
-                    progressBarSalt.setBackgroundColor(Color.RED);
-                }
-
-                if (alertDialogMessage.length() > 0)
-                {
-                    Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
-                            .setAction("OK", v ->
-                            {
-                                // do nothing
-                            })
-                            .show();
-                }
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot)
-            {
-                Meal meal1 = snapshot.getValue(Meal.class);
-                if (meal1 != null)
-                {
-                    // Log.d(TAG, "onChildAdded: " + meal1);
-                    totalCalories += meal1.getTotalCalories();
-                    totalCholesterol += meal1.getTotalCholesterol();
-                    totalSugar += meal1.getTotalSugar();
-                    totalSalt += meal1.getTotalSodium();
-                }
-
-                // calculate percentage
-                percentageCalories = (totalCalories / maxCalories) * 100;
-                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
-                percentageSalt = (totalSalt / maxSalt) * 100;
-                percentageSugar = (totalSugar / maxSugar) * 100;
-
-
-                // fixme: null pointer exception
-
-                progressBarCalories.setProgress((int) percentageCalories);
-                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageCalories));
-
-                progressBarCholesterol.setProgress((int) percentageCholesterol);
-                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageCholesterol));
-
-                // fixme: recalculate sodium percentage
-                progressBarSalt.setProgress((int) percentageSalt);
-                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageSalt));
-
-                progressBarSugar.setProgress((int) percentageSugar);
-                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
-                        percentageSugar));
-
-                // display the counter for calories
-                caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
-                        (int) totalCalories, (int) maxCalories));
-
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                        (int) totalCholesterol, (int) maxCholesterol));
-
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
-                        (int) totalSugar, (int) maxSugar));
-
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                        (int) totalSalt, (int) maxSalt));
-                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
-                if (totalCalories > maxCalories)
-                {
-                    alertDialogMessage.append("You have exceeded your daily calorie intake limit. ");
-                    progressBarCalories.setBackgroundColor(Color.RED);
-                }
-
-                if (totalCholesterol > maxCholesterol)
-                {
-                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit. ");
-                    progressBarCholesterol.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSugar > maxSugar)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sugar intake limit. ");
-                    progressBarSugar.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSalt > maxSalt)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sodium intake limit. ");
-                    progressBarSalt.setBackgroundColor(Color.RED);
-                }
-
-                if (alertDialogMessage.length() > 0)
-                {
-                    if (view != null)
+                    if (alertDialogMessage.length() > 0)
                     {
-                        Snackbar.make(view, alertDialogMessage.toString(), Snackbar.LENGTH_LONG)
-                                .setAction("OK", v ->
-                                {
-                                    // do nothing
-                                }).setActionTextColor(Color.RED)
-                                .show();
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             }
@@ -542,15 +494,8 @@ public class UserHomeAlvinFragment extends Fragment
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                Meal meal1 = snapshot.getValue(Meal.class);
-                if (meal1 != null)
-                {
-                    // Log.d(TAG, "onChildAdded: " + meal1);
-                    totalCalories += meal1.getTotalCalories();
-                    totalCholesterol += meal1.getTotalCholesterol();
-                    totalSugar += meal1.getTotalSugar();
-                    totalSalt += meal1.getTotalSodium();
-                }
+                // Meal meal1 = snapshot.getValue(Meal.class);
+                // do nothing here, just reupdate
 
                 // calculate percentage
                 percentageCalories = (totalCalories / maxCalories) * 100;
@@ -578,18 +523,236 @@ public class UserHomeAlvinFragment extends Fragment
                 sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageSugar));
 
-                // display the counter for calories
-                caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
-                        (int) totalCalories, (int) maxCalories));
+                //notify();
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                        (int) totalCholesterol, (int) maxCholesterol));
+                // display the counter
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCalories, maxCalories));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
-                        (int) totalSugar, (int) maxSugar));
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCholesterol, maxCholesterol));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
-                        (int) totalSalt, (int) maxSalt));
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSugar, maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSalt, maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                // fixme: the error is here view is gone if we use snack bar.
+                if (alertDialogMessage.length() > 0)
+                {
+                    if (alertDialogMessage.length() > 0)
+                    {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                // reset the value whenever the nutrition value is changed.
+                totalCalories = 0;
+                totalCholesterol = 0;
+                totalSugar = 0;
+                totalSalt = 0;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener onGenderHealthValueListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                if (!isAdded())
+                {
+                    // Fragment is not currently added to its activity, so we don't perform any operations
+                    return;
+                }
+
+                userProfile = snapshot.getValue(UserProfile.class);
+
+                if (userProfile != null)
+                {
+                    gender = userProfile.getGender();
+                    if (gender != null)
+                    {
+                        if (gender.equals("Male"))
+                        {
+                            maxCalories = 2200; // per calories
+                            maxCholesterol = 300; // per mg
+                            maxSugar = 36; // per grams
+                            maxSalt = 2300; // per mg
+                            // display default UI
+                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
+                                    0, (int) maxCalories));
+
+                            cholesterolCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                                    0, (int) maxCholesterol));
+
+                            sugarCountText.setText(String.format(Locale.ROOT, "%d/%d g",
+                                    0, (int) maxSugar));
+
+                            saltCountText.setText(String.format(Locale.ROOT, "%d/%d mg",
+                                    0, (int) maxSalt));
+                        }
+                        else if (gender.equals("Female"))
+                        {
+                            maxCalories = 1800;
+                            maxCholesterol = 240;
+                            maxSugar = 24;
+                            maxSalt = 2300; // per mg, should be sodium
+                            // display default UI
+                            caloriesCountText.setText(String.format(Locale.ROOT, "%d/%d kcal",
+                                    0, (int) maxCalories));
+                        }
+                    }
+
+                    isDiabetes = userProfile.isDiabetes();
+                    isHighBloodPressure = userProfile.isHighBloodPressure();
+                    isHighCholesterol = userProfile.isHighCholesterol();
+                }
+
+                // todo: for health
+                StringBuilder alertSnackBarMessage = new StringBuilder();
+
+                // todo: should warn the user if over
+                if (isDiabetes)
+                {
+                    maxCalories *= 0.5; // minus 50%
+                    alertSnackBarMessage.append("Diabetes detected. " +
+                                    "Your calorie limit has been reduced to ")
+                            .append((int) maxCalories)
+                            .append(" calories to help manage your condition.\n");
+                }
+
+                if (isHighBloodPressure)
+                {
+                    maxSalt *= 0.5; // minus 50%
+                    alertSnackBarMessage.append("High blood pressure detected. " +
+                                    "Your salt intake limit has been reduced to ")
+                            .append((int) maxSalt)
+                            .append(" mg to help manage your condition.\n");
+                }
+
+                if (isHighCholesterol)
+                {
+                    maxCholesterol *= 0.5;
+                    alertSnackBarMessage.append("High cholesterol detected. " +
+                                    "Your cholesterol limit has been reduced to ")
+                            .append((int) maxCholesterol)
+                            .append(" mg to help manage your condition.\n");
+                }
+
+                // calculate percentage
+                percentageCalories = (totalCalories / maxCalories) * 100;
+                percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
+                percentageSalt = (totalSalt / maxSalt) * 100;
+                percentageSugar = (totalSugar / maxSugar) * 100;
+
+                // fixme: null pointer exception
+
+                progressBarCalories.setProgress((int) percentageCalories);
+                caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCalories));
+
+                progressBarCholesterol.setProgress((int) percentageCholesterol);
+                cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageCholesterol));
+
+                // fixme: recalculate sodium percentage
+                progressBarSalt.setProgress((int) percentageSalt);
+                saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSalt));
+
+                progressBarSugar.setProgress((int) percentageSugar);
+                sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                        percentageSugar));
+
+                //notify();
+
+                // display the counter
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCalories, maxCalories));
+
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalCholesterol, maxCholesterol));
+
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSugar, maxSugar));
+
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                        totalSalt, maxSalt));
+
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                // fixme: the error is here view is gone if we use snack bar.
+                if (alertDialogMessage.length() > 0)
+                {
+                    if (alertDialogMessage.length() > 0)
+                    {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
             }
 
             @Override

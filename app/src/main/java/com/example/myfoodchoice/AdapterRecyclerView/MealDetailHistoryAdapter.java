@@ -1,16 +1,15 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
-import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.myfoodchoice.AdapterInterfaceListener.OnActionDetailMealListener;
+
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.R;
 import com.squareup.picasso.Picasso;
@@ -86,7 +85,7 @@ public class MealDetailHistoryAdapter extends RecyclerView.Adapter<MealDetailHis
         // when we restart the app the food image has error instead.
         if (item != null)
         {
-            Log.d("Test", "onBindViewHolder: " + item.getFoodImage());
+            // Log.d("Test", "onBindViewHolder: " + item.getFoodImage());
             // set the item
             Picasso.get()
                     .load(Uri.parse(item.getFoodImage()))

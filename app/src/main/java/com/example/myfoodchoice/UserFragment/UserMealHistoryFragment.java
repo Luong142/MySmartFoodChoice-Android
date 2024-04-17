@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,6 +107,9 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
         setAdapter();
     }
 
+    // fixme: there is a bug that the meal can be duplicated when it read.
+    // fixme: the problem is that array list has been replaced not correctly.
+
     @NonNull
     @Contract(pure = true)
     private TabLayout.OnTabSelectedListener onTabSelectedListener()
@@ -165,17 +167,6 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
                 filteredMeals.add(meal);
             }
         }
-
-        /*
-        if (
-                    (showMorningMeal && meal.isMorning()) ||
-                    (showAfternoonMeal && meal.isAfternoon()) ||
-                    (showNightMeal && meal.isNight()) || (showAllMeal))
-            {
-                filteredMeals.add(meal);
-            }
-         */
-
         // Update the adapter with the filtered list
         mealHistoryAdapter.updateMeals(filteredMeals);
     }
@@ -284,20 +275,9 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
     public void onClickMeal(int position)
     {
         // todo: if click the entire item, what we want to do with it?
-        Toast.makeText(requireContext(), "Details has been expanded.",
-                Toast.LENGTH_SHORT).show();
         // todo: our plan is to make an expandable recycler view to open.
+        // do nothing here.
     }
-
-    /*
-    @Override
-    public void onViewMeal(int position)
-    {
-        //todo: should open a view for that specific element toString of that globalMeal.
-        // show meal here based on the position in the list.
-        // do nothing because I don't add a button, let the user click on the item for expandable view.
-    }
-     */
 
     private void setAdapter()
     {

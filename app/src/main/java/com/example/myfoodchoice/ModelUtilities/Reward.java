@@ -4,10 +4,9 @@ import androidx.annotation.NonNull;
 
 public class Reward
 {
-    private String id;
     private String name;
     private String description;
-    private int imageId;
+    private String rewardImageUrl;
 
     private int points;
 
@@ -17,20 +16,18 @@ public class Reward
 
     }
 
-    public Reward(String name, String description, int imageId, int points)
+    public Reward(String name, String description, String rewardImageUrl, int points)
     {
         this.name = name;
         this.description = description;
-        this.imageId = imageId;
+        this.rewardImageUrl = rewardImageUrl;
         this.points = points;
     }
 
-    public Reward(String id, String name, String description, int imageId, int points)
+    public Reward(String name, String description, int points)
     {
-        this.id = id;
         this.name = name;
         this.description = description;
-        this.imageId = imageId;
         this.points = points;
     }
 
@@ -39,20 +36,11 @@ public class Reward
     public String toString()
     {
         return "Reward{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", imageId=" + imageId +
+                ", rewardImageUrl='" + rewardImageUrl + '\'' +
                 ", points=" + points +
                 '}';
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -71,12 +59,12 @@ public class Reward
         this.description = description;
     }
 
-    public int getImageId() {
-        return imageId;
+    public String getRewardImageUrl() {
+        return rewardImageUrl;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setRewardImageUrl(String rewardImageUrl) {
+        this.rewardImageUrl = rewardImageUrl;
     }
 
     public int getPoints() {

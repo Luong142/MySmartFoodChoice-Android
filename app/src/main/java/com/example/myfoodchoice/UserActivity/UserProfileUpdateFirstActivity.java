@@ -95,9 +95,6 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        storageReferenceProfilePics =
-                FirebaseStorage.getInstance().getReference().child("ProfilePics");
-
         // TODO: init user id
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null)
@@ -107,6 +104,9 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             // TODO: init database reference for user profile
             databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
             databaseReferenceAccountType = firebaseDatabase.getReference(PATH_ACCOUNT_TYPE).child(userID);
+
+            storageReferenceProfilePics =
+                    FirebaseStorage.getInstance().getReference().child("Profile Pics").child(userID);
 
             databaseReferenceAccountType.addValueEventListener(onAccountTypeListener());
         }
@@ -224,7 +224,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child
-                    (firebaseUser.getUid() + ".jpg");
+                    (firebaseUser.getDisplayName() + ".jpg");
 
             // FIXME: the selected image Uri haven't converted to Uri path.
             storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());

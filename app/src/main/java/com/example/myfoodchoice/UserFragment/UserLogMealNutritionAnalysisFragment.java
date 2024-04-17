@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +27,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -47,7 +48,6 @@ import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -75,6 +75,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,6 +95,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     StorageReference storageReferenceFoodImage;
 
+    StorageTask<UploadTask.TaskSnapshot> storageTask;
+
     UserProfile userProfile;
     ImageView foodImage;
 
@@ -101,12 +104,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     TextView foodNameTextView, dietTypeTextView;
 
+    ProgressBar loadingLogMeal, loadingAddDish;
+
     // TODO: add in one more button for taking photo I think.
     FloatingActionButton takePhotoBtn, uploadPhotoBtn;
 
-    CardView logMealBtn;
-
-    LinearLayout addDishBtn;
+    LinearLayout logMealBtn, addDishBtn;
 
     ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher, takePhotoActivityResultLauncher;
 
@@ -189,7 +192,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
             databaseReferenceUserProfile.addValueEventListener(onHealthUserProfileListener());
 
-            storageReferenceFoodImage = FirebaseStorage.getInstance().getReference().child("FoodImages")
+            storageReferenceFoodImage = FirebaseStorage.getInstance().getReference()
+                    .child("Food Images")
                     .child(userID);
         }
         // set the food item in the Meal object
@@ -238,6 +242,14 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
         // todo: this is actually a card view.
         logMealBtn = view.findViewById(R.id.logMealBtn);
+        loadingLogMeal = view.findViewById(R.id.loadingLogMeal);
+        loadingAddDish = view.findViewById(R.id.loadingAddDish);
+
+        // set visibility
+        loadingAddDish.setVisibility(ProgressBar.GONE);
+        loadingLogMeal.setVisibility(ProgressBar.GONE);
+
+        // set on click
         logMealBtn.setOnClickListener(onNavToLogMealListener());
 
         // init add dish btn card view
@@ -507,10 +519,22 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             // todo: set the item.
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
-                            // todo: set storage task here
-                            StorageTask<UploadTask.TaskSnapshot> storageTask =
-                                    storageReferenceFoodImage.putFile(selectedImageUri)
-                                    .addOnFailureListener(onFailureUploadFoodImage());
+
+                            // fixme: remember must be unique name if not will be override
+                            String uniqueImageName = firebaseUser.getDisplayName() + "_" +
+                                    UUID.randomUUID().toString() + ".jpg";
+
+                            // upload the image to Firebase Storage
+                            final StorageReference storageReference = storageReferenceFoodImage.child
+                                    (uniqueImageName); // FIXME: potential bug.
+
+                            // Log.d(TAG, "onResponse: " + selectedImageUri);
+
+                            // todo: set storage task here, there is a bug here.
+                            // fixme: not stable to upload the file, if fail then the image is content instead of
+                            // URL format
+                            storageTask = storageReference.putFile(selectedImageUri).
+                                    addOnFailureListener(onFailureUploadFoodImage());
 
                             // set image here
                             storageTask.continueWithTask(task ->
@@ -519,7 +543,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                                 {
                                     throw Objects.requireNonNull(task.getException());
                                 }
-                                return storageReferenceFoodImage.getDownloadUrl();
+                                return storageReference.getDownloadUrl();
                             }).addOnCompleteListener(onCompleteUploadUriListener());
                         }
 
@@ -552,9 +576,11 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             if (task.isSuccessful())
             {
                 Uri downloadUri = task.getResult();
-
-                //Log.d(TAG, "onCompleteUploadListener: " + meal);
                 itemDisplay.setFoodImage(downloadUri.toString());
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteUploadListener: " + task.getException());
             }
         };
     }
@@ -734,6 +760,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 return;
             }
 
+            addDishBtn.setVisibility(Button.GONE);
+            loadingAddDish.setVisibility(ProgressBar.VISIBLE);
+
             // fixme: there might be a problem with the dish
             Toast.makeText(requireContext(), "Dish is added.", Toast.LENGTH_SHORT).show();
 
@@ -744,7 +773,11 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             }
 
             // this object for the next activity to record.
-            meal.getDishes().getItems().add(itemDisplay);
+            if (meal.getDishes().getItems().add(itemDisplay))
+            {
+                addDishBtn.setVisibility(Button.VISIBLE);
+                loadingAddDish.setVisibility(ProgressBar.GONE);
+            }
 
             // this one is for adapter which means for UI to show.
             foodItemsDisplay.add(itemDisplay);
@@ -803,7 +836,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     }
 
     @NonNull
-    @Contract(pure = true)
+    @Contract(pure = true) // for log meal button
     private View.OnClickListener onNavToLogMealListener()
     {
         return v ->
@@ -832,6 +865,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 return;
             }
 
+            logMealBtn.setVisibility(Button.GONE);
+            loadingLogMeal.setVisibility(ProgressBar.VISIBLE);
+
             // todo: set the time stamp for meal
             meal.startDate();
 
@@ -858,6 +894,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 Toast.makeText(requireContext(), "Logged your meal.", Toast.LENGTH_LONG).show();
                 bundle.putParcelable("meal", meal);
+
+                logMealBtn.setVisibility(Button.VISIBLE);
+                loadingLogMeal.setVisibility(ProgressBar.GONE);
 
                 // todo: go to the home page.
                 requireActivity().getSupportFragmentManager().beginTransaction()

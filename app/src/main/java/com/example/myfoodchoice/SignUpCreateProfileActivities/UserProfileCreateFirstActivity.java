@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.myfoodchoice.ModelSignUp.ActivityLevel;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,7 +38,6 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserProfileCreateFirstActivity extends AppCompatActivity
@@ -93,9 +89,14 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReferenceUserProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
-        storageReferenceProfilePics =
-                FirebaseStorage.getInstance().getReference().child("ProfilePics");
+        if (firebaseUser != null)
+        {
+            databaseReferenceUserProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
+            storageReferenceProfilePics =
+                    FirebaseStorage.getInstance().getReference()
+                            .child("Profile Pics")
+                            .child(firebaseUser.getUid());
+        }
 
         // TODO: init UI components
         age = findViewById(R.id.ageProfile);
@@ -206,16 +207,15 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
             // upload the image to Firebase Storage
             final StorageReference storageReference = storageReferenceProfilePics.child
-                    (firebaseUser.getUid() + ".jpg"); // FIXME: potential bug.
+                    (firebaseUser.getDisplayName() + ".jpg"); // FIXME: potential bug.
 
             // FIXME: the selected image Uri haven't converted to Uri path.
-            storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
-            // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
+            storageTask = storageReference.putFile(selectedImageUri)
+                    .addOnFailureListener(onFailurePart());
 
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
             userProfile.setAge(ageInt);
-            // userProfile.setActivityLevel(activityLevelEnum);
 
             // set image here
             storageTask.continueWithTask(task ->
