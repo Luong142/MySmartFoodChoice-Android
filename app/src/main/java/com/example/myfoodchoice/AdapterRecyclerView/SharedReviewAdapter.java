@@ -48,7 +48,7 @@ public class SharedReviewAdapter extends RecyclerView.Adapter<SharedReviewAdapte
 
             itemView.setOnClickListener(v ->
             {
-                int position = getAdapterPosition();
+                int position = getAbsoluteAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)
                 {
                     onReviewClickListener.onReviewClick(position);

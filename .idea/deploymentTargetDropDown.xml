@@ -10,12 +10,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\giaca\.android\avd\Medium_Phone_API_29.avd" />
+                  <value value="C:\Users\giaca\.android\avd\Large_Desktop_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-30T07:52:53.396529700Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-18T06:59:21.975911900Z" />
         </State>
       </entry>
       <entry key="useAppContext()">

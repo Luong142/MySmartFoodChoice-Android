@@ -67,6 +67,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         isAllergySeafood = in.readByte() != 0;
         isAllergyPeanut = in.readByte() != 0;
         isAllergyEgg = in.readByte() != 0;
+        alrRedeemedRewardList = new ArrayList<>();
     }
 
     public UserProfile(String dietType, int dietTypeImage)
@@ -117,6 +118,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeByte((byte) (isAllergySeafood ? 1 : 0));
         dest.writeByte((byte) (isAllergyPeanut ? 1 : 0));
         dest.writeByte((byte) (isAllergyEgg ? 1 : 0));
+        dest.writeList(alrRedeemedRewardList);
     }
 
     @NonNull
@@ -141,6 +143,10 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Allergy Peanut: ").append(isAllergyPeanut).append("\n");
         sb.append("Allergy Egg: ").append(isAllergyEgg).append("\n");
         sb.append("Points: ").append(points).append("\n");
+        for (Reward reward : alrRedeemedRewardList)
+        {
+            sb.append("Ok should be here: ").append(reward.toString()).append("\n");
+        }
         sb.append("-------------------");
         return sb.toString();
     }

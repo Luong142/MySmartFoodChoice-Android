@@ -40,7 +40,7 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
             {
                 if (onHealthTipsClickListener != null)
                 {
-                    int position = getAdapterPosition();
+                    int position = getAbsoluteAdapterPosition();
                     if (position != RecyclerView.NO_POSITION)
                     {
                         onHealthTipsClickListener.onHealthTipsClick(position);

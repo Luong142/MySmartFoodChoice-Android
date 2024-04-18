@@ -42,7 +42,7 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
             {
                 if (onWorkoutPlanClickListener != null)
                 {
-                    int position = getAdapterPosition();
+                    int position = getAbsoluteAdapterPosition();
                     if (position != RecyclerView.NO_POSITION)
                     {
                         onWorkoutPlanClickListener.onWorkoutPlanClick(position);

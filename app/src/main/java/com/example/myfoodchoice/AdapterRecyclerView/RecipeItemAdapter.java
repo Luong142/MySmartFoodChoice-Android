@@ -49,7 +49,7 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.my
             {
                 if (onRecipeClickListener != null)
                 {
-                    int position = getAdapterPosition();
+                    int position = getAbsoluteAdapterPosition();
                     if (position != RecyclerView.NO_POSITION)
                     {
                         onRecipeClickListener.onRecipeItemClick(position);

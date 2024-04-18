@@ -4,61 +4,66 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterInterfaceListener.OnRewardItemRedeemClickListener;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnAlrRedeemedRewardUserItemListener;
 import com.example.myfoodchoice.ModelUtilities.Reward;
 import com.example.myfoodchoice.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class RewardUserAdapter extends RecyclerView.Adapter<RewardUserAdapter.myViewHolder>
+public class AlrRedeemedRewardUserAdapter  extends RecyclerView.Adapter<AlrRedeemedRewardUserAdapter.myViewHolder>
 {
     private final ArrayList<Reward> rewards;
-    private final OnRewardItemRedeemClickListener onRewardItemRedeemClickListener;
 
-    public RewardUserAdapter(ArrayList<Reward> rewards, OnRewardItemRedeemClickListener onRewardItemRedeemClickListener)
+    private final OnAlrRedeemedRewardUserItemListener onAlrRedeemedRewardUserItemListener;
+
+    public AlrRedeemedRewardUserAdapter(ArrayList<Reward> rewards,
+                                        OnAlrRedeemedRewardUserItemListener onAlrRedeemedRewardUserItemListener)
     {
         this.rewards = rewards;
-        this.onRewardItemRedeemClickListener = onRewardItemRedeemClickListener;
+        this.onAlrRedeemedRewardUserItemListener = onAlrRedeemedRewardUserItemListener;
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder
     {
-        public ImageView rewardImage;
-        public TextView rewardName;
-        public TextView rewardDescription;
+        ImageView rewardImage;
 
-        public TextView rewardPoints;
+        TextView rewardName;
+        TextView rewardDescription;
 
-        public Button redeemButton;
+        TextView nameOnly;
 
-        public myViewHolder(final View itemView, OnRewardItemRedeemClickListener onRewardItemRedeemClickListener)
+
+        public myViewHolder(final View itemView, OnAlrRedeemedRewardUserItemListener onAlrRedeemedRewardUserItemListener)
         {
             super(itemView);
             rewardImage = itemView.findViewById(R.id.rewardImageView);
             rewardName = itemView.findViewById(R.id.rewardNameTextView);
             rewardDescription = itemView.findViewById(R.id.rewardDescriptionTextView);
-            rewardPoints = itemView.findViewById(R.id.rewardPointsTextView);
-            redeemButton = itemView.findViewById(R.id.redeemButton);
+            nameOnly = itemView.findViewById(R.id.nameOnly);
 
-            redeemButton.setOnClickListener(v ->
+            itemView.setOnClickListener(v ->
             {
-                int position = getAbsoluteAdapterPosition();
-                if (position != RecyclerView.NO_POSITION)
+                if (onAlrRedeemedRewardUserItemListener != null)
                 {
-                    onRewardItemRedeemClickListener.onRewardItemRedeemClick(position);
+                    int position = getAbsoluteAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION)
+                    {
+                        onAlrRedeemedRewardUserItemListener.onClickRedeemedReward(position);
+                        // Log.d("ExhibitionInfoAdapter", "onBindViewHolder: " + position);
+                    }
                 }
             });
         }
     }
 
+    // todo: update here.
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
@@ -80,21 +85,23 @@ public class RewardUserAdapter extends RecyclerView.Adapter<RewardUserAdapter.my
                     .resize(50, 50)
                     .error(R.drawable.error)
                     .into(holder.rewardImage);
-            
+
             holder.rewardName.setText(reward.getName());
             holder.rewardDescription.setText(reward.getDescription());
-            holder.rewardPoints.setText(String.valueOf(reward.getPoints()));
+
+            // check here.
+            holder.nameOnly.setText("Already redeemed voucher");
         }
     }
 
     @NonNull
     @Override
-    public RewardUserAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.reward_item_layout,
+                R.layout.reward_user_redeemed_item_layout,
                 parent, false);
-        return new RewardUserAdapter.myViewHolder(itemView, onRewardItemRedeemClickListener);
+        return new AlrRedeemedRewardUserAdapter.myViewHolder(itemView, onAlrRedeemedRewardUserItemListener);
     }
 
     @Override
