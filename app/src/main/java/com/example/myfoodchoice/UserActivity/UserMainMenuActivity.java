@@ -53,9 +53,9 @@ public class UserMainMenuActivity extends AppCompatActivity
 {
     DrawerLayout drawerLayout;
 
-    DatabaseReference databaseReferenceRegisteredUser;
-
-    DatabaseReference databaseReferenceUserProfile;
+    // todo: init firebase components
+    DatabaseReference databaseReferenceRegisteredUser,
+            databaseReferenceUserProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -106,7 +106,6 @@ public class UserMainMenuActivity extends AppCompatActivity
             databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
             databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
         }
-
 
         // TODO: init UI component in nav_header and activity_main_menu
         navigationView = findViewById(R.id.nav_view);
@@ -343,12 +342,5 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void navigateToFragment(Fragment fragment)
-    {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
     }
 }

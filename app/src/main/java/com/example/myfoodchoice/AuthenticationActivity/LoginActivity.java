@@ -42,6 +42,7 @@ import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
 {
+    private static final String PATH_LASTLOGIN = "Last Login";
     // TODO: declare UI component
 
     // button
@@ -97,14 +98,12 @@ public class LoginActivity extends AppCompatActivity
 
         // TODO: init Firebase auth
         mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
 
         // TODO: init Firebase database, paste the correct link as reference.
         firebaseDatabase = FirebaseDatabase.getInstance(
                 "https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
         // for testing
         // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
-
         // by default is Guest.
         accountType = "Default";
 
@@ -174,13 +173,18 @@ public class LoginActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 account = snapshot.getValue(Account.class);
-                // Log.d("LoginActivity", "onDataChange: hello" + account.toString());
                 if (account != null)
                 {
                     accountType = account.getAccountType();
                     isTrialOver = account.isGuestTrialActive();
+                    // Log.d("LoginActivity", "onDataChange: hello" + account.toString());
                     // Log.d("LoginActivity", "onDataChange: " + accountType);
                     // Log.d("LoginActivity", "onDataChange: " + account.isGuestTrialActive());
+                    if (rememberMe.isChecked())
+                    {
+                        Paper.book().write(Prevalent.AccountType, accountType);
+                    }
+
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
                     {
                         case "Guest":
@@ -243,7 +247,7 @@ public class LoginActivity extends AppCompatActivity
             {
                 Toast.makeText
                         (LoginActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                // Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
+                Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
             }
         };
     }
@@ -257,21 +261,18 @@ public class LoginActivity extends AppCompatActivity
             password = loginPasswordEditText.getText().toString().trim();
             if (isChecked)
             {
-                Log.d("LoginActivity", "remember me checked! ");
-                Paper.book().write(Prevalent.UserEmailKey, email);
-                Paper.book().write(Prevalent.UserPasswordKey, password);
+                Paper.book().write(Prevalent.EmailKey, email);
+                Paper.book().write(Prevalent.PasswordKey, password);
             }
         };
     }
     // TODO: to implement the login functionalities for this activity.
-
     @NonNull
     @Contract(pure = true)
     private View.OnClickListener onLoginListener()
     {
         return v ->
         {
-            Log.d("LoginActivity", "login button activated! ");
             email = loginEmailEditText.getText().toString().trim();
             password = loginPasswordEditText.getText().toString().trim();
             allowLogin(email, password);
@@ -314,8 +315,11 @@ public class LoginActivity extends AppCompatActivity
                 {
                     userID = firebaseUser.getUid();
                     // Log.d("LoginActivity", "task is ok: " + firebaseUser.getUid());
+                    // fixme: there is a bug with login where databaseReferenceAccountType is null.
+                    //Log.d("LoginActivity", "user ID here: " + userID);
                     databaseReferenceAccountType = firebaseDatabase.getReference
                             (PATH_DATABASE).child(userID); // FIXME: careful with the name path
+                    //Log.d("LoginActivity", "account type URL here: " + databaseReferenceAccountType);
                     databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEvent());
                 }
             }
@@ -329,19 +333,6 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    /*
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        if (mAuth != null) {
-            mAuth.removeAuthStateListener(authStateListener); // avoid memory leaks
-        }
-    }
-
-
-     */
-
     public ClickableSpan clickableForgotPasswordNavSpan()
     {
         {
@@ -350,7 +341,6 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onClick(View widget)
                 {
-                    Log.d("LoginActivity", "navigating to forgot password page! ");
                     Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                     startActivity(intent);
                 }
@@ -366,7 +356,6 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onClick(View widget)
                 {
-                    Log.d("LoginActivity", "navigating to sign up page! ");
                     Intent intent = new Intent(LoginActivity.this, RegisterGuestActivity.class);
                     startActivity(intent);
                     finish();

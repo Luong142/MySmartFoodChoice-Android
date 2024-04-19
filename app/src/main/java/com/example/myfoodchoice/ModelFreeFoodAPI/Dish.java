@@ -35,7 +35,7 @@ public class Dish implements Serializable
     this.meals = meals;
   }
 
-  public static class Meals implements Serializable
+  public static class Meals implements Serializable // todo: this is recognised as recipe too.
   {
     private Object strImageSource;
 

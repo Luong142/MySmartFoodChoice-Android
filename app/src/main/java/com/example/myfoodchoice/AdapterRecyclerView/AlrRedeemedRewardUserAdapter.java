@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class AlrRedeemedRewardUserAdapter  extends RecyclerView.Adapter<AlrRedeemedRewardUserAdapter.myViewHolder>
+public class AlrRedeemedRewardUserAdapter extends RecyclerView.Adapter<AlrRedeemedRewardUserAdapter.myViewHolder>
 {
     private final ArrayList<Reward> rewards;
 
@@ -56,7 +56,6 @@ public class AlrRedeemedRewardUserAdapter  extends RecyclerView.Adapter<AlrRedee
                     if (position != RecyclerView.NO_POSITION)
                     {
                         onAlrRedeemedRewardUserItemListener.onClickRedeemedReward(position);
-                        // Log.d("ExhibitionInfoAdapter", "onBindViewHolder: " + position);
                     }
                 }
             });

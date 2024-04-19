@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
+import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
+import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
+import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
@@ -35,13 +38,11 @@ public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
     Button signingBtn, signUpAsGuestBtn, signUpAsBusinessBtn;
-    String emailRememberMe, passwordRememberMe;
+    String emailRememberMe, passwordRememberMe, accountTypeRememberMe;
 
     // TextView signUpAsGuest, signUpAsBusiness;
 
     // SpannableString spannableSignUpAsGuestNav, spannableSignUpAsBusiness;
-
-    FirebaseAuth firebaseAuth;
 
     static final int INDEXSTART = 0;
 
@@ -62,6 +63,9 @@ public class WelcomeActivity extends AppCompatActivity
     private Call<Dish> callDish;
 
     private AlertDialog alertDialog;
+
+    // todo: init firebase components
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,7 +110,6 @@ public class WelcomeActivity extends AppCompatActivity
         signUpAsGuestBtn = findViewById(R.id.signUpAsGuestBtn);
         signUpAsBusinessBtn = findViewById(R.id.signUpAsBusinessBtn);
 
-
         // nav to sign up page based on text click
         // FIXME: the index is out of bound.
         signUpAsGuestBtn.setOnClickListener(v ->
@@ -123,14 +126,34 @@ public class WelcomeActivity extends AppCompatActivity
         signingBtn.setOnClickListener(onSignInListener);
 
         // assign to email and password
-        emailRememberMe = Paper.book().read(Prevalent.UserEmailKey);
-        passwordRememberMe = Paper.book().read(Prevalent.UserPasswordKey);
+        emailRememberMe = Paper.book().read(Prevalent.EmailKey);
+        passwordRememberMe = Paper.book().read(Prevalent.PasswordKey);
+        accountTypeRememberMe = Paper.book().read(Prevalent.AccountType);
 
-        if (emailRememberMe != null && passwordRememberMe != null)
+        if (emailRememberMe != null && passwordRememberMe != null
+                && accountTypeRememberMe != null)
         {
-            if (!TextUtils.isEmpty(emailRememberMe) && !TextUtils.isEmpty(passwordRememberMe))
+            if (!TextUtils.isEmpty(emailRememberMe) && !TextUtils.isEmpty(passwordRememberMe)
+                    && !TextUtils.isEmpty(accountTypeRememberMe))
             {
-                allowLogin(emailRememberMe, passwordRememberMe);
+                Log.d(TAG, "onCreate: " + emailRememberMe + " " + passwordRememberMe + " " + accountTypeRememberMe);
+                switch (accountTypeRememberMe)
+                {
+                    case "User":
+                        allowUserLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    case "Dietitian":
+                        allowDietitianLogin(emailRememberMe, passwordRememberMe);
+                    case "Guest":
+                        allowGuestLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    case "Trainer":
+                        allowTrainerLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    default:
+                        Toast.makeText(WelcomeActivity.this,
+                                "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
+                }
 
                 if (!isFinishing())
                 {
@@ -184,7 +207,7 @@ public class WelcomeActivity extends AppCompatActivity
         }
     }
 
-    private void allowLogin(String email, String password)
+    private void allowUserLogin(String email, String password)
     {
         // TODO: login function
 
@@ -195,6 +218,65 @@ public class WelcomeActivity extends AppCompatActivity
             {
                 Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WelcomeActivity.this, UserMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowGuestLogin(String email, String password)
+    {
+        // TODO: login function
+
+        // authentication login
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WelcomeActivity.this, GuestMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowDietitianLogin(String email, String password)
+    {
+        // authentication login
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WelcomeActivity.this, DietitianMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowTrainerLogin(String email, String password)
+    {
+        // authentication login
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WelcomeActivity.this, TrainerMainMenuActivity.class);
                 startActivity(intent);
                 finish();
             }
