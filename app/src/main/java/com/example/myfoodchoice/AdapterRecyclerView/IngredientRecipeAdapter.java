@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientRecipeAdapter.myViewHolder>
 {
-    private final ArrayList<Dish.Meals> ingredientArrayList;
+    private final ArrayList<String> ingredientArrayList;
 
     private final OnActionIngredientListener onActionIngredientListener;
 
-    public IngredientRecipeAdapter(ArrayList<Dish.Meals> ingredientArrayList,
+    public IngredientRecipeAdapter(ArrayList<String> ingredientArrayList,
                                    OnActionIngredientListener onActionIngredientListener)
     {
         this.ingredientArrayList = ingredientArrayList;
@@ -54,11 +54,11 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
-        Dish.Meals ingredient = ingredientArrayList.get(position);
+        String ingredient = ingredientArrayList.get(position);
 
         if (ingredient != null)
         {
-            holder.ingredientName.setText(ingredient.getStrIngredient1());
+            holder.ingredientName.setText(ingredient);
         }
     }
 

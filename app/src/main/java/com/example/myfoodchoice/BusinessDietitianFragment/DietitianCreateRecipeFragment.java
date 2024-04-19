@@ -1,19 +1,27 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myfoodchoice.AdapterInterfaceListener.OnActionIngredientListener;
+import com.example.myfoodchoice.AdapterRecyclerView.IngredientRecipeAdapter;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,8 +30,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
+import java.util.Objects;
 
-public class DietitianCreateRecipeFragment extends Fragment
+
+public class DietitianCreateRecipeFragment extends Fragment implements OnActionIngredientListener
 {
     static final String PATH_RECIPE = "Dietitian Recipe";
     // todo: our plan is to let the dietitian to create the recipe manually
@@ -40,14 +51,20 @@ public class DietitianCreateRecipeFragment extends Fragment
 
     Dish.Meals recipe;
 
+    ArrayList<String> ingredientArrayList;
+
     // todo: declare UI components
-    EditText recipeName, recipeInstructions;
+    EditText recipeNameText, recipeInstructionsText, ingredientText;
 
     Spinner cuisineSpinner, categorySpinner;
-    String dietitianID;
+    String dietitianID, recipeName, recipeInstruction;
     FloatingActionButton addIngredientBtn, clearRecipeBtn;
 
     Button createRecipeBtn;
+
+    RecyclerView ingredientRecyclerView;
+
+    IngredientRecipeAdapter ingredientRecipeAdapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -71,11 +88,13 @@ public class DietitianCreateRecipeFragment extends Fragment
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
 
             recipe = new Dish.Meals();
+            ingredientArrayList = new ArrayList<>();
         }
 
         // todo: init UI components
-        recipeName = view.findViewById(R.id.recipeNameEditText);
-        recipeInstructions = view.findViewById(R.id.instructionsEditText);
+        recipeNameText = view.findViewById(R.id.recipeNameEditText);
+        recipeInstructionsText = view.findViewById(R.id.instructionsEditText);
+        ingredientText = view.findViewById(R.id.ingredientsEditText);
         cuisineSpinner = view.findViewById(R.id.cuisineSpinner);
         categorySpinner = view.findViewById(R.id.categorySpinner);
 
@@ -89,6 +108,14 @@ public class DietitianCreateRecipeFragment extends Fragment
         clearRecipeBtn.setOnClickListener(onClearRecipeListener());
         createRecipeBtn.setOnClickListener(onCreateRecipeListener());
 
+        // set recycler view
+        ingredientRecyclerView = view.findViewById(R.id.ingredientsRecyclerView);
+        ingredientRecipeAdapter = new IngredientRecipeAdapter(ingredientArrayList, this);
+        ingredientRecyclerView.setAdapter(ingredientRecipeAdapter);
+        ingredientRecyclerView.setVerticalScrollBarEnabled(true);
+        ingredientRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
     }
 
     @NonNull
@@ -97,7 +124,49 @@ public class DietitianCreateRecipeFragment extends Fragment
     {
         return v ->
         {
+            if (recipeNameText.getText().toString().isEmpty())
+            {
+                recipeNameText.setError("Please enter recipe name");
+            }
 
+            if (recipeInstructionsText.getText().toString().isEmpty())
+            {
+                recipeInstructionsText.setError("Please enter recipe instructions");
+            }
+
+            recipeName = recipeNameText.getText().toString().trim();
+            recipeInstruction = recipeInstructionsText.getText().toString().trim();
+
+            recipe.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
+            recipe.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
+            recipe.setStrInstructions(recipeInstruction);
+            recipe.setStrMeal(recipeName);
+            recipe.setIngredients(ingredientArrayList);
+
+            // set value for database firebase.
+            databaseReferenceCreateRecipe.setValue(recipe).addOnCompleteListener(onCompleteCreateRecipeListener());
+
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteCreateRecipeListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                recipeNameText.setText("");
+                recipeInstructionsText.setText("");
+                ingredientText.setText("");
+                Toast.makeText(getContext(), "Recipe created successfully", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Error" +
+                        Objects.requireNonNull(task.getException()), Toast.LENGTH_SHORT).show();
+            }
         };
     }
 
@@ -107,7 +176,14 @@ public class DietitianCreateRecipeFragment extends Fragment
     {
         return v ->
         {
+            if (ingredientText.getText().toString().isEmpty())
+            {
+                ingredientText.setError("Please enter ingredient.");
+                return;
+            }
 
+            ingredientArrayList.add(ingredientText.getText().toString().trim());
+            ingredientRecipeAdapter.notifyItemChanged(ingredientArrayList.size() - 1);
         };
     }
 
@@ -117,9 +193,26 @@ public class DietitianCreateRecipeFragment extends Fragment
     {
         return v ->
         {
-            recipeName.setText("");
-            recipeInstructions.setText("");
+            // clear everything
+            recipeNameText.setText("");
+            recipeInstructionsText.setText("");
+            recipeName = "";
+            recipeInstruction = "";
+            recipe = new Dish.Meals();
+            ingredientArrayList.clear();
+            ingredientRecipeAdapter.notifyItemChanged(ingredientArrayList.size() - 1);
         };
+    }
+
+    @Override
+    public void onDeleteIngredient(int position)
+    {
+        if (ingredientArrayList.isEmpty())
+        {
+            return;
+        }
+        ingredientArrayList.remove(position);
+        ingredientRecipeAdapter.notifyItemChanged(position);
     }
 
     @Override

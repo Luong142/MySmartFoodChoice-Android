@@ -28,6 +28,7 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
+import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -72,9 +73,13 @@ public class LoginActivity extends AppCompatActivity
 
     static final String PATH_DATABASE = "Registered Accounts";
 
+    static final String TAG = "LoginActivity";
+
     FirebaseDatabase firebaseDatabase;
 
     String email, password, userID, accountType;
+
+    String emailRememberMe, passwordRememberMe, accountTypeRememberMe;
 
     Intent intent;
 
@@ -85,6 +90,11 @@ public class LoginActivity extends AppCompatActivity
     boolean isTrialOver;
 
     AlertDialog alertGuestTrialOverDialog;
+
+    android.app.AlertDialog.Builder builder;
+
+    android.app.AlertDialog alertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -144,13 +154,55 @@ public class LoginActivity extends AppCompatActivity
 
         // check box listener
         rememberMe.setOnCheckedChangeListener(onCheckedListener());
+
+        // assign to email and password
+        emailRememberMe = Paper.book().read(Prevalent.EmailKey);
+        passwordRememberMe = Paper.book().read(Prevalent.PasswordKey);
+        accountTypeRememberMe = Paper.book().read(Prevalent.AccountType);
+
+        if (emailRememberMe != null && passwordRememberMe != null
+                && accountTypeRememberMe != null)
+        {
+            if (!TextUtils.isEmpty(emailRememberMe) && !TextUtils.isEmpty(passwordRememberMe)
+                    && !TextUtils.isEmpty(accountTypeRememberMe))
+            {
+                Log.d(TAG, "onCreate: " +
+                        emailRememberMe + " " + passwordRememberMe + " " + accountTypeRememberMe);
+                switch (accountTypeRememberMe)
+                {
+                    case "User":
+                        allowUserLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    case "Dietitian":
+                        allowDietitianLogin(emailRememberMe, passwordRememberMe);
+                    case "Guest":
+                        allowGuestLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    case "Trainer":
+                        allowTrainerLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    default:
+                        Toast.makeText(LoginActivity.this,
+                                "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
+                }
+
+                if (!isFinishing())
+                {
+                    builder = new android.app.AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle("Already Logged in");
+                    builder.setMessage("Please wait...");
+                    alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            }
+        }
     }
 
     /*
         private final FirebaseAuth.AuthStateListener authStateListener =
-                firebaseAuth ->
+                mAuth ->
         {
-            firebaseUser = firebaseAuth.getCurrentUser();
+            firebaseUser = mAuth.getCurrentUser();
             if (firebaseUser != null)
             {
                 // user signed in
@@ -183,6 +235,10 @@ public class LoginActivity extends AppCompatActivity
                     if (rememberMe.isChecked())
                     {
                         Paper.book().write(Prevalent.AccountType, accountType);
+                    }
+                    else
+                    {
+                        Paper.book().delete(Prevalent.AccountType);
                     }
 
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
@@ -331,6 +387,96 @@ public class LoginActivity extends AppCompatActivity
                         "Email or Password incorrect, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void allowUserLogin(String email, String password)
+    {
+        // TODO: login function
+
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowGuestLogin(String email, String password)
+    {
+        // TODO: login function
+
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowDietitianLogin(String email, String password)
+    {
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowTrainerLogin(String email, String password)
+    {
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (alertDialog != null && alertDialog.isShowing())
+        {
+            alertDialog.dismiss();
+        }
     }
 
     public ClickableSpan clickableForgotPasswordNavSpan()

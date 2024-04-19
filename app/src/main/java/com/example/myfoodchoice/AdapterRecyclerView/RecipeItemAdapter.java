@@ -95,7 +95,6 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.my
         // TODO: it is working this recycler view has a scroller! pls scroll down!
 
         holder.itemView.setFocusable(isFocusable);
-
     }
 
     @Override

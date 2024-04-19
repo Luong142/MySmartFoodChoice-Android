@@ -3,6 +3,7 @@ package com.example.myfoodchoice.ModelFreeFoodAPI;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Dish implements Serializable
@@ -37,6 +38,7 @@ public class Dish implements Serializable
 
   public static class Meals implements Serializable // todo: this is recognised as recipe too.
   {
+    private ArrayList<String> ingredients;
     private Object strImageSource;
 
     private String strIngredient10;
@@ -148,7 +150,8 @@ public class Dish implements Serializable
     public String toString()
     {
       return "Meals{" +
-              "strImageSource=" + strImageSource +
+              "ingredients=" + ingredients +
+              ", strImageSource=" + strImageSource +
               ", strIngredient10='" + strIngredient10 + '\'' +
               ", strIngredient12='" + strIngredient12 + '\'' +
               ", strIngredient11='" + strIngredient11 + '\'' +
@@ -202,6 +205,14 @@ public class Dish implements Serializable
               ", strMeasure14='" + strMeasure14 + '\'' +
               ", strMeasure15='" + strMeasure15 + '\'' +
               '}';
+    }
+
+    public ArrayList<String> getIngredients() {
+      return ingredients;
+    }
+
+    public void setIngredients(ArrayList<String> ingredients) {
+      this.ingredients = ingredients;
     }
 
     public Object getStrImageSource() {

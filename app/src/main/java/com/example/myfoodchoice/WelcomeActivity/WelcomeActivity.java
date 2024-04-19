@@ -38,7 +38,6 @@ public class WelcomeActivity extends AppCompatActivity
 {
     // declare buttons
     Button signingBtn, signUpAsGuestBtn, signUpAsBusinessBtn;
-    String emailRememberMe, passwordRememberMe, accountTypeRememberMe;
 
     // TextView signUpAsGuest, signUpAsBusiness;
 
@@ -47,8 +46,6 @@ public class WelcomeActivity extends AppCompatActivity
     static final int INDEXSTART = 0;
 
     static final String TAG = "WelcomeActivity";
-
-    AlertDialog.Builder builder;
 
     private static final String BASE_URL = "https://api.anthropic.com/";
 
@@ -61,8 +58,6 @@ public class WelcomeActivity extends AppCompatActivity
     // private Call<FoodItem> call;
 
     private Call<Dish> callDish;
-
-    private AlertDialog alertDialog;
 
     // todo: init firebase components
     FirebaseAuth firebaseAuth;
@@ -125,47 +120,6 @@ public class WelcomeActivity extends AppCompatActivity
 
         signingBtn.setOnClickListener(onSignInListener);
 
-        // assign to email and password
-        emailRememberMe = Paper.book().read(Prevalent.EmailKey);
-        passwordRememberMe = Paper.book().read(Prevalent.PasswordKey);
-        accountTypeRememberMe = Paper.book().read(Prevalent.AccountType);
-
-        if (emailRememberMe != null && passwordRememberMe != null
-                && accountTypeRememberMe != null)
-        {
-            if (!TextUtils.isEmpty(emailRememberMe) && !TextUtils.isEmpty(passwordRememberMe)
-                    && !TextUtils.isEmpty(accountTypeRememberMe))
-            {
-                Log.d(TAG, "onCreate: " + emailRememberMe + " " + passwordRememberMe + " " + accountTypeRememberMe);
-                switch (accountTypeRememberMe)
-                {
-                    case "User":
-                        allowUserLogin(emailRememberMe, passwordRememberMe);
-                        break;
-                    case "Dietitian":
-                        allowDietitianLogin(emailRememberMe, passwordRememberMe);
-                    case "Guest":
-                        allowGuestLogin(emailRememberMe, passwordRememberMe);
-                        break;
-                    case "Trainer":
-                        allowTrainerLogin(emailRememberMe, passwordRememberMe);
-                        break;
-                    default:
-                        Toast.makeText(WelcomeActivity.this,
-                                "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
-                }
-
-                if (!isFinishing())
-                {
-                    builder = new AlertDialog.Builder(WelcomeActivity.this);
-                    builder.setTitle("Already Logged in");
-                    builder.setMessage("Please wait...");
-                    alertDialog = builder.create();
-                    alertDialog.show();
-                }
-            }
-        }
-
         // TODO: we have normal user, guest, business vendor with two types
         //  (Dietitian and Trainer)
         // TODO: use the attribute to identify which user type.
@@ -195,96 +149,6 @@ public class WelcomeActivity extends AppCompatActivity
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         };
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        if (alertDialog != null && alertDialog.isShowing())
-        {
-            alertDialog.dismiss();
-        }
-    }
-
-    private void allowUserLogin(String email, String password)
-    {
-        // TODO: login function
-
-        // authentication login
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-            {
-                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, UserMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void allowGuestLogin(String email, String password)
-    {
-        // TODO: login function
-
-        // authentication login
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-            {
-                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, GuestMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void allowDietitianLogin(String email, String password)
-    {
-        // authentication login
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-            {
-                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, DietitianMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void allowTrainerLogin(String email, String password)
-    {
-        // authentication login
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-            {
-                Toast.makeText(WelcomeActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WelcomeActivity.this, TrainerMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(WelcomeActivity.this, "", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
     
     private final View.OnClickListener onSignInListener = v ->
