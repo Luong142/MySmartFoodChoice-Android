@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/pink"
+    android:layout_marginTop="10dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="20dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/recipeCategoryText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:text="@string/recipe_category"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/recipeCuisineText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:text="@string/recipe_cuisine"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            />
+
+
+        <TextView
+            android:id="@+id/instructionText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:text="@string/instructions"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/ingredientsText"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:text="@string/ingredient_name"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

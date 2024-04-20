@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionMealListener;
-import com.example.myfoodchoice.AdapterRecyclerView.MealHistoryAdapter;
+import com.example.myfoodchoice.AdapterRecyclerView.MealMainHistoryAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.R;
@@ -55,7 +55,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
     // TODO: declare UI components
     RecyclerView mealHistoryRecyclerView, mealDetailRecyclerView;
 
-    MealHistoryAdapter mealHistoryAdapter;
+    MealMainHistoryAdapter mealMainHistoryAdapter;
 
     TabLayout timeTabLayout;
 
@@ -103,7 +103,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
         // need to set this recycler view.
         mealArrayList = new ArrayList<>();
         mealHistoryRecyclerView = view.findViewById(R.id.mealRecyclerView);
-        mealHistoryAdapter = new MealHistoryAdapter(mealArrayList, this);
+        mealMainHistoryAdapter = new MealMainHistoryAdapter(mealArrayList, this);
         setAdapter();
     }
 
@@ -168,7 +168,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
             }
         }
         // Update the adapter with the filtered list
-        mealHistoryAdapter.updateMeals(filteredMeals);
+        mealMainHistoryAdapter.updateMeals(filteredMeals);
     }
 
     @NonNull
@@ -193,7 +193,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
 
                 // todo: to show the data?
                 mealArrayList.add(globalMeal);
-                mealHistoryAdapter.notifyItemInserted(mealArrayList.size() - 1);
+                mealMainHistoryAdapter.notifyItemInserted(mealArrayList.size() - 1);
             }
 
             @Override
@@ -225,7 +225,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
                 if (index != -1)
                 {
                     mealArrayList.set(index, globalMeal); // Update the meal at the found index
-                    mealHistoryAdapter.notifyItemChanged(index); // Notify the adapter of the change
+                    mealMainHistoryAdapter.notifyItemChanged(index); // Notify the adapter of the change
                 }
                 else
                 {
@@ -250,7 +250,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
 
                 // todo: to show the data?
                 mealArrayList.remove(globalMeal);
-                mealHistoryAdapter.notifyItemRemoved(mealArrayList.size() - 1);
+                mealMainHistoryAdapter.notifyItemRemoved(mealArrayList.size() - 1);
             }
 
             @Override
@@ -285,7 +285,7 @@ public class UserMealHistoryFragment extends Fragment implements OnActionMealLis
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         mealHistoryRecyclerView.setLayoutManager(layoutManager);
         mealHistoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mealHistoryRecyclerView.setAdapter(mealHistoryAdapter);
+        mealHistoryRecyclerView.setAdapter(mealMainHistoryAdapter);
     }
 
     @Override

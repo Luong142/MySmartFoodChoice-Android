@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
@@ -19,49 +20,36 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_gravity="start"
             android:gravity="start"
             >
             <ImageView
                 android:id="@+id/mealImage"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/food_placeholder"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/todo" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:gravity="start"
-            >
             <TextView
                 android:id="@+id/mealName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textSize="20sp"
                 android:text="@string/recipe_name"
                 android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/mealCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="italic"
-                android:text="@string/recipe_category"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/mealArea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/recipe_cuisine"
-                android:textSize="18sp" />
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recipeDetailRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            tools:listitem="@layout/recipe_detail_item_layout"
+            android:gravity="center"
+            />
     </LinearLayout>
 
 
