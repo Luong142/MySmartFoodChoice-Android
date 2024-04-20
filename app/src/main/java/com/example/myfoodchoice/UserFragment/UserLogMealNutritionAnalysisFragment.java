@@ -70,7 +70,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -304,7 +303,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
                 if (userProfile == null)
                 {
-                    Log.d(TAG, "onDataChange: userProfile is null");
+                    // Log.d(TAG, "onDataChange: userProfile is null");
                     return;
                 }
 
@@ -338,6 +337,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 {
                     // todo: use dishInfo to alert user if they have health problems.
                     dishInfo = response.body();
+                    // Log.d(TAG, "onResponse: " + dishInfo);
 
                     if (dishInfo == null)
                     {
@@ -383,6 +383,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     */
 
                     // here is the check
+                    /*
+                    for (String ingredient : strIngredients)
+                    {
+                        Log.d(TAG, "onResponse: ingredient: " + ingredient);
+                    }
+                     */
                     checkAllergiesAndDietType(strIngredients);
                 }
             }
@@ -401,13 +407,16 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         // todo: retrain the model based on whether both website accept the input or name of food
         // fixme: https://www.themealdb.com/api/json/v1/1/search.php?s=Fish%20Soup
         // fixme: https://calorieninjas.com/
-        List<String> allergyEggList = Collections.singletonList("Eggs");
 
-        List<String> allergyPeanutList = Collections.singletonList("Peanuts");
+        // todo: remember to update those lists below as new model
+        List<String> allergyEggList = Arrays.asList("eggs", "egg");
+        // fixme: all checking ingredients must be in lower case.
+
+        List<String> allergyPeanutList = Arrays.asList("peanuts", "peanut");
 
         List<String> allergySeafoodList = Arrays.asList("lobster", "fish",
                 "crustacean", "shellfish",
-                "anchovy fillet", "fish stock");
+                "anchovy fillet", "fish stock", "king prawns", "fish sauce");
 
         List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
                 "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
@@ -430,7 +439,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
-                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                        .setMessage(String.format("This dish contains %s ingredient " +
+                                        "which is allergic to your health.",
                                 allergen))
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
@@ -443,7 +453,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
-                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                        .setMessage(String.format("This dish contains %s ingredient " +
+                                        "which is allergic to your health.",
                                 allergen))
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
@@ -452,11 +463,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         if (isPeanutAllergic)
         {
             allergen = checkForAllergyMatch(strIngredients, allergyPeanutList);
-            if (!allergen.equals("No allergens found in the ingredients."))
+            if (!allergen.equals("No allergens found in the ingredient."))
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
-                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                        .setMessage(String.format("This dish contains %s ingredient " +
+                                        "which is allergic to your health.",
                                 allergen))
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
@@ -642,7 +654,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         totalCholesterol = 0;
     }
 
-    public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
+    public void classifyImage(@NonNull Bitmap image)// todo: algo using tensorflow lite to label image.
     {
         try {
             // model here
@@ -698,7 +710,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             }
 
             // todo: add more dishes here, based on the model, we train more food on another model.
-            String[] classes = {"Nasi Lemak", "Kaya Toast", "Curry Puff", "Fish Soup"};
+            String[] classes = {"Beef wellington",
+                    "Nasi Lemak", "Omelette",
+                    "Fish Soup", "Tart", "Laksa"};
 
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
@@ -712,8 +726,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             call.enqueue(callBackNutritionValueResponseFromAPI());
 
             // todo: call free food API for allergies and diet type.
-
-            String modifiedName = "";
+            String modifiedName = ""; // todo: remember to add in case for this.
             switch (foodName)
             {
                 case ("Nasi Lemak"):
@@ -722,6 +735,20 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 case ("Fish Soup"):
                     modifiedName = "Fish Soup";
                     break;
+                case ("Tart"):
+                    modifiedName = "Tart";
+                    break;
+                case ("Laksa"):
+                    modifiedName = "Laksa";
+                    break;
+                case ("Omelette"):
+                    modifiedName = "Omelette";
+                    break;
+                case ("Beef Wellington"):
+                    modifiedName = "Beef Wellington";
+                    break;
+                default:
+                    modifiedName = foodName;
             }
 
             Call<Dish> dishCall = freeFoodAPI.searchMealByName(modifiedName);

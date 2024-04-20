@@ -28,7 +28,6 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
-import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -166,8 +165,10 @@ public class LoginActivity extends AppCompatActivity
             if (!TextUtils.isEmpty(emailRememberMe) && !TextUtils.isEmpty(passwordRememberMe)
                     && !TextUtils.isEmpty(accountTypeRememberMe))
             {
+                /*
                 Log.d(TAG, "onCreate: " +
                         emailRememberMe + " " + passwordRememberMe + " " + accountTypeRememberMe);
+                 */
                 switch (accountTypeRememberMe)
                 {
                     case "User":
@@ -175,6 +176,7 @@ public class LoginActivity extends AppCompatActivity
                         break;
                     case "Dietitian":
                         allowDietitianLogin(emailRememberMe, passwordRememberMe);
+                        break;
                     case "Guest":
                         allowGuestLogin(emailRememberMe, passwordRememberMe);
                         break;
@@ -183,7 +185,9 @@ public class LoginActivity extends AppCompatActivity
                         break;
                     default:
                         Toast.makeText(LoginActivity.this,
-                                "Account type is not recognized, please try again.", Toast.LENGTH_SHORT).show();
+                                "Account type is not recognized, please try again.",
+                                Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
                 if (!isFinishing())
@@ -229,9 +233,7 @@ public class LoginActivity extends AppCompatActivity
                 {
                     accountType = account.getAccountType();
                     isTrialOver = account.isGuestTrialActive();
-                    // Log.d("LoginActivity", "onDataChange: hello" + account.toString());
-                    // Log.d("LoginActivity", "onDataChange: " + accountType);
-                    // Log.d("LoginActivity", "onDataChange: " + account.isGuestTrialActive());
+                    // Log.d(TAG, "Account here: " + account);
                     if (rememberMe.isChecked())
                     {
                         Paper.book().write(Prevalent.AccountType, accountType);
@@ -239,6 +241,8 @@ public class LoginActivity extends AppCompatActivity
                     else
                     {
                         Paper.book().delete(Prevalent.AccountType);
+                        Paper.book().delete(Prevalent.EmailKey);
+                        Paper.book().delete(Prevalent.PasswordKey);
                     }
 
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.

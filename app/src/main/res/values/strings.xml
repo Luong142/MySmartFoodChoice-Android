@@ -221,4 +221,7 @@
     <string name="enter_name_of_recipe">Enter name of recipe</string>
     <string name="delete">Delete</string>
     <string name="ingredient_name">Ingredient Name</string>
+    <string name="search_for_recipe">Search for Recipe</string>
+    <string name="recipe_category">Recipe Category</string>
+    <string name="recipe_cuisine">Recipe Cuisine</string>
 </resources>

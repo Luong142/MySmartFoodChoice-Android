@@ -3,13 +3,13 @@ package com.example.myfoodchoice.AdapterRecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionIngredientListener;
-import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
@@ -31,12 +31,15 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
     {
         TextView ingredientName;
 
+        Button removeIngredientBtn;
+
         public myViewHolder(final View itemView, OnActionIngredientListener onActionIngredientListener)
         {
             super(itemView);
             ingredientName = itemView.findViewById(R.id.ingredientName);
+            removeIngredientBtn = itemView.findViewById(R.id.removeBtn);
 
-            itemView.setOnClickListener(v ->
+            removeIngredientBtn.setOnClickListener(v ->
             {
                 if (onActionIngredientListener != null)
                 {
