@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
-import com.example.myfoodchoice.AuthenticationActivity.RegisterGuestActivity;
+import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.R;
@@ -94,14 +94,14 @@ public class WelcomeActivity extends AppCompatActivity
 
         // init buttons
         signingBtn = findViewById(R.id.signInBtn);
-        signUpAsGuestBtn = findViewById(R.id.signUpAsGuestBtn);
+        signUpAsGuestBtn = findViewById(R.id.signUpAsUserBtn);
         signUpAsBusinessBtn = findViewById(R.id.signUpAsBusinessBtn);
 
         // nav to sign up page based on text click
         // FIXME: the index is out of bound.
         signUpAsGuestBtn.setOnClickListener(v ->
         {
-            Intent intent = new Intent(WelcomeActivity.this, RegisterGuestActivity.class);
+            Intent intent = new Intent(WelcomeActivity.this, RegisterUserActivity.class);
             startActivity(intent);
         });
         signUpAsBusinessBtn.setOnClickListener(v ->

@@ -28,6 +28,9 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,9 +45,13 @@ import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
 {
-    private static final String PATH_LASTLOGIN = "Last Login";
-    // TODO: declare UI component
+    // todo: we should make or incentive the guest
+    // todo: guest account doesn't need to register
+    // todo: Guest can upgrade to User account.
+    // todo: make guest page more interesting to them and interest them into official user.
+    // todo: need to put the video
 
+    // TODO: declare UI component
     // button
     Button loginBtn;
 
@@ -55,7 +62,7 @@ public class LoginActivity extends AppCompatActivity
     CheckBox rememberMe;
 
     // clickable text
-    TextView clickableForgotPassword, clickableSignUpNav;
+    TextView clickableForgotPassword, clickableSignUpNav, clickableLoginAsGuestNav;
 
     // for clickable text
     SpannableString spannableStringSignUpNav, spannableStringForgotPassword;
@@ -93,6 +100,7 @@ public class LoginActivity extends AppCompatActivity
     android.app.AlertDialog.Builder builder;
 
     android.app.AlertDialog alertDialog;
+    SpannableString spannableStringLoginAsGuestNav;
 
 
     @Override
@@ -129,6 +137,7 @@ public class LoginActivity extends AppCompatActivity
         // clickable text
         clickableForgotPassword = findViewById(R.id.clickableForgotPassword);
         clickableSignUpNav = findViewById(R.id.clickableSignUpNavText);
+        clickableLoginAsGuestNav = findViewById(R.id.clickableLoginAsGuestNavText);
 
         // button
         loginBtn = findViewById(R.id.loginBtn);
@@ -146,6 +155,13 @@ public class LoginActivity extends AppCompatActivity
         spannableStringForgotPassword.setSpan(clickableForgotPasswordNavSpan(), INDEX_START, clickableForgotPassword.length(), 0);
         clickableForgotPassword.setText(spannableStringForgotPassword);
         clickableForgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // nav to UserHomePage
+        spannableStringLoginAsGuestNav = new SpannableString(clickableLoginAsGuestNav.getText());
+        spannableStringLoginAsGuestNav.setSpan(clickableLoginAsGuestNavSpan(), INDEX_START,
+                clickableLoginAsGuestNav.length(), 0);
+        clickableLoginAsGuestNav.setText(spannableStringLoginAsGuestNav);
+        clickableLoginAsGuestNav.setMovementMethod(LinkMovementMethod.getInstance());
 
         // progress bar
         progressBar = findViewById(R.id.progressBar);
@@ -176,9 +192,6 @@ public class LoginActivity extends AppCompatActivity
                         break;
                     case "Dietitian":
                         allowDietitianLogin(emailRememberMe, passwordRememberMe);
-                        break;
-                    case "Guest":
-                        allowGuestLogin(emailRememberMe, passwordRememberMe);
                         break;
                     case "Trainer":
                         allowTrainerLogin(emailRememberMe, passwordRememberMe);
@@ -248,9 +261,10 @@ public class LoginActivity extends AppCompatActivity
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
                     {
                         case "Guest":
+                            intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                            /*
                             if (isTrialOver)
                             {
-                                intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                             }
                             else
                             {
@@ -275,6 +289,7 @@ public class LoginActivity extends AppCompatActivity
                                         (dialog, which) -> dialog.dismiss());
                                 alertGuestTrialOverDialog.show();
                             }
+                             */
                             break;
                         case "Trainer":
                             intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
@@ -396,8 +411,6 @@ public class LoginActivity extends AppCompatActivity
     private void allowUserLogin(String email, String password)
     {
         // TODO: login function
-
-        // authentication login
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
         {
             if (task.isSuccessful())
@@ -506,11 +519,53 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onClick(View widget)
                 {
-                    Intent intent = new Intent(LoginActivity.this, RegisterGuestActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
                     startActivity(intent);
                     finish();
                 }
             };
         }
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private Object clickableLoginAsGuestNavSpan()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(@NonNull View widget)
+            {
+                if (mAuth.getCurrentUser() != null)
+                {
+                    mAuth.signInAnonymously().addOnCompleteListener(onCompleteSignInAsGuestListener());
+                }
+                else
+                {
+                    Log.d(TAG, "mAuth is " + mAuth);
+                }
+            }
+        };
+    }
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<AuthResult> onCompleteSignInAsGuestListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                // Sign in success, update UI with the signed-in user's information
+                userID = mAuth.getUid();
+                Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                // If sign in fails, display a message to the user.
+                Log.w(TAG, "signInAnonymously:failure", task.getException());
+            }
+        };
     }
 }

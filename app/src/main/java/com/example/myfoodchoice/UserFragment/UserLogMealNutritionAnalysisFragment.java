@@ -463,7 +463,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         if (isPeanutAllergic)
         {
             allergen = checkForAllergyMatch(strIngredients, allergyPeanutList);
-            if (!allergen.equals("No allergens found in the ingredient."))
+            if (!allergen.equals("No allergens found in the ingredients."))
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
@@ -531,6 +531,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             // todo: set the item.
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
+
+                            if (firebaseUser.getDisplayName() == null)
+                            {
+                                // this is for the guest, they don't have their own user profile
+                                return;
+                            }
 
                             // fixme: remember must be unique name if not will be override
                             String uniqueImageName = firebaseUser.getDisplayName() + "_" +
@@ -656,14 +662,16 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     public void classifyImage(@NonNull Bitmap image)// todo: algo using tensorflow lite to label image.
     {
+        // todo: Tensorflow lite is an API.
         try {
             // model here
             Model model = Model.newInstance(requireActivity().getApplicationContext());
 
-            // what is this?
+            // holding memory of that new image.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
-            // good to go
+            // fixme, @NonNull Bitmap image since the I have converted it into image.
+            // fixme, Bitmap supports JPEG, PNG, BMP, GIF, WebP except uncommon image format
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize  * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -761,7 +769,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             StringBuilder s = new StringBuilder();
             for(int i = 0; i < classes.length; i++)
             {
-                s.append(String.format(Locale.ROOT, "%s: %.1f%%\n", classes[i], confidences[i] * 100));
+                s.append(String.format(Locale.ROOT, "%s: %.1f%%\n",
+                        classes[i], confidences[i] * 100));
             }
             // confidence.setText(s);
 

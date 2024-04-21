@@ -14,12 +14,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="315dp"
-        android:layout_height="545dp"
-        android:layout_marginBottom="160dp"
+        android:layout_height="540dp"
+        android:layout_marginBottom="148dp"
         android:background="@drawable/rounded_layout_login_page"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -27,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="25sp"
             android:text="@string/login"
+            android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.756"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,17 +61,17 @@
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:layout_marginBottom="20dp"
+            android:autofillHints="Enter email"
             android:background="@drawable/rounded_layout_editor"
             android:hint="@string/enter_email"
-            android:textAlignment="center"
             android:inputType="textEmailAddress"
+            android:textAlignment="center"
             android:textColorHint="#FAFAFA"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/password_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.636"
-            app:layout_constraintStart_toStartOf="parent"
-            android:autofillHints="Enter email" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/password_label"
@@ -94,8 +93,8 @@
             android:autofillHints="password"
             android:background="@drawable/rounded_layout_editor"
             android:hint="@string/enter_password"
-            android:textAlignment="center"
             android:inputType="textPassword"
+            android:textAlignment="center"
             android:textColorHint="#FAFAFA"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -141,8 +140,8 @@
 
         <TextView
             android:id="@+id/clickableForgotPassword"
-            android:layout_width="137dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="132dp"
             android:clickable="true"
             android:minHeight="48dp"
@@ -154,10 +153,21 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:id="@+id/clickableLoginAsGuestNavText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/login_as_guest"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="92dp"
+            android:layout_marginBottom="72dp"
             android:background="@drawable/rounded_layout_editor"
             android:paddingHorizontal="10dp"
             android:text="@string/or"
@@ -166,7 +176,6 @@
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
@@ -195,13 +204,14 @@
             android:id="@+id/clickableSignUpNavText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="132dp"
             android:text="@string/need_an_account"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.464"
+            app:layout_constraintHorizontal_bias="0.535"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

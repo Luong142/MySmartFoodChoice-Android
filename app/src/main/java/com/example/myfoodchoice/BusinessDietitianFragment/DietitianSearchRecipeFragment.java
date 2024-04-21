@@ -15,7 +15,6 @@ import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
 public class DietitianSearchRecipeFragment extends Fragment
 {
@@ -24,6 +23,7 @@ public class DietitianSearchRecipeFragment extends Fragment
     //  https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian (cuisine),
     //  to view more details in another list of that dish
     //  www.themealdb.com/api/json/v1/1/search.php?s=BeaverTails
+    // https://www.youtube.com/watch?v=tQ7V7iBg5zE&ab_channel=CodingSTUFF
 
     // todo: declare firebase here
     // todo: init firebase

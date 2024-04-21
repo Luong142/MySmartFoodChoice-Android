@@ -92,12 +92,6 @@ public class GuestMainMenuActivity extends AppCompatActivity
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
-        else if (itemId == R.id.nav_upgrade_account)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestUpgradeAccountFragment()).commit();
-        }
-
         // TODO: pls take note that Guest can access some User fragment
 
         else if (itemId == R.id.nav_food_recipe)
