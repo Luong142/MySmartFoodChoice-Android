@@ -42,7 +42,7 @@ import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
-import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
 import com.example.myfoodchoice.ml.Model;
@@ -123,7 +123,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     // calling calories ninja API
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
-    private FreeFoodAPI freeFoodAPI;
+    private FreeFoodDetailAPI freeFoodDetailAPI;
 
     private FoodItem foodItem;
     FoodItem.Item itemDisplay;
@@ -269,7 +269,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         takePhotoBtn.setOnClickListener(onTakePhotoListener());
 
         // todo: init API for two of them
-        freeFoodAPI = RetrofitFreeFoodClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
+        freeFoodDetailAPI = RetrofitFreeFoodClient.getRetrofitFreeInstance().create(FreeFoodDetailAPI.class);
         caloriesNinjaAPI = RetrofitNinjaCaloriesClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
 
         imageSize = 224; // important?
@@ -517,9 +517,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     {
                         // assign the variable to the is foodItems array list.
 
-                        // Log.d(TAG, "onResponse: " + foodItem);
+                        // FIXME: sometime the API doesn't give response.
+                        Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
-
                         // get all total calculations
                         for (FoodItem.Item itemLoop : foodItem.getItems())
                         {
@@ -759,7 +759,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     modifiedName = foodName;
             }
 
-            Call<Dish> dishCall = freeFoodAPI.searchMealByName(modifiedName);
+            Call<Dish> dishCall = freeFoodDetailAPI.searchMealByName(modifiedName);
             dishCall.enqueue(callBackDishInfoResponseFromAPI());
 
             // todo: input from user when search for recipe,

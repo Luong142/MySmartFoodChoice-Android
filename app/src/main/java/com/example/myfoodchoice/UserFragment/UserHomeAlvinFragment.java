@@ -184,7 +184,7 @@ public class UserHomeAlvinFragment extends Fragment
                 if (meal1 != null)
                 {
                     mealCache.put(snapshot.getKey(), meal);
-                    Log.d(TAG, "onChildAdded: " + meal1);
+                    // Log.d(TAG, "onChildAdded: " + meal1);
                     totalCalories += meal1.getTotalCalories();
                     totalCholesterol += meal1.getTotalCholesterol();
                     totalSugar += meal1.getTotalSugar();
@@ -197,10 +197,12 @@ public class UserHomeAlvinFragment extends Fragment
                 percentageSalt = (totalSalt / maxSalt) * 100;
                 percentageSugar = (totalSugar / maxSugar) * 100;
 
+                /*
                 Log.d(TAG, "onChildAdded: " + percentageCalories);
                 Log.d(TAG, "onChildAdded: " + percentageCholesterol);
                 Log.d(TAG, "onChildAdded: " + percentageSalt);
                 Log.d(TAG, "onChildAdded: " + percentageSugar);
+                 */
 
                 // fixme: null pointer exception
 

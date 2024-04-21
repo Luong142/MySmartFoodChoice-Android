@@ -14,10 +14,14 @@ import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
 import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
+import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
+import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
-import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCategoryAPI;
+import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
 
 import org.jetbrains.annotations.Contract;
 
@@ -45,14 +49,20 @@ public class WelcomeActivity extends AppCompatActivity
 
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
-    private FreeFoodAPI freeFoodAPI;
+    private FreeFoodDetailAPI freeFoodDetailAPI;
+
+    private FreeFoodRecipeCuisineAPI freeFoodRecipeCuisineAPI;
+
+    private FreeFoodRecipeCategoryAPI freeFoodRecipeCategoryAPI;
 
     // private Call<FoodItem> call;
 
     private Call<Dish> callDish;
 
-    // todo: init firebase components
-    FirebaseAuth firebaseAuth;
+    private Call<RecipeCategories> categoriesCall;
+
+    private Call<RecipeCuisines> cuisinesCall;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,10 +86,21 @@ public class WelcomeActivity extends AppCompatActivity
 
         // TODO: init ninja api
         // caloriesNinjaAPI = RetrofitClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
-        //freeFoodAPI = RetrofitClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
+        // freeFoodAPI = RetrofitClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
+
+        //FreeFoodRecipeCuisineAPI freeFoodRecipeCuisineAPI = RetrofitFreeFoodClient.
+                //getRetrofitFreeInstance().create(FreeFoodRecipeCuisineAPI.class);
+
+        //FreeFoodRecipeCategoryAPI freeFoodRecipeCategoryAPI = RetrofitFreeFoodClient.
+                //getRetrofitFreeInstance().create(FreeFoodRecipeCategoryAPI.class);
+
+        //freeFoodRecipeCuisineAPI.searchRecipeCuisine("Canadian").
+                //enqueue(callBackResponseFromAPI());
+
+        //freeFoodRecipeCategoryAPI.searchRecipeCategory("Seafood").enqueue(callBackCategoryResponseFromAPI());
 
         // fixme: to test the input string name of food.
-        String query = "Fish Soup";
+        // String query = "Fish Soup";
 
         // call = caloriesNinjaAPI.getFoodItem(query);
         //callDish = freeFoodAPI.searchMealByName(query);
@@ -88,9 +109,6 @@ public class WelcomeActivity extends AppCompatActivity
 
         // init paper
         Paper.init(WelcomeActivity.this);
-
-        // init firebase auth;
-        firebaseAuth = FirebaseAuth.getInstance();
 
         // init buttons
         signingBtn = findViewById(R.id.signInBtn);
@@ -119,30 +137,56 @@ public class WelcomeActivity extends AppCompatActivity
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
 
-    @NonNull // todo: test me, done successfully.
+    @NonNull
     @Contract(" -> new")
-    private Callback<Dish> callBackResponseFromAPI()
+    private Callback<RecipeCategories> callBackCategoryResponseFromAPI()
     {
-        return new Callback<Dish>()
+        return new Callback<RecipeCategories>()
         {
             @Override
-            public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response)
+            public void onResponse(Call<RecipeCategories> call, Response<RecipeCategories> response)
             {
-                if (response.isSuccessful())
+                RecipeCategories recipeCategories = response.body();
+
+                if (recipeCategories != null)
                 {
-                    Dish dish = response.body();
-                    Log.d(TAG, "onResponse: " + dish);
+                    Log.d(TAG, "onResponse: " + recipeCategories);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t)
+            public void onFailure(Call<RecipeCategories> call, Throwable t) {
+
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private Callback<RecipeCuisines> callBackResponseFromAPI()
+    {
+        return new Callback<RecipeCuisines>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<RecipeCuisines> call, @NonNull Response<RecipeCuisines> response)
+            {
+                RecipeCuisines recipeCuisines = response.body();
+
+                if (recipeCuisines != null)
+                {
+                    Log.d(TAG, "onResponse: " + recipeCuisines);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RecipeCuisines> call, @NonNull Throwable t)
             {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         };
     }
-    
+
+
     private final View.OnClickListener onSignInListener = v ->
     {
         Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);

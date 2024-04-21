@@ -7,7 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface FreeFoodAPI
+public interface FreeFoodDetailAPI
 {
     @GET("api/json/v1/1/search.php")
     Call<Dish> searchMealByName(@Query("s") String mealName);

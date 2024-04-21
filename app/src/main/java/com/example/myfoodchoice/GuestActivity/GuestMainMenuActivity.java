@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
