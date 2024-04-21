@@ -14,6 +14,11 @@
         <!-- Add more food types as needed -->
     </string-array>
 
+    <string-array name="cuisineCategory_array">
+        <item>Category</item>
+        <item>Cuisine</item>
+    </string-array>
+
     <string name="app_name">MySmartFoodChoice</string>
     <string name="login">Login</string>
     <string name="LOGIN"><b>LOGIN</b></string>

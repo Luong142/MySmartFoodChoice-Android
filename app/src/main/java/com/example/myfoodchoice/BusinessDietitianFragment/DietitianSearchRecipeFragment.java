@@ -1,10 +1,13 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,8 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.jetbrains.annotations.Contract;
+
 public class DietitianSearchRecipeFragment extends Fragment
 {
+    static final String TAG = "DietitianSearchRecipeFragment";
     // todo: here is our plan, we use
     //  https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegetarian, (category)
     //  https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian (cuisine),
@@ -33,13 +39,15 @@ public class DietitianSearchRecipeFragment extends Fragment
 
     FirebaseUser firebaseUser;
 
-    String userID;
+    String userID, selectedSpinner;
 
 
     // todo: declare the ui here
     SearchView searchRecipeView;
 
     RecyclerView recipeRecyclerView;
+
+    Spinner spinnerCategoryCuisine;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -66,9 +74,50 @@ public class DietitianSearchRecipeFragment extends Fragment
         // init UI here
         searchRecipeView = view.findViewById(R.id.searchRecipeView);
         recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView);
+        spinnerCategoryCuisine = view.findViewById(R.id.spinnerCategoryCuisine);
+
+        // set spinner
+        spinnerCategoryCuisine.setOnItemSelectedListener(onItemSelectedListener());
 
         // set adapter to recycler view.
 
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private AdapterView.OnItemSelectedListener onItemSelectedListener()
+    {
+        return new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                selectedSpinner = parent.getItemAtPosition(position).toString();
+                Log.d(TAG, selectedSpinner);
+
+                // the purpose is to load the correct arraylist type
+                // and to notify the adapter as well.
+                switch (selectedSpinner)
+                {
+                    case "Category":
+
+                        break;
+                    case "Cuisine":
+
+                        break;
+                    default:
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                // nothing happen
+                selectedSpinner = "Category";
+            }
+        };
     }
 
     @Override

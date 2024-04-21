@@ -115,12 +115,12 @@ public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistory
                 if (position != RecyclerView.NO_POSITION)
                 {
                     onActionMealListener.onClickMeal(position);
-                    // Toggle the visibility of the inner RecyclerView
+                    // toggle the visibility of the inner RecyclerView
 
                     if (foodDetailRecyclerView.getVisibility() == View.GONE)
                     {
                         foodDetailRecyclerView.setVisibility(View.VISIBLE);
-                        // Optionally, load or update the data for the inner RecyclerView here
+                        // optionally, load or update the data for the inner RecyclerView here
                     }
                     else
                     {

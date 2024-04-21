@@ -19,9 +19,8 @@ import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
-import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCategoryAPI;
-import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
 
 import org.jetbrains.annotations.Contract;
 
