@@ -60,8 +60,6 @@ public class RegisterBusinessActivity extends AppCompatActivity
 
     Intent intentNavToBusinessProfileActivity;
 
-    DatabaseReference databaseReferenceRegisteredUser;
-
     FirebaseAuth firebaseAuth;
 
     @Override

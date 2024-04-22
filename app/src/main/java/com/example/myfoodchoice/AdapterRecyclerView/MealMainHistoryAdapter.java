@@ -114,6 +114,7 @@ public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistory
                 int position = getAbsoluteAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)
                 {
+                    // do nothing?
                     onActionMealListener.onClickMeal(position);
                     // toggle the visibility of the inner RecyclerView
 

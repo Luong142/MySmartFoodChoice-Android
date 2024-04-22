@@ -5,18 +5,19 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeCuisines implements Serializable
 {
   @SerializedName("meals")
-  private List<RecipeCuisine> RecipeCuisine;
+  private ArrayList<RecipeCuisine> RecipeCuisine;
 
-  public List<RecipeCuisine> getRecipeCuisine() {
+  public ArrayList<RecipeCuisine> getRecipeCuisine() {
     return this.RecipeCuisine;
   }
 
-  public void setRecipeCuisine(List<RecipeCuisine> RecipeCuisine) {
+  public void setRecipeCuisine(ArrayList<RecipeCuisine> RecipeCuisine) {
     this.RecipeCuisine = RecipeCuisine;
   }
 

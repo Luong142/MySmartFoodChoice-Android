@@ -1,6 +1,7 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnClickExpandRecipeDetailListener;
-import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
-import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
+import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeWrapper;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
@@ -23,10 +24,27 @@ public class RecipeSearchMainAdapter extends RecyclerView.Adapter<RecipeSearchMa
 
     private OnClickExpandRecipeDetailListener onClickExpandRecipeDetailListener;
 
+    // todo: https://www.youtube.com/watch?v=MWlxFccYit8&ab_channel=larntech , check this tutorial for search
+
     public RecipeSearchMainAdapter(ArrayList<?> recipeArrayList,
                                    OnClickExpandRecipeDetailListener onClickExpandRecipeDetailListener)
     {
         this.recipeArrayList = recipeArrayList;
+        this.onClickExpandRecipeDetailListener = onClickExpandRecipeDetailListener;
+    }
+
+    public RecipeSearchMainAdapter(ArrayList<?> recipeArrayList)
+    {
+        this.recipeArrayList = recipeArrayList;
+    }
+
+    public OnClickExpandRecipeDetailListener getOnClickExpandRecipeDetailListener()
+    {
+        return onClickExpandRecipeDetailListener;
+    }
+
+    public void setOnClickExpandRecipeDetailListener(OnClickExpandRecipeDetailListener
+                                                             onClickExpandRecipeDetailListener) {
         this.onClickExpandRecipeDetailListener = onClickExpandRecipeDetailListener;
     }
 
@@ -36,7 +54,7 @@ public class RecipeSearchMainAdapter extends RecyclerView.Adapter<RecipeSearchMa
 
         ImageView recipeImage;
 
-        RecyclerView recipeDetailRecyclerView;
+        CardView cardViewDetailRecipe;
 
         public myViewHolder(@NonNull View itemView,
                             OnClickExpandRecipeDetailListener onClickExpandRecipeDetailListener)
@@ -45,9 +63,9 @@ public class RecipeSearchMainAdapter extends RecyclerView.Adapter<RecipeSearchMa
 
             recipeName = itemView.findViewById(R.id.recipeText);
             recipeImage = itemView.findViewById(R.id.recipeImage);
-            recipeDetailRecyclerView = itemView.findViewById(R.id.recipeDetailRecyclerView);
+            cardViewDetailRecipe = itemView.findViewById(R.id.cardViewDetailRecipe);
 
-            recipeDetailRecyclerView.setVisibility(View.GONE);
+            cardViewDetailRecipe.setVisibility(View.GONE);
 
             itemView.setOnClickListener(v ->
             {
@@ -56,17 +74,16 @@ public class RecipeSearchMainAdapter extends RecyclerView.Adapter<RecipeSearchMa
                 {
                     onClickExpandRecipeDetailListener.onExpandRecipeDetail(position);
 
-                    if (recipeDetailRecyclerView.getVisibility() == View.GONE)
+                    if (cardViewDetailRecipe.getVisibility() == View.GONE)
                     {
-                        recipeDetailRecyclerView.setVisibility(View.VISIBLE);
+                        cardViewDetailRecipe.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        recipeDetailRecyclerView.setVisibility(View.GONE);
+                        cardViewDetailRecipe.setVisibility(View.GONE);
                     }
                 }
             });
-
         }
     }
 
@@ -85,27 +102,32 @@ public class RecipeSearchMainAdapter extends RecyclerView.Adapter<RecipeSearchMa
     {
         // fixme: the problem is that there are two classes we need to switch or maybe they are the same
         // test first, probably I use caster.
-        RecipeCategories.RecipeCategory recipeCategories = (RecipeCategories.RecipeCategory)
-                recipeArrayList.get(position);
-        RecipeCuisines.RecipeCuisine recipeCuisines = (RecipeCuisines.RecipeCuisine)
-                recipeArrayList.get(position);
 
-        String recipeName = recipeCategories.getStrMeal();
-        String recipeImage = recipeCategories.getStrMealThumb();
+        RecipeWrapper recipeWrapper = new RecipeWrapper();
+        recipeWrapper.setRecipeCategory(recipeWrapper.getRecipeCategory());
+        recipeWrapper.setRecipeCuisine(recipeWrapper.getRecipeCuisine());
+
+        String recipeName = recipeWrapper.getRecipeCuisine().getStrMeal();
+        String recipeImage = recipeWrapper.getRecipeCuisine().getStrMealThumb();
 
         if (recipeName == null || recipeName.isEmpty())
         {
-            recipeName = recipeCuisines.getStrMeal();
+            recipeName = recipeWrapper.getRecipeCategory().getStrMeal();
         }
 
         if (recipeImage == null || recipeImage.isEmpty())
         {
-            recipeImage = recipeCuisines.getStrMealThumb();
+            recipeImage = recipeWrapper.getRecipeCategory().getStrMealThumb();
         }
 
+        Log.d("Adapter", "Value here: " + recipeName + " " + recipeImage);
+
+        Uri convert = Uri.parse(recipeImage);
 
         holder.recipeName.setText(recipeName);
-        holder.recipeImage.setImageURI((Uri) recipeImage);
+        holder.recipeImage.setImageURI(convert);
+
+        // set adapter here
 
     }
 

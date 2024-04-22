@@ -5,18 +5,20 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeCategories implements Serializable
 {
   @SerializedName("meals") // this is to convert the correct key name.
-  private List<RecipeCategory> RecipeCategory;
+  private ArrayList<RecipeCategory> RecipeCategory;
 
-  public List<RecipeCategory> getRecipeCategory() {
+  public ArrayList<RecipeCategory> getRecipeCategory() {
     return this.RecipeCategory;
   }
 
-  public void setRecipeCategory(List<RecipeCategory> RecipeCategory) {
+  public void setRecipeCategory(ArrayList<RecipeCategory> RecipeCategory)
+  {
     this.RecipeCategory = RecipeCategory;
   }
 

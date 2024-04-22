@@ -21,7 +21,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
-import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
@@ -93,7 +92,7 @@ public class LoginActivity extends AppCompatActivity
 
     boolean isTrialOver;
 
-    AlertDialog alertGuestTrialOverDialog;
+    AlertDialog alertGuestTrialOverDialog; // guest doesn't need to register
 
     android.app.AlertDialog.Builder builder;
 
@@ -192,7 +191,7 @@ public class LoginActivity extends AppCompatActivity
                         allowDietitianLogin(emailRememberMe, passwordRememberMe);
                         break;
                     case "Trainer":
-                        allowTrainerLogin(emailRememberMe, passwordRememberMe);
+                        // allowTrainerLogin(emailRememberMe, passwordRememberMe);
                         break;
                     default:
                         Toast.makeText(LoginActivity.this,
@@ -290,7 +289,7 @@ public class LoginActivity extends AppCompatActivity
                              */
                             break;
                         case "Trainer":
-                            intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                            // intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
                             break;
                         case "Dietitian":
                             intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
@@ -465,6 +464,7 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
+    /*
     private void allowTrainerLogin(String email, String password)
     {
         // authentication login
@@ -483,6 +483,7 @@ public class LoginActivity extends AppCompatActivity
             }
         });
     }
+     */
 
     @Override
     protected void onPause()

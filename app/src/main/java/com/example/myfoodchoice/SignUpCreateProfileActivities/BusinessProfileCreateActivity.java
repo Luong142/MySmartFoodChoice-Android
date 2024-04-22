@@ -414,7 +414,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     private void initBusinessRole()
     {
-        roleArrayList.add(new BusinessProfile("Trainer", R.drawable.trainer_icon_pink));
         roleArrayList.add(new BusinessProfile("Dietitian", R.drawable.dietitian_icon));
     }
 }
