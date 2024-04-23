@@ -1,4 +1,24 @@
 <resources>
+    <string-array name="cuisine_array">
+        <item>Malaysian</item>
+        <item>Singapore</item>
+        <item>Italian</item>
+        <!-- Add more cuisines as needed -->
+        <item>Chinese</item>
+    </string-array>
+
+    <string-array name="foodType_array">
+        <item>Vegetarian</item>
+        <item>Non-Vegetarian</item>
+        <item>Seafood</item>
+        <!-- Add more food types as needed -->
+    </string-array>
+
+    <string-array name="cuisineCategory_array">
+        <item>Category</item>
+        <item>Cuisine</item>
+    </string-array>
+
     <string name="app_name">MySmartFoodChoice</string>
     <string name="login">Login</string>
     <string name="LOGIN"><b>LOGIN</b></string>
@@ -196,4 +216,17 @@
     <string name="food_details">Food Details</string>
     <string name="create_recipe">Create Recipe</string>
     <string name="my_rewards">My Rewards</string>
+    <string name="view_rewards">View Rewards</string>
+    <string name="redeem_rewards">Redeem Rewards</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="instructions">Instructions</string>
+    <string name="name_of_recipe">Name of recipe</string>
+    <string name="enter_ingredient">Enter Ingredient</string>
+    <string name="enter_instruction">Enter instruction</string>
+    <string name="enter_name_of_recipe">Enter name of recipe</string>
+    <string name="delete">Delete</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="search_for_recipe">Search for Recipe</string>
+    <string name="recipe_category">Recipe Category</string>
+    <string name="recipe_cuisine">Recipe Cuisine</string>
 </resources>

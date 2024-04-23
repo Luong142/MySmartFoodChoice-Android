@@ -9,6 +9,7 @@ public class Recipe
     private String name;
     private String description;
 
+    // only for adapter here not for actual model.
     public Recipe()
     {
 

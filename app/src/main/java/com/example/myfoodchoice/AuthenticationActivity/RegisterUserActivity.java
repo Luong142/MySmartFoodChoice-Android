@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
-public class RegisterGuestActivity extends AppCompatActivity
+public class RegisterUserActivity extends AppCompatActivity
 {
     // TODO: declare UI components
 
@@ -79,7 +79,7 @@ public class RegisterGuestActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_guest);
+        setContentView(R.layout.activity_register_user);
 
         // init firebase database, paste the correct link as reference.
         firebaseDatabase = FirebaseDatabase.getInstance
@@ -117,12 +117,12 @@ public class RegisterGuestActivity extends AppCompatActivity
     {
         return v ->
         {
-            Log.d("RegisterActivity", "signup button activated! ");
+            //Log.d("RegisterActivity", "signup button activated! ");
             email = signupEmailEditText.getText().toString().trim();
             password = signupPasswordEditText.getText().toString().trim();
 
-            Log.d(TAG, "onSignUpListener: " + firstName + " " + lastName);
-            Log.d(TAG, "onSignUpListener: " + email + " " + password);
+            //Log.d(TAG, "onSignUpListener: " + firstName + " " + lastName);
+            //Log.d(TAG, "onSignUpListener: " + email + " " + password);
 
             // validation
             if (TextUtils.isEmpty(email))
@@ -170,7 +170,7 @@ public class RegisterGuestActivity extends AppCompatActivity
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(RegisterGuestActivity.this, "Guest registered successfully.",
+                    Toast.makeText(RegisterUserActivity.this, "Guest registered successfully.",
                             Toast.LENGTH_SHORT).show();
                     firebaseUser = firebaseAuth.getCurrentUser();
                     // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
@@ -188,9 +188,11 @@ public class RegisterGuestActivity extends AppCompatActivity
 
                     // init user account
                     account = new Account(email, password);
-                    account.setAccountType("Guest");
+                    // set to user, because supervisor said that user
+                    // can register not the guest, guest is to login.
+                    account.setAccountType("User");
 
-                    Log.d(TAG, "onCreate: " + account.toString());
+                    // Log.d(TAG, "onCreate: " + account.toString());
 
                     // start the trial day?
                     account.startGuestTrialPeriod();
@@ -246,7 +248,7 @@ public class RegisterGuestActivity extends AppCompatActivity
                     {
                         // FIXME: debug purpose
                         Log.d(TAG, "Error: " + e.getMessage());
-                        Toast.makeText(RegisterGuestActivity.this, "Error: " + e.getMessage(),
+                        Toast.makeText(RegisterUserActivity.this, "Error: " + e.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                     // to make the progress bar gone.
@@ -290,7 +292,7 @@ public class RegisterGuestActivity extends AppCompatActivity
                 // dismiss the dialog
                 dialog.dismiss();
                 // move to user profile for default user profile page.
-                intentNavToUserProfileFirstActivity = new Intent(RegisterGuestActivity.this, UserProfileCreateFirstActivity.class);
+                intentNavToUserProfileFirstActivity = new Intent(RegisterUserActivity.this, UserProfileCreateFirstActivity.class);
                 intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
                 startActivity(intentNavToUserProfileFirstActivity);
                 finish();
@@ -307,7 +309,7 @@ public class RegisterGuestActivity extends AppCompatActivity
                 @Override
                 public void onClick(@NonNull View widget)
                 {
-                    Intent intent = new Intent(RegisterGuestActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }

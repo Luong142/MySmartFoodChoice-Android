@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.ModelMeal.Meal;
@@ -222,16 +221,16 @@ public class UserLogMealFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -323,16 +322,16 @@ public class UserLogMealFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -420,16 +419,16 @@ public class UserLogMealFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -504,16 +503,16 @@ public class UserLogMealFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -695,16 +694,16 @@ public class UserLogMealFragment extends Fragment
                     //notify();
 
                     // display the counter
-                    caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                    caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                             totalCalories, maxCalories));
 
-                    cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                    cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                             totalCholesterol, maxCholesterol));
 
-                    sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                    sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                             totalSugar, maxSugar));
 
-                    saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                    saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                             totalSalt, maxSalt));
 
                     // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.

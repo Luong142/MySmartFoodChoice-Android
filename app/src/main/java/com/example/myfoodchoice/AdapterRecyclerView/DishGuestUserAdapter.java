@@ -47,7 +47,7 @@ public class DishGuestUserAdapter extends RecyclerView.Adapter<DishGuestUserAdap
 
             removeBtn.setOnClickListener(v ->
             {
-                int position = getAdapterPosition();
+                int position = getAbsoluteAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)
                 {
                     onDishClickListener.onRemoveDish(position);

@@ -42,7 +42,7 @@ import com.example.myfoodchoice.ModelMeal.Meal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
-import com.example.myfoodchoice.RetrofitProvider.FreeFoodAPI;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
 import com.example.myfoodchoice.ml.Model;
@@ -70,7 +70,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -124,7 +123,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     // calling calories ninja API
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
-    private FreeFoodAPI freeFoodAPI;
+    private FreeFoodDetailAPI freeFoodDetailAPI;
 
     private FoodItem foodItem;
     FoodItem.Item itemDisplay;
@@ -270,7 +269,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         takePhotoBtn.setOnClickListener(onTakePhotoListener());
 
         // todo: init API for two of them
-        freeFoodAPI = RetrofitFreeFoodClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
+        freeFoodDetailAPI = RetrofitFreeFoodClient.getRetrofitFreeInstance().create(FreeFoodDetailAPI.class);
         caloriesNinjaAPI = RetrofitNinjaCaloriesClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
 
         imageSize = 224; // important?
@@ -304,7 +303,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
                 if (userProfile == null)
                 {
-                    Log.d(TAG, "onDataChange: userProfile is null");
+                    // Log.d(TAG, "onDataChange: userProfile is null");
                     return;
                 }
 
@@ -338,6 +337,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 {
                     // todo: use dishInfo to alert user if they have health problems.
                     dishInfo = response.body();
+                    // Log.d(TAG, "onResponse: " + dishInfo);
 
                     if (dishInfo == null)
                     {
@@ -383,6 +383,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     */
 
                     // here is the check
+                    /*
+                    for (String ingredient : strIngredients)
+                    {
+                        Log.d(TAG, "onResponse: ingredient: " + ingredient);
+                    }
+                     */
                     checkAllergiesAndDietType(strIngredients);
                 }
             }
@@ -401,13 +407,16 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         // todo: retrain the model based on whether both website accept the input or name of food
         // fixme: https://www.themealdb.com/api/json/v1/1/search.php?s=Fish%20Soup
         // fixme: https://calorieninjas.com/
-        List<String> allergyEggList = Collections.singletonList("Eggs");
 
-        List<String> allergyPeanutList = Collections.singletonList("Peanuts");
+        // todo: remember to update those lists below as new model
+        List<String> allergyEggList = Arrays.asList("eggs", "egg");
+        // fixme: all checking ingredients must be in lower case.
+
+        List<String> allergyPeanutList = Arrays.asList("peanuts", "peanut");
 
         List<String> allergySeafoodList = Arrays.asList("lobster", "fish",
                 "crustacean", "shellfish",
-                "anchovy fillet", "fish stock");
+                "anchovy fillet", "fish stock", "king prawns", "fish sauce");
 
         List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
                 "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
@@ -430,7 +439,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
-                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                        .setMessage(String.format("This dish contains %s ingredient " +
+                                        "which is allergic to your health.",
                                 allergen))
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
@@ -443,7 +453,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
-                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                        .setMessage(String.format("This dish contains %s ingredient " +
+                                        "which is allergic to your health.",
                                 allergen))
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
@@ -456,7 +467,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Cautious")
-                        .setMessage(String.format("This dish contains %s ingredients which is allergic to your health.",
+                        .setMessage(String.format("This dish contains %s ingredient " +
+                                        "which is allergic to your health.",
                                 allergen))
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
@@ -505,9 +517,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                     {
                         // assign the variable to the is foodItems array list.
 
-                        // Log.d(TAG, "onResponse: " + foodItem);
+                        // FIXME: sometime the API doesn't give response.
+                        Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
-
                         // get all total calculations
                         for (FoodItem.Item itemLoop : foodItem.getItems())
                         {
@@ -519,6 +531,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             // todo: set the item.
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
+
+                            if (firebaseUser.getDisplayName() == null)
+                            {
+                                // this is for the guest, they don't have their own user profile
+                                return;
+                            }
 
                             // fixme: remember must be unique name if not will be override
                             String uniqueImageName = firebaseUser.getDisplayName() + "_" +
@@ -642,16 +660,18 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         totalCholesterol = 0;
     }
 
-    public void classifyImage(@NonNull Bitmap image) // todo: algo using tensorflow lite to label image.
+    public void classifyImage(@NonNull Bitmap image)// todo: algo using tensorflow lite to label image.
     {
+        // todo: Tensorflow lite is an API.
         try {
             // model here
             Model model = Model.newInstance(requireActivity().getApplicationContext());
 
-            // what is this?
+            // holding memory of that new image.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
-            // good to go
+            // fixme, @NonNull Bitmap image since the I have converted it into image.
+            // fixme, Bitmap supports JPEG, PNG, BMP, GIF, WebP except uncommon image format
             ByteBuffer byteBuffer = ByteBuffer.allocate(4 * imageSize  * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -698,7 +718,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             }
 
             // todo: add more dishes here, based on the model, we train more food on another model.
-            String[] classes = {"Nasi Lemak", "Kaya Toast", "Curry Puff", "Fish Soup"};
+            String[] classes = {"Beef wellington",
+                    "Nasi Lemak", "Omelette",
+                    "Fish Soup", "Tart", "Laksa"};
 
             // result.setText(classes[maxPos]);
             // todo: need to test image recognition algo.
@@ -712,8 +734,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             call.enqueue(callBackNutritionValueResponseFromAPI());
 
             // todo: call free food API for allergies and diet type.
-
-            String modifiedName = "";
+            String modifiedName = ""; // todo: remember to add in case for this.
             switch (foodName)
             {
                 case ("Nasi Lemak"):
@@ -722,9 +743,23 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 case ("Fish Soup"):
                     modifiedName = "Fish Soup";
                     break;
+                case ("Tart"):
+                    modifiedName = "Tart";
+                    break;
+                case ("Laksa"):
+                    modifiedName = "Laksa";
+                    break;
+                case ("Omelette"):
+                    modifiedName = "Omelette";
+                    break;
+                case ("Beef Wellington"):
+                    modifiedName = "Beef Wellington";
+                    break;
+                default:
+                    modifiedName = foodName;
             }
 
-            Call<Dish> dishCall = freeFoodAPI.searchMealByName(modifiedName);
+            Call<Dish> dishCall = freeFoodDetailAPI.searchMealByName(modifiedName);
             dishCall.enqueue(callBackDishInfoResponseFromAPI());
 
             // todo: input from user when search for recipe,
@@ -734,7 +769,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             StringBuilder s = new StringBuilder();
             for(int i = 0; i < classes.length; i++)
             {
-                s.append(String.format(Locale.ROOT, "%s: %.1f%%\n", classes[i], confidences[i] * 100));
+                s.append(String.format(Locale.ROOT, "%s: %.1f%%\n",
+                        classes[i], confidences[i] * 100));
             }
             // confidence.setText(s);
 

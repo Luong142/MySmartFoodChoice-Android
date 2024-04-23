@@ -176,6 +176,7 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
             Log.d(TAG, "onSignUpListener: " + userProfile);
 
             // todo: set user profile here
+            // using the function setValue()
             databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onSignUpCompletedListener());
         };
     }

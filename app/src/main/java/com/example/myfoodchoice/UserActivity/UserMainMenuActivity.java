@@ -28,6 +28,7 @@ import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
+import com.example.myfoodchoice.UserFragment.UserMyRewardsViewFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
@@ -52,9 +53,9 @@ public class UserMainMenuActivity extends AppCompatActivity
 {
     DrawerLayout drawerLayout;
 
-    DatabaseReference databaseReferenceRegisteredUser;
-
-    DatabaseReference databaseReferenceUserProfile;
+    // todo: init firebase components
+    DatabaseReference databaseReferenceRegisteredUser,
+            databaseReferenceUserProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -105,7 +106,6 @@ public class UserMainMenuActivity extends AppCompatActivity
             databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
             databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
         }
-
 
         // TODO: init UI component in nav_header and activity_main_menu
         navigationView = findViewById(R.id.nav_view);
@@ -282,6 +282,12 @@ public class UserMainMenuActivity extends AppCompatActivity
             fragmentTag = "UserWorkOutFragment";
         }
 
+        else if (itemId == R.id.nav_view_user_redeemed_reward)
+        {
+            fragment = new UserMyRewardsViewFragment();
+            fragmentTag = "UserMyRewardsViewFragment";
+        }
+
         else if (itemId == R.id.nav_rewards)
         {
             fragment = new UserRewardsFragment();
@@ -336,12 +342,5 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void navigateToFragment(Fragment fragment)
-    {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
     }
 }

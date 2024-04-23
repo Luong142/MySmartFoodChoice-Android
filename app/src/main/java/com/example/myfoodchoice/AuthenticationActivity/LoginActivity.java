@@ -21,13 +21,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity;
-import com.example.myfoodchoice.BusinessTrainerActivity.TrainerMainMenuActivity;
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
-import com.example.myfoodchoice.GuestActivity.GuestTrialOverActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,8 +42,13 @@ import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity
 {
-    // TODO: declare UI component
+    // todo: we should make or incentive the guest
+    // todo: guest account doesn't need to register
+    // todo: Guest can upgrade to User account.
+    // todo: make guest page more interesting to them and interest them into official user.
+    // todo: need to put the video
 
+    // TODO: declare UI component
     // button
     Button loginBtn;
 
@@ -54,7 +59,7 @@ public class LoginActivity extends AppCompatActivity
     CheckBox rememberMe;
 
     // clickable text
-    TextView clickableForgotPassword, clickableSignUpNav;
+    TextView clickableForgotPassword, clickableSignUpNav, clickableLoginAsGuestNav;
 
     // for clickable text
     SpannableString spannableStringSignUpNav, spannableStringForgotPassword;
@@ -71,9 +76,13 @@ public class LoginActivity extends AppCompatActivity
 
     static final String PATH_DATABASE = "Registered Accounts";
 
+    static final String TAG = "LoginActivity";
+
     FirebaseDatabase firebaseDatabase;
 
     String email, password, userID, accountType;
+
+    String emailRememberMe, passwordRememberMe, accountTypeRememberMe;
 
     Intent intent;
 
@@ -83,7 +92,13 @@ public class LoginActivity extends AppCompatActivity
 
     boolean isTrialOver;
 
-    AlertDialog alertGuestTrialOverDialog;
+    AlertDialog alertGuestTrialOverDialog; // guest doesn't need to register
+
+    android.app.AlertDialog.Builder builder;
+
+    android.app.AlertDialog alertDialog;
+    SpannableString spannableStringLoginAsGuestNav;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -97,14 +112,12 @@ public class LoginActivity extends AppCompatActivity
 
         // TODO: init Firebase auth
         mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
 
         // TODO: init Firebase database, paste the correct link as reference.
         firebaseDatabase = FirebaseDatabase.getInstance(
                 "https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
         // for testing
         // firebaseDatabase.getReference().child("Test").child("new child").setValue("new value");
-
         // by default is Guest.
         accountType = "Default";
 
@@ -121,6 +134,7 @@ public class LoginActivity extends AppCompatActivity
         // clickable text
         clickableForgotPassword = findViewById(R.id.clickableForgotPassword);
         clickableSignUpNav = findViewById(R.id.clickableSignUpNavText);
+        clickableLoginAsGuestNav = findViewById(R.id.clickableLoginAsGuestNavText);
 
         // button
         loginBtn = findViewById(R.id.loginBtn);
@@ -139,19 +153,70 @@ public class LoginActivity extends AppCompatActivity
         clickableForgotPassword.setText(spannableStringForgotPassword);
         clickableForgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // nav to UserHomePage
+        spannableStringLoginAsGuestNav = new SpannableString(clickableLoginAsGuestNav.getText());
+        spannableStringLoginAsGuestNav.setSpan(clickableLoginAsGuestNavSpan(), INDEX_START,
+                clickableLoginAsGuestNav.length(), 0);
+        clickableLoginAsGuestNav.setText(spannableStringLoginAsGuestNav);
+        clickableLoginAsGuestNav.setMovementMethod(LinkMovementMethod.getInstance());
+
         // progress bar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
         // check box listener
         rememberMe.setOnCheckedChangeListener(onCheckedListener());
+
+        // assign to email and password
+        emailRememberMe = Paper.book().read(Prevalent.EmailKey);
+        passwordRememberMe = Paper.book().read(Prevalent.PasswordKey);
+        accountTypeRememberMe = Paper.book().read(Prevalent.AccountType);
+
+        if (emailRememberMe != null && passwordRememberMe != null
+                && accountTypeRememberMe != null)
+        {
+            if (!TextUtils.isEmpty(emailRememberMe) && !TextUtils.isEmpty(passwordRememberMe)
+                    && !TextUtils.isEmpty(accountTypeRememberMe))
+            {
+                /*
+                Log.d(TAG, "onCreate: " +
+                        emailRememberMe + " " + passwordRememberMe + " " + accountTypeRememberMe);
+                 */
+                switch (accountTypeRememberMe)
+                {
+                    case "User":
+                        allowUserLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    case "Dietitian":
+                        allowDietitianLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    case "Trainer":
+                        // allowTrainerLogin(emailRememberMe, passwordRememberMe);
+                        break;
+                    default:
+                        Toast.makeText(LoginActivity.this,
+                                "Account type is not recognized, please try again.",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+                if (!isFinishing())
+                {
+                    builder = new android.app.AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle("Already Logged in");
+                    builder.setMessage("Please wait...");
+                    alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            }
+        }
     }
 
     /*
         private final FirebaseAuth.AuthStateListener authStateListener =
-                firebaseAuth ->
+                mAuth ->
         {
-            firebaseUser = firebaseAuth.getCurrentUser();
+            firebaseUser = mAuth.getCurrentUser();
             if (firebaseUser != null)
             {
                 // user signed in
@@ -174,19 +239,29 @@ public class LoginActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 account = snapshot.getValue(Account.class);
-                // Log.d("LoginActivity", "onDataChange: hello" + account.toString());
                 if (account != null)
                 {
                     accountType = account.getAccountType();
                     isTrialOver = account.isGuestTrialActive();
-                    // Log.d("LoginActivity", "onDataChange: " + accountType);
-                    // Log.d("LoginActivity", "onDataChange: " + account.isGuestTrialActive());
+                    // Log.d(TAG, "Account here: " + account);
+                    if (rememberMe.isChecked())
+                    {
+                        Paper.book().write(Prevalent.AccountType, accountType);
+                    }
+                    else
+                    {
+                        Paper.book().delete(Prevalent.AccountType);
+                        Paper.book().delete(Prevalent.EmailKey);
+                        Paper.book().delete(Prevalent.PasswordKey);
+                    }
+
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
                     {
                         case "Guest":
+                            intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                            /*
                             if (isTrialOver)
                             {
-                                intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                             }
                             else
                             {
@@ -211,9 +286,10 @@ public class LoginActivity extends AppCompatActivity
                                         (dialog, which) -> dialog.dismiss());
                                 alertGuestTrialOverDialog.show();
                             }
+                             */
                             break;
                         case "Trainer":
-                            intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                            // intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
                             break;
                         case "Dietitian":
                             intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
@@ -243,7 +319,7 @@ public class LoginActivity extends AppCompatActivity
             {
                 Toast.makeText
                         (LoginActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                // Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
+                Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
             }
         };
     }
@@ -257,21 +333,18 @@ public class LoginActivity extends AppCompatActivity
             password = loginPasswordEditText.getText().toString().trim();
             if (isChecked)
             {
-                Log.d("LoginActivity", "remember me checked! ");
-                Paper.book().write(Prevalent.UserEmailKey, email);
-                Paper.book().write(Prevalent.UserPasswordKey, password);
+                Paper.book().write(Prevalent.EmailKey, email);
+                Paper.book().write(Prevalent.PasswordKey, password);
             }
         };
     }
     // TODO: to implement the login functionalities for this activity.
-
     @NonNull
     @Contract(pure = true)
     private View.OnClickListener onLoginListener()
     {
         return v ->
         {
-            Log.d("LoginActivity", "login button activated! ");
             email = loginEmailEditText.getText().toString().trim();
             password = loginPasswordEditText.getText().toString().trim();
             allowLogin(email, password);
@@ -314,8 +387,11 @@ public class LoginActivity extends AppCompatActivity
                 {
                     userID = firebaseUser.getUid();
                     // Log.d("LoginActivity", "task is ok: " + firebaseUser.getUid());
+                    // fixme: there is a bug with login where databaseReferenceAccountType is null.
+                    //Log.d("LoginActivity", "user ID here: " + userID);
                     databaseReferenceAccountType = firebaseDatabase.getReference
                             (PATH_DATABASE).child(userID); // FIXME: careful with the name path
+                    //Log.d("LoginActivity", "account type URL here: " + databaseReferenceAccountType);
                     databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEvent());
                 }
             }
@@ -329,18 +405,95 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    /*
-    @Override
-    protected void onDestroy()
+    private void allowUserLogin(String email, String password)
     {
-        super.onDestroy();
-        if (mAuth != null) {
-            mAuth.removeAuthStateListener(authStateListener); // avoid memory leaks
-        }
+        // TODO: login function
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    private void allowGuestLogin(String email, String password)
+    {
+        // TODO: login function
 
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void allowDietitianLogin(String email, String password)
+    {
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /*
+    private void allowTrainerLogin(String email, String password)
+    {
+        // authentication login
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
      */
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (alertDialog != null && alertDialog.isShowing())
+        {
+            alertDialog.dismiss();
+        }
+    }
 
     public ClickableSpan clickableForgotPasswordNavSpan()
     {
@@ -350,7 +503,6 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onClick(View widget)
                 {
-                    Log.d("LoginActivity", "navigating to forgot password page! ");
                     Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                     startActivity(intent);
                 }
@@ -366,12 +518,53 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onClick(View widget)
                 {
-                    Log.d("LoginActivity", "navigating to sign up page! ");
-                    Intent intent = new Intent(LoginActivity.this, RegisterGuestActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
                     startActivity(intent);
                     finish();
                 }
             };
         }
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private Object clickableLoginAsGuestNavSpan()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(@NonNull View widget)
+            {
+                if (mAuth.getCurrentUser() != null)
+                {
+                    mAuth.signInAnonymously().addOnCompleteListener(onCompleteSignInAsGuestListener());
+                }
+                else
+                {
+                    Log.d(TAG, "mAuth is " + mAuth);
+                }
+            }
+        };
+    }
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<AuthResult> onCompleteSignInAsGuestListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                // Sign in success, update UI with the signed-in user's information
+                userID = mAuth.getUid();
+                Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                // If sign in fails, display a message to the user.
+                Log.w(TAG, "signInAnonymously:failure", task.getException());
+            }
+        };
     }
 }

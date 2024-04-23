@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.UserFragment;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,15 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnRewardItemRedeemClickListener;
 import com.example.myfoodchoice.AdapterRecyclerView.RewardUserAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.ModelUtilities.Reward;
 import com.example.myfoodchoice.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,46 +32,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Contract;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemClickListener
 {
-    // TODO: declare components
-
-    private static final String TAG = "UserRewardsFragment";
-
-    ImageView userProfileImage;
-
-    TextView fullNameTextView, userPointsTextView;
-
-    RecyclerView rewardRecyclerView;
-
-    RewardUserAdapter rewardUserAdapter;
-
-    private ArrayList<Reward> rewardList, tempRewardList;
-
-
     // TODO: declare firebase components here
     DatabaseReference databaseReferenceUserProfile, databaseReferenceRewards;
 
     StorageReference storageReferenceRewardsImage, storageReferenceStaticRewardsImage;
-
-    StorageTask<UploadTask.TaskSnapshot> storageTask;
-
     final static String PATH_REWARDS = "Rewards";
 
     final static String PATH_UserProfile = "User Profile";
@@ -90,6 +61,20 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
     UserProfile userProfile;
 
     String userID;
+
+    // TODO: declare UI components
+
+    private static final String TAG = "UserRewardsFragment";
+
+    ImageView userProfileImage;
+
+    TextView fullNameTextView, userPointsTextView;
+
+    RecyclerView rewardRecyclerView;
+
+    RewardUserAdapter rewardUserAdapter;
+
+    private ArrayList<Reward> rewardList, tempRewardList;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -181,6 +166,23 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
     public void onRewardItemRedeemClick(int position) // click on button not the entire view.
     {
         // TODO: implement onClick
+        // add the reward redeemed part to view for user.
+        ArrayList<Reward> alrRedeemedRewardList = userProfile.getAlrRedeemedRewardList();
+
+        // Remove the item from the list
+        Reward removedReward = rewardList.remove(position);
+        alrRedeemedRewardList.add(removedReward);
+
+        // notify the adapter about the removed item
+        rewardUserAdapter.notifyItemRemoved(position);
+
+        // ff there are items below the removed item, notify the adapter about the change
+        if (position < rewardList.size())
+        {
+            rewardUserAdapter.notifyItemRangeChanged(position, rewardList.size() - position);
+        }
+
+        // do the point
         double currentPoint = userProfile.getPoints();
         Map<String, Object> updates = new HashMap<>();
 
@@ -192,6 +194,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
         }
 
         updates.put("points", currentPoint - rewardList.get(position).getPoints());
+        updates.put("alrRedeemedRewardList", alrRedeemedRewardList);
 
         databaseReferenceUserProfile.updateChildren(updates, onRedeemItemListener());
     }
@@ -262,7 +265,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
         // todo: init read the file image name
         ArrayList<String> imageNames = new ArrayList<>();
         imageNames.add("voucher.png");
-        imageNames.add("gpu.png");
+        // imageNames.add("gpu.png");
 
         for (String imageName : imageNames)
         {
@@ -286,7 +289,6 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
                     tempRewardList.get(i).setRewardImageUrl(uri.toString());
                     databaseReferenceRewards.child(path).setValue(tempRewardList.get(i));
                 }
-                rewardList = tempRewardList;
                 rewardUserAdapter.notifyItemChanged(rewardList.size() - 1);
             }
             else
@@ -335,9 +337,6 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-                Toast.makeText
-                        (getContext(),
-                                "Error database connection", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "loadUserProfile:onCancelled ", error.toException());
             }
         };

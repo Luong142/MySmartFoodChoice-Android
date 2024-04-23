@@ -23,14 +23,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.myViewHolder>
+public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistoryAdapter.myViewHolder>
 {
     private ArrayList<Meal> mealArrayList;
 
     private final OnActionMealListener onActionMealListener;
 
-    public MealHistoryAdapter(ArrayList<Meal> mealArrayList,
-                              OnActionMealListener onActionMealListener
+    public MealMainHistoryAdapter(ArrayList<Meal> mealArrayList,
+                                  OnActionMealListener onActionMealListener
     )
     {
         this.mealArrayList = mealArrayList;
@@ -111,16 +111,17 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
 
             itemView.setOnClickListener(v ->
             {
-                int position = getAdapterPosition();
+                int position = getAbsoluteAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)
                 {
+                    // do nothing?
                     onActionMealListener.onClickMeal(position);
-                    // Toggle the visibility of the inner RecyclerView
+                    // toggle the visibility of the inner RecyclerView
 
                     if (foodDetailRecyclerView.getVisibility() == View.GONE)
                     {
                         foodDetailRecyclerView.setVisibility(View.VISIBLE);
-                        // Optionally, load or update the data for the inner RecyclerView here
+                        // optionally, load or update the data for the inner RecyclerView here
                     }
                     else
                     {
@@ -132,16 +133,16 @@ public class MealHistoryAdapter extends RecyclerView.Adapter<MealHistoryAdapter.
     }
     @NonNull
     @Override
-    public MealHistoryAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public MealMainHistoryAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.meal_history_item_layout,
                 parent, false);
-        return new MealHistoryAdapter.myViewHolder(itemView, onActionMealListener);
+        return new MealMainHistoryAdapter.myViewHolder(itemView, onActionMealListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealHistoryAdapter.myViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull MealMainHistoryAdapter.myViewHolder holder, int position)
     {
         Meal meal = mealArrayList.get(position);
 

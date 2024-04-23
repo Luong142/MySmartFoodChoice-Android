@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.GuestFragment.GuestUpgradeAccountFragment;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
@@ -90,12 +89,6 @@ public class GuestMainMenuActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserHomeAlvinFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-        }
-
-        else if (itemId == R.id.nav_upgrade_account)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new GuestUpgradeAccountFragment()).commit();
         }
 
         // TODO: pls take note that Guest can access some User fragment

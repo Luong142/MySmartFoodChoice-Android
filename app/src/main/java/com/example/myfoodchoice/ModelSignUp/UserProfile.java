@@ -5,7 +5,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.myfoodchoice.ModelUtilities.Reward;
+
 import org.jetbrains.annotations.Contract;
+
+import java.util.ArrayList;
 
 public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
 {
@@ -21,6 +25,8 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     private String dietType; // for diet to recommend
 
     private int dietTypeImage;
+
+    private ArrayList<Reward> alrRedeemedRewardList;
 
     private boolean isHighBloodPressure;
 
@@ -39,6 +45,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         // this constructor is required for Firebase to be able to deserialize the object
         super();
         points = 100; // put the default point here
+        alrRedeemedRewardList = new ArrayList<>();
     }
 
     protected UserProfile(@NonNull Parcel in)
@@ -60,6 +67,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         isAllergySeafood = in.readByte() != 0;
         isAllergyPeanut = in.readByte() != 0;
         isAllergyEgg = in.readByte() != 0;
+        alrRedeemedRewardList = new ArrayList<>();
     }
 
     public UserProfile(String dietType, int dietTypeImage)
@@ -110,11 +118,13 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeByte((byte) (isAllergySeafood ? 1 : 0));
         dest.writeByte((byte) (isAllergyPeanut ? 1 : 0));
         dest.writeByte((byte) (isAllergyEgg ? 1 : 0));
+        dest.writeList(alrRedeemedRewardList);
     }
 
     @NonNull
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder sb = new StringBuilder();
         sb.append("User Profile\n");
         sb.append("-------------------\n");
@@ -133,8 +143,20 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("Allergy Peanut: ").append(isAllergyPeanut).append("\n");
         sb.append("Allergy Egg: ").append(isAllergyEgg).append("\n");
         sb.append("Points: ").append(points).append("\n");
+        for (Reward reward : alrRedeemedRewardList)
+        {
+            sb.append("Ok should be here: ").append(reward.toString()).append("\n");
+        }
         sb.append("-------------------");
         return sb.toString();
+    }
+
+    public ArrayList<Reward> getAlrRedeemedRewardList() {
+        return alrRedeemedRewardList;
+    }
+
+    public void setAlrRedeemedRewardList(ArrayList<Reward> alrRedeemedRewardList) {
+        this.alrRedeemedRewardList = alrRedeemedRewardList;
     }
 
     public boolean isAllergySeafood() {

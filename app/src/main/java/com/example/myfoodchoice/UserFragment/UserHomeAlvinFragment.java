@@ -176,7 +176,7 @@ public class UserHomeAlvinFragment extends Fragment
     {
         return new ChildEventListener()
         {
-            // todo: test this tmr pls!!!
+            // todo: test this tmr pls!
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
@@ -196,6 +196,13 @@ public class UserHomeAlvinFragment extends Fragment
                 percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
                 percentageSalt = (totalSalt / maxSalt) * 100;
                 percentageSugar = (totalSugar / maxSugar) * 100;
+
+                /*
+                Log.d(TAG, "onChildAdded: " + percentageCalories);
+                Log.d(TAG, "onChildAdded: " + percentageCholesterol);
+                Log.d(TAG, "onChildAdded: " + percentageSalt);
+                Log.d(TAG, "onChildAdded: " + percentageSugar);
+                 */
 
                 // fixme: null pointer exception
 
@@ -219,16 +226,16 @@ public class UserHomeAlvinFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -345,16 +352,16 @@ public class UserHomeAlvinFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -442,17 +449,18 @@ public class UserHomeAlvinFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
+
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
                 if (totalCalories > maxCalories)
@@ -526,16 +534,16 @@ public class UserHomeAlvinFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
@@ -706,17 +714,18 @@ public class UserHomeAlvinFragment extends Fragment
                 //notify();
 
                 // display the counter
-                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
 
-                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalCholesterol, maxCholesterol));
 
-                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                         totalSugar, maxSugar));
 
-                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f",
+                saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
+
 
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
                 if (totalCalories > maxCalories)

@@ -93,8 +93,19 @@ public class MealDetailHistoryAdapter extends RecyclerView.Adapter<MealDetailHis
                     .error(R.drawable.error)
                     .into(holder.foodImage);
             holder.foodName.setText(item.getName());
-            holder.foodDetail.setText(String.format(Locale.ROOT, "%.2f kcal", item.getCalories()));
 
+            // todo: this string is to display the detail of food, when it is visible.
+            String details = String.format(Locale.ROOT, "Calories: " +
+                    "%.2f kcal\n" +
+                    "Sodium: %.2f mg\n" +
+                    "Cholesterol: %.2f mg\n" +
+                    "Sugar: %.2f g",
+                    item.getCalories(),
+                    item.getSodium_mg(),
+                    item.getCholesterol_mg(),
+                    item.getSugar_g());
+
+            holder.foodDetail.setText(details);
         }
         else
         {
