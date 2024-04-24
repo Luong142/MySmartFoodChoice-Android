@@ -44,7 +44,7 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
     //  https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian (cuisine),
     //  to view more details in another list of that dish
     //  www.themealdb.com/api/json/v1/1/search.php?s=BeaverTails
-    // https://www.youtube.com/watch?v=tQ7V7iBg5zE&ab_channel=CodingSTUFF
+    // todo: use divide and conquer to separate the search into two different type.
 
     // todo: declare firebase here
     // todo: init firebase
