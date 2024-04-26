@@ -229,4 +229,9 @@
     <string name="search_for_recipe">Search for Recipe</string>
     <string name="recipe_category">Recipe Category</string>
     <string name="recipe_cuisine">Recipe Cuisine</string>
+    <string name="select_user_profile">Select user profile</string>
+    <string name="search_recipe_in_category">Search Recipe in Category</string>
+    <string name="create_health_tips">Create Health Tips</string>
+    <string name="search_for_recipe_in_category">Search for recipe in category</string>
+    <string name="recipe_detail">Recipe Detail</string>
 </resources>

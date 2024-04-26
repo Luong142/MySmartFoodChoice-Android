@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.BusinessTrainerFragment;
+package com.example.myfoodchoice.DeprecatedBusinessTrainer;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.myfoodchoice.BusinessTrainerActivity.TrainerUpdateProfileActivity;
+import com.example.myfoodchoice.DeprecatedBusinessTrainerActivity.TrainerUpdateProfileActivity;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;

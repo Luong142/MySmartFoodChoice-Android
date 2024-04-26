@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.BusinessTrainerActivity;
+package com.example.myfoodchoice.DeprecatedBusinessTrainerActivity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,8 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.BusinessTrainerFragment.TrainerProfileViewFragment;
-import com.example.myfoodchoice.BusinessTrainerFragment.TrainerWorkOutFragment;
+import com.example.myfoodchoice.DeprecatedBusinessTrainer.TrainerProfileViewFragment;
+import com.example.myfoodchoice.DeprecatedBusinessTrainer.TrainerWorkOutFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;

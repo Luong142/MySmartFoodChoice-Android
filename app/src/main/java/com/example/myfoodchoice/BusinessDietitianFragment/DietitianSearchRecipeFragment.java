@@ -5,9 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.SearchView;
-import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +15,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myfoodchoice.AdapterInterfaceListener.OnClickExpandRecipeDetailListener;
-import com.example.myfoodchoice.AdapterRecyclerView.MealMainHistoryAdapter;
-import com.example.myfoodchoice.AdapterRecyclerView.RecipeSearchMainAdapter;
+import com.example.myfoodchoice.AdapterInterfaceListener.OnCreateRecipeFromSearchListener;
+import com.example.myfoodchoice.AdapterRecyclerView.RecipeSearchCategoryMainAdapter;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
 import com.example.myfoodchoice.R;
@@ -37,16 +35,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DietitianSearchRecipeFragment extends Fragment implements OnClickExpandRecipeDetailListener {
+public class DietitianSearchRecipeFragment extends Fragment implements OnCreateRecipeFromSearchListener {
     static final String TAG = "DietitianSearchRecipeFragment";
     // todo: here is our plan, we use
     //  https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegetarian, (category)
     //  https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian (cuisine),
     //  to view more details in another list of that dish
     //  www.themealdb.com/api/json/v1/1/search.php?s=BeaverTails
-    // todo: use divide and conquer to separate the search into two different type.
+    // todo: we need to use only category part to search
 
-    // todo: declare firebase here
     // todo: init firebase
     FirebaseAuth firebaseAuth;
 
@@ -54,13 +51,11 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
 
     FirebaseUser firebaseUser;
 
-    String userID, selectedSpinner, searchQuery;
+    String userID, searchQuery;
 
     ArrayList<RecipeCategories.RecipeCategory> recipeCategoryArrayList;
 
-    ArrayList<RecipeCuisines.RecipeCuisine> recipeCuisineArrayList;
-
-    RecipeSearchMainAdapter recipeSearchMainAdapter;
+    RecipeSearchCategoryMainAdapter recipeSearchCategoryMainAdapter;
 
     // todo: call API
 
@@ -80,8 +75,6 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
     SearchView searchRecipeView;
 
     RecyclerView recipeRecyclerView;
-
-    Spinner spinnerCategoryCuisine;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -108,14 +101,9 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
         // init UI here
         searchRecipeView = view.findViewById(R.id.searchRecipeView);
         recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView);
-        spinnerCategoryCuisine = view.findViewById(R.id.spinnerCategoryCuisine);
-
-        // set spinner
-        spinnerCategoryCuisine.setOnItemSelectedListener(onItemSelectedListener());
 
         // set adapter to recycler view.
         recipeCategoryArrayList = new ArrayList<>(); // todo: based on the spinner we can switch to search.
-        recipeCuisineArrayList = new ArrayList<>();
 
         // call API here
         freeFoodRecipeCuisineAPI = RetrofitFreeFoodClient.
@@ -126,6 +114,18 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
 
         // set search
         searchRecipeView.setOnQueryTextListener(onSearchRecipeTextListener());
+    }
+
+    @Override
+    public void onCreateRecipeFromSearch(int position)
+    {
+        // todo: our plan is to let the dietitian to check user profile and
+        //  then when they click on that user profile, it should open up this fragment and
+        //  let the dietitian to search for that suitable recipe.
+
+
+
+
     }
 
     @NonNull
@@ -140,99 +140,17 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
                 searchQuery = query;
                 // Log.d(TAG, searchQuery);
 
-                switch (selectedSpinner)
-                {
-                    case "Category":
-                        recipeSearchMainAdapter = new RecipeSearchMainAdapter(recipeCuisineArrayList);
-                        setAdapter();
-                        freeFoodRecipeCategoryAPI.searchRecipeCategory(searchQuery).
-                                enqueue(callBackCategoryResponseFromAPI());
-                        return true;
-                    case "Cuisine":
-                        recipeSearchMainAdapter = new RecipeSearchMainAdapter(recipeCategoryArrayList);
-                        setAdapter();
-                        freeFoodRecipeCuisineAPI.searchRecipeCuisine(searchQuery).
-                                enqueue(callBackCuisineResponseFromAPI());
-                        return true;
-                    default:
-                        Log.d(TAG, "default");
-                        break;
-                }
-                return false;
+                recipeSearchCategoryMainAdapter = new RecipeSearchCategoryMainAdapter(recipeCategoryArrayList);
+                setAdapter();
+                freeFoodRecipeCategoryAPI.searchRecipeCategory(searchQuery).
+                        enqueue(callBackCategoryResponseFromAPI());
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                /*
-                searchQuery = newText;
-                Log.d(TAG, searchQuery);
-
-                switch (selectedSpinner)
-                {
-                    case "Category":
-                        //freeFoodRecipeCategoryAPI.searchRecipeCategory(searchQuery).
-                                //enqueue(callBackCategoryResponseFromAPI());
-                        return true;
-                    case "Cuisine":
-                        //freeFoodRecipeCuisineAPI.searchRecipeCuisine(searchQuery).
-                                //enqueue(callBackCuisineResponseFromAPI());
-                        return true;
-                    default:
-                        Log.d(TAG, "default");
-                        break;
-                }
                 return false;
-                 */
-                return false;
-            }
-        };
-    }
-
-    @Override
-    public void onExpandRecipeDetail(int position)
-    {
-        // do nothing? when on click?
-    }
-
-    @NonNull
-    @Contract(pure = true)
-    private AdapterView.OnItemSelectedListener onItemSelectedListener()
-    {
-        return new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                selectedSpinner = parent.getItemAtPosition(position).toString();
-                // Log.d(TAG, selectedSpinner);
-                // String searchRecipe = searchRecipeView.getQuery().toString().trim();
-
-                // the purpose is to load the correct arraylist type
-                // and to notify the adapter as well.
-                switch (selectedSpinner)
-                {
-                    case "Category":
-                        /*
-                        freeFoodRecipeCategoryAPI.searchRecipeCategory(searchRecipe).
-                                enqueue(callBackCategoryResponseFromAPI());
-                         */
-                        break;
-                    case "Cuisine":
-                        //freeFoodRecipeCuisineAPI.searchRecipeCuisine(searchRecipe).
-                            //enqueue(callBackCuisineResponseFromAPI());
-                        break;
-                    default:
-                        Log.d(TAG, "default");
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                // nothing happen
-                selectedSpinner = "Category";
             }
         };
     }
@@ -247,63 +165,33 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
             public void onResponse(@NonNull Call<RecipeCategories> call,
                                    @NonNull Response<RecipeCategories> response)
             {
-                recipeCategories = response.body();
-
-                if (recipeCategories != null)
+                if (response.isSuccessful())
                 {
-                    // this one working
-                    // Log.d(TAG, "Response: " + recipeCategories);
-                    recipeCategoryArrayList = recipeCategories.getRecipeCategory();
-
-                    // add all
-                    recipeCategoryArrayList.addAll(recipeCategories.getRecipeCategory());
-
-                    Log.d(TAG, "Response: " + recipeCategoryArrayList);
-                    // debug here
-
-                    recipeSearchMainAdapter.notifyDataSetChanged();
-
+                    recipeCategories = response.body();
+                    if (recipeCategories != null && recipeCategories.getRecipeCategory()
+                            != null &&
+                            !recipeCategories.getRecipeCategory().isEmpty())
+                    {
+                        // Assuming recipeCategoryArrayList is already initialized
+                        recipeCategoryArrayList.addAll(recipeCategories.getRecipeCategory());
+                        recipeSearchCategoryMainAdapter.notifyItemChanged(recipeCategoryArrayList.size() - 1);
+                    }
+                    else
+                    {
+                        Toast.makeText(requireContext(),
+                                "No category found.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(requireContext(),
+                            "Error:  " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<RecipeCategories> call,
                                   @NonNull Throwable t)
-            {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        };
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private Callback<RecipeCuisines> callBackCuisineResponseFromAPI()
-    {
-        return new Callback<RecipeCuisines>()
-        {
-
-            @Override
-            public void onResponse(@NonNull Call<RecipeCuisines> call, @NonNull Response<RecipeCuisines> response)
-            {
-                recipeCuisines = response.body();
-
-                if (recipeCuisines != null)
-                {
-                    recipeCuisineArrayList = recipeCuisines.getRecipeCuisine();
-
-                    // add all items
-                    recipeCuisineArrayList.addAll(recipeCuisines.getRecipeCuisine());
-                    Log.d(TAG, "Response: " + recipeCuisineArrayList);
-
-                    if (recipeCuisineArrayList != null)
-                    {
-                        recipeSearchMainAdapter.notifyItemChanged(recipeCuisineArrayList.size() - 1);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<RecipeCuisines> call, @NonNull Throwable t)
             {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
@@ -319,7 +207,7 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnClickEx
         recipeRecyclerView.setLayoutManager(layoutManager);
         // Log.d(TAG, "After setting layout manager: " + (recipeRecyclerView == null));
         recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        recipeRecyclerView.setAdapter(recipeSearchMainAdapter);
+        recipeRecyclerView.setAdapter(recipeSearchCategoryMainAdapter);
     }
 
     @Override

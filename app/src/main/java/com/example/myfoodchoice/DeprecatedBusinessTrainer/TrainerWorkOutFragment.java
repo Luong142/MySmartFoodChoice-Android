@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.BusinessTrainerFragment;
+package com.example.myfoodchoice.DeprecatedBusinessTrainer;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

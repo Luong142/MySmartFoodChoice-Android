@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.BusinessTrainerActivity;
+package com.example.myfoodchoice.DeprecatedBusinessTrainerActivity;
 
 import android.app.Activity;
 import android.content.Intent;

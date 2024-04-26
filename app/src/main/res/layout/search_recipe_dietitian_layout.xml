@@ -24,6 +24,18 @@
             android:layout_gravity="start"
             android:gravity="start"
             >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/createRecipeBtn"
+                android:layout_gravity="center"
+                android:src="@drawable/add"
+                android:tooltipText="@string/create_recipe"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/pink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/todo" />
+
             <ImageView
                 android:id="@+id/recipeImage"
                 android:layout_width="80dp"
@@ -31,6 +43,7 @@
                 android:src="@drawable/food_placeholder"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/todo" />
+
             <TextView
                 android:id="@+id/recipeText"
                 android:layout_width="wrap_content"
@@ -39,6 +52,7 @@
                 android:textSize="20sp"
                 android:text="@string/recipe_name"
                 android:textStyle="italic" />
+
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -58,48 +72,15 @@
                 >
 
                 <TextView
-                    android:id="@+id/recipeCategoryText"
+                    android:id="@+id/recipeDetailTextView"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_gravity="center"
-                    android:text="@string/recipe_category"
+                    android:text="@string/recipe_detail"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:textStyle="italic"
-                    />
-
-                <TextView
-                    android:id="@+id/recipeCuisineText"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:text="@string/recipe_cuisine"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="italic"
-                    />
-
-
-                <TextView
-                    android:id="@+id/instructionText"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:text="@string/instructions"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="italic"
-                    />
-
-                <TextView
-                    android:id="@+id/ingredientsText"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:text="@string/ingredient_name"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="italic"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
                     />
             </LinearLayout>
 

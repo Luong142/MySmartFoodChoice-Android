@@ -62,20 +62,15 @@ public class WelcomeActivity extends AppCompatActivity
 
     private Call<RecipeCuisines> cuisinesCall;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        // Log.d(TAG, "onCreate: " + LangChainAPI.testMessage());
+
         // TODO: test ClaudeAPI part
-        /*
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-         */
         // claudeAPIService = retrofit.create(ClaudeAPIService.class);
         // testClaudeAPI(); FIXME: this one failed.
 
@@ -85,6 +80,7 @@ public class WelcomeActivity extends AppCompatActivity
 
         // TODO: init ninja api
         // caloriesNinjaAPI = RetrofitClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
+
         // freeFoodAPI = RetrofitClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
 
         //FreeFoodRecipeCuisineAPI freeFoodRecipeCuisineAPI = RetrofitFreeFoodClient.
@@ -96,7 +92,8 @@ public class WelcomeActivity extends AppCompatActivity
         //freeFoodRecipeCuisineAPI.searchRecipeCuisine("Canadian").
                 //enqueue(callBackResponseFromAPI());
 
-        //freeFoodRecipeCategoryAPI.searchRecipeCategory("Seafood").enqueue(callBackCategoryResponseFromAPI());
+        //freeFoodRecipeCategoryAPI.searchRecipeCategory("Seafood")
+        // .enqueue(callBackCategoryResponseFromAPI());
 
         // fixme: to test the input string name of food.
         // String query = "Fish Soup";
@@ -191,6 +188,4 @@ public class WelcomeActivity extends AppCompatActivity
         Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(intent);
     };
-
-
 }

@@ -8,7 +8,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_health_tips"
-            android:title="@string/health_tips"
+            android:title="@string/create_health_tips"
             android:icon="@drawable/health_tip"
             />
 
@@ -20,7 +20,7 @@
 
         <item
             android:id="@+id/nav_search_food_recipe"
-            android:title="@string/search_for_recipe"
+            android:title="@string/search_recipe_in_category"
             android:icon="@drawable/food_recipe"
             />
 

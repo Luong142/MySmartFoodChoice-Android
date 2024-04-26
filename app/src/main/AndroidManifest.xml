@@ -54,10 +54,10 @@
             android:name=".BusinessDietitianActivity.DietitianUpdateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".BusinessTrainerActivity.TrainerUpdateProfileActivity"
+            android:name=".DeprecatedBusinessTrainerActivity.TrainerUpdateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".BusinessTrainerActivity.TrainerMainMenuActivity"
+            android:name=".DeprecatedBusinessTrainerActivity.TrainerMainMenuActivity"
             android:exported="false" />
         <activity
             android:name=".BusinessDietitianActivity.DietitianMainMenuActivity"
