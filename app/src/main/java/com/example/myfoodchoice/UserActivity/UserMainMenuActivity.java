@@ -26,13 +26,12 @@ import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
-import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
 import com.example.myfoodchoice.UserFragment.UserMyRewardsViewFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
-import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
-import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
+import com.example.myfoodchoice.UserFragment.UserViewHealthTipsFragment;
+import com.example.myfoodchoice.UserFragment.UserViewRecipeFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -266,20 +265,14 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         else if (itemId == R.id.nav_food_recipe)
         {
-            fragment = new UserRecipeFragment();
+            fragment = new UserViewRecipeFragment();
             fragmentTag = "UserRecipeFragment";
         }
 
         else if (itemId == R.id.nav_health_tips)
         {
-            fragment = new UserHealthTipsFragment();
+            fragment = new UserViewHealthTipsFragment();
             fragmentTag = "UserHealthTipsFragment";
-        }
-
-        else if (itemId == R.id.nav_work_out)
-        {
-            fragment = new UserWorkOutFragment();
-            fragmentTag = "UserWorkOutFragment";
         }
 
         else if (itemId == R.id.nav_view_user_redeemed_reward)

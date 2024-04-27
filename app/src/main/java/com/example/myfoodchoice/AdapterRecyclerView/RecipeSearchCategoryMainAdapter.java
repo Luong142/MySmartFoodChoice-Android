@@ -31,7 +31,7 @@ public class RecipeSearchCategoryMainAdapter extends RecyclerView.Adapter<Recipe
 {
     private final ArrayList<RecipeCategories.RecipeCategory> recipeArrayList;
 
-    private OnCreateRecipeFromSearchListener onCreateRecipeFromSearchListener;
+    private final OnCreateRecipeFromSearchListener onCreateRecipeFromSearchListener;
 
     // todo: https://www.youtube.com/watch?v=MWlxFccYit8&ab_channel=larntech , check this tutorial for search
 
@@ -43,10 +43,6 @@ public class RecipeSearchCategoryMainAdapter extends RecyclerView.Adapter<Recipe
         this.onCreateRecipeFromSearchListener = onCreateRecipeFromSearchListener;
     }
 
-    public RecipeSearchCategoryMainAdapter(ArrayList<RecipeCategories.RecipeCategory> recipeArrayList)
-    {
-        this.recipeArrayList = recipeArrayList;
-    }
     public static class myViewHolder extends RecyclerView.ViewHolder
     {
         TextView recipeName;

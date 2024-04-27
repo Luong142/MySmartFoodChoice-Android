@@ -21,7 +21,7 @@ import com.example.myfoodchoice.R;
 import java.util.ArrayList;
 
 
-public class UserHealthTipsFragment extends Fragment implements OnHealthTipsClickListener
+public class UserViewHealthTipsFragment extends Fragment implements OnHealthTipsClickListener
 {
     // TODO: declare components
     RecyclerView healthTipsRecyclerView;

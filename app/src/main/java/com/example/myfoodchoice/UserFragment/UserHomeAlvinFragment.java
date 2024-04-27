@@ -778,9 +778,9 @@ public class UserHomeAlvinFragment extends Fragment
     {
         return v ->
         {
-            UserMealHistoryFragment userMealHistoryFragment = new UserMealHistoryFragment();
+            UserViewMealHistoryFragment userViewMealHistoryFragment = new UserViewMealHistoryFragment();
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, userMealHistoryFragment)
+                    .replace(R.id.fragment_container, userViewMealHistoryFragment)
                     .commit();
         };
     }

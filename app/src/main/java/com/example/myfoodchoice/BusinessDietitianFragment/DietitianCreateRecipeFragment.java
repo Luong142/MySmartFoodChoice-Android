@@ -1,7 +1,6 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,8 +171,9 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             recipe.setUserKey(selectedUserProfile.getKey());
             recipe.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
             recipe.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
-            recipe.setStrInstructions(recipeInstruction);
-            recipe.setStrMeal(recipeName);
+            recipe.setStrInstructions(recipeInstruction.trim());
+            recipe.setStrMeal(recipeName.trim());
+            ingredientArrayList.trimToSize();
             recipe.setIngredients(ingredientArrayList);
 
             // set value for database firebase.

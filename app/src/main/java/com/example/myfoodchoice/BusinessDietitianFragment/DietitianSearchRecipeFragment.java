@@ -17,19 +17,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnCreateRecipeFromSearchListener;
 import com.example.myfoodchoice.AdapterRecyclerView.RecipeSearchCategoryMainAdapter;
+import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
-import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
+import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCategoryAPI;
-import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,7 +56,11 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
 
     FirebaseUser firebaseUser;
 
-    String userID, searchQuery;
+    static final String PATH_RECIPE = "Dietitian Recipe";
+
+    DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
+
+    String dietitianID, searchQuery;
 
     ArrayList<RecipeCategories.RecipeCategory> recipeCategoryArrayList;
 
@@ -61,9 +70,13 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
 
     RecipeCategories recipeCategories;
 
-    RecipeCuisines recipeCuisines;
+    UserProfile selectedUserProfile;
 
-    FreeFoodRecipeCuisineAPI freeFoodRecipeCuisineAPI;
+    Dish recipes;
+
+    Bundle bundleFromView;
+
+    FreeFoodDetailAPI freeFoodDetailAPI;
 
     FreeFoodRecipeCategoryAPI freeFoodRecipeCategoryAPI;
 
@@ -89,9 +102,19 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null)
         {
-            userID = firebaseUser.getUid();
+            dietitianID = firebaseUser.getUid();
 
             // set database here
+            // TODO: init database reference for user profile
+            databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
+            databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
+        }
+
+        bundleFromView = getArguments();
+        if (bundleFromView != null)
+        {
+            selectedUserProfile = bundleFromView.getParcelable("selectedUserProfile");
+            // Log.d(TAG, "onViewCreated: " + selectedUserProfile);
         }
 
         // init UI here
@@ -100,10 +123,11 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
 
         // set adapter to recycler view.
         recipeCategoryArrayList = new ArrayList<>(); // todo: based on the spinner we can switch to search.
+        recipeSearchCategoryMainAdapter = new
+                RecipeSearchCategoryMainAdapter(recipeCategoryArrayList, this);
 
         // call API here
-        freeFoodRecipeCuisineAPI = RetrofitFreeFoodClient.
-        getRetrofitFreeInstance().create(FreeFoodRecipeCuisineAPI.class);
+        freeFoodDetailAPI = RetrofitFreeFoodClient.getRetrofitFreeInstance().create(FreeFoodDetailAPI.class);
 
         freeFoodRecipeCategoryAPI = RetrofitFreeFoodClient.
         getRetrofitFreeInstance().create(FreeFoodRecipeCategoryAPI.class);
@@ -118,10 +142,86 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
         // todo: our plan is to let the dietitian to check user profile and
         //  then when they click on that user profile, it should open up this fragment and
         //  let the dietitian to search for that suitable recipe.
+        // get the string name of food whenever it is clicked.
 
 
+        // todo: we can improve this by warning the dietitian based on user profile
+        //  (allergic, diet type, and health conditions)
+        freeFoodDetailAPI.searchMealByName(recipeCategoryArrayList.get(position).getStrMeal())
+                .enqueue(new Callback<Dish>()
+                {
+                    @Override
+                    public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response)
+                    {
+                        if (response.isSuccessful())
+                        {
+                            recipes = response.body();
+
+                            if (recipes != null)
+                            {
+                                // Log.d(TAG, "onResponse: " + recipes.getMeals().get(0).getUserKey());
+
+                                Dish filteredRecipes = filterEmptyStrings(recipes);
+                                // Log.d(TAG, "onResponse: " + filteredRecipes);
+                                filteredRecipes.getMeals().get(0).setUserKey(selectedUserProfile.getKey());
+                                databaseReferenceCreateRecipeChild.setValue(filteredRecipes)
+                                        .addOnCompleteListener(onCompletedSearchRecipeListener());
+                            }
+                        }
+                        else
+                        {
+                            Log.d(TAG, "onResponse: " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t)
+                    {
+                        Log.d(TAG, "onFailure: " + t.getMessage());
+                    }
+                });
+    }
+
+    @Contract("_ -> param1")
+    public static <T> T filterEmptyStrings(@NonNull T object)
+    {
+        try
+        {
+            for (Field field : object.getClass().getDeclaredFields())
+            {
+                field.setAccessible(true); // Make private fields accessible
+                Object value = field.get(object);
+                if (value instanceof String && ((String) value).isEmpty())
+                {
+                    field.set(object, null); // Set empty strings to null or any default value
+                }
+            }
+        }
+        catch (IllegalAccessException e)
+        {
+            Log.d(TAG, "IllegalAccessException: " + e);
+        }
+        return object;
+    }
 
 
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompletedSearchRecipeListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                // fixme: there might be a potential error here.
+                Toast.makeText(requireContext(), "Recipe created successfully", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(requireContext(), "Error" +
+                        Objects.requireNonNull(task.getException()), Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     @NonNull
@@ -135,10 +235,7 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
             {
                 searchQuery = query;
                 // Log.d(TAG, searchQuery);
-
                 // we need to add one listener for creating a new recipe based on one user profile.
-                recipeSearchCategoryMainAdapter = new
-                        RecipeSearchCategoryMainAdapter(recipeCategoryArrayList);
                 setAdapter();
                 freeFoodRecipeCategoryAPI.searchRecipeCategory(searchQuery).
                         enqueue(callBackCategoryResponseFromAPI());

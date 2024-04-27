@@ -22,7 +22,7 @@ import com.example.myfoodchoice.R;
 import java.util.ArrayList;
 
 
-public class UserRecipeFragment extends Fragment implements OnRecipeItemClickListener
+public class UserViewRecipeFragment extends Fragment implements OnRecipeItemClickListener
 {
     // TODO: declare components, search recipes, but also need to exclude the allergies.
     EditText recipeSearch;

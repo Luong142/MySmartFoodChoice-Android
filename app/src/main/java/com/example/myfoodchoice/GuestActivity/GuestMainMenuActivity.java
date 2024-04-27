@@ -14,11 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
-import com.example.myfoodchoice.UserFragment.UserHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
-import com.example.myfoodchoice.UserFragment.UserRecipeFragment;
-import com.example.myfoodchoice.UserFragment.UserWorkOutFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -89,26 +86,6 @@ public class GuestMainMenuActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserHomeAlvinFragment()).commit();
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-        }
-
-        // TODO: pls take note that Guest can access some User fragment
-
-        else if (itemId == R.id.nav_food_recipe)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserRecipeFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_health_tips)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHealthTipsFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_work_out)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserWorkOutFragment()).commit();
         }
 
         else if (itemId == R.id.nav_review)

@@ -33,10 +33,6 @@
             android:icon="@drawable/health_tip"
             />
 
-        <item
-            android:id="@+id/nav_work_out"
-            android:title="@string/work_out"
-            android:icon="@drawable/workout"/>
 
         <item
             android:id="@+id/nav_view_user_redeemed_reward"

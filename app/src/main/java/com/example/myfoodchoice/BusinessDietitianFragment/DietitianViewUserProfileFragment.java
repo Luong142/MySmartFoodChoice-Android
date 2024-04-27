@@ -17,8 +17,6 @@ import com.example.myfoodchoice.AdapterInterfaceListener.OnRecommendRecipeDietit
 import com.example.myfoodchoice.AdapterRecyclerView.ViewUserProfileAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 
 public class DietitianViewUserProfileFragment extends Fragment implements OnRecommendRecipeDietitianListener
@@ -60,15 +57,18 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
 
     String userID;
 
-    Bundle bundleStore;
+    Bundle bundleStore, bundlerFromMain;
 
     DietitianCreateRecipeFragment dietitianCreateRecipeFragment;
+
+    DietitianSearchRecipeFragment dietitianSearchRecipeFragment;
 
     // todo: declare UI components
 
     RecyclerView userProfileRecyclerView;
 
     ViewUserProfileAdapter viewUserProfileAdapter;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -101,7 +101,9 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
 
         // init utilities
         bundleStore = new Bundle();
+        bundlerFromMain = getArguments();
         dietitianCreateRecipeFragment = new DietitianCreateRecipeFragment();
+        dietitianSearchRecipeFragment = new DietitianSearchRecipeFragment();
 
         // todo: init UI components
         userProfileRecyclerView = view.findViewById(R.id.userProfileRecyclerView);
@@ -118,13 +120,36 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
         selectedUserProfile = userProfileArrayList.get(position);
         // Log.d(TAG, "recommendRecipeDietitian: " + selectedUserProfile);
 
+        // todo: careful with the name
         bundleStore.putParcelable("selectedUserProfile", selectedUserProfile);
 
+        // fixme: remember to set arguments for both.
         dietitianCreateRecipeFragment.setArguments(bundleStore);
+        dietitianSearchRecipeFragment.setArguments(bundleStore);
 
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, dietitianCreateRecipeFragment)
-                .commit();
+        try
+        {
+            String action = bundlerFromMain.getString("action");
+
+            // Log.d(TAG, "recommendRecipeDietitian: " + action);
+            if (Objects.equals(action, "createRecipe"))
+            {
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, dietitianCreateRecipeFragment)
+                        .commit();
+            }
+
+            if (Objects.equals(action, "searchRecipe"))
+            {
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, dietitianSearchRecipeFragment)
+                        .commit();
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, "recommendRecipeDietitian: " + e.getMessage());
+        }
     }
 
     @NonNull

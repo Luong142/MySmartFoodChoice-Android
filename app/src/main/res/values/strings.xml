@@ -235,4 +235,5 @@
     <string name="search_for_recipe_in_category">Search for recipe in category</string>
     <string name="recipe_detail">Recipe Detail</string>
     <string name="user_profile_details">User Profile Details</string>
+    <string name="delete_account">Delete Account</string>
 </resources>

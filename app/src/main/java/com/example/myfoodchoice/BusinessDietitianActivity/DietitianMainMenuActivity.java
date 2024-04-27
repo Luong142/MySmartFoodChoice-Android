@@ -20,7 +20,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianSearchRecipeFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
@@ -73,6 +72,9 @@ public class DietitianMainMenuActivity extends AppCompatActivity
 
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
+
+    Bundle bundleStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -122,8 +124,8 @@ public class DietitianMainMenuActivity extends AppCompatActivity
                 .setPhotoUri("//").build());
          */
 
-        Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
-        Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
+        // Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
+        // Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);
@@ -156,15 +158,19 @@ public class DietitianMainMenuActivity extends AppCompatActivity
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+
+        // for bundle to be init
+        bundleStore = new Bundle();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         int itemId = item.getItemId();
-
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
+        DietitianViewUserProfileFragment viewUserProfileFragment =
+                new DietitianViewUserProfileFragment();
 
         if (itemId == R.id.nav_health_tips)
         {
@@ -175,14 +181,18 @@ public class DietitianMainMenuActivity extends AppCompatActivity
 
         else if (itemId == R.id.nav_create_food_recipe)
         {
+            bundleStore.putString("action", "createRecipe");
+            viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianViewUserProfileFragment()).commit();
+                    viewUserProfileFragment).commit();
         }
 
         else if (itemId == R.id.nav_search_food_recipe)
         {
+            bundleStore.putString("action", "searchRecipe");
+            viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianSearchRecipeFragment()).commit();
+                    viewUserProfileFragment).commit();
         }
 
         // TODO: update and view user profile

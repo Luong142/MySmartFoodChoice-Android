@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_gradient_color_main"
     android:orientation="vertical"
-    tools:context=".UserFragment.UserRecipeFragment">
+    tools:context=".UserFragment.UserViewRecipeFragment">
 
     <!-- to search for recipe and then the user can click on each item -->
 

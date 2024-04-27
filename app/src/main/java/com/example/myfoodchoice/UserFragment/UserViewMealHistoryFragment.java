@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserMealHistoryFragment extends Fragment implements OnActionMealListener
+public class UserViewMealHistoryFragment extends Fragment implements OnActionMealListener
 {
     private static final String TAG = "UserMealHistoryFragment";
     // todo: init firebase
