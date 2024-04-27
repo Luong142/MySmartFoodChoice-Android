@@ -18,10 +18,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianCreateRecipeFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianSearchRecipeFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
@@ -176,7 +176,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_create_food_recipe)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianCreateRecipeFragment()).commit();
+                    new DietitianViewUserProfileFragment()).commit();
         }
 
         else if (itemId == R.id.nav_search_food_recipe)

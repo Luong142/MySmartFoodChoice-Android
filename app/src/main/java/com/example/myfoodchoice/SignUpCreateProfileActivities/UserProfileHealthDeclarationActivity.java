@@ -172,8 +172,9 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
             userProfile.setAllergyEgg(eggCheckValue);
             userProfile.setAllergyPeanut(peanutCheckValue);
             userProfile.setAllergySeafood(seafoodCheckValue);
+            userProfile.setKey(firebaseUser.getUid());
 
-            Log.d(TAG, "onSignUpListener: " + userProfile);
+            // Log.d(TAG, "onSignUpListener: " + userProfile);
 
             // todo: set user profile here
             // using the function setValue()
@@ -235,38 +236,5 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         {
             diabetesCheckValue = isChecked;
         };
-    }
-
-    @NonNull // todo: deprecated old function
-    @Contract(" -> new")
-    private AdapterView.OnItemSelectedListener onItemSelectedAllergiesListener()
-    {
-        return new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                Allergies allergies1 = (Allergies) parent.getItemAtPosition(position);
-                allergies = allergies1.getName();
-                signUpBtn.setEnabled(true);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                // show message
-                Toast.makeText(getApplicationContext(), "Please select allergy.", Toast.LENGTH_SHORT).show();
-                signUpBtn.setEnabled(false);
-            }
-        };
-    }
-
-    private void initListAllergies()
-    {
-        allergiesArrayList.add(new Allergies("Gluten", R.drawable.gluten_free));
-        allergiesArrayList.add(new Allergies("Dairy", R.drawable.dairy));
-        allergiesArrayList.add(new Allergies("Egg", R.drawable.egg));
-        allergiesArrayList.add(new Allergies("Seafood", R.drawable.fish));
-        allergiesArrayList.add(new Allergies("Peanut", R.drawable.peanut));
     }
 }

@@ -105,7 +105,7 @@ public class RecipeSearchCategoryMainAdapter extends RecyclerView.Adapter<Recipe
     public RecipeSearchCategoryMainAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.search_recipe_dietitian_layout,
+                R.layout.dietitian_search_recipe_layout,
                 parent, false);
         return new RecipeSearchCategoryMainAdapter.myViewHolder(itemView, onCreateRecipeFromSearchListener);
     }

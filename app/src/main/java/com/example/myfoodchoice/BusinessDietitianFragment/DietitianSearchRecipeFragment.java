@@ -67,10 +67,6 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
 
     FreeFoodRecipeCategoryAPI freeFoodRecipeCategoryAPI;
 
-    Call<RecipeCategories> categoriesCall;
-
-    Call<RecipeCuisines> cuisinesCall;
-
     // todo: declare the ui here
     SearchView searchRecipeView;
 
@@ -140,7 +136,9 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
                 searchQuery = query;
                 // Log.d(TAG, searchQuery);
 
-                recipeSearchCategoryMainAdapter = new RecipeSearchCategoryMainAdapter(recipeCategoryArrayList);
+                // we need to add one listener for creating a new recipe based on one user profile.
+                recipeSearchCategoryMainAdapter = new
+                        RecipeSearchCategoryMainAdapter(recipeCategoryArrayList);
                 setAdapter();
                 freeFoodRecipeCategoryAPI.searchRecipeCategory(searchQuery).
                         enqueue(callBackCategoryResponseFromAPI());

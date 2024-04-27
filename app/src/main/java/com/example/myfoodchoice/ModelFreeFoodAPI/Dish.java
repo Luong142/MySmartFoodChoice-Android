@@ -44,6 +44,7 @@ public class Dish implements Serializable
 
   public static class Meals implements Serializable // todo: this is recognised as recipe too.
   {
+    private String userKey;
     private ArrayList<String> ingredients;
     private Object strImageSource;
 
@@ -173,7 +174,7 @@ public class Dish implements Serializable
         sb.append("\n");
       }
 
-      sb.append("\nInstructions\n").append(strInstructions).append(", ");
+      sb.append("\nInstructions\n").append(strInstructions);
       return sb.toString();
     }
 
@@ -209,6 +210,16 @@ public class Dish implements Serializable
           }
         }
       }
+    }
+
+    public String getUserKey()
+    {
+      return userKey;
+    }
+
+    public void setUserKey(String userKey)
+    {
+      this.userKey = userKey;
     }
 
     public ArrayList<String> getIngredients() {

@@ -10,6 +10,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -25,47 +26,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            >
-            <SearchView
-                android:id="@+id/searchRecipeView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:iconifiedByDefault="false"
-                android:queryHint="Search Recipe Here"
-                android:backgroundTint="@color/peach_puff"
-                android:background="@drawable/search_view_recipe"
-                android:tooltipText="Search Recipe" />
-
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recipeRecyclerView"
+            android:id="@+id/userProfileRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="" />
+            tools:listitem="@layout/dietitian_view_user_profile_layout" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

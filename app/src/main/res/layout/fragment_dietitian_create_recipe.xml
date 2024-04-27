@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,108 +48,84 @@
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp">
 
-            <EditText
-                android:id="@+id/recipeNameEditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:autofillHints="Please enter the name of recipe"
                 android:gravity="center"
-                android:hint="@string/enter_name_of_recipe"
-                android:inputType="text"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColorHint="@color/black"
-                android:textSize="20sp"
-                android:textStyle="italic" />
+                >
 
-        </androidx.cardview.widget.CardView>
+                <EditText
+                    android:id="@+id/recipeNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:autofillHints="Please enter the name of recipe"
+                    android:gravity="center"
+                    android:hint="@string/enter_name_of_recipe"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColorHint="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/peach_puff"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
+                <Spinner
+                    android:id="@+id/cuisineSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15dp"
+                    android:entries="@array/cuisine_array"
+                    android:layout="@layout/cuisine_category_spinner_layout"
+                    android:textAlignment="center" />
 
-            <Spinner
-                android:id="@+id/cuisineSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:entries="@array/cuisine_array"
-                android:layout="@layout/cuisine_category_spinner_layout"
-                android:textAlignment="center" />
+                <Spinner
+                    android:id="@+id/categorySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15dp"
+                    android:entries="@array/foodType_array"
+                    android:layout="@layout/cuisine_category_spinner_layout"
+                    android:textAlignment="center" />
 
-        </androidx.cardview.widget.CardView>
+                <EditText
+                    android:id="@+id/instructionsEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:autofillHints="Please enter instructions"
+                    android:gravity="center"
+                    android:hint="@string/enter_instruction"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:textColorHint="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/peach_puff"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
+            </LinearLayout>
 
-            <Spinner
-                android:id="@+id/categorySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:entries="@array/foodType_array"
-                android:layout="@layout/cuisine_category_spinner_layout"
-                android:textAlignment="center" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/peach_puff"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
-
-            <EditText
-                android:id="@+id/instructionsEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:autofillHints="Please enter instructions"
-                android:gravity="center"
-                android:hint="@string/enter_instruction"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-                android:textColorHint="@color/black"
-                android:textSize="20sp"
-                android:textStyle="italic" />
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredientsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/ingredient_layout" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            />
+
 
         <LinearLayout
             android:layout_width="match_parent"

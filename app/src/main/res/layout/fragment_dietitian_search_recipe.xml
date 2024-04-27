@@ -67,7 +67,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/search_recipe_dietitian_layout" />
+            tools:listitem="@layout/dietitian_search_recipe_layout" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -130,7 +130,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         // init userProfile
         userProfile = getIntent().getParcelableExtra("userProfile");
         // log debug
-        Log.d(TAG, "onCreate: " + userProfile);
+        // Log.d(TAG, "onCreate: " + userProfile);
 
         profilePicture.setOnClickListener(onImageClickListener());
 
@@ -146,7 +146,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                         {
                             // get the URI of the selected image
                             selectedImageUri = data.getData();
-                            Log.d(TAG, "Selected image URI: " + selectedImageUri);
+                            // Log.d(TAG, "Selected image URI: " + selectedImageUri);
                             // display the selected image in an ImageView.
                             profilePicture.setImageURI(selectedImageUri);
                         }
@@ -166,7 +166,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         return v ->
         {
             ageInt = Integer.parseInt(age.getText().toString().trim());
-            Log.d(TAG, "onCreateProfileListener: " + gender);
+            //Log.d(TAG, "onCreateProfileListener: " + gender);
 
             // TODO: the user can click on image view and select their profile picture or take new picture to upload
             // TODO: to Firebase database.
@@ -261,7 +261,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                         .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteNextListener());
-                Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
+                // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }
             else
             {

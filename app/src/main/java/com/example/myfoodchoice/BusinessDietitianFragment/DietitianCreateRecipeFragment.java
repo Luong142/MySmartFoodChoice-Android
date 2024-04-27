@@ -1,6 +1,7 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionIngredientListener;
 import com.example.myfoodchoice.AdapterRecyclerView.IngredientRecipeAdapter;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,6 +40,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.
+    static final String TAG = "DietitianCreateRecipeFragment";
 
     DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
 
@@ -50,6 +53,10 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
     Dish.Meals recipe;
 
     ArrayList<String> ingredientArrayList;
+
+    UserProfile selectedUserProfile;
+
+    Bundle bundleStore;
 
     // todo: declare UI components
     EditText recipeNameText, recipeInstructionsText, ingredientText;
@@ -88,6 +95,18 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 
             recipe = new Dish.Meals();
             ingredientArrayList = new ArrayList<>();
+        }
+
+        // todo: get the selected user profile
+        bundleStore = getArguments();
+
+        if (bundleStore != null)
+        {
+            selectedUserProfile = bundleStore.getParcelable("selectedUserProfile");
+
+            // todo: done testing
+            // todo: the purpose is to get the user key and it should show to the correct user page.
+            // Log.d(TAG, "onViewCreated: " + selectedUserProfile);
         }
 
         // todo: init UI components
@@ -149,6 +168,8 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             recipeName = recipeNameText.getText().toString().trim();
             recipeInstruction = recipeInstructionsText.getText().toString().trim();
 
+            // set the user key
+            recipe.setUserKey(selectedUserProfile.getKey());
             recipe.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
             recipe.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
             recipe.setStrInstructions(recipeInstruction);
