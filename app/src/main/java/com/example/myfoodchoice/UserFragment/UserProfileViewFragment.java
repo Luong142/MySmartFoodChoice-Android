@@ -143,10 +143,12 @@ public class UserProfileViewFragment extends Fragment
                 }
             });
 
+            // todo: important here
+            alertDialog.show();
         };
     }
 
-    @NonNull // todo: test these functions first before moving on.
+    @NonNull
     @Contract(pure = true)
     private OnCompleteListener<Void> onDeleteAccountFirebaseUserListener()
     {
@@ -154,6 +156,7 @@ public class UserProfileViewFragment extends Fragment
         {
             if (task.isSuccessful())
             {
+                // todo: test these functions first before moving on.
                 Toast.makeText(getContext(), "Account deleted successfully", Toast.LENGTH_SHORT).show();
 
                 // logout user
@@ -245,8 +248,9 @@ public class UserProfileViewFragment extends Fragment
                     StringBuilder stringBuilder = new StringBuilder();
                     String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
                     int age = userProfile.getAge();
-                    stringBuilder.append("Full Name: ").append(fullName).append("\n");
-                    stringBuilder.append("Age: ").append(age);
+                    stringBuilder.append("Full Name\n").append(fullName).append("\n").append("\n");
+                    stringBuilder.append("Age\n").append(age).append("\n").append("\n");
+                    stringBuilder.append("Weight\n").append(userProfile.getWeight());
 
                     displayUserProfile.setText(stringBuilder);
 
@@ -266,8 +270,8 @@ public class UserProfileViewFragment extends Fragment
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-                Toast.makeText(getContext(), "Error retrieving data from database " +
-                        error, Toast.LENGTH_SHORT).show();
+                // fixme: pls note that when we delete the account and any information about user profile
+                // todo: it will delete
                 Log.e(TAG, "onCancelled: " + error.getMessage());
             }
         };

@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
-import com.example.myfoodchoice.ModelAdapter.Allergies;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,7 +44,6 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 
     Intent intent, intentNavToLogin;
 
-    ArrayList<Allergies> allergiesArrayList;
 
     // todo: declare UI
 
@@ -76,7 +74,6 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(firebaseUser.getUid());
         userProfile = new UserProfile();
-        allergiesArrayList = new ArrayList<>();
 
         // TODO: init UI component
         signUpBtn = findViewById(R.id.signUpBtn);

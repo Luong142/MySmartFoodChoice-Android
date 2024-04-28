@@ -139,7 +139,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
             int weight = Integer.parseInt(editIntWeight.getText().toString());
 
-            if (weight < 20 || weight > 300)
+            if (weight < 20 || weight > 120)
             {
                 editIntWeight.setError("Invalid weight value kg");
                 editIntWeight.requestFocus();

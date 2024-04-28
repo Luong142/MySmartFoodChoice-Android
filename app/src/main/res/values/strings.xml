@@ -238,4 +238,5 @@
     <string name="delete_account">Delete Account</string>
     <string name="view_recommended_recipe">View Recommended Recipe</string>
     <string name="view_health_tips">View Health Tips</string>
+    <string name="enter_your_weight">Enter your weight</string>
 </resources>

@@ -8,19 +8,21 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
-import com.example.myfoodchoice.CallAPI.ClaudeAPIService;
+
+import com.example.myfoodchoice.ModelChatGPT.ChatGPT;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
+import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCategoryAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
+import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
 
 import org.jetbrains.annotations.Contract;
 
@@ -44,8 +46,6 @@ public class WelcomeActivity extends AppCompatActivity
 
     private static final String BASE_URL = "https://api.anthropic.com/";
 
-    private ClaudeAPIService claudeAPIService;
-
     private CaloriesNinjaAPI caloriesNinjaAPI;
 
     private FreeFoodDetailAPI freeFoodDetailAPI;
@@ -62,21 +62,34 @@ public class WelcomeActivity extends AppCompatActivity
 
     private Call<RecipeCuisines> cuisinesCall;
 
+    private ChatGPTAPI chatGPTAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        // Log.d(TAG, "onCreate: " + LangChainAPI.testMessage());
+        // LangChain4JAPI langChain4JAPI = new LangChain4JAPI();
 
-        // TODO: test ClaudeAPI part
-        // claudeAPIService = retrofit.create(ClaudeAPIService.class);
-        // testClaudeAPI(); FIXME: this one failed.
+        // Log.d(TAG, "onCreate: " + langChain4JAPI.getMessage("Hello friend"));
 
-        // FIXME: this one is not free too.
-        // ChatGPTAPI chatGPTAPI = new ChatGPTAPI();
-        // chatGPTAPI.generateOutput("What is the meaning of life?", this);
+        chatGPTAPI = RetrofitChatGPTAPI.getRetrofitChatGPTInstance().create(ChatGPTAPI.class);
+
+        ChatGPT chatGPTRequest = new ChatGPT();
+        chatGPTRequest.setId("chatcmpl-abc123");
+        chatGPTRequest.setCreated(1677858242);
+        chatGPTRequest.setModel("gpt-3.5-turbo");
+        chatGPTRequest.setObject("chat.completion");
+
+        // todo: continue this, https://platform.openai.com/docs/api-reference/making-requests
+        ChatGPT.Usage usage = new ChatGPT.Usage();
+
+
+        // chatGPTRequest.setUsage()
+
+
+        // chatGPTAPI.getChatCompletion("Hello friend").enqueue(callBackResponseFromAPI());
 
         // TODO: init ninja api
         // caloriesNinjaAPI = RetrofitClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
