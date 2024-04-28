@@ -16,17 +16,6 @@
             />
 
         <item
-            android:id="@+id/nav_log_my_meal"
-            android:title="@string/log_my_meal"
-            android:icon="@drawable/log_meal"/>
-
-        <item
-            android:id="@+id/nav_meal_history"
-            android:title="@string/meal_history"
-            android:icon="@drawable/history"
-            />
-
-        <item
             android:id="@+id/nav_check_in"
             android:title="@string/check_in"
             android:icon="@drawable/check_in"
@@ -34,13 +23,13 @@
 
         <item
             android:id="@+id/nav_food_recipe"
-            android:title="@string/view_recommended_recipe"
+            android:title="@string/recipes"
             android:icon="@drawable/food_recipe"
             />
 
         <item
             android:id="@+id/nav_health_tips"
-            android:title="@string/view_health_tips"
+            android:title="@string/health_tips"
             android:icon="@drawable/health_tip"
             />
 

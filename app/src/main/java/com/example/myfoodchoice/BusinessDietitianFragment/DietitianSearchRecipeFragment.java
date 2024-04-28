@@ -107,7 +107,6 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
             // set database here
             // TODO: init database reference for user profile
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
-            databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
         }
 
         bundleFromView = getArguments();
@@ -164,6 +163,9 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
                                 Dish filteredRecipes = filterEmptyStrings(recipes);
                                 // Log.d(TAG, "onResponse: " + filteredRecipes);
                                 filteredRecipes.getMeals().get(0).setUserKey(selectedUserProfile.getKey());
+
+                                // set database here
+                                databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
                                 databaseReferenceCreateRecipeChild.setValue(filteredRecipes)
                                         .addOnCompleteListener(onCompletedSearchRecipeListener());
                             }

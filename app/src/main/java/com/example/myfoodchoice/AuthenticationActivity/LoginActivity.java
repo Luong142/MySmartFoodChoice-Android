@@ -311,7 +311,7 @@ public class LoginActivity extends AppCompatActivity
                 }
                 else
                 {
-                    Log.d("LoginActivity", "onDataChange: this is else " + accountType);
+                    Log.d(TAG, "onDataChange: this is else " + accountType);
                 }
             }
             @Override
@@ -535,13 +535,14 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(@NonNull View widget)
             {
+                // fixme: the problem is that getCurrentUser(), should generate a new user
                 if (mAuth.getCurrentUser() != null)
                 {
                     mAuth.signInAnonymously().addOnCompleteListener(onCompleteSignInAsGuestListener());
                 }
                 else
                 {
-                    Log.d(TAG, "mAuth is " + mAuth);
+                    Log.d(TAG, "onClick: " + mAuth.getCurrentUser());
                 }
             }
         };
@@ -554,7 +555,7 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                // Sign in success, update UI with the signed-in user's information
+                // sign in success, update UI with the signed-in user's information
                 userID = mAuth.getUid();
                 Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                 startActivity(intent);

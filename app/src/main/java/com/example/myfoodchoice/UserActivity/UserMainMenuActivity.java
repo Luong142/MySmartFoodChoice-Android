@@ -27,10 +27,12 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserMyRewardsViewFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
 import com.example.myfoodchoice.UserFragment.UserViewHealthTipsFragment;
+import com.example.myfoodchoice.UserFragment.UserViewMealHistoryFragment;
 import com.example.myfoodchoice.UserFragment.UserViewRecipeFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -253,8 +255,19 @@ public class UserMainMenuActivity extends AppCompatActivity
 
         if (itemId == R.id.nav_home)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeAlvinFragment()).commit();
+            fragment = new UserHomeAlvinFragment();
+            fragmentTag = "UserHomeAlvinFragment";
+        }
+        else if (itemId == R.id.nav_log_my_meal)
+        {
+            fragment = new UserLogMealFragment();
+            fragmentTag = "UserLogMealFragment";
+        }
+
+        else if (itemId == R.id.nav_meal_history)
+        {
+            fragment  = new UserViewMealHistoryFragment();
+            fragmentTag = "UserViewMealHistoryFragment";
         }
 
         else if (itemId == R.id.nav_check_in)
@@ -328,7 +341,6 @@ public class UserMainMenuActivity extends AppCompatActivity
             {
                 // If not, add the fragment to the back stack
                 transaction.replace(R.id.fragment_container, fragment, fragmentTag);
-                transaction.addToBackStack(null);
             }
             transaction.commit();
         }

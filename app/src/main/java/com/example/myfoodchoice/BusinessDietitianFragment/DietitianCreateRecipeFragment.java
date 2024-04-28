@@ -32,7 +32,6 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
 public class DietitianCreateRecipeFragment extends Fragment implements OnActionIngredientListener
 {
     static final String PATH_RECIPE = "Dietitian Recipe";
@@ -90,7 +89,6 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             dietitianID = firebaseUser.getUid();
             // TODO: init database reference for user profile
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
-            databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
 
             recipe = new Dish.Meals();
             ingredientArrayList = new ArrayList<>();
@@ -131,8 +129,6 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
         ingredientRecyclerView.setAdapter(ingredientRecipeAdapter);
         ingredientRecyclerView.setVerticalScrollBarEnabled(true);
         ingredientRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
     }
 
     @NonNull
@@ -177,6 +173,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             recipe.setIngredients(ingredientArrayList);
 
             // set value for database firebase.
+            databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
             databaseReferenceCreateRecipeChild.setValue(recipe).addOnCompleteListener(onCompleteCreateRecipeListener());
         };
     }
@@ -193,9 +190,10 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
                 recipeInstructionsText.setText("");
                 ingredientText.setText("");
                 // Clear the ingredientArrayList and notify the adapter
-                if (!ingredientArrayList.isEmpty()) {
+                if (!ingredientArrayList.isEmpty())
+                {
                     ingredientArrayList.clear();
-                    ingredientRecipeAdapter.notifyDataSetChanged();
+                    ingredientRecipeAdapter.notifyItemChanged(ingredientArrayList.size() - 1);
                 }
                 Toast.makeText(getContext(), "Recipe created successfully", Toast.LENGTH_SHORT).show();
             }

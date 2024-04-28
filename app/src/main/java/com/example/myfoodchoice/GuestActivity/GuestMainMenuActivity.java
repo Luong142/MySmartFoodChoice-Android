@@ -13,15 +13,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
-import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
+import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
+import com.example.myfoodchoice.UserFragment.UserViewMealHistoryFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class GuestMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    // todo: there is an issue with the guest where
+    //  Calories Ninja API doesn't work onCancelled:
+    //  This client does not have permission to perform this operation
+
     // TODO: declare
     DrawerLayout drawerLayout;
 
@@ -88,16 +92,17 @@ public class GuestMainMenuActivity extends AppCompatActivity
             // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
 
-        else if (itemId == R.id.nav_review)
+        // todo: to update the part separate the button into two items in menu here
+        else if (itemId == R.id.nav_log_my_meal)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ReviewFragment()).commit();
+                    new UserLogMealFragment()).commit();
         }
 
-        else if (itemId == R.id.nav_manage_userProfile)
+        else if (itemId == R.id.nav_meal_history)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserProfileViewFragment()).commit();
+                    new UserViewMealHistoryFragment()).commit();
         }
 
         else if (itemId == R.id.nav_log_off)

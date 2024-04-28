@@ -236,4 +236,6 @@
     <string name="recipe_detail">Recipe Detail</string>
     <string name="user_profile_details">User Profile Details</string>
     <string name="delete_account">Delete Account</string>
+    <string name="view_recommended_recipe">View Recommended Recipe</string>
+    <string name="view_health_tips">View Health Tips</string>
 </resources>

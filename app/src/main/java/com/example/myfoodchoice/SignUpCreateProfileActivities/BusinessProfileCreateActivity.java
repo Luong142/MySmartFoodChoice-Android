@@ -261,7 +261,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 // FIXME: set image here based on the model
                 businessProfile.setProfileImageUrl(myUri);
 
-                Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
+                // Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
                 // Log.d(TAG, "onCompleteUploadListener: " + userAccount);
                 // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
 
