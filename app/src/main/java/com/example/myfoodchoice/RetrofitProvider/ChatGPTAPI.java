@@ -2,6 +2,7 @@ package com.example.myfoodchoice.RetrofitProvider;
 
 import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
 import com.example.myfoodchoice.ModelChatGPT.FullResponse;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;

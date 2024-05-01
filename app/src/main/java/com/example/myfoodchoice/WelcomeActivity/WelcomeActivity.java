@@ -2,19 +2,14 @@ package com.example.myfoodchoice.WelcomeActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
-import com.example.myfoodchoice.ModelChatGPT.CallChatAPI;
-import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
-import com.example.myfoodchoice.ModelChatGPT.FullResponse;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
@@ -24,16 +19,9 @@ import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCategoryAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
-import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
-
-import org.jetbrains.annotations.Contract;
-
-import java.util.ArrayList;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class WelcomeActivity extends AppCompatActivity
 {

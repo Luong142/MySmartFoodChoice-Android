@@ -20,6 +20,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeManualType;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeSearchType;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
@@ -174,9 +176,10 @@ public class DietitianMainMenuActivity extends AppCompatActivity
 
         if (itemId == R.id.nav_health_tips)
         {
+            bundleStore.putString("action", "createHealthTips");
+            viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianHealthTipsFragment()).commit();
-            // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                    viewUserProfileFragment).commit();
         }
 
         else if (itemId == R.id.nav_create_food_recipe)
@@ -187,12 +190,24 @@ public class DietitianMainMenuActivity extends AppCompatActivity
                     viewUserProfileFragment).commit();
         }
 
+        else if (itemId == R.id.nav_view_create_food_recipe)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianViewRecordRecipeManualType()).commit();
+        }
+
         else if (itemId == R.id.nav_search_food_recipe)
         {
             bundleStore.putString("action", "searchRecipe");
             viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     viewUserProfileFragment).commit();
+        }
+
+        else if (itemId == R.id.nav_view_search_food_recipe)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianViewRecordRecipeSearchType()).commit();
         }
 
         // TODO: update and view user profile

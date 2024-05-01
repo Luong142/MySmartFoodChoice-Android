@@ -48,7 +48,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 
     FirebaseUser firebaseUser;
 
-    Dish.Meals recipe;
+    Dish recipe;
 
     ArrayList<String> ingredientArrayList;
 
@@ -89,8 +89,6 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             dietitianID = firebaseUser.getUid();
             // TODO: init database reference for user profile
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
-
-            recipe = new Dish.Meals();
             ingredientArrayList = new ArrayList<>();
         }
 
@@ -157,20 +155,26 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 
             if (recipe == null)
             {
-                recipe = new Dish.Meals();
+                recipe = new Dish();
             }
+
+            recipe.setMeals(new ArrayList<>());
+
+            Dish.Meals meal = new Dish.Meals();
 
             recipeName = recipeNameText.getText().toString().trim();
             recipeInstruction = recipeInstructionsText.getText().toString().trim();
 
             // set the user key
-            recipe.setUserKey(selectedUserProfile.getKey());
-            recipe.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
-            recipe.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
-            recipe.setStrInstructions(recipeInstruction.trim());
-            recipe.setStrMeal(recipeName.trim());
+            meal.setUserKey(selectedUserProfile.getKey());
+            meal.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
+            meal.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
+            meal.setStrInstructions(recipeInstruction.trim());
+            meal.setStrMeal(recipeName.trim());
             ingredientArrayList.trimToSize();
-            recipe.setIngredients(ingredientArrayList);
+            meal.setIngredientsSearch(ingredientArrayList);
+
+            recipe.getMeals().add(meal);
 
             // set value for database firebase.
             databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
@@ -189,12 +193,14 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
                 recipeNameText.setText("");
                 recipeInstructionsText.setText("");
                 ingredientText.setText("");
-                // Clear the ingredientArrayList and notify the adapter
+
+                // clear the ingredientArrayList and notify the adapter
                 if (!ingredientArrayList.isEmpty())
                 {
                     ingredientArrayList.clear();
-                    ingredientRecipeAdapter.notifyItemChanged(ingredientArrayList.size() - 1);
+                    ingredientRecipeAdapter.notifyDataSetChanged();
                 }
+
                 Toast.makeText(getContext(), "Recipe created successfully", Toast.LENGTH_SHORT).show();
             }
             else
@@ -252,7 +258,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
         }
         ingredientArrayList.remove(position);
         ingredientRecipeAdapter.notifyItemRemoved(position);
-        ingredientRecipeAdapter.notifyItemRangeChanged(position, ingredientArrayList.size());
+        ingredientRecipeAdapter.notifyItemRangeChanged(position, ingredientArrayList.size() - position);
     }
 
     @Override

@@ -138,7 +138,6 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append("High Blood Pressure: ").append(isHighBloodPressure ? "Yes" : "No").append("\n");
         sb.append("Diabetes: ").append(isDiabetes ? "Yes" : "No").append("\n");
         sb.append("High Cholesterol: ").append(isHighCholesterol ? "Yes" : "No").append("\n");
-        sb.append("Allergies:\n");
         sb.append(" Seafood: ").append(isAllergySeafood ? "Yes" : "No").append("\n");
         sb.append(" Peanut: ").append(isAllergyPeanut ? "Yes" : "No").append("\n");
         sb.append(" Egg: ").append(isAllergyEgg ? "Yes" : "No").append("\n");

@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.ModelBusiness;
+package com.example.myfoodchoice.ModelDietitian;
 
 import androidx.annotation.NonNull;
 

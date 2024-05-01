@@ -63,6 +63,8 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
 
     DietitianSearchRecipeFragment dietitianSearchRecipeFragment;
 
+    DietitianHealthTipsFragment dietitianHealthTipsFragment;
+
     // todo: declare UI components
 
     RecyclerView userProfileRecyclerView;
@@ -104,6 +106,7 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
         bundlerFromMain = getArguments();
         dietitianCreateRecipeFragment = new DietitianCreateRecipeFragment();
         dietitianSearchRecipeFragment = new DietitianSearchRecipeFragment();
+        dietitianHealthTipsFragment = new DietitianHealthTipsFragment();
 
         // todo: init UI components
         userProfileRecyclerView = view.findViewById(R.id.userProfileRecyclerView);
@@ -127,6 +130,7 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
         // fixme: remember to set arguments for both.
         dietitianCreateRecipeFragment.setArguments(bundleStore);
         dietitianSearchRecipeFragment.setArguments(bundleStore);
+        dietitianHealthTipsFragment.setArguments(bundleStore);
 
         try
         {
@@ -144,6 +148,13 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
             {
                 requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, dietitianSearchRecipeFragment)
+                        .commit();
+            }
+
+            if (Objects.equals(action, "createHealthTips"))
+            {
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, dietitianHealthTipsFragment)
                         .commit();
             }
         }

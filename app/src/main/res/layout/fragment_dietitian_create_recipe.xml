@@ -114,72 +114,72 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredientsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/ingredient_layout" />
+    </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="44dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/createRecipeBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintVertical_bias="1.0">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/peach_puff"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp">
 
-            <androidx.cardview.widget.CardView
+            <EditText
+                android:id="@+id/ingredientsEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/peach_puff"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:autofillHints="Please enter instructions"
                 android:gravity="center"
-                android:orientation="vertical"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp">
+                android:hint="@string/enter_ingredient"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:textColorHint="@color/black"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
-                <EditText
-                    android:id="@+id/ingredientsEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    android:autofillHints="Please enter instructions"
-                    android:gravity="center"
-                    android:hint="@string/enter_ingredient"
-                    android:inputType="textMultiLine"
-                    android:maxLines="5"
-                    android:textColorHint="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="italic" />
+        </androidx.cardview.widget.CardView>
 
-            </androidx.cardview.widget.CardView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addIngredientBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/peach_puff"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/add" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addIngredientBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/peach_puff"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/add" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/clearTextRecipeBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/peach_puff"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/clear__1_" />
-        </LinearLayout>
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/clearTextRecipeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/peach_puff"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/clear__1_" />
     </LinearLayout>
 
     <Button

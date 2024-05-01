@@ -70,7 +70,7 @@ public class ReviewDialogFragment extends DialogFragment
         // Use requireActivity() to ensure a non-null context
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_review, null);
+        View view = inflater.inflate(R.layout.dialog_review_layout, null);
 
         // TODO: init firebase components.
 

@@ -15,14 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
 import com.example.myfoodchoice.AdapterRecyclerView.HealthTipsUserAdapter;
-import com.example.myfoodchoice.ModelBusiness.HealthTips;
+import com.example.myfoodchoice.ModelDietitian.HealthTips;
 import com.example.myfoodchoice.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class DietitianHealthTipsFragment extends Fragment implements OnHealthTipsClickListener
-
 {
     // TODO: declare components
 
@@ -79,33 +78,10 @@ public class DietitianHealthTipsFragment extends Fragment implements OnHealthTip
                 "Eat a balanced diet with a variety of foods to help you maintain a healthy weight.");
         HealthTips healthTips2 = new HealthTips("Healthy Sleep",
                 "Get enough sleep to help you stay healthy and prevent obesity.");
-        HealthTips healthTips3 = new HealthTips("Healthy Diet",
-                "Eat a balanced diet with a variety of foods to help you maintain a healthy weight.");
-        HealthTips healthTips4 = new HealthTips("Healthy Exercise",
-                "Get enough exercise to help you stay healthy and prevent obesity.");
-        HealthTips healthTips5 = new HealthTips("Healthy Sleep",
-                "Get enough sleep to help you stay healthy and prevent obesity.");
-        HealthTips healthTips6 = new HealthTips("Healthy Diet",
-                "Eat a balanced diet with a variety of foods to help you maintain a healthy weight.");
-        HealthTips healthTips7 = new HealthTips("Healthy Exercise",
-                "Get enough exercise to help you stay healthy and prevent obesity.");
-        HealthTips healthTips8 = new HealthTips("Healthy Sleep",
-                "Get enough sleep to help you stay healthy and prevent obesity.");
-        HealthTips healthTips9 = new HealthTips("Healthy Diet",
-                "Eat a balanced diet with a variety of foods to help you maintain a healthy weight.");
-        HealthTips healthTips10 = new HealthTips("Healthy Exercise",
-                "Get enough exercise to help you stay healthy and prevent obesity.");
 
         healthTips.add(healthTips1);
         healthTips.add(healthTips2);
-        healthTips.add(healthTips3);
-        healthTips.add(healthTips4);
-        healthTips.add(healthTips5);
-        healthTips.add(healthTips6);
-        healthTips.add(healthTips7);
-        healthTips.add(healthTips8);
-        healthTips.add(healthTips9);
-        healthTips.add(healthTips10);
+
     }
 
     private void setAdapter()

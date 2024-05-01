@@ -45,7 +45,9 @@ public class Dish implements Serializable
   public static class Meals implements Serializable // todo: this is recognised as recipe too.
   {
     private String userKey;
-    private ArrayList<String> ingredients;
+    private ArrayList<String> ingredientsSearch;
+
+    private ArrayList<String> ingredientsManual;
     private Object strImageSource;
 
     private String strIngredient10;
@@ -158,14 +160,14 @@ public class Dish implements Serializable
     {
       StringBuilder sb = new StringBuilder();
 
-      initializeIngredients();
+      initializeIngredientsSearch();
 
       sb.append("Cuisine: ").append(strArea);
 
       sb.append("\n\nIngredients\n");
-      if (ingredients != null && !ingredients.isEmpty())
+      if (ingredientsSearch != null && !ingredientsSearch.isEmpty())
       {
-        for (String ingredient : ingredients)
+        for (String ingredient : ingredientsSearch)
         {
           sb.append(ingredient).append(", ");
         }
@@ -178,10 +180,27 @@ public class Dish implements Serializable
       return sb.toString();
     }
 
-    public void initializeIngredients()
+    
+    public String displayIngredientsSearch()
+    {
+      StringBuilder sb = new StringBuilder();
+      if (ingredientsSearch != null && !ingredientsSearch.isEmpty())
+      {
+        for (String ingredient : ingredientsSearch)
+        {
+          sb.append(ingredient).append(", ");
+        }
+        // remove the last comma and space
+        sb.setLength(sb.length() - 2);
+        sb.append("\n");
+      }
+      return sb.toString();
+    }
+
+    public void initializeIngredientsSearch()
     {
       // Initialize the ingredients list
-      this.ingredients = new ArrayList<>();
+      this.ingredientsSearch = new ArrayList<>();
 
       // Use reflection to get all fields of the Meals class
       Field[] fields = this.getClass().getDeclaredFields();
@@ -201,7 +220,7 @@ public class Dish implements Serializable
             // Add the ingredient to the list if it's not null and not empty
             if (ingredient != null && !ingredient.isEmpty())
             {
-              this.ingredients.add(ingredient);
+              this.ingredientsSearch.add(ingredient);
             }
           }
           catch (IllegalAccessException e)
@@ -210,6 +229,14 @@ public class Dish implements Serializable
           }
         }
       }
+    }
+
+    public ArrayList<String> getIngredientsManual() {
+      return ingredientsManual;
+    }
+
+    public void setIngredientsManual(ArrayList<String> ingredientsManual) {
+      this.ingredientsManual = ingredientsManual;
     }
 
     public String getUserKey()
@@ -222,12 +249,12 @@ public class Dish implements Serializable
       this.userKey = userKey;
     }
 
-    public ArrayList<String> getIngredients() {
-      return ingredients;
+    public ArrayList<String> getIngredientsSearch() {
+      return ingredientsSearch;
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
-      this.ingredients = ingredients;
+    public void setIngredientsSearch(ArrayList<String> ingredientsSearch) {
+      this.ingredientsSearch = ingredientsSearch;
     }
 
     public Object getStrImageSource() {
