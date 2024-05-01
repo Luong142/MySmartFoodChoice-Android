@@ -8,11 +8,13 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterBusinessActivity;
 import com.example.myfoodchoice.AuthenticationActivity.RegisterUserActivity;
-
-import com.example.myfoodchoice.ModelChatGPT.ChatGPT;
+import com.example.myfoodchoice.ModelChatGPT.CallChatAPI;
+import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
+import com.example.myfoodchoice.ModelChatGPT.FullResponse;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCuisines;
@@ -25,6 +27,8 @@ import com.example.myfoodchoice.RetrofitProvider.FreeFoodRecipeCuisineAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
 
 import org.jetbrains.annotations.Contract;
+
+import java.util.ArrayList;
 
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -70,51 +74,12 @@ public class WelcomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        // LangChain4JAPI langChain4JAPI = new LangChain4JAPI();
-
-        // Log.d(TAG, "onCreate: " + langChain4JAPI.getMessage("Hello friend"));
-
-        chatGPTAPI = RetrofitChatGPTAPI.getRetrofitChatGPTInstance().create(ChatGPTAPI.class);
-
-        ChatGPT chatGPTRequest = new ChatGPT();
-        chatGPTRequest.setId("chatcmpl-abc123");
-        chatGPTRequest.setCreated(1677858242);
-        chatGPTRequest.setModel("gpt-3.5-turbo");
-        chatGPTRequest.setObject("chat.completion");
+        /*
+        CallChatAPI.makeChatGPTRequest(
+                "I am happy to see you pls explain what is FLutter", "you are my friend");
+         */
 
         // todo: continue this, https://platform.openai.com/docs/api-reference/making-requests
-        ChatGPT.Usage usage = new ChatGPT.Usage();
-
-
-        // chatGPTRequest.setUsage()
-
-
-        // chatGPTAPI.getChatCompletion("Hello friend").enqueue(callBackResponseFromAPI());
-
-        // TODO: init ninja api
-        // caloriesNinjaAPI = RetrofitClient.getRetrofitNinjaInstance().create(CaloriesNinjaAPI.class);
-
-        // freeFoodAPI = RetrofitClient.getRetrofitFreeInstance().create(FreeFoodAPI.class);
-
-        //FreeFoodRecipeCuisineAPI freeFoodRecipeCuisineAPI = RetrofitFreeFoodClient.
-                //getRetrofitFreeInstance().create(FreeFoodRecipeCuisineAPI.class);
-
-        //FreeFoodRecipeCategoryAPI freeFoodRecipeCategoryAPI = RetrofitFreeFoodClient.
-                //getRetrofitFreeInstance().create(FreeFoodRecipeCategoryAPI.class);
-
-        //freeFoodRecipeCuisineAPI.searchRecipeCuisine("Canadian").
-                //enqueue(callBackResponseFromAPI());
-
-        //freeFoodRecipeCategoryAPI.searchRecipeCategory("Seafood")
-        // .enqueue(callBackCategoryResponseFromAPI());
-
-        // fixme: to test the input string name of food.
-        // String query = "Fish Soup";
-
-        // call = caloriesNinjaAPI.getFoodItem(query);
-        //callDish = freeFoodAPI.searchMealByName(query);
-        // todo: in this part we can use Ninja API calls.
-        //callDish.enqueue(callBackResponseFromAPI());
 
         // init paper
         Paper.init(WelcomeActivity.this);
@@ -145,56 +110,6 @@ public class WelcomeActivity extends AppCompatActivity
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
         //  (Dietitian = 1, Trainer = 2, Normal User = 3)
     }
-
-    @NonNull
-    @Contract(" -> new")
-    private Callback<RecipeCategories> callBackCategoryResponseFromAPI()
-    {
-        return new Callback<RecipeCategories>()
-        {
-            @Override
-            public void onResponse(Call<RecipeCategories> call, Response<RecipeCategories> response)
-            {
-                RecipeCategories recipeCategories = response.body();
-
-                if (recipeCategories != null)
-                {
-                    Log.d(TAG, "onResponse: " + recipeCategories);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RecipeCategories> call, Throwable t) {
-
-            }
-        };
-    }
-
-    @NonNull
-    @Contract(" -> new")
-    private Callback<RecipeCuisines> callBackResponseFromAPI()
-    {
-        return new Callback<RecipeCuisines>()
-        {
-            @Override
-            public void onResponse(@NonNull Call<RecipeCuisines> call, @NonNull Response<RecipeCuisines> response)
-            {
-                RecipeCuisines recipeCuisines = response.body();
-
-                if (recipeCuisines != null)
-                {
-                    Log.d(TAG, "onResponse: " + recipeCuisines);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<RecipeCuisines> call, @NonNull Throwable t)
-            {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        };
-    }
-
 
     private final View.OnClickListener onSignInListener = v ->
     {

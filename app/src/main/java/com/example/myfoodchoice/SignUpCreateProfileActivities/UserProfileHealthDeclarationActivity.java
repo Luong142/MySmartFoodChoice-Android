@@ -25,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserProfileHealthDeclarationActivity extends AppCompatActivity

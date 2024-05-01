@@ -109,7 +109,8 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
         userProfileRecyclerView = view.findViewById(R.id.userProfileRecyclerView);
 
         // set adapter here
-        viewUserProfileAdapter = new ViewUserProfileAdapter(userProfileArrayList, this);
+        viewUserProfileAdapter = new ViewUserProfileAdapter(userProfileArrayList,
+                this);
         setAdapter();
     }
 

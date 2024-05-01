@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.AaptOptions
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -33,12 +34,11 @@ android {
     buildFeatures {
         viewBinding = true
         mlModelBinding = true
+        buildConfig = true
     }
-
 }
 
 dependencies {
-
     implementation ("dev.langchain4j:langchain4j-open-ai:0.30.0")
     // Firebase dependencies.
     implementation ("com.squareup.okhttp3:okhttp:4.10.0") // for calling api request

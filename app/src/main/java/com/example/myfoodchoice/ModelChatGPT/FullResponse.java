@@ -1,12 +1,11 @@
 package com.example.myfoodchoice.ModelChatGPT;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
-import java.lang.Integer;
-import java.lang.Object;
-import java.lang.String;
 import java.util.List;
 
-public class ChatGPT implements Serializable
+public class FullResponse implements Serializable
 {
   private Integer created;
 
@@ -19,6 +18,20 @@ public class ChatGPT implements Serializable
   private List<Choices> choices;
 
   private String object;
+
+
+  @NonNull
+  @Override
+  public String toString() {
+    return "FullResponse{" +
+            "created=" + created +
+            ", usage=" + usage +
+            ", model='" + model + '\'' +
+            ", id='" + id + '\'' +
+            ", choices=" + choices +
+            ", object='" + object + '\'' +
+            '}';
+  }
 
   public Integer getCreated() {
     return this.created;
@@ -68,13 +81,23 @@ public class ChatGPT implements Serializable
     this.object = object;
   }
 
-  public static class Usage implements Serializable
-  {
+  public static class Usage implements Serializable {
     private Integer completion_tokens;
 
     private Integer prompt_tokens;
 
     private Integer total_tokens;
+
+    @NonNull
+    @Override
+    public String toString()
+    {
+      return "Usage{" +
+              "completion_tokens=" + completion_tokens +
+              ", prompt_tokens=" + prompt_tokens +
+              ", total_tokens=" + total_tokens +
+              '}';
+    }
 
     public Integer getCompletion_tokens() {
       return this.completion_tokens;
@@ -101,8 +124,7 @@ public class ChatGPT implements Serializable
     }
   }
 
-  public static class Choices implements Serializable
-  {
+  public static class Choices implements Serializable {
     private String finish_reason;
 
     private Integer index;
@@ -110,6 +132,18 @@ public class ChatGPT implements Serializable
     private Message message;
 
     private Object logprobs;
+
+    @NonNull
+    @Override
+    public String toString()
+    {
+      return "Choices{" +
+              "finish_reason='" + finish_reason + '\'' +
+              ", index=" + index +
+              ", message=" + message +
+              ", logprobs=" + logprobs +
+              '}';
+    }
 
     public String getFinish_reason() {
       return this.finish_reason;
@@ -148,6 +182,16 @@ public class ChatGPT implements Serializable
       private String role;
 
       private String content;
+
+      @NonNull
+      @Override
+      public String toString()
+      {
+        return "Message{" +
+                "role='" + role + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+      }
 
       public String getRole() {
         return this.role;

@@ -1,0 +1,12 @@
+{
+  "choices": [
+    {
+      "message":
+      {
+        "role": "assistant",
+        "content": "\n\nThis is a test!"
+      },
+      "index": 0
+    }
+  ]
+}
