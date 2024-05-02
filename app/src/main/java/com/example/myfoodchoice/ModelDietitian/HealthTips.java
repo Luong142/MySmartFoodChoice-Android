@@ -4,19 +4,15 @@ import androidx.annotation.NonNull;
 
 public class HealthTips
 {
-    private String name;
+    private String title;
 
-    private String description;
+    private String content;
 
-    public HealthTips()
+
+    public HealthTips(String title, String content)
     {
-
-    }
-
-    public HealthTips(String name, String description)
-    {
-        this.name = name;
-        this.description = description;
+        this.title = title;
+        this.content = content;
     }
 
     @NonNull
@@ -24,24 +20,24 @@ public class HealthTips
     public String toString()
     {
         return "HealthTips{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                "title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

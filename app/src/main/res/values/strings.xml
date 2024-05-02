@@ -229,7 +229,7 @@
     <string name="search_for_recipe">Search for Recipe</string>
     <string name="recipe_category">Recipe Category</string>
     <string name="recipe_cuisine">Recipe Cuisine</string>
-    <string name="select_user_profile">Select user profile</string>
+    <string name="select_user_profile">Select User Profile</string>
     <string name="search_recipe_in_category">Search Recipe in Category</string>
     <string name="create_health_tips">Create Health Tips</string>
     <string name="search_for_recipe_in_category">Search for recipe in category</string>
@@ -243,4 +243,9 @@
     <string name="view_create_recipe">View Create Recipe</string>
     <string name="view_search_recipe_in_category">View Search Recipe in Category</string>
     <string name="view_recipe">View Recipe</string>
+    <string name="enter_your_title">Enter your title</string>
+    <string name="enter_your_content">Enter your content</string>
+    <string name="generate_ai_content">Generate AI Content</string>
+    <string name="content_of_health_tip">Content Of Health Tip</string>
+    <string name="title_of_health_tip">Title Of Health Tip</string>
 </resources>

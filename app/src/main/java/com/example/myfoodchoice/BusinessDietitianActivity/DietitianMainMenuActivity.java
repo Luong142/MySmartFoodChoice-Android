@@ -18,10 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipe;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeSearchType;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
@@ -143,7 +142,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianHealthTipsFragment()).commit();
+                    new DietitianViewHealthTipsFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -174,12 +173,18 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         DietitianViewUserProfileFragment viewUserProfileFragment =
                 new DietitianViewUserProfileFragment();
 
-        if (itemId == R.id.nav_health_tips)
+        if (itemId == R.id.nav_create_health_tips)
         {
             bundleStore.putString("action", "createHealthTips");
             viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     viewUserProfileFragment).commit();
+        }
+
+        else if (itemId == R.id.nav_view_health_tips)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianViewHealthTipsFragment()).commit();
         }
 
         else if (itemId == R.id.nav_create_food_recipe)
@@ -190,12 +195,6 @@ public class DietitianMainMenuActivity extends AppCompatActivity
                     viewUserProfileFragment).commit();
         }
 
-        else if (itemId == R.id.nav_view_create_food_recipe)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianViewRecordRecipe()).commit();
-        }
-
         else if (itemId == R.id.nav_search_food_recipe)
         {
             bundleStore.putString("action", "searchRecipe");
@@ -204,10 +203,10 @@ public class DietitianMainMenuActivity extends AppCompatActivity
                     viewUserProfileFragment).commit();
         }
 
-        else if (itemId == R.id.nav_view_search_food_recipe)
+        else if (itemId == R.id.nav_view_recipe)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianViewRecordRecipeSearchType()).commit();
+                    new DietitianViewRecordRecipe()).commit();
         }
 
         // TODO: update and view user profile

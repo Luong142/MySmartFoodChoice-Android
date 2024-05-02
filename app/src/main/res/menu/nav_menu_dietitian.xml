@@ -7,9 +7,15 @@
     <!-- TODO: update the guest part -->
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_health_tips"
+            android:id="@+id/nav_create_health_tips"
             android:title="@string/create_health_tips"
             android:icon="@drawable/health_tip"
+            />
+
+        <item
+            android:id="@+id/nav_view_health_tips"
+            android:title="@string/view_health_tips"
+            android:icon="@drawable/history"
             />
 
         <item
@@ -19,20 +25,14 @@
             />
 
         <item
-            android:id="@+id/nav_view_create_food_recipe"
-            android:title="@string/view_create_recipe"
-            android:icon="@drawable/history"
-            />
-
-        <item
             android:id="@+id/nav_search_food_recipe"
             android:title="@string/search_recipe_in_category"
             android:icon="@drawable/food_recipe"
             />
 
         <item
-            android:id="@+id/nav_view_search_food_recipe"
-            android:title="@string/view_search_recipe_in_category"
+            android:id="@+id/nav_view_recipe"
+            android:title="@string/view_recipe"
             android:icon="@drawable/history"
             />
 

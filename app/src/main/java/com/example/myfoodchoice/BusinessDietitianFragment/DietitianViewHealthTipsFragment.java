@@ -21,11 +21,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class DietitianHealthTipsFragment extends Fragment implements OnHealthTipsClickListener
+public class DietitianViewHealthTipsFragment extends Fragment implements OnHealthTipsClickListener
 {
-    // TODO: declare components
+    // todo: declare firebase components
+    // private FirebaseAuth mAuth;
+    // private FirebaseUser mUser;
+    // private DatabaseReference mDatabaseReference;
 
-    FloatingActionButton createHealthTips;
+    // TODO: declare components
     RecyclerView healthTipsRecyclerView;
 
     HealthTipsUserAdapter healthTipsUserAdapter;
@@ -43,8 +46,6 @@ public class DietitianHealthTipsFragment extends Fragment implements OnHealthTip
 
 
         // TODO: init UI components
-        createHealthTips = view.findViewById(R.id.createHealthTipsBtn);
-
         // Initialize the recipeList
         healthTips = new ArrayList<>();
         populateHealthTipsList();
@@ -98,6 +99,6 @@ public class DietitianHealthTipsFragment extends Fragment implements OnHealthTip
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dietitian_health_tips, container, false);
+        return inflater.inflate(R.layout.fragment_dietitian_view_health_tips, container, false);
     }
 }
