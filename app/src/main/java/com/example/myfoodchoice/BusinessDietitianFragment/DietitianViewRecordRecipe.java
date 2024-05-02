@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 
-public class DietitianViewRecordRecipeManualType extends Fragment
+public class DietitianViewRecordRecipe extends Fragment
 {
     // todo: declare firebase
     static final String PATH_RECIPE = "Dietitian Recipe";
@@ -129,6 +129,6 @@ public class DietitianViewRecordRecipeManualType extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dietitian_view_record_recipe_manual_type, container, false);
+        return inflater.inflate(R.layout.fragment_dietitian_view_record_recipe, container, false);
     }
 }

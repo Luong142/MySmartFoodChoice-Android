@@ -20,7 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeManualType;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipe;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeSearchType;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
@@ -193,7 +193,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_view_create_food_recipe)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianViewRecordRecipeManualType()).commit();
+                    new DietitianViewRecordRecipe()).commit();
         }
 
         else if (itemId == R.id.nav_search_food_recipe)

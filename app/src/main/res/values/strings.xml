@@ -242,4 +242,5 @@
     <string name="create_recipe_manually">Create Recipe Manually</string>
     <string name="view_create_recipe">View Create Recipe</string>
     <string name="view_search_recipe_in_category">View Search Recipe in Category</string>
+    <string name="view_recipe">View Recipe</string>
 </resources>

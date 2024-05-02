@@ -172,7 +172,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             meal.setStrInstructions(recipeInstruction.trim());
             meal.setStrMeal(recipeName.trim());
             ingredientArrayList.trimToSize();
-            meal.setIngredientsSearch(ingredientArrayList);
+            meal.setIngredientsManual(ingredientArrayList);
 
             recipe.getMeals().add(meal);
 

@@ -72,16 +72,32 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
 
         // init the arraylist of ingredient
         Dish.Meals meals = recipe.getMeals().get(0);
-        if (meals.getIngredientsSearch() == null)
+        meals.initializeIngredientsSearch();
+
+        String recipeNameFormat = String.format("Recipe Name: %s", meals.getStrMeal());
+        String recipeCategoryFormat = String.format("Recipe Category: %s", meals.getStrCategory());
+        String recipeCuisineFormat = String.format("Recipe Cuisine: %s", meals.getStrArea());
+        String recipeInstructionFormat = String.format("Recipe Instructions\n%s", meals.getStrInstructions());
+
+        // for two type of ingredients
+        if (meals.getIngredientsSearch().isEmpty())
         {
-
+            String recipeIngredientsManualFormat = String.format("Recipe Ingredients\n%s", meals.displayIngredientsManual());
+            holder.recipeName.setText(recipeNameFormat);
+            holder.recipeCategory.setText(recipeCategoryFormat);
+            holder.recipeCuisine.setText(recipeCuisineFormat);
+            holder.recipeIngredients.setText(recipeIngredientsManualFormat);
+            holder.recipeInstructions.setText(recipeInstructionFormat);
         }
-
-        holder.recipeName.setText(meals.getStrMeal());
-        holder.recipeCategory.setText(meals.getStrCategory());
-        holder.recipeCuisine.setText(meals.getStrArea());
-        holder.recipeIngredients.setText(meals.displayIngredientsSearch());
-        holder.recipeInstructions.setText(meals.getStrInstructions());
+        else
+        {
+            String recipeIngredientsSearchFormat = String.format("Recipe Ingredients\n%s", meals.displayIngredientsSearch());
+            holder.recipeName.setText(recipeNameFormat);
+            holder.recipeCategory.setText(recipeCategoryFormat);
+            holder.recipeCuisine.setText(recipeCuisineFormat);
+            holder.recipeIngredients.setText(recipeIngredientsSearchFormat);
+            holder.recipeInstructions.setText(recipeInstructionFormat);
+        }
     }
 
     @NonNull

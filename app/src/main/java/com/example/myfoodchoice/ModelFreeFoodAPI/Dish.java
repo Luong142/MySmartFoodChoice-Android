@@ -180,6 +180,21 @@ public class Dish implements Serializable
       return sb.toString();
     }
 
+    public String displayIngredientsManual()
+    {
+      StringBuilder sb = new StringBuilder();
+      if (ingredientsManual != null && !ingredientsManual.isEmpty())
+      {
+        for (String ingredient : ingredientsManual)
+        {
+          sb.append(ingredient).append(", ");
+        }
+        // remove the last comma and space
+        sb.setLength(sb.length() - 2);
+        sb.append("\n");
+      }
+      return sb.toString();
+    }
     
     public String displayIngredientsSearch()
     {
