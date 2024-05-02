@@ -64,8 +64,8 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
         HealthTips healthTip = healthTips.get(position);
-        String name = healthTip.getName();
-        String desc = healthTip.getDescription();
+        String name = healthTip.getTitle();
+        String desc = healthTip.getContent();
 
         holder.healthTipName.setText(name);
         holder.healthTipDescription.setText(desc);

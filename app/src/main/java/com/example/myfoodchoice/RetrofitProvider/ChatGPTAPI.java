@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 public interface ChatGPTAPI
 {
     // todo: must add find the api key from local.properties and place it here.
-    String api = "sk-proj-hRgNqOrGwAbzZEsnohLoT3BlbkFJ9QZksy1vZGTz8GHXnWcs";
+    String api = "sk-proj-TpTvFUYpoja19WkKZNOOT3BlbkFJaD9ozI2FeCVK6y73Y94b";
 
     @POST("v1/chat/completions")
     @Headers(

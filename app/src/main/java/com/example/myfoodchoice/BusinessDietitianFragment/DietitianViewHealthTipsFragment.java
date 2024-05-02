@@ -17,7 +17,6 @@ import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListen
 import com.example.myfoodchoice.AdapterRecyclerView.HealthTipsUserAdapter;
 import com.example.myfoodchoice.ModelDietitian.HealthTips;
 import com.example.myfoodchoice.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 

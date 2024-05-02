@@ -19,12 +19,10 @@ public class CallChatAPI
 
     public static String answer = ""; // fixme: it is not possible to make this a separate function
 
-    public static void makeChatGPTRequest(String question, String context)
+    public void makeChatGPTRequest(String question, String context)
     {
         // Create an instance of ChatGPT
         ChatRequest chatRequest = new ChatRequest();
-        // Populate the chatGPTRequest object with your data
-        // For example:
         chatRequest.setModel("gpt-3.5-turbo");
 
         ArrayList<ChatRequest.Messages> messages = new ArrayList<>();

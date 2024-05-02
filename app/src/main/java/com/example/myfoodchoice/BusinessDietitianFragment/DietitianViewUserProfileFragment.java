@@ -55,7 +55,7 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
 
     ArrayList<UserProfile> userProfileArrayList;
 
-    String userID;
+    String dietitianID;
 
     Bundle bundleStore, bundlerFromMain;
 
@@ -88,7 +88,7 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null)
         {
-            userID = firebaseUser.getUid();
+            dietitianID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
             databaseReferenceUserProfile =

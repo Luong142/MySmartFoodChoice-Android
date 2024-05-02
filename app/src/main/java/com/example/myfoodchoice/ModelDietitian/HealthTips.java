@@ -4,10 +4,17 @@ import androidx.annotation.NonNull;
 
 public class HealthTips
 {
+    private String userKey;
     private String title;
 
     private String content;
 
+    public HealthTips(String userKey, String title, String content)
+    {
+        this.userKey = userKey;
+        this.title = title;
+        this.content = content;
+    }
 
     public HealthTips(String title, String content)
     {
@@ -17,12 +24,20 @@ public class HealthTips
 
     @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "HealthTips{" +
-                "title='" + title + '\'' +
+                "userKey='" + userKey + '\'' +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
     }
 
     public String getTitle() {

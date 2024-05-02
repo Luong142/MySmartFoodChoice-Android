@@ -18,8 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewHealthTipsFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHomePageFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipe;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
@@ -75,6 +76,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
 
     Bundle bundleStore;
+    DietitianViewUserProfileFragment viewUserProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -139,10 +141,17 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // for bundle to be init
+        bundleStore = new Bundle();
+
+        // init this first
+        viewUserProfileFragment =
+                new DietitianViewUserProfileFragment();
+
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianViewHealthTipsFragment()).commit();
+                    new DietitianHomePageFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -159,9 +168,6 @@ public class DietitianMainMenuActivity extends AppCompatActivity
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
-
-        // for bundle to be init
-        bundleStore = new Bundle();
     }
 
     @Override
@@ -170,10 +176,13 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         int itemId = item.getItemId();
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
-        DietitianViewUserProfileFragment viewUserProfileFragment =
-                new DietitianViewUserProfileFragment();
+        if (itemId == R.id.nav_home)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianHomePageFragment()).commit();
+        }
 
-        if (itemId == R.id.nav_create_health_tips)
+        else if (itemId == R.id.nav_create_health_tips)
         {
             bundleStore.putString("action", "createHealthTips");
             viewUserProfileFragment.setArguments(bundleStore);

@@ -7,6 +7,12 @@
     <!-- TODO: update the guest part -->
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:title="@string/home_page"
+            android:icon="@drawable/home"
+            />
+
+        <item
             android:id="@+id/nav_create_health_tips"
             android:title="@string/create_health_tips"
             android:icon="@drawable/health_tip"
