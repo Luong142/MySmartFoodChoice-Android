@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnHealthTipsClickListener;
@@ -30,11 +31,16 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
         public TextView healthTipName;
         public TextView healthTipDescription;
 
+        public CardView cardViewHealthContent;
+
         public myViewHolder(final View itemView, OnHealthTipsClickListener onHealthTipsClickListener)
         {
             super(itemView);
             healthTipName = itemView.findViewById(R.id.healthTipTitleTextView);
             healthTipDescription = itemView.findViewById(R.id.healthTipDescriptionTextView);
+            cardViewHealthContent = itemView.findViewById(R.id.cardViewHealthContent);
+
+            cardViewHealthContent.setVisibility(View.GONE);
 
             itemView.setOnClickListener(v ->
             {
@@ -44,6 +50,11 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
                     if (position != RecyclerView.NO_POSITION)
                     {
                         onHealthTipsClickListener.onHealthTipsClick(position);
+                        cardViewHealthContent.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        cardViewHealthContent.setVisibility(View.GONE);
                     }
                 }
             });
@@ -67,8 +78,11 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
         String name = healthTip.getTitle();
         String desc = healthTip.getContent();
 
-        holder.healthTipName.setText(name);
-        holder.healthTipDescription.setText(desc);
+        String titleFormat = String.format("Title\n%s", name);
+        String descFormat = String.format("Content\n%s", desc);
+
+        holder.healthTipName.setText(titleFormat);
+        holder.healthTipDescription.setText(descFormat);
     }
 
     @Override
@@ -76,5 +90,4 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
     {
         return healthTips.size();
     }
-
 }

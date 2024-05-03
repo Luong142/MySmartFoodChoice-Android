@@ -9,6 +9,11 @@ public class HealthTips
 
     private String content;
 
+    public HealthTips()
+    {
+
+    }
+
     public HealthTips(String userKey, String title, String content)
     {
         this.userKey = userKey;

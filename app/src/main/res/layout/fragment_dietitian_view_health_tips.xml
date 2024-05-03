@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/health_tips"
+            android:text="@string/view_health_tips"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"
