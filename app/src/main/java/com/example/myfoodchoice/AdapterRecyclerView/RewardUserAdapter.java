@@ -78,7 +78,7 @@ public class RewardUserAdapter extends RecyclerView.Adapter<RewardUserAdapter.my
             Picasso.get()
                     .load(rewardUri)
                     .resize(50, 50)
-                    .error(R.drawable.error)
+                    .error(R.drawable.voucher)
                     .into(holder.rewardImage);
             
             holder.rewardName.setText(reward.getName());

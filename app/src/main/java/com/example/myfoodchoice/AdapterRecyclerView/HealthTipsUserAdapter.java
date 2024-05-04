@@ -44,10 +44,10 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
 
             itemView.setOnClickListener(v ->
             {
-                if (onHealthTipsClickListener != null)
+                int position = getAbsoluteAdapterPosition();
+                if (position != RecyclerView.NO_POSITION)
                 {
-                    int position = getAbsoluteAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION)
+                    if (cardViewHealthContent.getVisibility() == View.GONE)
                     {
                         onHealthTipsClickListener.onHealthTipsClick(position);
                         cardViewHealthContent.setVisibility(View.VISIBLE);

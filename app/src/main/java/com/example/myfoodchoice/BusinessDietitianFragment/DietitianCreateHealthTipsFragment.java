@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -159,6 +160,10 @@ public class DietitianCreateHealthTipsFragment extends Fragment
         {
             if (task.isSuccessful())
             {
+                // make toast
+                Toast.makeText(requireContext(),
+                        "Create Health tip successfully.", Toast.LENGTH_LONG).show();
+
                 // set visibility
                 createHealthTipsBtn.setVisibility(View.VISIBLE);
                 progressBarHealthTips.setVisibility(View.GONE);
@@ -202,6 +207,8 @@ public class DietitianCreateHealthTipsFragment extends Fragment
     @Contract(" -> new")
     private Callback<FullResponse> onCallChatGPTResponseBack()
     {
+        // todo: pls note that whenever using this feature we need to get the API key again from OpenAI.
+        // because of security Github doesn't allow to commit API key (can be stolen by others)
         return new Callback<FullResponse>()
         {
             @Override

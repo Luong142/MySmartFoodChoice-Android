@@ -24,6 +24,9 @@ import java.util.ArrayList;
 
 public class UserViewRecipeFragment extends Fragment implements OnRecipeItemClickListener
 {
+    // start here tmr
+
+
     // TODO: declare components, search recipes, but also need to exclude the allergies.
     EditText recipeSearch;
 
