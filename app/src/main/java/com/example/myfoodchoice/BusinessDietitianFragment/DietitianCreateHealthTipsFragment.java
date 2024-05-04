@@ -22,8 +22,6 @@ import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

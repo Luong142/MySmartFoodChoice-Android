@@ -90,7 +90,6 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
     {
         super.onViewCreated(view, savedInstanceState);
 
-        // todo: init firebase here.
         // TODO: init Firebase Database
         firebaseDatabase = FirebaseDatabase.getInstance
                 ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");

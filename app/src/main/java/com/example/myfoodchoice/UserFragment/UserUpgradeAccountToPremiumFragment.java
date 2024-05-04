@@ -10,10 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.R;
-public class UserChatBotMessageFragment extends Fragment
-{
-    // todo: our plan is to make this as a premium feature.
 
+public class UserUpgradeAccountToPremiumFragment extends Fragment
+{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -27,6 +26,6 @@ public class UserChatBotMessageFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_chat_bot_message, container, false);
+        return inflater.inflate(R.layout.fragment_user_upgrade_account_to_premium, container, false);
     }
 }

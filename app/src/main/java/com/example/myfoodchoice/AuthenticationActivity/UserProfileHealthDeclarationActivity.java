@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.SignUpCreateProfileActivities;
+package com.example.myfoodchoice.AuthenticationActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
