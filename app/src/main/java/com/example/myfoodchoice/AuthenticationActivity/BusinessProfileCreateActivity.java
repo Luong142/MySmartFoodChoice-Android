@@ -248,6 +248,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 businessProfile.setLastName(lastNameString);
                 businessProfile.setContactNumber(contactNumberInt);
                 businessProfile.setRole(role);
+                businessProfile.setBusinessKey(firebaseUser.getUid());
 
                 // set business account here
                 if (account == null)
@@ -407,7 +408,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         };
     }

@@ -102,11 +102,11 @@ public class RegisterBusinessActivity extends AppCompatActivity
     {
         return v ->
         {
-            Log.d("RegisterActivity", "signup button activated! ");
+            // Log.d("RegisterActivity", "signup button activated! ");
             email = emailEditText.getText().toString().trim();
             password = passwordEditText.getText().toString().trim();
 
-            Log.d(TAG, "onSignUpListener: " + email + " " + password);
+            // Log.d(TAG, "onSignUpListener: " + email + " " + password);
 
             // validation
             if (TextUtils.isEmpty(email))
@@ -147,8 +147,8 @@ public class RegisterBusinessActivity extends AppCompatActivity
         return task ->
         {
             if (task.isSuccessful()) {
-                Toast.makeText(RegisterBusinessActivity.this, "Vendor registered successfully.",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RegisterBusinessActivity.this, "Vendor registered successfully.",
+                        //Toast.LENGTH_SHORT).show();
                 firebaseUser = firebaseAuth.getCurrentUser();
                 // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 

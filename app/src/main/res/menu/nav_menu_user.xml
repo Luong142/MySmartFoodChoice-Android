@@ -27,9 +27,9 @@
             />
 
         <item
-            android:id="@+id/nav_check_in"
-            android:title="@string/check_in"
-            android:icon="@drawable/check_in"
+            android:id="@+id/nav_chat_bot"
+            android:title="@string/virtual_assistant"
+            android:icon="@drawable/chatbot"
             />
 
         <item
@@ -44,6 +44,11 @@
             android:icon="@drawable/health_tip"
             />
 
+        <item
+            android:id="@+id/nav_check_in"
+            android:title="@string/check_in"
+            android:icon="@drawable/check_in"
+            />
 
         <item
             android:id="@+id/nav_view_user_redeemed_reward"

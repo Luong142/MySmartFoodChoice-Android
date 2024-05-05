@@ -31,6 +31,6 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/dietitian_view_record_recipe_manual_layout" />
+        tools:listitem="@layout/dietitian_view_record_recipe_layout" />
 
 </LinearLayout>

@@ -340,7 +340,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:src="@drawable/foodpromo"
+            android:src="@drawable/foodimage"
             android:contentDescription="@string/todo" />
     </LinearLayout>
 

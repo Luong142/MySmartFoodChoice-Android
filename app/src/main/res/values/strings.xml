@@ -54,7 +54,6 @@
     <string name="log_out">Log Out</string>
     <string name="open_nav">Open Navigation\n</string>
     <string name="close_nav">Open Navigation\n</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="smart_food_choice">Smart Food Choice</string>
     <string name="sign_in">Sign In</string>
@@ -236,7 +235,7 @@
     <string name="recipe_detail">Recipe Detail</string>
     <string name="user_profile_details">User Profile Details</string>
     <string name="delete_account">Delete Account</string>
-    <string name="view_recommended_recipe">View Recommended Recipe</string>
+    <string name="view_recommended_recipe">View Recommended Recipes</string>
     <string name="view_health_tips">View Health Tips</string>
     <string name="enter_your_weight">Enter your weight</string>
     <string name="create_recipe_manually">Create Recipe Manually</string>
@@ -250,4 +249,5 @@
     <string name="title_of_health_tip">Title Of Health Tip</string>
     <string name="view_recommended_health_tips">View Recommended Health Tips</string>
     <string name="ingredient_list">Ingredient List</string>
+    <string name="virtual_assistant">Virtual Assistant</string>
 </resources>

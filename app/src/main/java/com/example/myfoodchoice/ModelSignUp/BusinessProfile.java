@@ -6,6 +6,8 @@ public class BusinessProfile extends CommonProfile
 {
     private String role;
 
+    private String businessKey;
+
     private int businessImage;
 
     private int contactNumber;
@@ -26,6 +28,16 @@ public class BusinessProfile extends CommonProfile
         super();
         this.role = role;
         this.businessImage = businessImage;
+    }
+
+    public String getBusinessKey()
+    {
+        return businessKey;
+    }
+
+    public void setBusinessKey(String businessKey)
+    {
+        this.businessKey = businessKey;
     }
 
     @NonNull

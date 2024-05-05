@@ -25,6 +25,7 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment;
+import com.example.myfoodchoice.UserFragment.UserChatBotMessageFragment;
 import com.example.myfoodchoice.UserFragment.UserCheckInFragment;
 import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
@@ -262,6 +263,12 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             fragment = new UserLogMealFragment();
             fragmentTag = "UserLogMealFragment";
+        }
+
+        else if (itemId == R.id.nav_chat_bot)
+        {
+            fragment = new UserChatBotMessageFragment();
+            fragmentTag = "UserChatBotMessageFragment";
         }
 
         else if (itemId == R.id.nav_meal_history)

@@ -44,12 +44,9 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 
 
     // todo: declare UI
-
     Button signUpBtn;
 
     ProgressBar progressBar;
-
-    Spinner spinnerAllergies;
 
     CheckBox diabetesCheck, highCholesterolCheck, highBloodPressureCheck, seafoodCheck, eggCheck, peanutCheck;
 
@@ -58,7 +55,6 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
     final static String TAG = "UserProfileHealthDeclaration";
 
     final static String PATH_USERPROFILE = "User Profile";
-    private String allergies;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -194,8 +190,8 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
             {
                 progressBar.setVisibility(ProgressBar.GONE);
                 signUpBtn.setVisibility(Button.VISIBLE); // to show the button again.
-                Log.d(TAG, "onSignUpFailedListener: " +
-                        Objects.requireNonNull(task.getException()).getMessage()); // FIXME: for debug purpose
+                //Log.d(TAG, "onSignUpFailedListener: " +
+                        //Objects.requireNonNull(task.getException()).getMessage()); // FIXME: for debug purpose
                 Toast.makeText(UserProfileHealthDeclarationActivity.this,
                         "Sign up failed", Toast.LENGTH_SHORT).show();
             }

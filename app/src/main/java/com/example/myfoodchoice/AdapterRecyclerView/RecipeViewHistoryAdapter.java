@@ -113,7 +113,7 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
     public RecipeViewHistoryAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.dietitian_view_record_recipe_manual_layout,
+                R.layout.dietitian_view_record_recipe_layout,
                 parent, false);
         return new RecipeViewHistoryAdapter.myViewHolder(itemView);
     }
