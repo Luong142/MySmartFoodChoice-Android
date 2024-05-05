@@ -84,18 +84,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="@string/contact_number"
+                android:text="@string/age"
                 android:textStyle="italic"
                 android:textColor="@color/black"
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/contactNumberProfile"
+                android:id="@+id/ageProfile"
                 android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="@string/contact_number"
+                android:text="@string/age"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/weight"
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/weightProfile"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/weight"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
