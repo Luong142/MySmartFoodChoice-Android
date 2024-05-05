@@ -61,14 +61,44 @@
                 android:layout_height="20dp"/>
 
             <TextView
-                android:id="@+id/displayUserProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/full_name"
+                android:textColor="@color/black"
+                android:textStyle="italic"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/userProfile"
                 android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="@string/placeholder"
+                android:text="@string/username"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/contact_number"
+                android:textStyle="italic"
                 android:textColor="@color/black"
                 android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/contactNumberProfile"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/contact_number"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

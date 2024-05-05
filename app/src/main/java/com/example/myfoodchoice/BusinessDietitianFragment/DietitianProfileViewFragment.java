@@ -40,7 +40,7 @@ public class DietitianProfileViewFragment extends Fragment
     // TODO: declare UI components
     Button updateProfileBtn, deleteAccountBtn;
 
-    TextView displayTrainerProfile;
+    TextView fullNameText, contactNumberProfile;
 
     ImageView imageView;
 
@@ -50,8 +50,7 @@ public class DietitianProfileViewFragment extends Fragment
 
     DatabaseReference databaseReferenceBusinessProfile,
             databaseReferenceRegisteredAccount,
-            DatabaseReferenceRecipes,
-            DatabaseReferenceHealthTips;
+            DatabaseReferenceRecipes;
 
     AlertDialog.Builder alertDialog;
 
@@ -98,7 +97,8 @@ public class DietitianProfileViewFragment extends Fragment
 
         // TODO: init UI components
         updateProfileBtn = view.findViewById(R.id.updateProfileBtn);
-        displayTrainerProfile = view.findViewById(R.id.displayUserProfile);
+        fullNameText = view.findViewById(R.id.userProfile);
+        contactNumberProfile = view.findViewById(R.id.contactNumberProfile);
         imageView = view.findViewById(R.id.displayUserImage);
         deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
 
@@ -249,14 +249,12 @@ public class DietitianProfileViewFragment extends Fragment
                     if (businessProfile.getRole().equals("Dietitian"))
                     {
                         // form a display here
-                        StringBuilder stringBuilder = new StringBuilder();
                         String fullName = businessProfile.getFirstName() + " " + businessProfile.getLastName();
                         int contactNumber = businessProfile.getContactNumber();
-                        stringBuilder.append("Full Name\n").append(fullName).append("\n").append("\n");
-                        stringBuilder.append("Contact Number\n").append(contactNumber);
 
                         // display user profile info
-                        displayTrainerProfile.setText(stringBuilder);
+                        fullNameText.setText(fullName);
+                        contactNumberProfile.setText(String.valueOf(contactNumber));
 
                         // set profile picture here
                         String profileImageUrl = businessProfile.getProfileImageUrl();

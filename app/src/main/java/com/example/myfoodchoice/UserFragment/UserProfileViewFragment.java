@@ -43,7 +43,7 @@ public class UserProfileViewFragment extends Fragment
 
     ProgressBar progressBarDeleteAccount;
 
-    TextView displayUserProfile;
+    TextView fullNameText, ageText, weightText;
 
     ImageView imageView;
 
@@ -94,7 +94,11 @@ public class UserProfileViewFragment extends Fragment
 
         // TODO: init UI components
         updateProfileBtn = view.findViewById(R.id.updateProfileBtn);
-        displayUserProfile = view.findViewById(R.id.displayUserProfile);
+
+        fullNameText = view.findViewById(R.id.userProfile);
+        ageText = view.findViewById(R.id.ageProfile);
+        weightText = view.findViewById(R.id.weightProfile);
+
         imageView = view.findViewById(R.id.displayUserImage);
         deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
 
@@ -245,14 +249,13 @@ public class UserProfileViewFragment extends Fragment
                 if (userProfile != null)
                 {
                     // display user profile info
-                    StringBuilder stringBuilder = new StringBuilder();
                     String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
                     int age = userProfile.getAge();
-                    stringBuilder.append("Full Name\n").append(fullName).append("\n").append("\n");
-                    stringBuilder.append("Age\n").append(age).append("\n").append("\n");
-                    stringBuilder.append("Weight\n").append(userProfile.getWeight());
+                    int weight = Integer.parseInt(userProfile.getWeight());
 
-                    displayUserProfile.setText(stringBuilder);
+                    fullNameText.setText(fullName);
+                    ageText.setText(String.valueOf(age));
+                    weightText.setText(String.valueOf(weight));
 
                     // set profile picture here
                     String profileImageUrl = userProfile.getProfileImageUrl();

@@ -250,4 +250,7 @@
     <string name="view_recommended_health_tips">View Recommended Health Tips</string>
     <string name="ingredient_list">Ingredient List</string>
     <string name="virtual_assistant">Virtual Assistant</string>
+    <string name="recommended_health_tips">Recommended Health Tips</string>
+    <string name="recommended_recipes">Recommended Recipes</string>
+    <string name="title">title</string>
 </resources>
