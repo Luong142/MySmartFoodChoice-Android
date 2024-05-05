@@ -126,6 +126,7 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
 
         // todo: careful with the name
         bundleStore.putParcelable("selectedUserProfile", selectedUserProfile);
+        bundleStore.putInt("index", position);
 
         // fixme: remember to set arguments for both.
         dietitianCreateRecipeFragment.setArguments(bundleStore);

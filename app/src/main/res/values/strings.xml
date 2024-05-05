@@ -249,4 +249,5 @@
     <string name="content_of_health_tip">Content Of Health Tip</string>
     <string name="title_of_health_tip">Title Of Health Tip</string>
     <string name="view_recommended_health_tips">View Recommended Health Tips</string>
+    <string name="ingredient_list">Ingredient List</string>
 </resources>

@@ -84,6 +84,7 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
     SearchView searchRecipeView;
 
     RecyclerView recipeRecyclerView;
+    int index;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -112,6 +113,8 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
         if (bundleFromView != null)
         {
             selectedUserProfile = bundleFromView.getParcelable("selectedUserProfile");
+            index = bundleFromView.getInt("index");
+
             // Log.d(TAG, "onViewCreated: " + selectedUserProfile);
         }
 
@@ -162,6 +165,8 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
                                 Dish filteredRecipes = filterEmptyStrings(recipes);
                                 // Log.d(TAG, "onResponse: " + filteredRecipes);
                                 filteredRecipes.getMeals().get(0).setUserKey(selectedUserProfile.getKey());
+
+                                Log.d(TAG, "onResponse: " + filteredRecipes.getMeals().get(0).getUserKey());
 
                                 // set database here
                                 databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();

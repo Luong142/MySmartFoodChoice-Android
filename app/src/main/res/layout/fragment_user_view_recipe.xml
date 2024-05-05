@@ -10,22 +10,27 @@
 
     <!-- to search for recipe and then the user can click on each item -->
 
-    <EditText
-        android:id="@+id/searchRecipeEditText"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/search_recipe_hint"
-        android:textColorHint="@color/black"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="8dp" />
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/view_recommended_recipe"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/recipe_item_user_layout" />
+        tools:listitem="@layout/dietitian_view_record_recipe_manual_layout" />
 
 </LinearLayout>

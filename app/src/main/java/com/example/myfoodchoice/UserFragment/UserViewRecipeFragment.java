@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,11 +45,11 @@ public class UserViewRecipeFragment extends Fragment
 
     Dish recipes;
 
+    Dish.Meals recipe;
+
     String userID;
 
     // TODO: declare components, search recipes, but also need to exclude the allergies.
-    EditText recipeSearch;
-
     RecyclerView recipeRecyclerView;
 
     RecipeViewHistoryAdapter recipeViewHistoryAdapter;
@@ -86,8 +85,6 @@ public class UserViewRecipeFragment extends Fragment
         }
 
         // TODO: init UI components
-        recipeSearch = view.findViewById(R.id.searchRecipeEditText);
-
         // for recycle view
         recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView);
         recipeViewHistoryAdapter = new RecipeViewHistoryAdapter(recipeList);
@@ -111,15 +108,18 @@ public class UserViewRecipeFragment extends Fragment
                     recipes = dataSnapshot.getValue(Dish.class);
                     if (recipes != null)
                     {
-                        if (recipes.getMeals().get(0).getUserKey().equals(userID))
+                        for (Dish.Meals meals : recipes.getMeals())
                         {
-                            recipeList.add(recipes);
-                            recipeViewHistoryAdapter.notifyItemInserted(recipeList.size() - 1);
+                            if (meals.getUserKey().equals(userID))
+                            {
+                                recipeList.add(recipes);
+                                recipeViewHistoryAdapter.notifyItemInserted(recipeList.size() - 1);
+                            }
+                            else
+                            {
+                                Log.d(TAG, "onChildAdded: " + meals);
+                            }
                         }
-                    }
-                    else
-                    {
-                        Log.d(TAG, "onChildAdded: " + "null");
                     }
                 }
             }
@@ -128,18 +128,73 @@ public class UserViewRecipeFragment extends Fragment
             public void onChildChanged(@NonNull DataSnapshot snapshot,
                                        @Nullable String previousChildName)
             {
-
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    recipes = dataSnapshot.getValue(Dish.class);
+                    if (recipes != null)
+                    {
+                        for (Dish.Meals meals : recipes.getMeals())
+                        {
+                            if (meals.getUserKey().equals(userID))
+                            {
+                                recipeList.add(recipes);
+                                recipeViewHistoryAdapter.notifyItemChanged(recipeList.size() - 1);
+                            }
+                            else
+                            {
+                                Log.d(TAG, "onChildAdded: " + meals);
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
-
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    recipes = dataSnapshot.getValue(Dish.class);
+                    if (recipes != null)
+                    {
+                        for (Dish.Meals meals : recipes.getMeals())
+                        {
+                            if (meals.getUserKey().equals(userID))
+                            {
+                                recipeList.add(recipes);
+                                recipeViewHistoryAdapter.notifyItemRemoved(recipeList.size() - 1);
+                            }
+                            else
+                            {
+                                Log.d(TAG, "onChildAdded: " + meals);
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    recipes = dataSnapshot.getValue(Dish.class);
+                    if (recipes != null)
+                    {
+                        for (Dish.Meals meals : recipes.getMeals())
+                        {
+                            if (meals.getUserKey().equals(userID))
+                            {
+                                recipeList.add(recipes);
+                                recipeViewHistoryAdapter.notifyDataSetChanged();
+                            }
+                            else
+                            {
+                                Log.d(TAG, "onChildAdded: " + meals);
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
@@ -165,6 +220,6 @@ public class UserViewRecipeFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_recipe, container, false);
+        return inflater.inflate(R.layout.fragment_user_view_recipe, container, false);
     }
 }

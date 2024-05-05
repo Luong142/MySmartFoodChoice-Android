@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 
-public class DietitianViewRecordRecipe extends Fragment
+public class DietitianViewRecordRecipeFragment extends Fragment
 {
     // todo: declare firebase
     static final String PATH_RECIPE = "Dietitian Recipe";
@@ -36,7 +36,7 @@ public class DietitianViewRecordRecipe extends Fragment
     // todo: the recipe should be recommended by the dietitian.
     static final String TAG = "DietitianRecordRecipeManualType";
 
-    DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
+    DatabaseReference databaseReferenceCreateRecipe;
 
     FirebaseAuth firebaseAuth;
 
@@ -44,7 +44,7 @@ public class DietitianViewRecordRecipe extends Fragment
 
     FirebaseUser firebaseUser;
 
-    String dietitianID, recipeName, recipeInstruction;
+    String dietitianID;
 
     // todo: declare UI
     RecyclerView recyclerViewRecordRecipe;

@@ -21,7 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHomePageFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewHealthTipsFragment;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipe;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
@@ -215,7 +215,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         else if (itemId == R.id.nav_view_recipe)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianViewRecordRecipe()).commit();
+                    new DietitianViewRecordRecipeFragment()).commit();
         }
 
         // TODO: update and view user profile

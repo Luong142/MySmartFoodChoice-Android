@@ -3,6 +3,7 @@ package com.example.myfoodchoice.AdapterRecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,7 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
                 , recipeCuisine
                 , recipeIngredients, recipeInstructions;
 
+        ImageView recipeImage;
 
         CardView cardViewDetailRecipe;
 
@@ -42,6 +45,7 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             recipeCuisine = itemView.findViewById(R.id.recipeCuisine);
             recipeIngredients = itemView.findViewById(R.id.ingredientsView);
             recipeInstructions = itemView.findViewById(R.id.instructionsView);
+            recipeImage = itemView.findViewById(R.id.recipeImage);
 
             // card view
             cardViewDetailRecipe = itemView.findViewById(R.id.cardViewDetailRecipe);
@@ -76,7 +80,7 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
 
         String recipeNameFormat = String.format("Recipe Name: %s", meals.getStrMeal());
         String recipeCategoryFormat = String.format("Recipe Category: %s", meals.getStrCategory());
-        String recipeCuisineFormat = String.format("Recipe Cuisine: %s", meals.getStrArea());
+        String recipeCuisineFormat = String.format("Recipe Cuisine: %s\n", meals.getStrArea());
         String recipeInstructionFormat = String.format("Recipe Instructions\n%s", meals.getStrInstructions());
 
         // for two type of ingredients
@@ -88,6 +92,8 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             holder.recipeCuisine.setText(recipeCuisineFormat);
             holder.recipeIngredients.setText(recipeIngredientsManualFormat);
             holder.recipeInstructions.setText(recipeInstructionFormat);
+            Picasso.get().load(R.drawable.food_placeholder)
+                    .error(R.drawable.food_placeholder).into(holder.recipeImage);
         }
         else
         {
@@ -97,6 +103,8 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             holder.recipeCuisine.setText(recipeCuisineFormat);
             holder.recipeIngredients.setText(recipeIngredientsSearchFormat);
             holder.recipeInstructions.setText(recipeInstructionFormat);
+            Picasso.get().load(meals.getStrMealThumb())
+                    .error(R.drawable.error).into(holder.recipeImage);
         }
     }
 

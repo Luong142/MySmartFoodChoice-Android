@@ -56,6 +56,8 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 
     Bundle bundleStore;
 
+    int index;
+
     // todo: declare UI components
     EditText recipeNameText, recipeInstructionsText, ingredientText;
 
@@ -98,6 +100,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
         if (bundleStore != null)
         {
             selectedUserProfile = bundleStore.getParcelable("selectedUserProfile");
+            index = bundleStore.getInt("index");
 
             // todo: done testing
             // todo: the purpose is to get the user key and it should show to the correct user page.
