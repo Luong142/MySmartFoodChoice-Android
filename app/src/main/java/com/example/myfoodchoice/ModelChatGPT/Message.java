@@ -2,18 +2,21 @@ package com.example.myfoodchoice.ModelChatGPT;
 
 import androidx.annotation.NonNull;
 
-public class ChatInterface
+public class Message
 {
+    public static String SEND_BY_ME = "me";
+    public static String SEND_BY_BOT = "bot";
     private String message;
 
-    private String replies;
+    private String sendBy;
 
-    public ChatInterface(String message, String replies) {
+    public Message(String message, String sendBy)
+    {
         this.message = message;
-        this.replies = replies;
+        this.sendBy = sendBy;
     }
 
-    public ChatInterface() {
+    public Message() {
     }
 
     @NonNull
@@ -22,7 +25,7 @@ public class ChatInterface
     {
         return "ChatInterface{" +
                 "message='" + message + '\'' +
-                ", replies='" + replies + '\'' +
+                ", replies='" + sendBy + '\'' +
                 '}';
     }
 
@@ -34,11 +37,11 @@ public class ChatInterface
         this.message = message;
     }
 
-    public String getReplies() {
-        return replies;
+    public String getSendBy() {
+        return sendBy;
     }
 
-    public void setReplies(String replies) {
-        this.replies = replies;
+    public void setSendBy(String sendBy) {
+        this.sendBy = sendBy;
     }
 }
