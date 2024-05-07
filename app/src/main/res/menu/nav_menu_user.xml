@@ -45,23 +45,6 @@
             />
 
         <item
-            android:id="@+id/nav_check_in"
-            android:title="@string/check_in"
-            android:icon="@drawable/check_in"
-            />
-
-        <item
-            android:id="@+id/nav_view_user_redeemed_reward"
-            android:title="@string/view_rewards"
-            android:icon="@drawable/voucher_beauty"/>
-
-        <item
-            android:id="@+id/nav_rewards"
-            android:title="@string/redeem_rewards"
-            android:icon="@drawable/rewards"
-            />
-
-        <item
             android:id="@+id/nav_review"
             android:title="@string/view_reviews"
             android:icon="@drawable/review_icon"

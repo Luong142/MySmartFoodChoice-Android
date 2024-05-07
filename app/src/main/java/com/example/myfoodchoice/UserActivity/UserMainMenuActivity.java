@@ -277,12 +277,6 @@ public class UserMainMenuActivity extends AppCompatActivity
             fragmentTag = "UserViewMealHistoryFragment";
         }
 
-        else if (itemId == R.id.nav_check_in)
-        {
-            fragment = new UserCheckInFragment();
-            fragmentTag = "UserCheckInFragment";
-        }
-
         else if (itemId == R.id.nav_food_recipe)
         {
             fragment = new UserViewRecipeFragment();
@@ -293,18 +287,6 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             fragment = new UserViewHealthTipsFragment();
             fragmentTag = "UserHealthTipsFragment";
-        }
-
-        else if (itemId == R.id.nav_view_user_redeemed_reward)
-        {
-            fragment = new UserMyRewardsViewFragment();
-            fragmentTag = "UserMyRewardsViewFragment";
-        }
-
-        else if (itemId == R.id.nav_rewards)
-        {
-            fragment = new UserRewardsFragment();
-            fragmentTag = "UserRewardsFragment";
         }
 
         else if (itemId == R.id.nav_review)

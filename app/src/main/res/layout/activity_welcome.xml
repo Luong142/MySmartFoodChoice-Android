@@ -10,16 +10,16 @@
 
     <!-- Sign In and Sign Up Buttons -->
 
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="412dp"
         android:layout_height="286dp"
         android:src="@drawable/women"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:layout_width="match_parent"
@@ -29,7 +29,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/welcomeTagline"

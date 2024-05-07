@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="10dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
@@ -17,14 +17,16 @@
 
         <ImageView
             android:id="@+id/profileImage"
-            android:layout_width="48sp"
-            android:layout_height="48sp"
+            android:layout_width="80sp"
+            android:layout_height="80sp"
             android:src="@drawable/login_person"
             android:contentDescription="@string/todo" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -35,6 +37,7 @@
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:textSize="25sp"
                 tools:text="Reviewer Name" />
 
             <RatingBar
@@ -51,11 +54,11 @@
             android:id="@+id/reviewTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="@android:color/black"
             tools:text="This is a review text." />
 
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>
