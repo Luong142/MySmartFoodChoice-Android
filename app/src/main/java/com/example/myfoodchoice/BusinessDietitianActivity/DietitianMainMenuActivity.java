@@ -18,10 +18,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianCreateRecipeFragment;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHealthTipsFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHomePageFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianSearchRecipeFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewHealthTipsFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeFragment;
+import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewUserProfileFragment;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
@@ -73,6 +74,10 @@ public class DietitianMainMenuActivity extends AppCompatActivity
 
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
+
+    Bundle bundleStore;
+    DietitianViewUserProfileFragment viewUserProfileFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -122,8 +127,8 @@ public class DietitianMainMenuActivity extends AppCompatActivity
                 .setPhotoUri("//").build());
          */
 
-        Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
-        Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
+        // Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
+        // Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);
@@ -136,10 +141,17 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // for bundle to be init
+        bundleStore = new Bundle();
+
+        // init this first
+        viewUserProfileFragment =
+                new DietitianViewUserProfileFragment();
+
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianHealthTipsFragment()).commit();
+                    new DietitianHomePageFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -162,27 +174,48 @@ public class DietitianMainMenuActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         int itemId = item.getItemId();
-
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
-
-        if (itemId == R.id.nav_health_tips)
+        if (itemId == R.id.nav_home)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianHealthTipsFragment()).commit();
-            // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                    new DietitianHomePageFragment()).commit();
+        }
+
+        else if (itemId == R.id.nav_create_health_tips)
+        {
+            bundleStore.putString("action", "createHealthTips");
+            viewUserProfileFragment.setArguments(bundleStore);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    viewUserProfileFragment).commit();
+        }
+
+        else if (itemId == R.id.nav_view_health_tips)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianViewHealthTipsFragment()).commit();
         }
 
         else if (itemId == R.id.nav_create_food_recipe)
         {
+            bundleStore.putString("action", "createRecipe");
+            viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianCreateRecipeFragment()).commit();
+                    viewUserProfileFragment).commit();
         }
 
         else if (itemId == R.id.nav_search_food_recipe)
         {
+            bundleStore.putString("action", "searchRecipe");
+            viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianSearchRecipeFragment()).commit();
+                    viewUserProfileFragment).commit();
+        }
+
+        else if (itemId == R.id.nav_view_recipe)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new DietitianViewRecordRecipeFragment()).commit();
         }
 
         // TODO: update and view user profile

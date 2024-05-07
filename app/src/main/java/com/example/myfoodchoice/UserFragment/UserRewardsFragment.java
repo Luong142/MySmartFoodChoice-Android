@@ -267,6 +267,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
         imageNames.add("voucher.png");
         // imageNames.add("gpu.png");
 
+        // fixme: we need to fix this image before moving on to the next ChatGPT
         for (String imageName : imageNames)
         {
             StorageReference imageRef = storageReferenceStaticRewardsImage.child(imageName);

@@ -13,34 +13,16 @@
             android:icon="@drawable/home"
             />
 
-
         <item
-            android:id="@+id/nav_food_recipe"
-            android:title="@string/recipes"
-            android:icon="@drawable/food_recipe"
+            android:id="@+id/nav_log_my_meal"
+            android:title="@string/log_my_meal"
+            android:icon="@drawable/log_meal"
             />
 
         <item
-            android:id="@+id/nav_health_tips"
-            android:title="@string/health_tips"
-            android:icon="@drawable/health_tip"
-            />
-
-        <item
-            android:id="@+id/nav_work_out"
-            android:title="@string/work_out"
-            android:icon="@drawable/workout"/>
-
-        <item
-            android:id="@+id/nav_review"
-            android:title="@string/view_reviews"
-            android:icon="@drawable/review_icon"
-            />
-
-        <item
-            android:id="@+id/nav_manage_userProfile"
-            android:title="@string/manage_profile"
-            android:icon="@drawable/update_profile"/>
+            android:id="@+id/nav_meal_history"
+            android:title="@string/meal_history"
+            android:icon="@drawable/history"/>
 
         <item
             android:id="@+id/nav_log_off"

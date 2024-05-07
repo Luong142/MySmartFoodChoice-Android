@@ -46,7 +46,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
     // TODO: declare UI components
     ImageView imageProfilePictureUpdate;
 
-    EditText firstNameUpdate, lastNameUpdate;
+    EditText firstNameUpdate, lastNameUpdate, weightUpdate;
 
     ProgressBar progressBar;
 
@@ -67,7 +67,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
     FirebaseUser firebaseUser;
 
-    String userID, firstName, lastName, profileImageURL, myUri;
+    String userID, firstName, lastName, profileImageURL, myUri, weight, accountType;
 
     UserProfile userProfile;
 
@@ -80,8 +80,6 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
     final static String PATH_USERPROFILE = "User Profile";
 
     final static String PATH_ACCOUNT_TYPE = "Registered Accounts";
-
-    String accountType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -115,6 +113,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         imageProfilePictureUpdate = findViewById(R.id.profilePicture);
         firstNameUpdate = findViewById(R.id.firstNameProfile);
         lastNameUpdate = findViewById(R.id.lastNameProfile);
+        weightUpdate = findViewById(R.id.weightProfile);
         nextBtn = findViewById(R.id.nextBtn);
         progressBar = findViewById(R.id.progressBar);
 
@@ -207,10 +206,31 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 return; // exit the method if last name is empty
             }
 
+            if (weightUpdate.getText().toString().isEmpty())
+            {
+                weightUpdate.setError("Please enter your weight.");
+                progressBar.setVisibility(ProgressBar.GONE);
+                nextBtn.setVisibility(Button.VISIBLE);
+                return; // exit the method if weight is empty
+            }
+
+            int weightInt = Integer.parseInt(weightUpdate.getText().toString());
+
+            if (weightInt < 20 || weightInt > 120)
+            {
+                weightUpdate.setError("Please enter a valid weight.");
+                progressBar.setVisibility(ProgressBar.GONE);
+                nextBtn.setVisibility(Button.VISIBLE);
+                return; // exit the method if weight is not a number
+            }
+
             // init
             firstName = firstNameUpdate.getText().toString().trim();
             lastName = lastNameUpdate.getText().toString().trim();
+            weight = weightUpdate.getText().toString().trim();
             profileImageURL = selectedImageUri.toString();
+
+            // todo: we need to test this first
 
             // TODO: a part of user profile, update firebase user
             firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()

@@ -777,7 +777,6 @@ public class UserLogMealFragment extends Fragment
             //  retrieve it later in the next fragment
 
             bundleStore.putParcelable("meal", meal);
-
             userLogMealNutritionAnalysisFragment.setArguments(bundleStore);
 
             requireActivity().getSupportFragmentManager().beginTransaction()

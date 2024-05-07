@@ -9,16 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserProfileUpdateFirstActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,16 +36,24 @@ import org.jetbrains.annotations.Contract;
 
 public class UserProfileViewFragment extends Fragment
 {
-    // TODO: declare UI components
-    Button updateProfileBtn;
+    // todo: we need to update more attributes (weight, diet type)
 
-    TextView displayUserProfile;
+    // TODO: declare UI components
+    Button updateProfileBtn, deleteAccountBtn;
+
+    ProgressBar progressBarDeleteAccount;
+
+    TextView fullNameText, ageText, weightText;
 
     ImageView imageView;
 
+    AlertDialog.Builder alertDialog;
+
     static final String TAG = "UserProfileViewFragment";
 
-    DatabaseReference databaseReferenceUserProfile;
+    DatabaseReference databaseReferenceUserProfile,
+    databaseReferenceRegisteredAccounts,
+    databaseReferenceMeals;
 
     FirebaseAuth firebaseAuth;
 
@@ -72,18 +84,152 @@ public class UserProfileViewFragment extends Fragment
 
             // TODO: init database reference for user profile
             databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
-            // databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileSingleEventListener());
+            databaseReferenceRegisteredAccounts = firebaseDatabase
+                    .getReference("Registered Accounts").child(userID);
+
+            databaseReferenceMeals = firebaseDatabase.getReference("Meals").child(userID);
+
             databaseReferenceUserProfile.addValueEventListener(valueUserProfileEventListener());
         }
 
         // TODO: init UI components
         updateProfileBtn = view.findViewById(R.id.updateProfileBtn);
-        displayUserProfile = view.findViewById(R.id.displayUserProfile);
+
+        fullNameText = view.findViewById(R.id.userProfile);
+        ageText = view.findViewById(R.id.ageProfile);
+        weightText = view.findViewById(R.id.weightProfile);
+
         imageView = view.findViewById(R.id.displayUserImage);
+        deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
+
+        // set progress bar
+        progressBarDeleteAccount = view.findViewById(R.id.progressBarDeleteAccount);
+        progressBarDeleteAccount.setVisibility(View.GONE);
 
         // add onClickListener
         updateProfileBtn.setOnClickListener(onUpdateUserProfileListener());
+        deleteAccountBtn.setOnClickListener(onDeleteAccountListener());
+    }
 
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onDeleteAccountListener()
+    {
+        return v ->
+        {
+            // todo: delete both account and user profile and meals.
+
+            alertDialog = new AlertDialog.Builder(requireContext());
+
+            deleteAccountBtn.setVisibility(View.GONE);
+            progressBarDeleteAccount.setVisibility(View.VISIBLE);
+
+            alertDialog.setTitle("Delete Account");
+            alertDialog.setMessage("Are you sure you want to delete your account?");
+            alertDialog.setNegativeButton("No", (dialog, which) ->
+            {
+                deleteAccountBtn.setVisibility(View.VISIBLE);
+                progressBarDeleteAccount.setVisibility(View.GONE);
+            });
+
+            alertDialog.setPositiveButton("Yes", (dialog, which) ->
+            {
+                // delete data from firebase
+                databaseReferenceRegisteredAccounts.removeValue().addOnCompleteListener(onCompleteDeleteRegisteredAccountListener());
+                databaseReferenceUserProfile.removeValue().addOnCompleteListener(onCompleteDeleteUserProfileListener());
+                databaseReferenceMeals.removeValue().addOnCompleteListener(onCompleteDeleteMealsListener());
+
+                // delete account
+                if (firebaseUser != null)
+                {
+                    firebaseUser.delete().
+                            addOnCompleteListener(onDeleteAccountFirebaseUserListener());
+                }
+            });
+
+            // todo: important here
+            alertDialog.show();
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onDeleteAccountFirebaseUserListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                // todo: test these functions first before moving on.
+                Toast.makeText(getContext(), "Account deleted successfully", Toast.LENGTH_SHORT).show();
+
+                // logout user
+                firebaseAuth.signOut();
+
+                // go back to login page
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Error deleting account " +
+                        task.getException(), Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteDeleteMealsListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Log.d(TAG, "onCompleteDeleteMeals: Meals deleted successfully");
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteDeleteMeals: Error deleting meals " +
+                        task.getException());
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteDeleteUserProfileListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Log.d(TAG, "onCompleteDeleteUserProfile: User Profile deleted successfully");
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteDeleteUserProfile: Error deleting user profile " +
+                        task.getException());
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteDeleteRegisteredAccountListener()
+    {
+        return task -> {
+            if (task.isSuccessful())
+            {
+                Log.d(TAG, "onCompleteDeleteRegisteredAccount: Registered Account deleted successfully");
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteDeleteRegisteredAccount: Error deleting registered account " +
+                        task.getException());
+            }
+        };
     }
 
     @NonNull
@@ -103,13 +249,13 @@ public class UserProfileViewFragment extends Fragment
                 if (userProfile != null)
                 {
                     // display user profile info
-                    StringBuilder stringBuilder = new StringBuilder();
                     String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
                     int age = userProfile.getAge();
-                    stringBuilder.append("Full Name: ").append(fullName).append("\n");
-                    stringBuilder.append("Age: ").append(age);
+                    int weight = Integer.parseInt(userProfile.getWeight());
 
-                    displayUserProfile.setText(stringBuilder);
+                    fullNameText.setText(fullName);
+                    ageText.setText(String.valueOf(age));
+                    weightText.setText(String.valueOf(weight));
 
                     // set profile picture here
                     String profileImageUrl = userProfile.getProfileImageUrl();
@@ -127,64 +273,13 @@ public class UserProfileViewFragment extends Fragment
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-                Toast.makeText(getContext(), "Error retrieving data from database " +
-                        error, Toast.LENGTH_SHORT).show();
+                // fixme: pls note that when we delete the account and any information about user profile
+                // todo: it will delete
                 Log.e(TAG, "onCancelled: " + error.getMessage());
             }
         };
     }
 
-    /*
-    @NonNull
-    @Contract(" -> new")
-    private ValueEventListener valueUserProfileSingleEventListener() // TODO: the purpose is to retrieve the data and display it.
-    {
-        return new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                // get the data from database.
-                userProfile = snapshot.getValue(UserProfile.class);
-                Log.d(TAG, "onDataChange: " + userProfile);
-
-                if (userProfile != null)
-                {
-                    // display user profile info
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
-                    int age = userProfile.getAge();
-                    stringBuilder.append("Full Name: ").append(fullName).append("\n");
-                    stringBuilder.append("Age: ").append(age).append("\n");
-
-                    displayUserProfile.setText(stringBuilder);
-
-                    // set profile picture here
-                    String profileImageUrl = userProfile.getProfileImageUrl();
-                    Uri profileImageUri = Uri.parse(profileImageUrl);
-                    // FIXME: the image doesn't show because the image source is from Gallery within android device.
-                    // Log.d(TAG, "onDataChange: " + profileImageUri.toString());
-                    Picasso.get()
-                            .load(profileImageUri)
-                            .resize(150, 150)
-                            .error(R.drawable.error)
-                            .into(imageView);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error)
-            {
-                Toast.makeText(getContext(), "Error retrieving data from database " +
-                        error, Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onCancelled: " + error.getMessage());
-            }
-        };
-    }
-
-
-
-     */
     @NonNull
     @Contract(pure = true)
     private View.OnClickListener onUpdateUserProfileListener()

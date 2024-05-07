@@ -10,69 +10,51 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginTop="15dp"
-        android:text="@string/search_for_food_or_drinks"
+        android:layout_marginTop="5dp"
+        android:text="@string/search_for_recipe_in_category"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintHorizontal_bias="0.173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
+
             <SearchView
                 android:id="@+id/searchRecipeView"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/search_view_recipe"
+                android:backgroundTint="@color/peach_puff"
                 android:iconifiedByDefault="false"
                 android:queryHint="Search Recipe Here"
-                android:backgroundTint="@color/peach_puff"
-                android:background="@drawable/search_view_recipe"
                 android:tooltipText="Search Recipe" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:layout_gravity="top"
-                android:backgroundTint="@color/peach_puff"
-                android:orientation="vertical"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp">
-
-                <Spinner
-                    android:id="@+id/spinnerCategoryCuisine"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:entries="@array/cuisineCategory_array"
-                    android:layout="@layout/cuisine_category_spinner_layout"
-                    />
-            </androidx.cardview.widget.CardView>
-
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
@@ -85,9 +67,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/search_recipe_dietitian_layout" />
-
-
+            tools:listitem="@layout/dietitian_search_recipe_layout" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

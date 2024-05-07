@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.SignUpCreateProfileActivities.BusinessProfileCreateActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
@@ -104,11 +102,11 @@ public class RegisterBusinessActivity extends AppCompatActivity
     {
         return v ->
         {
-            Log.d("RegisterActivity", "signup button activated! ");
+            // Log.d("RegisterActivity", "signup button activated! ");
             email = emailEditText.getText().toString().trim();
             password = passwordEditText.getText().toString().trim();
 
-            Log.d(TAG, "onSignUpListener: " + email + " " + password);
+            // Log.d(TAG, "onSignUpListener: " + email + " " + password);
 
             // validation
             if (TextUtils.isEmpty(email))
@@ -149,8 +147,8 @@ public class RegisterBusinessActivity extends AppCompatActivity
         return task ->
         {
             if (task.isSuccessful()) {
-                Toast.makeText(RegisterBusinessActivity.this, "Vendor registered successfully.",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RegisterBusinessActivity.this, "Vendor registered successfully.",
+                        //Toast.LENGTH_SHORT).show();
                 firebaseUser = firebaseAuth.getCurrentUser();
                 // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 

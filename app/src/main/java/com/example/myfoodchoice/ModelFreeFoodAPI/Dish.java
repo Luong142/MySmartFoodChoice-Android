@@ -1,8 +1,11 @@
 package com.example.myfoodchoice.ModelFreeFoodAPI;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +30,12 @@ public class Dish implements Serializable
   @Override
   public String toString()
   {
-    return "Dish{" +
-            "meals=" + meals +
-            '}';
+    StringBuilder sb = new StringBuilder();
+    for (Meals meals1: meals)
+    {
+      sb.append(meals1.toString());
+    }
+    return sb.toString();
   }
 
   public void setMeals(List<Meals> meals) {
@@ -38,7 +44,10 @@ public class Dish implements Serializable
 
   public static class Meals implements Serializable // todo: this is recognised as recipe too.
   {
-    private ArrayList<String> ingredients;
+    private String userKey;
+    private ArrayList<String> ingredientsSearch;
+
+    private ArrayList<String> ingredientsManual;
     private Object strImageSource;
 
     private String strIngredient10;
@@ -149,70 +158,118 @@ public class Dish implements Serializable
     @Override
     public String toString()
     {
-      return "Meals{" +
-              "ingredients=" + ingredients +
-              ", strImageSource=" + strImageSource +
-              ", strIngredient10='" + strIngredient10 + '\'' +
-              ", strIngredient12='" + strIngredient12 + '\'' +
-              ", strIngredient11='" + strIngredient11 + '\'' +
-              ", strIngredient14='" + strIngredient14 + '\'' +
-              ", strCategory='" + strCategory + '\'' +
-              ", strIngredient13='" + strIngredient13 + '\'' +
-              ", strIngredient16='" + strIngredient16 + '\'' +
-              ", strIngredient15='" + strIngredient15 + '\'' +
-              ", strIngredient18='" + strIngredient18 + '\'' +
-              ", strIngredient17='" + strIngredient17 + '\'' +
-              ", strArea='" + strArea + '\'' +
-              ", strCreativeCommonsConfirmed=" + strCreativeCommonsConfirmed +
-              ", strIngredient19='" + strIngredient19 + '\'' +
-              ", strTags=" + strTags +
-              ", idMeal='" + idMeal + '\'' +
-              ", strInstructions='" + strInstructions + '\'' +
-              ", strIngredient1='" + strIngredient1 + '\'' +
-              ", strIngredient3='" + strIngredient3 + '\'' +
-              ", strIngredient2='" + strIngredient2 + '\'' +
-              ", strIngredient20='" + strIngredient20 + '\'' +
-              ", strIngredient5='" + strIngredient5 + '\'' +
-              ", strIngredient4='" + strIngredient4 + '\'' +
-              ", strIngredient7='" + strIngredient7 + '\'' +
-              ", strIngredient6='" + strIngredient6 + '\'' +
-              ", strIngredient9='" + strIngredient9 + '\'' +
-              ", strIngredient8='" + strIngredient8 + '\'' +
-              ", strMealThumb='" + strMealThumb + '\'' +
-              ", strMeasure20='" + strMeasure20 + '\'' +
-              ", strYoutube='" + strYoutube + '\'' +
-              ", strMeal='" + strMeal + '\'' +
-              ", strMeasure12='" + strMeasure12 + '\'' +
-              ", strMeasure13='" + strMeasure13 + '\'' +
-              ", strMeasure10='" + strMeasure10 + '\'' +
-              ", strMeasure11='" + strMeasure11 + '\'' +
-              ", dateModified=" + dateModified +
-              ", strDrinkAlternate=" + strDrinkAlternate +
-              ", strSource='" + strSource + '\'' +
-              ", strMeasure9='" + strMeasure9 + '\'' +
-              ", strMeasure7='" + strMeasure7 + '\'' +
-              ", strMeasure8='" + strMeasure8 + '\'' +
-              ", strMeasure5='" + strMeasure5 + '\'' +
-              ", strMeasure6='" + strMeasure6 + '\'' +
-              ", strMeasure3='" + strMeasure3 + '\'' +
-              ", strMeasure4='" + strMeasure4 + '\'' +
-              ", strMeasure1='" + strMeasure1 + '\'' +
-              ", strMeasure18='" + strMeasure18 + '\'' +
-              ", strMeasure2='" + strMeasure2 + '\'' +
-              ", strMeasure19='" + strMeasure19 + '\'' +
-              ", strMeasure16='" + strMeasure16 + '\'' +
-              ", strMeasure17='" + strMeasure17 + '\'' +
-              ", strMeasure14='" + strMeasure14 + '\'' +
-              ", strMeasure15='" + strMeasure15 + '\'' +
-              '}';
+      StringBuilder sb = new StringBuilder();
+
+      initializeIngredientsSearch();
+
+      sb.append("Cuisine: ").append(strArea);
+
+      sb.append("\n\nIngredients\n");
+      if (ingredientsSearch != null && !ingredientsSearch.isEmpty())
+      {
+        for (String ingredient : ingredientsSearch)
+        {
+          sb.append(ingredient).append(", ");
+        }
+        // remove the last comma and space
+        sb.setLength(sb.length() - 2);
+        sb.append("\n");
+      }
+
+      sb.append("\nInstructions\n").append(strInstructions);
+      return sb.toString();
     }
 
-    public ArrayList<String> getIngredients() {
-      return ingredients;
+    public String displayIngredientsManual()
+    {
+      StringBuilder sb = new StringBuilder();
+      if (ingredientsManual != null && !ingredientsManual.isEmpty())
+      {
+        for (String ingredient : ingredientsManual)
+        {
+          sb.append(ingredient).append(", ");
+        }
+        // remove the last comma and space
+        sb.setLength(sb.length() - 2);
+        sb.append("\n");
+      }
+      return sb.toString();
+    }
+    
+    public String displayIngredientsSearch()
+    {
+      StringBuilder sb = new StringBuilder();
+      if (ingredientsSearch != null && !ingredientsSearch.isEmpty())
+      {
+        for (String ingredient : ingredientsSearch)
+        {
+          sb.append(ingredient).append(", ");
+        }
+        // remove the last comma and space
+        sb.setLength(sb.length() - 2);
+        sb.append("\n");
+      }
+      return sb.toString();
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
-      this.ingredients = ingredients;
+    public void initializeIngredientsSearch()
+    {
+      // Initialize the ingredients list
+      this.ingredientsSearch = new ArrayList<>();
+
+      // Use reflection to get all fields of the Meals class
+      Field[] fields = this.getClass().getDeclaredFields();
+
+      // Iterate over each field
+      for (Field field : fields)
+      {
+        // Check if the field name starts with "strIngredient"
+        if (field.getName().startsWith("strIngredient"))
+        {
+          try
+          {
+            // Make the field accessible if it's private
+            field.setAccessible(true);
+            // Get the value of the field
+            String ingredient = (String) field.get(this);
+            // Add the ingredient to the list if it's not null and not empty
+            if (ingredient != null && !ingredient.isEmpty())
+            {
+              this.ingredientsSearch.add(ingredient);
+            }
+          }
+          catch (IllegalAccessException e)
+          {
+            Log.d("Dish", "Error accessing field: " + e.getMessage());
+          }
+        }
+      }
+    }
+
+    public ArrayList<String> getIngredientsManual() {
+      return ingredientsManual;
+    }
+
+    public void setIngredientsManual(ArrayList<String> ingredientsManual) {
+      this.ingredientsManual = ingredientsManual;
+    }
+
+    public String getUserKey()
+    {
+      return userKey;
+    }
+
+    public void setUserKey(String userKey)
+    {
+      this.userKey = userKey;
+    }
+
+    public ArrayList<String> getIngredientsSearch() {
+      return ingredientsSearch;
+    }
+
+    public void setIngredientsSearch(ArrayList<String> ingredientsSearch) {
+      this.ingredientsSearch = ingredientsSearch;
     }
 
     public Object getStrImageSource() {

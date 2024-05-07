@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionIngredientListener;
 import com.example.myfoodchoice.AdapterRecyclerView.IngredientRecipeAdapter;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,13 +32,13 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
 public class DietitianCreateRecipeFragment extends Fragment implements OnActionIngredientListener
 {
     static final String PATH_RECIPE = "Dietitian Recipe";
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.
+    static final String TAG = "DietitianCreateRecipeFragment";
 
     DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
 
@@ -47,9 +48,15 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 
     FirebaseUser firebaseUser;
 
-    Dish.Meals recipe;
+    Dish recipe;
 
     ArrayList<String> ingredientArrayList;
+
+    UserProfile selectedUserProfile;
+
+    Bundle bundleStore;
+
+    int index;
 
     // todo: declare UI components
     EditText recipeNameText, recipeInstructionsText, ingredientText;
@@ -84,10 +91,20 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             dietitianID = firebaseUser.getUid();
             // TODO: init database reference for user profile
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
-            databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
-
-            recipe = new Dish.Meals();
             ingredientArrayList = new ArrayList<>();
+        }
+
+        // todo: get the selected user profile
+        bundleStore = getArguments();
+
+        if (bundleStore != null)
+        {
+            selectedUserProfile = bundleStore.getParcelable("selectedUserProfile");
+            index = bundleStore.getInt("index");
+
+            // todo: done testing
+            // todo: the purpose is to get the user key and it should show to the correct user page.
+            // Log.d(TAG, "onViewCreated: " + selectedUserProfile);
         }
 
         // todo: init UI components
@@ -113,8 +130,6 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
         ingredientRecyclerView.setAdapter(ingredientRecipeAdapter);
         ingredientRecyclerView.setVerticalScrollBarEnabled(true);
         ingredientRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
     }
 
     @NonNull
@@ -143,19 +158,29 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 
             if (recipe == null)
             {
-                recipe = new Dish.Meals();
+                recipe = new Dish();
             }
+
+            recipe.setMeals(new ArrayList<>());
+
+            Dish.Meals meal = new Dish.Meals();
 
             recipeName = recipeNameText.getText().toString().trim();
             recipeInstruction = recipeInstructionsText.getText().toString().trim();
 
-            recipe.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
-            recipe.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
-            recipe.setStrInstructions(recipeInstruction);
-            recipe.setStrMeal(recipeName);
-            recipe.setIngredients(ingredientArrayList);
+            // set the user key
+            meal.setUserKey(selectedUserProfile.getKey());
+            meal.setStrArea(cuisineSpinner.getSelectedItem().toString().trim());
+            meal.setStrCategory(categorySpinner.getSelectedItem().toString().trim());
+            meal.setStrInstructions(recipeInstruction.trim());
+            meal.setStrMeal(recipeName.trim());
+            ingredientArrayList.trimToSize();
+            meal.setIngredientsManual(ingredientArrayList);
+
+            recipe.getMeals().add(meal);
 
             // set value for database firebase.
+            databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();
             databaseReferenceCreateRecipeChild.setValue(recipe).addOnCompleteListener(onCompleteCreateRecipeListener());
         };
     }
@@ -171,11 +196,14 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
                 recipeNameText.setText("");
                 recipeInstructionsText.setText("");
                 ingredientText.setText("");
-                // Clear the ingredientArrayList and notify the adapter
-                if (!ingredientArrayList.isEmpty()) {
+
+                // clear the ingredientArrayList and notify the adapter
+                if (!ingredientArrayList.isEmpty())
+                {
                     ingredientArrayList.clear();
                     ingredientRecipeAdapter.notifyDataSetChanged();
                 }
+
                 Toast.makeText(getContext(), "Recipe created successfully", Toast.LENGTH_SHORT).show();
             }
             else
@@ -233,7 +261,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
         }
         ingredientArrayList.remove(position);
         ingredientRecipeAdapter.notifyItemRemoved(position);
-        ingredientRecipeAdapter.notifyItemRangeChanged(position, ingredientArrayList.size());
+        ingredientRecipeAdapter.notifyItemRangeChanged(position, ingredientArrayList.size() - position);
     }
 
     @Override

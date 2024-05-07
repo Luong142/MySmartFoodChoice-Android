@@ -35,6 +35,8 @@ import java.util.Locale;
 
 public class UserHomeAlvinFragment extends Fragment
 {
+    // todo: we need to separate the part where log my meal and
+    //  meal history should be separated.
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceDailyFoodIntake;
 
@@ -120,11 +122,13 @@ public class UserHomeAlvinFragment extends Fragment
         }
 
         // todo: init button UI component
+        /*
         logMyMealBtn = view.findViewById(R.id.logMealBtn);
         mealHistoryBtn = view.findViewById(R.id.mealHistoryBtn);
+         */
 
-        logMyMealBtn.setOnClickListener(onLogMyMealListener());
-        mealHistoryBtn.setOnClickListener(onMealHistoryListener());
+        // logMyMealBtn.setOnClickListener(onLogMyMealListener());
+        // mealHistoryBtn.setOnClickListener(onMealHistoryListener());
 
         // todo: init boolean value
         isDiabetes = false;
@@ -778,9 +782,9 @@ public class UserHomeAlvinFragment extends Fragment
     {
         return v ->
         {
-            UserMealHistoryFragment userMealHistoryFragment = new UserMealHistoryFragment();
+            UserViewMealHistoryFragment userViewMealHistoryFragment = new UserViewMealHistoryFragment();
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, userMealHistoryFragment)
+                    .replace(R.id.fragment_container, userViewMealHistoryFragment)
                     .commit();
         };
     }

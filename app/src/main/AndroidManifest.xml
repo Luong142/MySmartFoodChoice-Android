@@ -38,10 +38,16 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".AuthenticationActivity.TermAndConditionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivity.UserPremiumMainMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserActivity.UserLogMealActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpCreateProfileActivities.UserProfileHealthDeclarationActivity"
+            android:name=".AuthenticationActivity.UserProfileHealthDeclarationActivity"
             android:exported="false" /> <!-- this one is for testing tflite -->
         <activity
             android:name=".GuestActivity.GuestTrialOverActivity"
@@ -54,19 +60,13 @@
             android:name=".BusinessDietitianActivity.DietitianUpdateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".BusinessTrainerActivity.TrainerUpdateProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BusinessTrainerActivity.TrainerMainMenuActivity"
-            android:exported="false" />
-        <activity
             android:name=".BusinessDietitianActivity.DietitianMainMenuActivity"
             android:exported="false" />
         <activity
             android:name=".GuestActivity.GuestMainMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpCreateProfileActivities.BusinessProfileCreateActivity"
+            android:name=".AuthenticationActivity.BusinessProfileCreateActivity"
             android:exported="false" />
         <activity
             android:name=".AuthenticationActivity.RegisterBusinessActivity"
@@ -75,13 +75,13 @@
             android:name=".UserActivity.UserProfileUpdateFirstActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpCreateProfileActivities.UserProfileCreateSecondActivity"
+            android:name=".AuthenticationActivity.UserProfileCreateSecondActivity"
             android:exported="false" />
         <activity
             android:name=".UserActivity.UserProfileUpdateSecondActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpCreateProfileActivities.UserProfileCreateFirstActivity"
+            android:name=".AuthenticationActivity.UserProfileCreateFirstActivity"
             android:exported="false" />
         <activity
             android:name=".GuestActivity.GuestBMIResultActivity"

@@ -4,3 +4,6 @@
 3 Fish Soup (Ukha)
 4 Tart 
 5 Laksa
+
+It is possible to train another model.
+Testing this model.

@@ -54,7 +54,6 @@
     <string name="log_out">Log Out</string>
     <string name="open_nav">Open Navigation\n</string>
     <string name="close_nav">Open Navigation\n</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="smart_food_choice">Smart Food Choice</string>
     <string name="sign_in">Sign In</string>
@@ -229,4 +228,32 @@
     <string name="search_for_recipe">Search for Recipe</string>
     <string name="recipe_category">Recipe Category</string>
     <string name="recipe_cuisine">Recipe Cuisine</string>
+    <string name="select_user_profile">Select User Profile</string>
+    <string name="search_recipe_in_category">Search Recipe in Category</string>
+    <string name="create_health_tips">Create Health Tips</string>
+    <string name="search_for_recipe_in_category">Search for recipe in category</string>
+    <string name="recipe_detail">Recipe Detail</string>
+    <string name="user_profile_details">User Profile Details</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="view_recommended_recipe">View Recommended Recipes</string>
+    <string name="view_health_tips">View Health Tips</string>
+    <string name="enter_your_weight">Enter your weight</string>
+    <string name="create_recipe_manually">Create Recipe Manually</string>
+    <string name="view_create_recipe">View Create Recipe</string>
+    <string name="view_search_recipe_in_category">View Search Recipe in Category</string>
+    <string name="view_recipe">View Recipe</string>
+    <string name="enter_your_title">Enter your title</string>
+    <string name="enter_your_content">Enter your content</string>
+    <string name="generate_ai_content">Generate AI Content</string>
+    <string name="content_of_health_tip">Content Of Health Tip</string>
+    <string name="title_of_health_tip">Title Of Health Tip</string>
+    <string name="view_recommended_health_tips">View Recommended Health Tips</string>
+    <string name="ingredient_list">Ingredient List</string>
+    <string name="virtual_assistant">Virtual Assistant</string>
+    <string name="recommended_health_tips">Recommended Health Tips</string>
+    <string name="recommended_recipes">Recommended Recipes</string>
+    <string name="title">title</string>
+    <string name="enter_your_message">Enter Your Message</string>
+    <string name="hello_how_can_i_help_you_today">Hello, how can I help you today?</string>
+    <string name="hi_i_am_a_placeholder">Hi, I am a placeholder.</string>
 </resources>

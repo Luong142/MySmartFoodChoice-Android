@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class UserProfile extends CommonProfile implements Parcelable // way more efficient to use Parcelable.
 {
+    private String key;
     private String height;
 
     private String weight;
@@ -51,6 +52,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     protected UserProfile(@NonNull Parcel in)
     {
         super();
+        key = in.readString();
         setFirstName(in.readString());
         setLastName(in.readString());
         height = in.readString();
@@ -102,6 +104,7 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags)
     {
+        dest.writeString(key);
         dest.writeString(getFirstName());
         dest.writeString(getLastName());
         dest.writeString(height);
@@ -119,6 +122,27 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeByte((byte) (isAllergyPeanut ? 1 : 0));
         dest.writeByte((byte) (isAllergyEgg ? 1 : 0));
         dest.writeList(alrRedeemedRewardList);
+    }
+
+    public String getDetail()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Height: ").append(this.height).append("\n");
+        sb.append("Weight: ").append(this.weight).append("\n");
+        sb.append("Gender: ").append(this.gender).append("\n");
+        sb.append("Age: ").append(this.age).append("\n");
+        sb.append("Diet Type: ").append(this.dietType).append("\n\n");
+        sb.append("Health Conditions Summary:\n");
+        sb.append("---------------------------\n");
+        sb.append("High Blood Pressure: ").append(isHighBloodPressure ? "Yes" : "No").append("\n");
+        sb.append("Diabetes: ").append(isDiabetes ? "Yes" : "No").append("\n");
+        sb.append("High Cholesterol: ").append(isHighCholesterol ? "Yes" : "No").append("\n");
+        sb.append(" Seafood: ").append(isAllergySeafood ? "Yes" : "No").append("\n");
+        sb.append(" Peanut: ").append(isAllergyPeanut ? "Yes" : "No").append("\n");
+        sb.append(" Egg: ").append(isAllergyEgg ? "Yes" : "No").append("\n");
+        sb.append("---------------------------\n");
+        return sb.toString();
     }
 
     @NonNull
@@ -149,6 +173,14 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         }
         sb.append("-------------------");
         return sb.toString();
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public ArrayList<Reward> getAlrRedeemedRewardList() {
