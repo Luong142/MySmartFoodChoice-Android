@@ -6,7 +6,7 @@
 
     <group android:checkableBehavior="single">
 
-        <!-- todo: replace these two log my meal, meal records
+        <!-- todo: replace these two log my nutritionMeal, nutritionMeal records
           todo: home page should have two button that go to two of these fragments
           -->
         <item

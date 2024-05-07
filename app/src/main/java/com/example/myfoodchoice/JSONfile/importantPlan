@@ -15,7 +15,7 @@ carbohydrates_total_g=17.4, fiber_g=0.7, sugar_g=2.4}]}
 
 int maxCalories = 5000; // max of calories
 
-// todo: this is free meal API
+// todo: this is free nutritionMeal API
 
 API key: 1
 

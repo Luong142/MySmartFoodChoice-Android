@@ -37,7 +37,6 @@ import org.jetbrains.annotations.Contract;
 public class UserProfileViewFragment extends Fragment
 {
     // todo: we need to update more attributes (weight, diet type)
-
     // TODO: declare UI components
     Button updateProfileBtn, deleteAccountBtn;
 

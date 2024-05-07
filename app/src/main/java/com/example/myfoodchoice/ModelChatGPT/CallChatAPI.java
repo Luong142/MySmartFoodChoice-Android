@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.ModelChatGPT;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;

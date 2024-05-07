@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,7 +65,7 @@ public class UserLogMealFragment extends Fragment
 
     boolean isDiabetes, isHighBloodPressure, isHighCholesterol;
 
-    Meal meal;
+    NutritionMeal nutritionMeal;
 
     ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
     // fixme: apply this pie chart instead of progress bar.
@@ -82,7 +82,7 @@ public class UserLogMealFragment extends Fragment
 
     StringBuilder alertDialogMessage;
 
-    private final HashMap<String, Meal> mealCache = new HashMap<>();
+    private final HashMap<String, NutritionMeal> mealCache = new HashMap<>();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -124,7 +124,7 @@ public class UserLogMealFragment extends Fragment
 
         // todo: init objects
         userProfile = new UserProfile();
-        meal = new Meal();
+        nutritionMeal = new NutritionMeal();
         bundleStore = new Bundle();
         userLogMealNutritionAnalysisFragment = new UserLogMealNutritionAnalysisFragment();
 
@@ -181,15 +181,15 @@ public class UserLogMealFragment extends Fragment
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                Meal meal1 = snapshot.getValue(Meal.class);
-                if (meal1 != null)
+                NutritionMeal nutritionMeal1 = snapshot.getValue(NutritionMeal.class);
+                if (nutritionMeal1 != null)
                 {
-                    mealCache.put(snapshot.getKey(), meal);
+                    mealCache.put(snapshot.getKey(), nutritionMeal);
                     // Log.d(TAG, "onChildAdded: " + meal1);
-                    totalCalories += meal1.getTotalCalories();
-                    totalCholesterol += meal1.getTotalCholesterol();
-                    totalSugar += meal1.getTotalSugar();
-                    totalSalt += meal1.getTotalSodium();
+                    totalCalories += nutritionMeal1.getTotalCalories();
+                    totalCholesterol += nutritionMeal1.getTotalCholesterol();
+                    totalSugar += nutritionMeal1.getTotalSugar();
+                    totalSalt += nutritionMeal1.getTotalSodium();
                 }
 
                 // calculate percentage
@@ -268,29 +268,39 @@ public class UserLogMealFragment extends Fragment
                         }
                     }
                 }
+
+                // todo: improve this system if over 7 days.
+
+                /*
+                    // reset the value whenever the nutrition value is changed.
+                    totalCalories = 0;
+                    totalCholesterol = 0;
+                    totalSugar = 0;
+                    totalSalt = 0;
+                 */
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                Meal meal1 = snapshot.getValue(Meal.class);
-                if (meal1 != null)
+                NutritionMeal nutritionMeal1 = snapshot.getValue(NutritionMeal.class);
+                if (nutritionMeal1 != null)
                 {
-                    Meal oldMeal = mealCache.get(snapshot.getKey());
-                    if (oldMeal != null) {
+                    NutritionMeal oldNutritionMeal = mealCache.get(snapshot.getKey());
+                    if (oldNutritionMeal != null) {
                         // Subtract the old values
-                        totalCalories -= oldMeal.getTotalCalories();
-                        totalCholesterol -= oldMeal.getTotalCholesterol();
-                        totalSugar -= oldMeal.getTotalSugar();
-                        totalSalt -= oldMeal.getTotalSodium();
+                        totalCalories -= oldNutritionMeal.getTotalCalories();
+                        totalCholesterol -= oldNutritionMeal.getTotalCholesterol();
+                        totalSugar -= oldNutritionMeal.getTotalSugar();
+                        totalSalt -= oldNutritionMeal.getTotalSodium();
                     }
                     // Update the cache with the new meal
-                    mealCache.put(snapshot.getKey(), meal1);
+                    mealCache.put(snapshot.getKey(), nutritionMeal1);
                     // Add the new values
-                    totalCalories += meal1.getTotalCalories();
-                    totalCholesterol += meal1.getTotalCholesterol();
-                    totalSugar += meal1.getTotalSugar();
-                    totalSalt += meal1.getTotalSodium();
+                    totalCalories += nutritionMeal1.getTotalCalories();
+                    totalCholesterol += nutritionMeal1.getTotalCholesterol();
+                    totalSugar += nutritionMeal1.getTotalSugar();
+                    totalSalt += nutritionMeal1.getTotalSodium();
                 }
 
                 // calculate percentage
@@ -374,17 +384,17 @@ public class UserLogMealFragment extends Fragment
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
-                Meal meal1 = snapshot.getValue(Meal.class);
-                if (meal1 != null)
+                NutritionMeal nutritionMeal1 = snapshot.getValue(NutritionMeal.class);
+                if (nutritionMeal1 != null)
                 {
-                    Meal oldMeal = mealCache.get(snapshot.getKey());
-                    if (oldMeal != null)
+                    NutritionMeal oldNutritionMeal = mealCache.get(snapshot.getKey());
+                    if (oldNutritionMeal != null)
                     {
                         // Subtract the old values
-                        totalCalories -= oldMeal.getTotalCalories();
-                        totalCholesterol -= oldMeal.getTotalCholesterol();
-                        totalSugar -= oldMeal.getTotalSugar();
-                        totalSalt -= oldMeal.getTotalSodium();
+                        totalCalories -= oldNutritionMeal.getTotalCalories();
+                        totalCholesterol -= oldNutritionMeal.getTotalCholesterol();
+                        totalSugar -= oldNutritionMeal.getTotalSugar();
+                        totalSalt -= oldNutritionMeal.getTotalSodium();
                     }
                     // Remove the meal from the cache
                     mealCache.remove(snapshot.getKey());
@@ -461,7 +471,8 @@ public class UserLogMealFragment extends Fragment
                 {
                     if (alertDialogMessage.length() > 0)
                     {
-                        if (getActivity() != null) {
+                        if (getActivity() != null)
+                        {
                             Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
                         }
                     }
@@ -514,42 +525,6 @@ public class UserLogMealFragment extends Fragment
 
                 saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
-
-                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
-                if (totalCalories > maxCalories)
-                {
-                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
-                    progressBarCalories.setBackgroundColor(Color.RED);
-                }
-
-                if (totalCholesterol > maxCholesterol)
-                {
-                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
-                    progressBarCholesterol.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSugar > maxSugar)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
-                    progressBarSugar.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSalt > maxSalt)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
-                    progressBarSalt.setBackgroundColor(Color.RED);
-                }
-
-                // fixme: the error is here view is gone if we use snack bar.
-                if (alertDialogMessage.length() > 0)
-                {
-                    if (alertDialogMessage.length() > 0)
-                    {
-                        if (getActivity() != null) {
-                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
             }
 
             @Override
@@ -768,15 +743,15 @@ public class UserLogMealFragment extends Fragment
         return v ->
         {
             // set the key from unique UID.
-            meal.setMorning(false);
-            meal.setAfternoon(false);
-            meal.setNight(true);
+            nutritionMeal.setMorning(false);
+            nutritionMeal.setAfternoon(false);
+            nutritionMeal.setNight(true);
 
             // todo: option 1: make a global instance for meal object
             // todo: option 2: setValue() to Firebase realtime database in a temporary path, then
             //  retrieve it later in the next fragment
 
-            bundleStore.putParcelable("meal", meal);
+            bundleStore.putParcelable("meal", nutritionMeal);
             userLogMealNutritionAnalysisFragment.setArguments(bundleStore);
 
             requireActivity().getSupportFragmentManager().beginTransaction()
@@ -792,11 +767,11 @@ public class UserLogMealFragment extends Fragment
         return v ->
         {
             // set boolean value
-            meal.setMorning(false);
-            meal.setAfternoon(true);
-            meal.setNight(false);
+            nutritionMeal.setMorning(false);
+            nutritionMeal.setAfternoon(true);
+            nutritionMeal.setNight(false);
 
-            bundleStore.putParcelable("meal", meal);
+            bundleStore.putParcelable("meal", nutritionMeal);
 
             userLogMealNutritionAnalysisFragment.setArguments(bundleStore);
 
@@ -814,11 +789,11 @@ public class UserLogMealFragment extends Fragment
         return v ->
         {
             // set boolean value
-            meal.setMorning(true);
-            meal.setAfternoon(false);
-            meal.setNight(false);
+            nutritionMeal.setMorning(true);
+            nutritionMeal.setAfternoon(false);
+            nutritionMeal.setNight(false);
 
-            bundleStore.putParcelable("meal", meal);
+            bundleStore.putParcelable("meal", nutritionMeal);
 
             userLogMealNutritionAnalysisFragment.setArguments(bundleStore);
 

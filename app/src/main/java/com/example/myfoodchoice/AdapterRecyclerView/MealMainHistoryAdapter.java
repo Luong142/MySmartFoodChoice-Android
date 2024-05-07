@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionMealListener;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
-import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.R;
 
 import java.util.ArrayList;
@@ -25,22 +25,22 @@ import java.util.Locale;
 
 public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistoryAdapter.myViewHolder>
 {
-    private ArrayList<Meal> mealArrayList;
+    private ArrayList<NutritionMeal> nutritionMealArrayList;
 
     private final OnActionMealListener onActionMealListener;
 
-    public MealMainHistoryAdapter(ArrayList<Meal> mealArrayList,
+    public MealMainHistoryAdapter(ArrayList<NutritionMeal> nutritionMealArrayList,
                                   OnActionMealListener onActionMealListener
     )
     {
-        this.mealArrayList = mealArrayList;
+        this.nutritionMealArrayList = nutritionMealArrayList;
         this.onActionMealListener = onActionMealListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateMeals(@NonNull ArrayList<Meal> newMeals)
+    public void updateMeals(@NonNull ArrayList<NutritionMeal> newNutritionMeals)
     {
-        this.mealArrayList = newMeals;
+        this.nutritionMealArrayList = newNutritionMeals;
         // fixme: there is a bug that the meal can be duplicated when it read.
         // fixme: the problem is that array list has been replaced not correctly.
 
@@ -144,30 +144,30 @@ public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistory
     @Override
     public void onBindViewHolder(@NonNull MealMainHistoryAdapter.myViewHolder holder, int position)
     {
-        Meal meal = mealArrayList.get(position);
+        NutritionMeal nutritionMeal = nutritionMealArrayList.get(position);
 
         // format time based on Locale.English
         SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.ENGLISH);
         SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
 
-        Date date = meal.getDate();
+        Date date = nutritionMeal.getDate();
 
         // format both date and time.
         String formattedDate = sdfDate.format(date);
         String formattedTime = sdfTime.format(date);
 
         // fixme: the problem is that in all meal should display item num correctly?
-        if (meal.isMorning())
+        if (nutritionMeal.isMorning())
         {
             holder.mealNumText.setText(String.format(Locale.ROOT, "Breakfast %d", position + 1));
         }
 
-        if (meal.isAfternoon())
+        if (nutritionMeal.isAfternoon())
         {
             holder.mealNumText.setText(String.format(Locale.ROOT, "Lunch %d", position + 1));
         }
 
-        if (meal.isNight())
+        if (nutritionMeal.isNight())
         {
             holder.mealNumText.setText(String.format(Locale.ROOT, "Dinner %d", position + 1));
 
@@ -178,7 +178,7 @@ public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistory
         holder.foodDetailRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // fixme: the problem is that in all meal should display picture correctly.
-        List<FoodItem.Item> items = meal.getDishes().getItems();
+        List<FoodItem.Item> items = nutritionMeal.getDishes().getItems();
         for (FoodItem.Item item : items)
         {
             Log.d("MealHistoryAdapter", "Item: " + item);
@@ -194,6 +194,6 @@ public class MealMainHistoryAdapter extends RecyclerView.Adapter<MealMainHistory
     @Override
     public int getItemCount()
     {
-        return mealArrayList.size();
+        return nutritionMealArrayList.size();
     }
 }

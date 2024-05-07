@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterRecyclerView.UserChatMessageAdapter;
+import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
 import com.example.myfoodchoice.ModelChatGPT.FullResponse;
 import com.example.myfoodchoice.ModelChatGPT.Message;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
@@ -24,6 +26,7 @@ import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +45,11 @@ import retrofit2.Response;
 public class UserChatBotMessageFragment extends Fragment
 {
     // todo: our plan is to make this as a premium feature.
-    DatabaseReference databaseReferenceUserProfile;
+
+    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+
+    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily globalMeal.
+    DatabaseReference databaseReferenceUserProfile, databaseReferenceMeals;
 
     FirebaseAuth firebaseAuth;
 
@@ -52,6 +60,12 @@ public class UserChatBotMessageFragment extends Fragment
     String userID;
 
     UserProfile userProfile;
+
+    NutritionMeal globalNutritionMeal;
+
+    FoodItem foodItem;
+
+    List<FoodItem.Item> items;
 
     private static final String TAG = "UserChatBotMessageFragment";
     // todo: declare UI components
@@ -83,9 +97,11 @@ public class UserChatBotMessageFragment extends Fragment
             userID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
+            databaseReferenceMeals =  firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
 
             databaseReferenceUserProfile.addValueEventListener(valueUserProfileEventListener());
+            databaseReferenceMeals.addChildEventListener(valueChildMealEventListener());
         }
 
         // todo: init ui here
@@ -102,6 +118,75 @@ public class UserChatBotMessageFragment extends Fragment
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.requireContext());
         linearLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ChildEventListener valueChildMealEventListener()
+    {
+        return new ChildEventListener()
+        {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+
+                if (globalNutritionMeal == null)
+                {
+                    Log.d(TAG, "Meal is null error here! ");
+                    return;
+                }
+
+                foodItem = globalNutritionMeal.getDishes();
+                items = foodItem.getItems();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+
+                if (globalNutritionMeal == null)
+                {
+                    Log.d(TAG, "Meal is null error here! ");
+                    return;
+                }
+
+                foodItem = globalNutritionMeal.getDishes();
+                items = foodItem.getItems();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+
+                if (globalNutritionMeal == null)
+                {
+                    Log.d(TAG, "Meal is null error here! ");
+                    return;
+                }
+
+                foodItem = globalNutritionMeal.getDishes();
+                items = foodItem.getItems();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+                if (globalNutritionMeal != null)
+                {
+                    Log.d(TAG, "onChildAdded: " + globalNutritionMeal);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        };
     }
 
     @NonNull
@@ -139,7 +224,28 @@ public class UserChatBotMessageFragment extends Fragment
         {
             String question = editMessageText.getText().toString().trim();
             addToChat(question, Message.SEND_BY_ME);
-            makeChatGPTRequest(question, userProfile.getDetail());
+
+            StringBuilder sbContext = new StringBuilder();
+            sbContext.append("You are the best assistant in the world. " +
+                    "You are a chat-bot in my Smart Food Choice Android App\n");
+            sbContext.append("Your job is to provide friendly and formal to our user as they are valuable customer.");
+            sbContext.append("Here is my user profile details\n").append(userProfile.getDetail());
+
+            if (globalNutritionMeal != null)
+            {
+                sbContext.append("\nHere is my meal details\n").append(globalNutritionMeal.toString());
+            }
+
+            if (items != null)
+            {
+                sbContext.append("\nHere is my meal items details\n");
+                for (FoodItem.Item item : items)
+                {
+                    sbContext.append(item.toString());
+                }
+            }
+
+            makeChatGPTRequest(question, sbContext.toString());
             editMessageText.setText("");
         };
     }
@@ -178,14 +284,16 @@ public class UserChatBotMessageFragment extends Fragment
                 }
                 else
                 {
-                    addResponse("Error, " + response.errorBody());
+                    addResponse("Error, please contact our developer. For feedback.\n"
+                            + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<FullResponse> call, @NonNull Throwable t)
             {
-                addResponse("Error, " + t.getMessage());
+                addResponse("Error, please contact our developer. For feedback.\n"
+                        + t.getMessage());
             }
         });
     }

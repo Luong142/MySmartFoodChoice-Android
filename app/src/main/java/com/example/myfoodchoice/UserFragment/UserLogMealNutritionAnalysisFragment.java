@@ -38,7 +38,7 @@ import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
-import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
@@ -145,7 +145,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily meal.
 
-    Meal meal;
+    NutritionMeal nutritionMeal;
     double totalCalories, totalCholesterol, totalSalt, totalSugar;
 
     RecyclerView dishRecyclerView;
@@ -200,13 +200,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         bundle = getArguments();
         if (bundle != null)
         {
-            meal = bundle.getParcelable("meal");
+            nutritionMeal = bundle.getParcelable("meal");
         }
 
         foodItem = new FoodItem();
-        if (meal != null)
+        if (nutritionMeal != null)
         {
-            meal.setDishes(foodItem);
+            nutritionMeal.setDishes(foodItem);
         }
 
         itemDisplay = new FoodItem.Item();
@@ -566,10 +566,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                         }
 
                         // todo: set the total calories first.
-                        meal.setTotalCalories(totalCalories);
-                        meal.setTotalCholesterol(totalCholesterol);
-                        meal.setTotalSodium(totalSalt);
-                        meal.setTotalSugar(totalSugar);
+                        nutritionMeal.setTotalCalories(totalCalories);
+                        nutritionMeal.setTotalCholesterol(totalCholesterol);
+                        nutritionMeal.setTotalSodium(totalSalt);
+                        nutritionMeal.setTotalSugar(totalSugar);
 
                         // update the individual nutrition value
                         updateDishNutritionUI();
@@ -803,13 +803,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             Toast.makeText(requireContext(), "Dish is added.", Toast.LENGTH_SHORT).show();
 
             // ensure the list is initialized before adding an item
-            if (meal.getDishes().getItems() == null)
+            if (nutritionMeal.getDishes().getItems() == null)
             {
-                meal.getDishes().setItems(new ArrayList<>());
+                nutritionMeal.getDishes().setItems(new ArrayList<>());
             }
 
             // this object for the next activity to record.
-            if (meal.getDishes().getItems().add(itemDisplay))
+            if (nutritionMeal.getDishes().getItems().add(itemDisplay))
             {
                 addDishBtn.setVisibility(Button.VISIBLE);
                 loadingAddDish.setVisibility(ProgressBar.GONE);
@@ -828,13 +828,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     public void onRemoveDish(int position) // todo: remove the element
     {
         // todo: to remove the dish from the list.
-        if (meal.getDishes().getItems() == null)
+        if (nutritionMeal.getDishes().getItems() == null)
         {
-            meal.getDishes().setItems(new ArrayList<>());
+            nutritionMeal.getDishes().setItems(new ArrayList<>());
         }
 
         // this object for the next activity to record.
-        meal.getDishes().getItems().remove(position);
+        nutritionMeal.getDishes().getItems().remove(position);
 
         // this one is for adapter which means for UI to show.
         foodItemsDisplay.remove(position);
@@ -879,15 +879,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         {
             StringBuilder message = new StringBuilder();
 
-            if (meal.getDishes() == null || meal.getDishes().getItems() == null ||
-                    meal.getDishes().getItems().isEmpty())
+            if (nutritionMeal.getDishes() == null || nutritionMeal.getDishes().getItems() == null ||
+                    nutritionMeal.getDishes().getItems().isEmpty())
             {
                 message.append("Dish is required to be added before logging your meal.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (meal.getDishes().getItems().size() > 3)
+            if (nutritionMeal.getDishes().getItems().size() > 3)
             {
                 message.append("You can only add up to 3 dishes.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
@@ -905,18 +905,18 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             loadingLogMeal.setVisibility(ProgressBar.VISIBLE);
 
             // todo: set the time stamp for meal
-            meal.startDate();
+            nutritionMeal.startDate();
 
             // todo: push the data in firebase
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
 
-            meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
+            nutritionMeal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
             // fixme: testing
             //Log.d(TAG, "onNavToLogMealListener: " + meal);
             //Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
 
             // todo: set total nutrition value
-            databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onCompleteLogMealListener());
+            databaseReferenceDailyFoodIntakeChild.setValue(nutritionMeal).addOnCompleteListener(onCompleteLogMealListener());
         };
     }
 
@@ -929,7 +929,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             if (task.isSuccessful())
             {
                 Toast.makeText(requireContext(), "Logged your meal.", Toast.LENGTH_LONG).show();
-                bundle.putParcelable("meal", meal);
+                bundle.putParcelable("meal", nutritionMeal);
 
                 logMealBtn.setVisibility(Button.VISIBLE);
                 loadingLogMeal.setVisibility(ProgressBar.GONE);

@@ -359,7 +359,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:tooltipText="Log your meal here"
+                android:tooltipText="Log your nutritionMeal here"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
 

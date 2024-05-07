@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
-import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
@@ -67,7 +67,7 @@ public class UserLogMealActivity extends AppCompatActivity
 
     boolean isMorning, isAfternoon, isNight;
 
-    Meal meal;
+    NutritionMeal nutritionMeal;
 
     FoodItem dishes;
 
@@ -122,12 +122,12 @@ public class UserLogMealActivity extends AppCompatActivity
         if (intent != null)
         {
             // todo: meal here.
-            meal = intent.getParcelableExtra("meal");
-            if (meal != null)
+            nutritionMeal = intent.getParcelableExtra("meal");
+            if (nutritionMeal != null)
             {
-                Log.d(TAG, "onCreate: " + meal.getDishes());
+                Log.d(TAG, "onCreate: " + nutritionMeal.getDishes());
                 //Log.d(TAG, "onCreate: " + meal.getDishes().size());
-                dishes = meal.getDishes();
+                dishes = nutritionMeal.getDishes();
 
                 // get individual nutrition attributes.
                 for (FoodItem.Item dish : dishes.getItems())
@@ -204,15 +204,15 @@ public class UserLogMealActivity extends AppCompatActivity
         return v ->
         {
             isMorning = true;
-            meal.setMorning(isMorning);
-            meal.setAfternoon(isAfternoon);
-            meal.setNight(isNight);
+            nutritionMeal.setMorning(isMorning);
+            nutritionMeal.setAfternoon(isAfternoon);
+            nutritionMeal.setNight(isNight);
 
             // init the child and push and get the key
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
-            meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
+            nutritionMeal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
 
-            databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onNightMealCompleteListener());
+            databaseReferenceDailyFoodIntakeChild.setValue(nutritionMeal).addOnCompleteListener(onNightMealCompleteListener());
         };
     }
 
@@ -250,15 +250,15 @@ public class UserLogMealActivity extends AppCompatActivity
         return v ->
         {
             isAfternoon = true;
-            meal.setAfternoon(isAfternoon);
-            meal.setNight(isNight);
-            meal.setMorning(isMorning);
+            nutritionMeal.setAfternoon(isAfternoon);
+            nutritionMeal.setNight(isNight);
+            nutritionMeal.setMorning(isMorning);
 
             // init the child and push and get the key
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
-            meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
+            nutritionMeal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
 
-            databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onAfternoonMealCompleteListener());
+            databaseReferenceDailyFoodIntakeChild.setValue(nutritionMeal).addOnCompleteListener(onAfternoonMealCompleteListener());
 
         };
     }
@@ -299,15 +299,15 @@ public class UserLogMealActivity extends AppCompatActivity
         return v ->
         {
             isNight = true;
-            meal.setNight(isNight);
-            meal.setMorning(isMorning);
-            meal.setAfternoon(isAfternoon);
+            nutritionMeal.setNight(isNight);
+            nutritionMeal.setMorning(isMorning);
+            nutritionMeal.setAfternoon(isAfternoon);
 
             // init the child and push and get the key
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
-            meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
+            nutritionMeal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
 
-            databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onMorningMealCompleteListener());
+            databaseReferenceDailyFoodIntakeChild.setValue(nutritionMeal).addOnCompleteListener(onMorningMealCompleteListener());
         };
     }
 

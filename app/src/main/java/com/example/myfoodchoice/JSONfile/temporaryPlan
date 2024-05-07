@@ -1,13 +1,13 @@
 Plan for Adding Multiple Dishes to a Meal
 
-    Use a RecyclerView for Dishes: Instead of a ListView, use a RecyclerView for displaying the list of dishes in a meal.
+    Use a RecyclerView for Dishes: Instead of a ListView, use a RecyclerView for displaying the list of dishes in a nutritionMeal.
     This choice provides more flexibility and efficiency, especially for dynamic content.
 
     Custom Layout for Each Dish: Create a custom layout for each dish item in the RecyclerView.
-    This layout should include the dish name and a remove button, allowing users to easily add or remove dishes from the meal.
+    This layout should include the dish name and a remove button, allowing users to easily add or remove dishes from the nutritionMeal.
 
     Update the Meal Model: Modify the Meal model to include a list of FoodItem.Item objects.
-    This change allows the Meal model to represent multiple dishes within a single meal entry.
+    This change allows the Meal model to represent multiple dishes within a single nutritionMeal entry.
 
     Implement the RecyclerView in Your Fragment: Set up the RecyclerView in your UserLogMealNutritionAnalysisFragment,
     including the adapter for managing the list of dishes and handling the addition and removal of dishes.

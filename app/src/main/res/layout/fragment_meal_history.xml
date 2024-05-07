@@ -6,7 +6,7 @@
     android:background="@drawable/bg_gradient_color_main"
     tools:context=".UserFragment.UserViewMealHistoryFragment">
 
-    <!-- todo: the page should be change to meal record not searching for food or drinks. -->
+    <!-- todo: the page should be change to nutritionMeal record not searching for food or drinks. -->
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,28 +44,28 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tooltipText="This is a tab to show meal history based on time"
+                android:tooltipText="This is a tab to show nutritionMeal history based on time"
                 android:textAlignment="center"
                 android:text="@string/all" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tooltipText="This is a tab to show meal history based on time"
+                android:tooltipText="This is a tab to show nutritionMeal history based on time"
                 android:textAlignment="center"
                 android:text="@string/morning" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tooltipText="This is a tab to show meal history based on time"
+                android:tooltipText="This is a tab to show nutritionMeal history based on time"
                 android:textAlignment="center"
                 android:text="@string/afternoon" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tooltipText="This is a tab to show meal history based on time"
+                android:tooltipText="This is a tab to show nutritionMeal history based on time"
                 android:textAlignment="center"
                 android:text="@string/night" />
         </com.google.android.material.tabs.TabLayout>
