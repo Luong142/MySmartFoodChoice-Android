@@ -10,10 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="80dp"
         android:background="@drawable/rounded_chat_layout"
-        android:backgroundTint="@color/light_sky_blue"
+        android:backgroundTint="@color/dodger_blue"
         android:padding="8dp">
 
         <TextView
@@ -21,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hello_how_can_i_help_you_today"
-            android:textColor="#546E7A"
+            android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -31,17 +30,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="181dp"
-        android:layout_marginEnd="9dp"
         android:background="@drawable/rounded_chat_layout"
-        android:backgroundTint="@color/peach_puff"
+        android:backgroundTint="@color/light_goldenrod_yellow"
         android:padding="8dp">
 
         <TextView
             android:id="@+id/rightChatText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hi_i_am_a_placeholder"
-            android:textColor="#546E7A"
+            android:text="@string/testing"
+            android:textColor="@color/black"
             android:textSize="20sp" />
     </LinearLayout>
 </RelativeLayout>

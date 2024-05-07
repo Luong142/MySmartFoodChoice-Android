@@ -17,10 +17,18 @@ import com.example.myfoodchoice.AdapterRecyclerView.UserChatMessageAdapter;
 import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
 import com.example.myfoodchoice.ModelChatGPT.FullResponse;
 import com.example.myfoodchoice.ModelChatGPT.Message;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
@@ -33,6 +41,18 @@ import retrofit2.Response;
 public class UserChatBotMessageFragment extends Fragment
 {
     // todo: our plan is to make this as a premium feature.
+    DatabaseReference databaseReferenceUserProfile;
+
+    FirebaseAuth firebaseAuth;
+
+    FirebaseDatabase firebaseDatabase;
+
+    FirebaseUser firebaseUser;
+
+    String userID;
+
+    UserProfile userProfile;
+
     private static final String TAG = "UserChatBotMessageFragment";
     // todo: declare UI components
     RecyclerView chatRecyclerView;
@@ -49,6 +69,24 @@ public class UserChatBotMessageFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        // TODO: init firebase components
+        firebaseDatabase = FirebaseDatabase.getInstance
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // TODO: init user id
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+        {
+            userID = firebaseUser.getUid();
+
+            // TODO: init database reference for user profile
+            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+
+            databaseReferenceUserProfile.addValueEventListener(valueUserProfileEventListener());
+        }
 
         // todo: init ui here
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
@@ -67,6 +105,33 @@ public class UserChatBotMessageFragment extends Fragment
     }
 
     @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueUserProfileEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                if (snapshot.exists())
+                {
+                    userProfile = snapshot.getValue(UserProfile.class);
+                }
+                else
+                {
+                    addResponse("Error, " + snapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                addResponse("Error, " + error.getMessage());
+            }
+        };
+    }
+
+    @NonNull
     @Contract(pure = true)
     private View.OnClickListener onSendMessageListener()
     {
@@ -74,26 +139,19 @@ public class UserChatBotMessageFragment extends Fragment
         {
             String question = editMessageText.getText().toString().trim();
             addToChat(question, Message.SEND_BY_ME);
+            makeChatGPTRequest(question, userProfile.getDetail());
             editMessageText.setText("");
-
         };
     }
 
     public void makeChatGPTRequest(String question, String context)
     {
-        // Create an instance of ChatGPT
-        ChatRequest chatRequest = new ChatRequest();
-        chatRequest.setModel("gpt-3.5-turbo");
+        // todo: add initial "typing..."
+        messageArrayList.add(new Message("Typing...", Message.SEND_BY_BOT));
+        userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
 
-        ArrayList<ChatRequest.Messages> messages = new ArrayList<>();
-        ChatRequest.Messages messages0 = new ChatRequest.Messages("system",
-                context);
-        ChatRequest.Messages messages1 = new ChatRequest.Messages("user", question);
-        messages.add(messages1);
-
-        chatRequest.setMessages(messages);
-
-        // Log.d(TAG, "makeChatGPTRequest: " + chatRequest);
+        // todo: it is cheap to use gpt 3.5
+        ChatRequest chatRequest = getChatRequest(question, context);
 
         // Create the API service
         ChatGPTAPI chatGPTAPI = RetrofitChatGPTAPI.getRetrofitChatGPTInstance().create(ChatGPTAPI.class);
@@ -114,26 +172,50 @@ public class UserChatBotMessageFragment extends Fragment
                         for (FullResponse.Choices choices : chatResponse.getChoices())
                         {
                             // get content to get the value
-                            Log.d(TAG, "onResponse: " + choices.getMessage().getContent());
+                            addResponse(choices.getMessage().getContent().trim());
                         }
                     }
                 }
                 else
                 {
-                    // Handle error
-                    Log.d(TAG, "Error: " + response.errorBody());
+                    addResponse("Error, " + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<FullResponse> call, @NonNull Throwable t)
             {
-                // Handle failure
-                Log.d(TAG, "Failure: " + t.getMessage());
+                addResponse("Error, " + t.getMessage());
             }
         });
     }
 
+    @NonNull // todo: this method for init the message.
+    private static ChatRequest getChatRequest(String question, String context)
+    {
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setModel("gpt-3.5-turbo");
+
+        ArrayList<ChatRequest.Messages> messages = new ArrayList<>();
+
+        // init message with two types one is for AI, one is for user.
+        ChatRequest.Messages messages0 = new ChatRequest.Messages("system", context);
+        ChatRequest.Messages messages1 = new ChatRequest.Messages("user", question);
+
+        // add two of them to list.
+        messages.add(messages1);
+        messages.add(messages0);
+
+        chatRequest.setMessages(messages);
+        return chatRequest;
+    }
+
+    private void addResponse(String response)
+    {
+        messageArrayList.remove(messageArrayList.size() - 1);
+        userChatMessageAdapter.notifyItemRemoved(messageArrayList.size());
+        addToChat(response, Message.SEND_BY_BOT);
+    }
     private void addToChat(String message, String sentBy)
     {
         if (getActivity() != null)
@@ -144,6 +226,10 @@ public class UserChatBotMessageFragment extends Fragment
                 userChatMessageAdapter.notifyItemInserted(messageArrayList.size() - 1);
                 chatRecyclerView.smoothScrollToPosition(userChatMessageAdapter.getItemCount());
             });
+        }
+        else
+        {
+            Log.d(TAG, "addToChat: activity is null");
         }
     }
 
