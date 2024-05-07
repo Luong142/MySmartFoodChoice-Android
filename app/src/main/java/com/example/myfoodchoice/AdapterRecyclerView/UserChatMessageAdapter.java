@@ -3,6 +3,7 @@ package com.example.myfoodchoice.AdapterRecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.ModelChatGPT.Message;
 import com.example.myfoodchoice.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,7 @@ public class UserChatMessageAdapter extends RecyclerView.Adapter<UserChatMessage
 
         TextView leftChatText, rightChatText;
 
+        ImageView botIcon, userIcon;
 
         public myViewHolder(@NonNull View itemView)
         {
@@ -38,7 +41,6 @@ public class UserChatMessageAdapter extends RecyclerView.Adapter<UserChatMessage
             rightChatView = itemView.findViewById(R.id.rightChatView);
             leftChatText = itemView.findViewById(R.id.leftChatText);
             rightChatText = itemView.findViewById(R.id.rightChatText);
-
         }
     }
 

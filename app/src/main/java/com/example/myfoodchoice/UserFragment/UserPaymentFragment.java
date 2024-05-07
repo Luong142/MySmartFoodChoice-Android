@@ -14,6 +14,7 @@ import com.example.myfoodchoice.R;
 
 public class UserPaymentFragment extends Fragment
 {
+    // todo: https://www.youtube.com/watch?v=eJ-42oqiZB4&ab_channel=CodesEasy
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)

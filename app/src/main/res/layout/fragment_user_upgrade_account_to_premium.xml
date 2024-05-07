@@ -8,28 +8,31 @@
     tools:context=".UserFragment.UserUpgradeAccountToPremiumFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="412dp"
-        android:layout_height="286dp"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:src="@drawable/women"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginBottom="440dp"
+        android:layout_marginBottom="488dp"
         android:src="@drawable/foodimage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,23 +41,23 @@
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.63">
+        app:layout_constraintVertical_bias="0.581">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/peach_puff"
             android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/peach_puff"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upgrade Your Account"
+                android:text="@string/unlock_premium_features"
                 android:textAlignment="center"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -71,9 +74,10 @@
             app:cardElevation="10dp">
 
             <TextView
+                android:id="@+id/advertiseText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Unlock premium features\n and enhance your experience."
+                android:text="@string/testing"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -81,11 +85,11 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/upgradeButton"
+            android:id="@+id/upgradeBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            android:text="Upgrade Now"
+            android:text="@string/upgrade_now"
             android:textColor="@color/white"
             android:textSize="25sp" />
 

@@ -34,10 +34,6 @@ import java.util.Locale;
 
 public class GuestUpgradeAccountFragment extends Fragment
 {
-    // TODO: here is our plan: make the guest account can be upgraded to user account for more accessing features.
-    // TODO: this fragment should be able to upgrade by changing the account type in the realtime database.
-    // TODO: 3 days trial too
-
     TextView currentDateTrial, endDateTrial;
 
     Button upgradeToUserButton;

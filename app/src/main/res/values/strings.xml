@@ -257,4 +257,7 @@
     <string name="hello_how_can_i_help_you_today">Hello, how can I help you today?</string>
     <string name="hi_i_am_a_placeholder">Hi, I am a placeholder.</string>
     <string name="testing">testing</string>
+    <string name="hello">Hello</string>
+    <string name="unlock_premium_features_n_virtual_assistant_n_discounts_and_vouchers_n_daily_check_in"><![CDATA[Unlock premium features\n=> Virtual Assistant\n => Discounts And Vouchers\n=> Daily Check In]]></string>
+    <string name="unlock_premium_features">Unlock Premium Features</string>
 </resources>

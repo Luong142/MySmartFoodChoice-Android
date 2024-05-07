@@ -77,6 +77,13 @@ public class GuestMainMenuActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
+    /*
+    <item
+            android:id="@+id/nav_bmi_calculator"
+            android:title="@string/bmi_calculator"
+            android:icon="@drawable/calculator"/>
+     */
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {

@@ -251,6 +251,45 @@ public class UserHomeAlvinFragment extends Fragment
                     totalSugar = 0;
                     totalSalt = 0;
                  */
+                /*
+                fixme: change this into notification instead of a toast.
+                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
+                if (totalCalories > maxCalories)
+                {
+                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
+                    progressBarCalories.setBackgroundColor(Color.RED);
+                }
+
+                if (totalCholesterol > maxCholesterol)
+                {
+                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
+                    progressBarCholesterol.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSugar > maxSugar)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
+                    progressBarSugar.setBackgroundColor(Color.RED);
+                }
+
+                if (totalSalt > maxSalt)
+                {
+                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
+                    progressBarSalt.setBackgroundColor(Color.RED);
+                }
+
+                // fixme: the error is here view is gone if we use snack bar.
+                if (alertDialogMessage.length() > 0)
+                {
+                    if (alertDialogMessage.length() > 0)
+                    {
+                        if (getActivity() != null)
+                        {
+                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                 */
             }
 
             @Override

@@ -17,7 +17,9 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/chat_item_layout"
+        />
 
     <RelativeLayout
         android:id="@+id/bottom"
@@ -34,7 +36,7 @@
             android:layout_width="351dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:autofillHints="Type In Good Prompt to get the best help"
             android:background="@drawable/rounded_chat_layout"
             android:hint="@string/enter_your_message"
@@ -52,7 +54,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="0dp"
-            android:layout_marginBottom="9dp"
+            android:layout_marginBottom="15dp"
             android:layout_toEndOf="@+id/editMessageText"
             android:backgroundTint="@color/peach_puff"
             android:contentDescription="@string/todo"

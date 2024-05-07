@@ -24,10 +24,13 @@
             android:title="@string/meal_history"
             android:icon="@drawable/history"/>
 
+
+
         <item
             android:id="@+id/nav_log_off"
             android:icon="@drawable/logoff"
             android:title="@string/log_out"
             />
+
     </group>
 </menu>
