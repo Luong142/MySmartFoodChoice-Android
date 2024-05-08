@@ -150,8 +150,10 @@ public class DietitianMainMenuActivity extends AppCompatActivity
 
         if (savedInstanceState == null)
         {
+            bundleStore.putString("action", "createHealthTips");
+            viewUserProfileFragment.setArguments(bundleStore);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianHomePageFragment()).commit();
+                    viewUserProfileFragment).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -176,13 +178,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
         int itemId = item.getItemId();
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
-        if (itemId == R.id.nav_home)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new DietitianHomePageFragment()).commit();
-        }
-
-        else if (itemId == R.id.nav_create_health_tips)
+        if (itemId == R.id.nav_create_health_tips)
         {
             bundleStore.putString("action", "createHealthTips");
             viewUserProfileFragment.setArguments(bundleStore);

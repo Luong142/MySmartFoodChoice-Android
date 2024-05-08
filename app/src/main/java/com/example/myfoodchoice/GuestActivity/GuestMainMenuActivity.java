@@ -58,7 +58,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeAlvinFragment()).commit();
+                    new UserLogMealFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -92,15 +92,8 @@ public class GuestMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
 
-        if (itemId == R.id.nav_home)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeAlvinFragment()).commit();
-            // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-        }
-
         // todo: to update the part separate the button into two items in menu here
-        else if (itemId == R.id.nav_log_my_meal)
+        if (itemId == R.id.nav_log_my_meal)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserLogMealFragment()).commit();

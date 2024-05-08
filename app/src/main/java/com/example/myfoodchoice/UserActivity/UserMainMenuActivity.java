@@ -32,6 +32,7 @@ import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserMyRewardsViewFragment;
 import com.example.myfoodchoice.UserFragment.UserProfileViewFragment;
 import com.example.myfoodchoice.UserFragment.UserRewardsFragment;
+import com.example.myfoodchoice.UserFragment.UserUpgradeAccountToPremiumFragment;
 import com.example.myfoodchoice.UserFragment.UserViewHealthTipsFragment;
 import com.example.myfoodchoice.UserFragment.UserViewMealHistoryFragment;
 import com.example.myfoodchoice.UserFragment.UserViewRecipeFragment;
@@ -145,7 +146,7 @@ public class UserMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeAlvinFragment()).commit();
+                    new UserLogMealFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -253,22 +254,10 @@ public class UserMainMenuActivity extends AppCompatActivity
         String fragmentTag = null;
         // TODO: implement more tab here
         // TODO: our task is to follow the wireframe diagram from web and complete more UI for prototype, that is it.
-
-        if (itemId == R.id.nav_home)
-        {
-            fragment = new UserHomeAlvinFragment();
-            fragmentTag = "UserHomeAlvinFragment";
-        }
-        else if (itemId == R.id.nav_log_my_meal)
+        if (itemId == R.id.nav_log_my_meal)
         {
             fragment = new UserLogMealFragment();
             fragmentTag = "UserLogMealFragment";
-        }
-
-        else if (itemId == R.id.nav_chat_bot)
-        {
-            fragment = new UserChatBotMessageFragment();
-            fragmentTag = "UserChatBotMessageFragment";
         }
 
         else if (itemId == R.id.nav_meal_history)
@@ -287,6 +276,12 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             fragment = new UserViewHealthTipsFragment();
             fragmentTag = "UserHealthTipsFragment";
+        }
+
+        else if (itemId == R.id.nav_upgrade)
+        {
+            fragment = new UserUpgradeAccountToPremiumFragment();
+            fragmentTag = "UserUpgradeAccountToPremiumFragment";
         }
 
         else if (itemId == R.id.nav_review)

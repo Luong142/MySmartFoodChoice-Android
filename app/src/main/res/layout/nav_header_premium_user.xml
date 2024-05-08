@@ -21,9 +21,9 @@
         android:id="@+id/userType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/trainer"
+        android:text="@string/premium_user"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView

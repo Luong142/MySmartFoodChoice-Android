@@ -26,6 +26,7 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
+import com.example.myfoodchoice.UserActivity.UserPremiumMainMenuActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -288,8 +289,8 @@ public class LoginActivity extends AppCompatActivity
                             }
                              */
                             break;
-                        case "Trainer":
-                            // intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                        case "Premium User":
+                            intent = new Intent(LoginActivity.this, UserPremiumMainMenuActivity.class);
                             break;
                         case "Dietitian":
                             intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);

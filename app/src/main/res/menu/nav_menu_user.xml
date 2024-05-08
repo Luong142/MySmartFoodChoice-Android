@@ -10,12 +10,6 @@
           todo: home page should have two button that go to two of these fragments
           -->
         <item
-            android:id="@+id/nav_home"
-            android:title="@string/home"
-            android:icon="@drawable/home"
-            />
-
-        <item
             android:id="@+id/nav_log_my_meal"
             android:title="@string/log_my_meal"
             android:icon="@drawable/log_meal"/>
@@ -24,12 +18,6 @@
             android:id="@+id/nav_meal_history"
             android:title="@string/meal_history"
             android:icon="@drawable/history"
-            />
-
-        <item
-            android:id="@+id/nav_chat_bot"
-            android:title="@string/virtual_assistant"
-            android:icon="@drawable/chatbot"
             />
 
         <item
@@ -43,6 +31,11 @@
             android:title="@string/recommended_health_tips"
             android:icon="@drawable/health_tip"
             />
+
+        <item
+            android:id="@+id/nav_upgrade"
+            android:title="@string/upgrade_account"
+            android:icon="@drawable/upgrade_account"/>
 
         <item
             android:id="@+id/nav_review"

@@ -42,7 +42,7 @@ public class UserProfileViewFragment extends Fragment
 
     ProgressBar progressBarDeleteAccount;
 
-    TextView fullNameText, ageText, weightText;
+    TextView userProfileText;
 
     ImageView imageView;
 
@@ -94,9 +94,7 @@ public class UserProfileViewFragment extends Fragment
         // TODO: init UI components
         updateProfileBtn = view.findViewById(R.id.updateProfileBtn);
 
-        fullNameText = view.findViewById(R.id.userProfile);
-        ageText = view.findViewById(R.id.ageProfile);
-        weightText = view.findViewById(R.id.weightProfile);
+        userProfileText = view.findViewById(R.id.userProfileText);
 
         imageView = view.findViewById(R.id.displayUserImage);
         deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
@@ -252,9 +250,7 @@ public class UserProfileViewFragment extends Fragment
                     int age = userProfile.getAge();
                     int weight = Integer.parseInt(userProfile.getWeight());
 
-                    fullNameText.setText(fullName);
-                    ageText.setText(String.valueOf(age));
-                    weightText.setText(String.valueOf(weight));
+                    userProfileText.setText(userProfile.getDetail());
 
                     // set profile picture here
                     String profileImageUrl = userProfile.getProfileImageUrl();

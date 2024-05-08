@@ -46,14 +46,14 @@
             <ImageView
                 android:id="@+id/displayUserImage"
                 android:layout_marginTop="20dp"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:contentDescription="@string/put_our_user_profile_image_here"
                 android:src="@drawable/login_person" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                 android:text="@string/full_name"
                 android:textColor="@color/black"
                 android:textStyle="italic"
-                android:textSize="25sp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/userProfile"
@@ -73,7 +73,7 @@
                 android:text="@string/username"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                 android:text="@string/contact_number"
                 android:textStyle="italic"
                 android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/contactNumberProfile"
@@ -93,7 +93,7 @@
                 android:text="@string/contact_number"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

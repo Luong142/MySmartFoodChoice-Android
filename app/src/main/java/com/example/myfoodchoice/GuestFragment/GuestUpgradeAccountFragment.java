@@ -120,7 +120,7 @@ public class GuestUpgradeAccountFragment extends Fragment
             {
                 Toast.makeText
                         (getContext(), "Error database connection", Toast.LENGTH_SHORT).show();
-                Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
+                // Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
             }
         };
     }

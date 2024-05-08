@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.UserFragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,13 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +33,8 @@ import org.jetbrains.annotations.Contract;
 public class UserUpgradeAccountToPremiumFragment extends Fragment
 {
     static final String TAG = "UserUpgradeAccountToPremiumFragment";
+    static final String PREMIUM_USER = "Premium User";
+
     // todo: the user has two tiers: non-premium and premium.
     //  the user can upgrade to premium by paying a certain amount of money.
     DatabaseReference databaseReferenceUserAccounts;
@@ -96,8 +104,10 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
                 if (snapshot.exists())
                 {
                     userAccount = snapshot.getValue(Account.class);
-
-
+                }
+                else
+                {
+                    Log.d(TAG, "onDataChange: no data");
                 }
             }
 
@@ -115,7 +125,47 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
     {
         return v ->
         {
+            // todo: we need to add payment page.
+            if (userAccount != null)
+            {
+                userAccount.setAccountType(PREMIUM_USER);
+                databaseReferenceUserAccounts.setValue(userAccount).addOnCompleteListener(onUpgradeCompleteListener());
+            }
+        };
+    }
 
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onUpgradeCompleteListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Upgrade Success");
+                alertDialog.setMessage("You have successfully upgraded to user account. \n" +
+                        "Press confirm to proceed upgrading account. \n" +
+                        "Or press cancel." );
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Confirm",
+                        (dialog, which) ->
+                        {
+                            // dismiss and move the guest user to login page.
+                            dialog.dismiss();
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(intent);
+
+                            if (getActivity() != null)
+                            {
+                                getActivity().finish();
+                            }
+                        });
+                alertDialog.show();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Upgrade failed", Toast.LENGTH_SHORT).show();
+            }
         };
     }
 

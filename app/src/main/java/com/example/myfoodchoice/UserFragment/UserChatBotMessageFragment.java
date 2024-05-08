@@ -320,8 +320,11 @@ public class UserChatBotMessageFragment extends Fragment
 
     private void addResponse(String response)
     {
-        messageArrayList.remove(messageArrayList.size() - 1);
-        userChatMessageAdapter.notifyItemRemoved(messageArrayList.size());
+        if (!messageArrayList.isEmpty())
+        {
+            messageArrayList.remove(messageArrayList.size() - 1);
+            userChatMessageAdapter.notifyItemRemoved(messageArrayList.size());
+        }
         addToChat(response, Message.SEND_BY_BOT);
     }
     private void addToChat(String message, String sentBy)

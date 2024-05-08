@@ -233,6 +233,17 @@ public class UserLogMealFragment extends Fragment
                 saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
+                // todo: improve this system if over 7 days.
+
+                /*
+                    // reset the value whenever the nutrition value is changed.
+                    totalCalories = 0;
+                    totalCholesterol = 0;
+                    totalSugar = 0;
+                    totalSalt = 0;
+                 */
+                /*
+                fixme: change this into notification instead of a toast.
                 // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
                 if (totalCalories > maxCalories)
                 {
@@ -263,20 +274,12 @@ public class UserLogMealFragment extends Fragment
                 {
                     if (alertDialogMessage.length() > 0)
                     {
-                        if (getActivity() != null) {
+                        if (getActivity() != null)
+                        {
                             Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
                         }
                     }
                 }
-
-                // todo: improve this system if over 7 days.
-
-                /*
-                    // reset the value whenever the nutrition value is changed.
-                    totalCalories = 0;
-                    totalCholesterol = 0;
-                    totalSugar = 0;
-                    totalSalt = 0;
                  */
             }
 
