@@ -3,5 +3,33 @@ need to enhance the Interface for informing security or term or condition applie
 ChatGPT API worth it to enhance user experience, also aid Dietitian in generating Health Tips content.
 Our trump card.
 
-// watch these tutorial for
-https://www.youtube.com/watch?v=ahhze_u5ZUs&ab_channel=EasyTuto
+// todo: stripe API.
+
+# Create a Customer (use an existing Customer ID if this is a returning customer)
+curl https://api.stripe.com/v1/customers \
+  -u sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu
+
+: \
+  -X "POST"
+
+# Create an Ephemeral Key for the Customer
+curl https://api.stripe.com/v1/ephemeral_keys \
+  -u sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu
+
+: \
+  -H "Stripe-Version: 2024-04-10" \
+  -X "POST" \
+  -d "customer"="{{CUSTOMER_ID}}" \
+
+# Create a PaymentIntent
+curl https://api.stripe.com/v1/payment_intents \
+  -u sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu
+
+: \
+  -X "POST" \
+  -d "customer"="{{CUSTOMER_ID}}" \
+  -d "amount"=1099 \
+  -d "currency"="eur" \
+  # In the latest version of the API, specifying the `automatic_payment_methods` parameter
+  # is optional because Stripe enables its functionality by default.
+  -d "automatic_payment_methods[enabled]"=true \

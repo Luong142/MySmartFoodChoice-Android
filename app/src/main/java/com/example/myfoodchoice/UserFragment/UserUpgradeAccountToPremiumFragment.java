@@ -15,11 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,9 +32,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserUpgradeAccountToPremiumFragment extends Fragment
 {
+    // todo: https://www.youtube.com/watch?v=-1dX7mEV80M&ab_channel=CodewithArvind
+
+    String secretKey = "sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu";
+    String publishableKey = "pk_test_51PE9Gp2Lluf0ZsJHLz9trebrLFYm75gSsTJXCYq4X0kG5BtrT6p21ydg6lR2SmRbo7gNIqkwYWQM15ysxpkgbkxN009EdwKmNc";
+
+    String customerID;
+
+    String emphericalKey;
+
+    String clientSecret;
+
+    StringRequest request;
+
+    RequestQueue requestQueue;
+
     static final String TAG = "UserUpgradeAccountToPremiumFragment";
     static final String PREMIUM_USER = "Premium User";
 
@@ -77,6 +100,42 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
             databaseReferenceUserAccounts.addValueEventListener(valueAccountTypeListener());
         }
 
+        // first request
+        request = new StringRequest(StringRequest.Method.POST, "https://api.stripe.com/v1/customers",
+                response ->
+                {
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(response);
+
+                        customerID = jsonObject.getString("id");
+
+                        Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
+
+                        getEmphericalKey();
+                    }
+                    catch (JSONException e)
+                    {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                },
+                error ->
+                {
+                    Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + secretKey);
+
+                return header;
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(this.requireContext());
+        requestQueue.add(request);
+
         // todo: init UI
         advertiseText = view.findViewById(R.id.advertiseText);
         upgradeBtn = view.findViewById(R.id.upgradeBtn);
@@ -90,6 +149,102 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
 
         // upgrade here
         upgradeBtn.setOnClickListener(onUpgradeAccountListener());
+    }
+
+    private void getEmphericalKey()
+    {
+        // second request
+        request = new StringRequest(StringRequest.Method.POST, "https://api.stripe.com/v1/ephemeral_keys",
+                response ->
+                {
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(response);
+
+                        customerID = jsonObject.getString("id");
+
+                        Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
+
+                        getClientSecret(customerID, emphericalKey);
+                    }
+                    catch (JSONException e)
+                    {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                },
+                error ->
+                {
+                    Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + secretKey);
+                header.put("Stripe-Version", "2024-04-10");
+                return header;
+            }
+
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError
+            {
+                Map<String, String> params = new HashMap<>();
+                params.put("customer", customerID);
+
+                return params;
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(this.requireContext());
+        requestQueue.add(request);
+    }
+
+    private void getClientSecret(String customerID, String emphericalKey)
+    {
+        request = new StringRequest(StringRequest.Method.POST, "https://api.stripe.com/v1/payment_intents",
+                response ->
+                {
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(response);
+
+                        clientSecret = jsonObject.getString("client_secret");
+
+                        Toast.makeText(getContext(), clientSecret, Toast.LENGTH_SHORT).show();
+                    }
+                    catch (JSONException e)
+                    {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                    }
+                },
+                error ->
+                {
+                    Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + secretKey);
+                return header;
+            }
+
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError
+            {
+                Map<String, String> params = new HashMap<>();
+                params.put("customer", customerID);
+                params.put("amount", "100"+"00");
+                params.put("currency", "SGD");
+                params.put("automatic_payment_methods[enabled]", "true");
+                return params;
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(this.requireContext());
+        requestQueue.add(request);
     }
 
     @NonNull
