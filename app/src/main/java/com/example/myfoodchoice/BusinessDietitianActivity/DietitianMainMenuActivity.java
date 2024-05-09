@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.myfoodchoice.BusinessDietitianFragment.DietitianHomePageFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianProfileViewFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewHealthTipsFragment;
 import com.example.myfoodchoice.BusinessDietitianFragment.DietitianViewRecordRecipeFragment;

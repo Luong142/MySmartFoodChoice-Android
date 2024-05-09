@@ -13,7 +13,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserViewMealHistoryFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;

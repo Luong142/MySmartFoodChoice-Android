@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.ModelChatGPT.Message;
 import com.example.myfoodchoice.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

@@ -105,21 +105,28 @@ public class UserViewRecipeFragment extends Fragment
             {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
-                    recipes = dataSnapshot.getValue(Dish.class);
-                    if (recipes != null)
+                    if (dataSnapshot.exists())
                     {
-                        for (Dish.Meals meals : recipes.getMeals())
+                        recipes = dataSnapshot.getValue(Dish.class);
+                        if (recipes != null)
                         {
-                            if (meals.getUserKey().equals(userID))
+                            for (Dish.Meals meals : recipes.getMeals())
                             {
-                                recipeList.add(recipes);
-                                recipeViewHistoryAdapter.notifyItemInserted(recipeList.size() - 1);
-                            }
-                            else
-                            {
-                                Log.d(TAG, "onChildAdded: " + meals);
+                                if (meals.getUserKey().equals(userID))
+                                {
+                                    recipeList.add(recipes);
+                                    recipeViewHistoryAdapter.notifyItemInserted(recipeList.size() - 1);
+                                }
+                                else
+                                {
+                                    Log.d(TAG, "onChildAdded: " + meals);
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        Log.d(TAG, "onChildAdded: " + dataSnapshot);
                     }
                 }
             }

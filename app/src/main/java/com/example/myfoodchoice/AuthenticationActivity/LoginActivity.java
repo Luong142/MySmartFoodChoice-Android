@@ -564,6 +564,9 @@ public class LoginActivity extends AppCompatActivity
             }
             else
             {
+                Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
+                startActivity(intent);
+                finish();
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "signInAnonymously:failure", task.getException());
             }
