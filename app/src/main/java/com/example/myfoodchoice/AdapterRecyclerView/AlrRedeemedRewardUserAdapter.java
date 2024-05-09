@@ -82,7 +82,7 @@ public class AlrRedeemedRewardUserAdapter extends RecyclerView.Adapter<AlrRedeem
             Picasso.get()
                     .load(rewardUri)
                     .resize(50, 50)
-                    .error(R.drawable.error)
+                    .error(R.drawable.voucher)
                     .into(holder.rewardImage);
 
             holder.rewardName.setText(reward.getName());
