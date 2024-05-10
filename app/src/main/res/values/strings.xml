@@ -264,4 +264,11 @@
     <string name="welcome_back">Welcome Back</string>
     <string name="welcome_nback">Welcome\nBack</string>
     <string name="don_t_have_an_account">Don\'t have an account</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="sign_up_nas_dietitian">Sign Up \nAs Dietitian</string>
+    <string name="term_and_condition">Term And Condition</string>
+    <string name="agree_with">Agree with</string>
+    <string name="allergic_to_seafood">Allergic to Seafood</string>
+    <string name="allergic_to_egg">Allergic to Egg</string>
+    <string name="allergic_to_peanut">Allergic to Peanut</string>
 </resources>

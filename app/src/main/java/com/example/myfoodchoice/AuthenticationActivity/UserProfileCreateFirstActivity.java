@@ -43,7 +43,7 @@ import java.util.Objects;
 public class UserProfileCreateFirstActivity extends AppCompatActivity
 {
     // TODO: declare UI components
-    EditText age;
+    EditText age, editIntHeight, editIntWeight;
 
     ImageView profilePicture, maleImage, femaleImage;
     ProgressBar progressBar;
@@ -105,6 +105,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
         nextBtn = findViewById(R.id.nextBtn);
         maleImage = findViewById(R.id.maleImage);
         femaleImage = findViewById(R.id.femaleImage);
+        editIntHeight = findViewById(R.id.heightProfile);
+        editIntWeight = findViewById(R.id.weightProfile);
 
         // TODO: init UI component
         /*
@@ -201,6 +203,43 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 return; // exit the method if age is not entered
             }
 
+            // for height, centimeter unit.
+            if (TextUtils.isEmpty(editIntHeight.getText().toString()))
+            {
+                editIntHeight.setError("Please enter your height");
+                editIntHeight.requestFocus();
+                return;
+            }
+
+            int height = Integer.parseInt(editIntHeight.getText().toString());
+
+            if (height < 50 || height > 250)
+            {
+                editIntHeight.setError("Invalid height value meter");
+                editIntHeight.requestFocus();
+                return;
+            }
+
+            // for weight, kg unit
+            if (TextUtils.isEmpty(editIntWeight.getText().toString()))
+            {
+                editIntWeight.setError("Please enter your weight");
+                editIntWeight.requestFocus();
+                return;
+            }
+
+            int weight = Integer.parseInt(editIntWeight.getText().toString());
+
+            if (weight < 20 || weight > 120)
+            {
+                editIntWeight.setError("Invalid weight value kg");
+                editIntWeight.requestFocus();
+                return;
+            }
+
+            weight = Integer.parseInt(editIntWeight.getText().toString());
+            height = Integer.parseInt(editIntHeight.getText().toString());
+
             // make the progress bar appear
             progressBar.setVisibility(ProgressBar.VISIBLE);
             nextBtn.setVisibility(Button.GONE);
@@ -216,6 +255,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             // set the download URL to the user profile
             userProfile.setGender(gender); // FIXME: need to test this field.
             userProfile.setAge(ageInt);
+            userProfile.setWeight(String.valueOf(weight));
+            userProfile.setHeight(String.valueOf(height));
 
             // set image here
             storageTask.continueWithTask(task ->
@@ -327,8 +368,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     {
         return v ->
         {
-            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
-            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
+            maleImage.setBackground(ContextCompat.getDrawable(this, R.color.peach_puff));
+            femaleImage.setBackground(ContextCompat.getDrawable(this, R.color.peach_puff_new));
             gender = "Female";
         };
     }
@@ -339,8 +380,8 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
     {
         return v ->
         {
-            maleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_focused));
-            femaleImage.setBackground(ContextCompat.getDrawable(this, R.drawable.malefemale_notfocused));
+            maleImage.setBackground(ContextCompat.getDrawable(this, R.color.peach_puff_new));
+            femaleImage.setBackground(ContextCompat.getDrawable(this, R.color.peach_puff));
             gender = "Male";
         };
     }
@@ -353,7 +394,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
             return task ->
             {
                 Intent intent = new Intent(UserProfileCreateFirstActivity.this,
-                        UserProfileCreateSecondActivity.class);
+                        UserProfileHealthDeclarationActivity.class);
                 intent.putExtra("userProfile", userProfile);
                 startActivity(intent);
                 finish(); // to close this page.

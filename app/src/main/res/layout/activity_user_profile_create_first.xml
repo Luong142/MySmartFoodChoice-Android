@@ -5,143 +5,153 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AuthenticationActivity.UserProfileCreateFirstActivity"
-    android:background="@drawable/bg_gradient_color_main">
+    android:background="@drawable/bg_gradient_color_main"
+    >
 
-    <LinearLayout
-        android:layout_width="350dp"
+    <!-- android:background="@drawable/app_background"
+    copy this and paste for background -->
+
+
+    <TextView
+        android:id="@+id/welcomeTagline"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_layout_login_page"
-        android:gravity="top"
+        android:layout_marginTop="100dp"
+        android:text="@string/sign_up_as_user"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.238"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="620dp"
+        android:backgroundTint="@color/peach_puff"
         android:orientation="vertical"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.501">
+        app:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/guest_profile"
-            android:textAlignment="center"
-            android:textSize="35sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/profile_picture"
-            android:textSize="30sp" />
-
-        <ImageView
-            android:id="@+id/profilePicture"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/profile_picture"
-            android:src="@drawable/default_profile_picture" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/age"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/ageProfile"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="age"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_age"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/gender"
-            android:textSize="30sp"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <!-- TODO: update more fields in UserProfile class -->
-        <!-- FIXME: this current field haven't applied logic -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="top"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/maleImage"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/male" />
+                android:id="@+id/profilePicture"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="20dp"
+                android:tooltipText="@string/profile_picture"
+                android:layout_gravity="center"
+                android:contentDescription="@string/profile_picture"
+                android:src="@drawable/default_profile_picture" />
 
-            <View
-                android:layout_width="40dp"
-                android:layout_height="match_parent" />
+            <EditText
+                android:id="@+id/ageProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="Enter Age"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/age"
+                android:drawableStart="@drawable/age"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
 
-            <ImageView
-                android:id="@+id/femaleImage"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
-                android:contentDescription="@string/todo"
-                android:src="@drawable/female" />
+            <EditText
+                android:id="@+id/weightProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="Enter Weight"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/weight"
+                android:drawableStart="@drawable/weight"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/heightProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="Enter Height"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/height"
+                android:drawableStart="@drawable/height"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/maleImage"
+                    android:layout_width="100sp"
+                    android:layout_height="100sp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/male" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/femaleImage"
+                    android:layout_width="100sp"
+                    android:layout_height="100sp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/female" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:clickable="true"
+                android:elevation="20dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:text="@string/next"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Button
-            android:id="@+id/nextBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/dodger_blue"
-            android:text="@string/next"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

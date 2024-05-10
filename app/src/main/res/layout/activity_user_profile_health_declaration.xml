@@ -2,206 +2,175 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".AuthenticationActivity.UserProfileHealthDeclarationActivity"
     android:background="@drawable/bg_gradient_color_main"
-    tools:context=".AuthenticationActivity.UserProfileHealthDeclarationActivity">
+    >
+
+    <!-- android:background="@drawable/app_background"
+    copy this and paste for background -->
 
 
-    <LinearLayout
-        android:layout_width="350dp"
+    <TextView
+        android:id="@+id/welcomeTagline"
+        android:layout_width="361dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_layout_login_page"
-        android:gravity="top"
+        android:layout_marginTop="100dp"
+        android:text="Health Condition"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:backgroundTint="@color/peach_puff"
         android:orientation="vertical"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.502">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/health_declaration"
-            android:textAlignment="center"
-            android:textSize="35sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/health_conditions"
-            android:textSize="30sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="top"
             android:gravity="center"
-            android:layout_gravity="center"
-            >
+            android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/diabetesCheckbox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
                 android:layout_gravity="center"
-                android:textSize="25sp"
-                android:text="@string/diabetes" />
+                >
 
-            <CheckBox
-                android:id="@+id/highCholesterolCheckbox"
+                <CheckBox
+                    android:id="@+id/diabetesCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/diabetes"
+                    android:drawablePadding="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/diabetes" />
+
+                <CheckBox
+                    android:id="@+id/highCholesterolCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/cholesterol"
+                    android:layout_gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/high_cholesterols" />
+
+                <CheckBox
+                    android:id="@+id/highBloodPressureCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/bloodpressure"
+                    android:layout_gravity="center"
+                    android:textSize="25sp"
+                    android:text="@string/high_blood_pressures" />
+                <!-- todo: display the check box instead of spinner -->
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:layout_gravity="center"
-                android:textSize="25sp"
-                android:text="@string/high_cholesterols" />
+                >
 
-            <CheckBox
-                android:id="@+id/highBloodPressureCheckbox"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    >
+
+                    <CheckBox
+                        android:id="@+id/seafoodAllergicCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/fish"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="25sp"
+                        android:text="@string/allergic_to_seafood" />
+
+                    <CheckBox
+                        android:id="@+id/eggAllergicCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/egg"
+                        android:drawablePadding="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="25sp"
+                        android:text="@string/allergic_to_egg" />
+
+                    <CheckBox
+                        android:id="@+id/peanutAllergicCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/peanut"
+                        android:drawablePadding="10dp"
+
+                        android:layout_gravity="center"
+                        android:textSize="25sp"
+                        android:text="@string/allergic_to_peanut" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/dietTypeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/background_spinner"
+                android:minHeight="50dp" />
+
+            <Button
+                android:id="@+id/signUpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:clickable="true"
+                android:elevation="20dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:text="@string/sign_up"
+                android:textColor="@color/black"
                 android:textSize="25sp"
-                android:text="@string/high_blood_pressures" />
-            <!-- todo: display the check box instead of spinner -->
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/allergies"
-            android:textSize="30sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_gravity="center"
-            >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_gravity="center"
-                >
-
-                <CheckBox
-                    android:id="@+id/seafoodAllergicCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="25sp"
-                    android:text="Allergic to Seafood" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/fish"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_gravity="center"
-                >
-
-                <CheckBox
-                    android:id="@+id/peanutAllergicCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="25sp"
-                    android:text="Allergic to Peanut" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/peanut"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_gravity="center"
-                >
-
-                <CheckBox
-                    android:id="@+id/eggAllergicCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="25sp"
-                    android:text="Allergic to Egg" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/egg"
-                    />
-
-            </LinearLayout>
-            <!-- todo: display the check box instead of spinner -->
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Button
-            android:id="@+id/signUpBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/dodger_blue"
-            android:text="@string/sign_up"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

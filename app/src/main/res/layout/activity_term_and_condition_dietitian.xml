@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthenticationActivity.BusinessProfileCreateActivity"
+    tools:context=".AuthenticationActivity.RegisterUserActivity"
     android:background="@drawable/bg_gradient_color_main"
     >
 
@@ -26,15 +26,16 @@
 
     <TextView
         android:id="@+id/welcomeTagline"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/sign_up_nas_dietitian"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/term_and_condition"
         android:textColor="@color/white"
         android:textSize="50sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
@@ -59,55 +60,8 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:tooltipText="@string/profile_picture"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/profile_picture"
-                android:src="@drawable/default_profile_picture" />
 
 
-            <EditText
-                android:id="@+id/contactNumberProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="20dp"
-                android:autofillHints="email"
-                android:background="@drawable/edit_text_bg"
-                android:drawableStart="@drawable/phonenum"
-                android:drawablePadding="10dp"
-                android:inputType="number"
-                android:hint="@string/enter_contact_number"
-                android:maxLength="8"
-                android:textColorHint="@color/black"
-                android:textSize="25sp" />
-
-
-            <Button
-                android:id="@+id/createProfileBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
-                android:clickable="true"
-                android:elevation="20dp"
-                android:backgroundTint="@color/peach_puff_new"
-                android:text="@string/sign_up"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

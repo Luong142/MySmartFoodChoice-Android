@@ -2,19 +2,13 @@ package com.example.myfoodchoice.AuthenticationActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.AdapterSpinner.DietTypeAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,8 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
-
-import java.util.ArrayList;
 
 public class UserProfileCreateSecondActivity extends AppCompatActivity
 {
@@ -42,14 +34,9 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     final static String PATH_USERPROFILE = "User Profile";
 
-    ArrayList<UserProfile> dietTypeArrayList;
 
-    String dietType;
-
-    EditText editIntHeight, editIntWeight;
 
     // TODO: declare UI component
-    Spinner spinnerDietType;
 
     Intent intent, intentToHealthDeclarationActivity;
 
@@ -69,16 +56,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(firebaseUser.getUid());
         userProfile = new UserProfile();
-        dietTypeArrayList = new ArrayList<>();
          // allergiesArrayList = new ArrayList<>();
-
-        // TODO: init UI component
-        initListDietType();
-        spinnerDietType = findViewById(R.id.dietTypeSpinner);
-        DietTypeAdapter dietTypeAdapter = new DietTypeAdapter(this, dietTypeArrayList);
-        spinnerDietType.setAdapter(dietTypeAdapter);
-        spinnerDietType.setOnItemSelectedListener(onItemSelectedDietTypeListener);
-
         // TODO: init UI component
         /*
             initListAllergies();
@@ -91,10 +69,6 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
         // for progress bar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(ProgressBar.GONE);
-
-        // for height and weight
-        editIntHeight = findViewById(R.id.heightProfile);
-        editIntWeight = findViewById(R.id.weightProfile);
 
         // for user profile that has been brought over from the first user profile activity.
         intent = getIntent();
@@ -112,51 +86,12 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
     {
         return v ->
         {
-            // for height, centimeter unit.
-            if (TextUtils.isEmpty(editIntHeight.getText().toString()))
-            {
-                editIntHeight.setError("Please enter your height");
-                editIntHeight.requestFocus();
-                return;
-            }
-
-            int height = Integer.parseInt(editIntHeight.getText().toString());
-
-            if (height < 50 || height > 250)
-            {
-                editIntHeight.setError("Invalid height value cm");
-                editIntHeight.requestFocus();
-                return;
-            }
-
-            // for weight, kg unit
-            if (TextUtils.isEmpty(editIntWeight.getText().toString()))
-            {
-                editIntWeight.setError("Please enter your weight");
-                editIntWeight.requestFocus();
-                return;
-            }
-
-            int weight = Integer.parseInt(editIntWeight.getText().toString());
-
-            if (weight < 20 || weight > 120)
-            {
-                editIntWeight.setError("Invalid weight value kg");
-                editIntWeight.requestFocus();
-                return;
-            }
-
             // set progress bar on
             progressBar.setVisibility(ProgressBar.VISIBLE);
             nextBtn.setVisibility(Button.GONE);
 
-            weight = Integer.parseInt(editIntWeight.getText().toString());
-            height = Integer.parseInt(editIntHeight.getText().toString());
-
             // for now we define it as a string.
-            userProfile.setWeight(String.valueOf(weight));
-            userProfile.setHeight(String.valueOf(height));
-            userProfile.setDietType(dietType);
+
 
             // TODO: create user profile through this and add it inside of the firebase
             // TODO: do this tmr
@@ -169,33 +104,5 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
             startActivity(intentToHealthDeclarationActivity);
             finish(); // to close this page.
         };
-    }
-
-    private final AdapterView.OnItemSelectedListener onItemSelectedDietTypeListener =
-            new AdapterView.OnItemSelectedListener()
-            {
-                @Override
-                public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
-                {
-                    // the purpose is for spinner to select and apply the string dietType to define the user profile
-                    UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);
-                    dietType = userProfile1.getDietType();
-                    nextBtn.setEnabled(true);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent)
-                {
-                    // show message
-                    Toast.makeText(getApplicationContext(), "Please select a diet type.", Toast.LENGTH_SHORT).show();
-                    nextBtn.setEnabled(false);
-                }
-            };
-
-    private void initListDietType()
-    {
-        // FIXME: edamam can't be used.
-        dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vege));
-        dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.non_vege));
     }
 }

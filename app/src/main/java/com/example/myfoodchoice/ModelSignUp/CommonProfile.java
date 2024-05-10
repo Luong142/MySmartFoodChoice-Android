@@ -12,7 +12,9 @@ public class CommonProfile
 
     public CommonProfile()
     {
-
+        firstName = "Unknown";
+        lastName = "Unknown";
+        profileImageUrl = ""; // leave it empty here.
     }
 
     public CommonProfile(String firstName, String lastName, String profileImageUrl)
@@ -24,7 +26,8 @@ public class CommonProfile
 
     @NonNull
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "CommonProfile{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

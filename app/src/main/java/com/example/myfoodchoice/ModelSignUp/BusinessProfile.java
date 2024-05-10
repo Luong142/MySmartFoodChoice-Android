@@ -15,12 +15,9 @@ public class BusinessProfile extends CommonProfile
     public BusinessProfile()
     {
         super();
-    }
-
-    public BusinessProfile(String role)
-    {
-        super();
-        this.role = role;
+        this.role = "Dietitian";
+        this.businessImage = 0;
+        this.contactNumber = 9999;
     }
 
     public BusinessProfile(String role, int businessImage)

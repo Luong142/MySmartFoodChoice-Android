@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,7 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.AdapterSpinner.BusinessRoleAdapter;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
@@ -50,9 +48,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     // TODO: declare UI components
     ImageView profileImage;
 
-    EditText firstName, lastName, contactNumber;
-
-    Spinner spinnerRole;
+    EditText contactNumber;
 
     String firstNameString, lastNameString;
 
@@ -119,20 +115,12 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
         // TODO: init UI components
         profileImage = findViewById(R.id.profileImage);
-        firstName = findViewById(R.id.firstNameProfile);
-        lastName = findViewById(R.id.lastNameProfile);
+
         contactNumber = findViewById(R.id.contactNumberProfile);
         progressBar = findViewById(R.id.progressBar);
 
         // set progress bar to gone
         progressBar.setVisibility(ProgressBar.GONE);
-
-        // TODO: init spinner part
-        initBusinessRole();
-        spinnerRole = findViewById(R.id.roleSpinner);
-        BusinessRoleAdapter businessRoleAdapter = new BusinessRoleAdapter(this, roleArrayList);
-        spinnerRole.setAdapter(businessRoleAdapter);
-        spinnerRole.setOnItemSelectedListener(onItemSelectedRoleListener);
 
         // button
         createProfileBtn = findViewById(R.id.createProfileBtn);
@@ -182,20 +170,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 return; // exit the method if selectedImageUri is null
             }
 
-            if (TextUtils.isEmpty(firstName.getText().toString().trim()))
-            {
-                firstName.setError("Please enter your first name.");
-                firstName.requestFocus();
-                return; // exit the method if age is not entered
-            }
-
-            if (TextUtils.isEmpty(lastName.getText().toString().trim()))
-            {
-                lastName.setError("Please enter your last name.");
-                lastName.requestFocus();
-                return; // exit the method if age is not entered
-            }
-
             if (TextUtils.isEmpty(contactNumber.getText().toString().trim()))
             {
                 contactNumber.setError("Please enter your contact number.");
@@ -215,8 +189,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
             // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
 
-            firstNameString = firstName.getText().toString().trim();
-            lastNameString = lastName.getText().toString().trim();
+
             contactNumberInt = Integer.parseInt(contactNumber.getText().toString().trim());
 
             // set image here
@@ -313,7 +286,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 // Profile successfully written!
                 // Log.d(TAG, "Profile successfully written!");
                 Toast.makeText(BusinessProfileCreateActivity.this,
-                        "Profile successfully created!", Toast.LENGTH_SHORT).show();
+                        "Dietitian Account created successfully!", Toast.LENGTH_SHORT).show();
 
             }
             else
@@ -411,10 +384,5 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         };
-    }
-
-    private void initBusinessRole()
-    {
-        roleArrayList.add(new BusinessProfile("Dietitian", R.drawable.dietitian_icon));
     }
 }

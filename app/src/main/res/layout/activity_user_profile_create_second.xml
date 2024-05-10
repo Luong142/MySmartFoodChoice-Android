@@ -21,79 +21,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.502">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/guest_profile"
-            android:textAlignment="center"
-            android:textSize="35sp"
-            android:textStyle="bold" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="15dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/weight"
-            android:textSize="30sp" />
 
-        <EditText
-            android:id="@+id/weightProfile"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="last name"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_weight"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/height"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/heightProfile"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="last name"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_height"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/diet_type"
-            android:textSize="30sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Spinner
-            android:id="@+id/dietTypeSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/background_spinner"
-            android:minHeight="48dp" />
 
         <View
             android:layout_width="match_parent"

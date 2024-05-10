@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.example.myfoodchoice.ModelUtilities.Reward;
+import com.example.myfoodchoice.R;
 
 import org.jetbrains.annotations.Contract;
 
@@ -45,6 +46,20 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     {
         // this constructor is required for Firebase to be able to deserialize the object
         super();
+
+        // default value
+        height = String.valueOf(50);
+        weight = String.valueOf(50);
+        gender = "Male";
+        age = 20;
+        dietType = "Vegetarian";
+        dietTypeImage = R.drawable.vege;
+        isAllergyEgg = false;
+        isAllergyPeanut = false;
+        isAllergySeafood = false;
+        isDiabetes = false;
+        isHighBloodPressure = false;
+        isHighCholesterol = false;
         points = 100; // put the default point here
         alrRedeemedRewardList = new ArrayList<>();
     }
