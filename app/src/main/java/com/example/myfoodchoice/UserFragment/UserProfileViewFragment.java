@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
@@ -42,7 +43,9 @@ public class UserProfileViewFragment extends Fragment
 
     ProgressBar progressBarDeleteAccount;
 
-    TextView userProfileText;
+    CardView cardViewDetailUserProfile, cardViewHealthContent;
+
+    TextView userProfileText, healthProfileText;
 
     ImageView imageView;
 
@@ -63,7 +66,6 @@ public class UserProfileViewFragment extends Fragment
     String userID;
 
     UserProfile userProfile;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -99,6 +101,14 @@ public class UserProfileViewFragment extends Fragment
         imageView = view.findViewById(R.id.displayUserImage);
         deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
 
+        cardViewDetailUserProfile = view.findViewById(R.id.cardViewDetailUserProfile);
+        cardViewHealthContent = view.findViewById(R.id.cardViewHealthContent);
+        healthProfileText = view.findViewById(R.id.healthProfileText);
+
+        // set on click for card view
+        cardViewHealthContent.setVisibility(View.GONE);
+        cardViewDetailUserProfile.setOnClickListener(onCardViewDetailUserHealthListener());
+
         // set progress bar
         progressBarDeleteAccount = view.findViewById(R.id.progressBarDeleteAccount);
         progressBarDeleteAccount.setVisibility(View.GONE);
@@ -106,6 +116,23 @@ public class UserProfileViewFragment extends Fragment
         // add onClickListener
         updateProfileBtn.setOnClickListener(onUpdateUserProfileListener());
         deleteAccountBtn.setOnClickListener(onDeleteAccountListener());
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onCardViewDetailUserHealthListener()
+    {
+        return v ->
+        {
+            if (cardViewHealthContent.getVisibility() == View.GONE)
+            {
+                cardViewHealthContent.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                cardViewHealthContent.setVisibility(View.GONE);
+            }
+        };
     }
 
     @NonNull
@@ -246,11 +273,8 @@ public class UserProfileViewFragment extends Fragment
                 if (userProfile != null)
                 {
                     // display user profile info
-                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
-                    int age = userProfile.getAge();
-                    int weight = Integer.parseInt(userProfile.getWeight());
-
-                    userProfileText.setText(userProfile.getDetail());
+                    userProfileText.setText(userProfile.getUserProfileDetail());
+                    healthProfileText.setText(userProfile.getUserHealthDetail());
 
                     // set profile picture here
                     String profileImageUrl = userProfile.getProfileImageUrl();

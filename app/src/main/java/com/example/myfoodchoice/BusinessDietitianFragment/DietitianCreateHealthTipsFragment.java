@@ -183,7 +183,7 @@ public class DietitianCreateHealthTipsFragment extends Fragment
     {
         return v ->
         {
-            String detail = selectedUserProfile.getDetail();
+            String detail = selectedUserProfile.getFullUserDetail();
             String question = "As a professional Dietitian, " +
                     "generate concise, informative, and easy-to-follow " +
                     "health tips based on the following detail: " + detail;

@@ -118,6 +118,10 @@ public class UserChatBotMessageFragment extends Fragment
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.requireContext());
         linearLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(linearLayoutManager);
+
+        // todo: on start chat bot should say hello
+        messageArrayList.add(new Message("Hello, how may I assist you today?", Message.SEND_BY_BOT));
+        userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
     }
 
     @NonNull
@@ -227,10 +231,11 @@ public class UserChatBotMessageFragment extends Fragment
 
             StringBuilder sbContext = new StringBuilder();
             sbContext.append("You are the best assistant in the world. " +
-                    "You are a chat-bot in my Smart Food Choice Android App\n");
-            sbContext.append("Your job is to provide friendly and formal to our user as they are valuable customer.");
-            sbContext.append("Here is my user profile details\n").append(userProfile.getDetail());
+                    "You are my chat-bot in my Smart Food Choice Android App\n");
+            sbContext.append("Your job is to provide friendly to our user as they are valuable customer.\n");
+            sbContext.append("Here is my user profile details\n").append(userProfile.getFullUserDetail());
 
+            // fixme: we can improve this prompt engineering by formatting the context for chat bot
             if (globalNutritionMeal != null)
             {
                 sbContext.append("\nHere is my meal details\n").append(globalNutritionMeal.toString());
@@ -253,8 +258,11 @@ public class UserChatBotMessageFragment extends Fragment
     public void makeChatGPTRequest(String question, String context)
     {
         // todo: add initial "typing..."
-        messageArrayList.add(new Message("Typing...", Message.SEND_BY_BOT));
-        userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
+        if (messageArrayList != null)
+        {
+            messageArrayList.add(new Message("Typing...", Message.SEND_BY_BOT));
+            userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
+        }
 
         // todo: it is cheap to use gpt 3.5
         ChatRequest chatRequest = getChatRequest(question, context);

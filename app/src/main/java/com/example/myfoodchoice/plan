@@ -2,16 +2,19 @@ need to enhance the Interface for informing security or term or condition applie
 
 ChatGPT API worth it to enhance user experience, also aid Dietitian in generating Health Tips content.
 
+todo: change the name of recipe dietitian path as any new data can crash the app when user clicked on.
+todo: default user profile should be implemented in case if user skipped user profile part
 todo: stripe API should be done.
 todo: hide the health condition in user profile when the user can click on it.
 todo: user need to manually find the food search for meal in the database meal API.
 todo: do the timing system for log meal when 1 day is over then it should reset to the first place.
 todo: user can create log meal manually in case of image recognition is not working.
-todo: improve the ChatBot said "hi how are you in the first place" for extra user experience.
+todo: improve the ChatBot said "hi how are you in the first place" for extra user experience. (done)
 todo: improve the UI in informing security part for health declaration is protected.
 todo: improve the UI, notification in food image recognition instead of small pop up from below.
 todo: find bugs.
-todo: lab 8 VR module should be completed.
+todo: add if (snapshot.exists())
+to protect from crashing null especially if the data is incorrect not match?
 
 # Create a Customer (use an existing Customer ID if this is a returning customer)
 curl https://api.stripe.com/v1/customers \

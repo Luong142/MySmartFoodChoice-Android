@@ -124,10 +124,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         dest.writeList(alrRedeemedRewardList);
     }
 
-    public String getDetail()
+    public String getFullUserDetail()
     {
         StringBuilder sb = new StringBuilder();
-
         sb.append("Height: ").append(this.height).append("\n");
         sb.append("Weight: ").append(this.weight).append("\n");
         sb.append("Gender: ").append(this.gender).append("\n");
@@ -142,6 +141,32 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         sb.append(" Peanut: ").append(isAllergyPeanut ? "Yes" : "No").append("\n");
         sb.append(" Egg: ").append(isAllergyEgg ? "Yes" : "No").append("\n");
         sb.append("---------------------------\n");
+        return sb.toString();
+    }
+
+    public String getUserProfileDetail()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Height: ").append(this.height).append("\n");
+        sb.append("Weight: ").append(this.weight).append("\n");
+        sb.append("Gender: ").append(this.gender).append("\n");
+        sb.append("Age: ").append(this.age).append("\n");
+        sb.append("Diet Type: ").append(this.dietType).append("\n");
+        return sb.toString();
+    }
+
+    public String getUserHealthDetail()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Health Conditions Summary:\n");
+        sb.append("---------------------------\n");
+        sb.append("High Blood Pressure: ").append(isHighBloodPressure ? "Yes" : "No").append("\n");
+        sb.append("Diabetes: ").append(isDiabetes ? "Yes" : "No").append("\n");
+        sb.append("High Cholesterol: ").append(isHighCholesterol ? "Yes" : "No").append("\n");
+        sb.append(" Seafood: ").append(isAllergySeafood ? "Yes" : "No").append("\n");
+        sb.append(" Peanut: ").append(isAllergyPeanut ? "Yes" : "No").append("\n");
+        sb.append(" Egg: ").append(isAllergyEgg ? "Yes" : "No").append("\n");
+        sb.append("---------------------------");
         return sb.toString();
     }
 
