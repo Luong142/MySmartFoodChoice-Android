@@ -35,7 +35,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.371">
+        app:layout_constraintVertical_bias="0.463">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/current_account_type"
                     android:textAlignment="center"
-                    android:textSize="25sp"
+                    android:textSize="30sp"
                     android:textStyle="italic" />
 
                 <TextView
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/unlock_premium_features"
                     android:textAlignment="center"
-                    android:textSize="25sp"
+                    android:textSize="30sp"
                     android:textStyle="italic" />
 
                 <TextView
@@ -113,9 +113,9 @@
             android:id="@+id/upgradeBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:backgroundTint="@color/peach_puff_new"
             android:text="@string/upgrade_now"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="25sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

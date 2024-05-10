@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.payments.paymentlauncher.PaymentResult;
+import com.stripe.android.paymentsheet.PaymentSheet;
+import com.stripe.android.paymentsheet.PaymentSheetResult;
+import com.stripe.android.paymentsheet.PaymentSheetResultCallback;
 
 import org.jetbrains.annotations.Contract;
 import org.json.JSONException;
@@ -54,6 +60,8 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
     StringRequest request;
 
     RequestQueue requestQueue;
+
+    PaymentSheet paymentSheet;
 
     static final String TAG = "UserUpgradeAccountToPremiumFragment";
     static final String PREMIUM_USER = "Premium User";
@@ -99,6 +107,10 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
 
             databaseReferenceUserAccounts.addValueEventListener(valueAccountTypeListener());
         }
+
+        // todo: STRIPE API, the only way is to create an activity instead of fragment.
+        PaymentConfiguration.init(requireContext(), this.publishableKey);
+        paymentSheet = new PaymentSheet(requireActivity(), onPaymentCallback());
 
         // first request
         request = new StringRequest(StringRequest.Method.POST, "https://api.stripe.com/v1/customers",
@@ -151,6 +163,25 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
         upgradeBtn.setOnClickListener(onUpgradeAccountListener());
     }
 
+    @NonNull
+    @Contract(" -> new")
+    private PaymentSheetResultCallback onPaymentCallback()
+    {
+        return this::onPaymentResult;
+    }
+
+    private void onPaymentResult(PaymentSheetResult paymentSheetResult)
+    {
+        if (paymentSheetResult instanceof PaymentSheetResult.Completed)
+        {
+            Toast.makeText(getContext(), "Payment Successful!", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Log.d(TAG, "onPaymentResult: " + paymentSheetResult.toString());
+        }
+    }
+
     private void getEmphericalKey()
     {
         // second request
@@ -161,9 +192,9 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
                     {
                         JSONObject jsonObject = new JSONObject(response);
 
-                        customerID = jsonObject.getString("id");
+                        emphericalKey = jsonObject.getString("id");
 
-                        Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
 
                         getClientSecret(customerID, emphericalKey);
                     }
@@ -211,7 +242,7 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
 
                         clientSecret = jsonObject.getString("client_secret");
 
-                        Toast.makeText(getContext(), clientSecret, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), clientSecret, Toast.LENGTH_SHORT).show();
                     }
                     catch (JSONException e)
                     {
@@ -280,6 +311,10 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
     {
         return v ->
         {
+            // API here
+            paymentFlow();
+
+
             // todo: we need to add payment page.
             if (userAccount != null)
             {
@@ -287,6 +322,12 @@ public class UserUpgradeAccountToPremiumFragment extends Fragment
                 databaseReferenceUserAccounts.setValue(userAccount).addOnCompleteListener(onUpgradeCompleteListener());
             }
         };
+    }
+
+    private void paymentFlow()
+    {
+        paymentSheet.presentWithPaymentIntent(clientSecret, new
+                PaymentSheet.Configuration("MySmartFoodChoice LTD PTE"));
     }
 
     @NonNull
