@@ -49,6 +49,7 @@ import io.paperdb.Paper;
 public class UserMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    private static final String PATH_USERPROFILE = "Android User Profile";
     DrawerLayout drawerLayout;
 
     // todo: init firebase components
@@ -74,7 +75,7 @@ public class UserMainMenuActivity extends AppCompatActivity
 
     final static String TAG = "UserMainMenuActivity";
 
-    final static String LABEL = "Registered Accounts"; // FIXME: the path need to access the account.
+    final static String PATH_ACCOUNT = "Registered Accounts"; // FIXME: the path need to access the account.
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
 
@@ -97,11 +98,11 @@ public class UserMainMenuActivity extends AppCompatActivity
         {
             userID = firebaseUser.getUid();
             // TODO: init database reference for user account
-            databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL).child(userID);
+            databaseReferenceRegisteredUser = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
             databaseReferenceRegisteredUser.addListenerForSingleValueEvent(valueRegisteredUserEventListener());
 
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
             databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
         }
 
@@ -115,17 +116,6 @@ public class UserMainMenuActivity extends AppCompatActivity
 
 
         // TODO: set UI components in nav_header
-
-        /*
-        firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                .setDisplayName("Default").build());
-
-        firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                .setPhotoUri("//").build());
-         */
-
-        // Log.d(TAG, "getEmail() function is " + firebaseUser.getEmail());
-        // Log.d(TAG, "getUid() function is " + firebaseUser.getUid());
 
         // TODO: for navigation drawer
         toolbar = findViewById(R.id.toolbar);

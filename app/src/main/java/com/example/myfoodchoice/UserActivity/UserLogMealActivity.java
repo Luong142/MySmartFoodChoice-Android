@@ -33,7 +33,7 @@ import java.util.Locale;
 public class UserLogMealActivity extends AppCompatActivity
 {
     // todo: declare firebase
-    DatabaseReference databaseReferenceUserProfile,
+    DatabaseReference
             databaseReferenceDailyFoodIntake,
             databaseReferenceDailyFoodIntakeChild,
             databaseReferenceAccount;
@@ -48,7 +48,7 @@ public class UserLogMealActivity extends AppCompatActivity
 
     String userID, gender, accountType;
 
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
     final static String PATH_DAILY_FOOD_INTAKE = "Meal";
 
@@ -98,10 +98,7 @@ public class UserLogMealActivity extends AppCompatActivity
             gender = "Male"; // fixme: by default value
             userID = firebaseUser.getUid();
 
-            // TODO: init database reference for user profile
-            databaseReferenceUserProfile =
-                    firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
-
+            // TODO: init database reference
             databaseReferenceDailyFoodIntake =
                     firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
 

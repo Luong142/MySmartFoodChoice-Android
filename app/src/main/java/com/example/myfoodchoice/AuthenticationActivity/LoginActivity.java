@@ -284,37 +284,6 @@ public class LoginActivity extends AppCompatActivity
 
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
                     {
-                        case "Guest":
-                            intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
-                            /*
-                            if (isTrialOver)
-                            {
-                            }
-                            else
-                            {
-                                alertGuestTrialOverDialog = new
-                                        AlertDialog.Builder(LoginActivity.this).create();
-                                alertGuestTrialOverDialog.setTitle("Trial Over");
-                                alertGuestTrialOverDialog.setMessage
-                                        ("Your trial period is over, please upgrade your account.");
-                                alertGuestTrialOverDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE,
-                                        "Confirm",
-                                        (dialog, which) ->
-                                        {
-                                            // dismiss and move the guest user to login page.
-                                            dialog.dismiss();
-                                            intent = new Intent(LoginActivity.this,
-                                                    GuestTrialOverActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        });
-                                alertGuestTrialOverDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE,
-                                        "Cancel",
-                                        (dialog, which) -> dialog.dismiss());
-                                alertGuestTrialOverDialog.show();
-                            }
-                             */
-                            break;
                         case "Premium User":
                             intent = new Intent(LoginActivity.this, UserPremiumMainMenuActivity.class);
                             break;
@@ -344,9 +313,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-                Toast.makeText
-                        (LoginActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
+                Log.d("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
             }
         };
     }

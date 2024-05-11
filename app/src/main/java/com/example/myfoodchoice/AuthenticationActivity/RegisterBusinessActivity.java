@@ -213,6 +213,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
 
                 // init user account
                 account = new Account(email, password); // with email and password
+                account.setAccountType("Dietitian");
                 businessProfile = new BusinessProfile();
 
                 // set name here.

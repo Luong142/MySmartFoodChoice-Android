@@ -45,7 +45,7 @@ public class DietitianViewUserProfileFragment extends Fragment implements OnReco
 
     DatabaseReference databaseReferenceUserProfile;
 
-    final static String PATH_USER_PROFILE = "User Profile";
+    final static String PATH_USER_PROFILE = "Android User Profile";
 
     final static String TAG = "DietitianViewUserProfileFragment";
 

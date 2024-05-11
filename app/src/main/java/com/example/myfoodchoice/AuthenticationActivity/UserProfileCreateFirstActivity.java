@@ -72,7 +72,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
-    static final String LABEL = "User Profile";
+    static final String LABEL = "Android User Profile";
 
     Uri selectedImageUri;
 

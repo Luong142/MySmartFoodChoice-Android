@@ -39,6 +39,7 @@ import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
+import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
@@ -85,6 +86,7 @@ import retrofit2.Response;
 public class UserLogMealNutritionAnalysisFragment extends Fragment implements OnDishClickListener
 {
     final static String TAG = "UserLogMealNutritionFragment";
+    private static final String PATH_ACCOUNT_TYPE = "Registered Accounts";
     int imageSize;
 
     // TODO: declare UI components
@@ -135,17 +137,20 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     FirebaseDatabase firebaseDatabase;
 
+    FirebaseStorage firebaseStorage;
+
     FirebaseUser firebaseUser;
 
     String userID, foodName, dietType;
 
     boolean isSeafoodAllergic, isPeanutAllergic, isEggAllergic;
 
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
-    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily meal.
+    final static String PATH_DAILY_FOOD_INTAKE = "Android Meals"; // fixme:  the path need to access daily meal.
 
     NutritionMeal nutritionMeal;
+
     double totalCalories, totalCholesterol, totalSalt, totalSugar;
 
     RecyclerView dishRecyclerView;
@@ -173,6 +178,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         firebaseDatabase = FirebaseDatabase.getInstance
                 ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
+        firebaseStorage = FirebaseStorage.getInstance();
+
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -191,7 +198,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
             databaseReferenceUserProfile.addValueEventListener(onHealthUserProfileListener());
 
-            storageReferenceFoodImage = FirebaseStorage.getInstance().getReference()
+            storageReferenceFoodImage = firebaseStorage.getReference()
                     .child("Food Images")
                     .child(userID);
         }
@@ -518,7 +525,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                         // assign the variable to the is foodItems array list.
 
                         // FIXME: sometime the API doesn't give response.
-                        Log.d(TAG, "onResponse: " + foodItem);
+                        // Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
                         // get all total calculations
                         for (FoodItem.Item itemLoop : foodItem.getItems())
@@ -532,15 +539,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
 
-                            if (firebaseUser.getDisplayName() == null)
-                            {
-                                // this is for the guest, they don't have their own user profile
-                                return;
-                            }
 
                             // fixme: remember must be unique name if not will be override
                             String uniqueImageName = firebaseUser.getDisplayName() + "_" +
-                                    UUID.randomUUID().toString() + ".jpg";
+                                    UUID.randomUUID() + ".jpg";
 
                             // upload the image to Firebase Storage
                             final StorageReference storageReference = storageReferenceFoodImage.child
@@ -570,6 +572,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                         nutritionMeal.setTotalCholesterol(totalCholesterol);
                         nutritionMeal.setTotalSodium(totalSalt);
                         nutritionMeal.setTotalSugar(totalSugar);
+
+                        // Log.d(TAG, String.valueOf(nutritionMeal.getTotalCalories()));
 
                         // update the individual nutrition value
                         updateDishNutritionUI();
@@ -936,7 +940,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
                 // todo: go to the home page.
                 requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new UserHomeAlvinFragment())
+                        .replace(R.id.fragment_container, new UserLogMealFragment())
                         .commit();
             }
             else

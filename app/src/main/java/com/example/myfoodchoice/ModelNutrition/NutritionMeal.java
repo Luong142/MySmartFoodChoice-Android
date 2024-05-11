@@ -83,7 +83,6 @@ public class NutritionMeal implements Parcelable
         this.isMorning = in.readByte() != 0;
         this.isAfternoon = in.readByte() != 0;
         this.isNight = in.readByte() != 0;
-
         // this will read the object
         this.dishes = in.readParcelable(FoodItem.class.getClassLoader());
         this.date = (Date) in.readSerializable();

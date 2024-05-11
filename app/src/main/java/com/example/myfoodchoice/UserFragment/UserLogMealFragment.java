@@ -48,9 +48,9 @@ public class UserLogMealFragment extends Fragment
 
     String userID, gender;
 
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
-    final static String PATH_DAILY_FOOD_INTAKE = "Meals";
+    final static String PATH_DAILY_FOOD_INTAKE = "Android Meals";
 
     final static String TAG = "UserLogMealFragment";
 

@@ -32,7 +32,7 @@ public class UserProfileCreateSecondActivity extends AppCompatActivity
 
     DatabaseReference databaseReferenceUserProfile;
 
-    final static String PATH_USERPROFILE = "User Profile";
+    final static String PATH_USERPROFILE = "Android User Profile";
 
 
 

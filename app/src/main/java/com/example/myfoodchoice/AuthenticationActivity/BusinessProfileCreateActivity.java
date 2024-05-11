@@ -66,7 +66,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     FirebaseUser firebaseUser;
 
-    DatabaseReference databaseReferenceTrainerProfile;
+    DatabaseReference databaseReferenceDietitianProfile;
 
     StorageReference storageReferenceProfilePics;
 
@@ -100,7 +100,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReferenceTrainerProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
+        databaseReferenceDietitianProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
         storageReferenceProfilePics =
                 FirebaseStorage.getInstance().getReference().child("ProfilePics");
         databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
@@ -215,6 +215,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             {
                 Uri downloadUri = task.getResult();
                 myUri = downloadUri.toString();
+                role = "Dietitian";
 
                 // set data here
                 businessProfile.setFirstName(firstNameString);
@@ -230,14 +231,11 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                     Toast.makeText(this, "Account object is null", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 account.setAccountType(role);
 
                 // FIXME: set image here based on the model
                 businessProfile.setProfileImageUrl(myUri);
-
-                // Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
-                // Log.d(TAG, "onCompleteUploadListener: " + userAccount);
-                // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
 
                 // TODO: set the value based on TrainerProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
@@ -262,7 +260,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     {
         return task ->
         {
-            databaseReferenceTrainerProfile.setValue(businessProfile)
+            databaseReferenceDietitianProfile.setValue(businessProfile)
                     .addOnCompleteListener(onCompleteListener())
                     .addOnFailureListener(onFailurePart());
 
@@ -356,7 +354,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     private void getUserInfo()
     {
-        databaseReferenceTrainerProfile.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
+        databaseReferenceDietitianProfile.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
     }
 
     @NonNull

@@ -46,9 +46,9 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceMeals;
 
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
-    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily globalMeal.
+    final static String PATH_DAILY_FOOD_INTAKE = "Android Meals"; // fixme:  the path need to access daily globalMeal.
 
     String userID;
 

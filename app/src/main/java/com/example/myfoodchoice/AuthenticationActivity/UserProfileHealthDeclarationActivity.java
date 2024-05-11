@@ -55,7 +55,7 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 
     final static String TAG = "UserProfileHealthDeclaration";
 
-    final static String PATH_USERPROFILE = "User Profile";
+    final static String PATH_USERPROFILE = "Android User Profile";
 
     ArrayList<UserProfile> dietTypeArrayList;
 

@@ -37,6 +37,7 @@ import org.jetbrains.annotations.Contract;
 
 public class UserProfileViewFragment extends Fragment
 {
+    private static final String PATH_USERPROFILE = "Android User Profile";
     // todo: we need to update more attributes (weight, diet type)
     // TODO: declare UI components
     Button updateProfileBtn, deleteAccountBtn;
@@ -84,7 +85,7 @@ public class UserProfileViewFragment extends Fragment
             userID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
             databaseReferenceRegisteredAccounts = firebaseDatabase
                     .getReference("Registered Accounts").child(userID);
 

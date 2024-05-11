@@ -90,7 +90,7 @@ public class MealDetailHistoryAdapter extends RecyclerView.Adapter<MealDetailHis
             Picasso.get()
                     .load(Uri.parse(item.getFoodImage()))
                     .resize(150, 150)
-                    .error(R.drawable.error)
+                    .error(R.drawable.food_placeholder)
                     .into(holder.foodImage);
             holder.foodName.setText(item.getName());
 

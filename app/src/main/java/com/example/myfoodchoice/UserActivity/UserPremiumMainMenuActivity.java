@@ -80,6 +80,8 @@ public class UserPremiumMainMenuActivity extends AppCompatActivity implements Na
 
     final static String LABEL = "Registered Accounts"; // FIXME: the path need to access the account.
     Toolbar toolbar;
+
+    private static final String PATH_USERPROFILE = "Android User Profile";
     ActionBarDrawerToggle toggle;
 
     @Override
@@ -105,7 +107,7 @@ public class UserPremiumMainMenuActivity extends AppCompatActivity implements Na
             databaseReferenceRegisteredUser.addListenerForSingleValueEvent(valueRegisteredUserEventListener());
 
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
             databaseReferenceUserProfile.addListenerForSingleValueEvent(valueUserProfileEventListener());
         }
 

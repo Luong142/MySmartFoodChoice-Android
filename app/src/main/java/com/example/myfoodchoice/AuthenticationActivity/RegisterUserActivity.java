@@ -68,7 +68,7 @@ public class RegisterUserActivity extends AppCompatActivity
 
     static final String PATH_ACCOUNTS = "Registered Accounts";
 
-    static final String PATH_USERPROFILE = "User Profile";
+    static final String PATH_USERPROFILE = "Android User Profile";
 
     DatabaseReference databaseReferenceRegisteredUser, databaseReferenceUserProfile;
     String email, password;

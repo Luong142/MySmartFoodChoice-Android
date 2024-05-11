@@ -77,7 +77,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
-    final static String PATH_USERPROFILE = "User Profile";
+    final static String PATH_USERPROFILE = "Android User Profile";
 
     final static String PATH_ACCOUNT_TYPE = "Registered Accounts";
 
