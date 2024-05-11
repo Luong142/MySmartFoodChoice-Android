@@ -112,7 +112,7 @@ public class UserPaymentActivity extends AppCompatActivity
 
                         customerID = jsonObject.getString("id");
 
-                        Log.d(TAG, "customer id: " + customerID);
+                        // Log.d(TAG, "customer id: " + customerID);
 
                         getEmphericalKey();
                     }
@@ -209,7 +209,18 @@ public class UserPaymentActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-
+                if (userAccount.getAccountType().equals("Premium User"))
+                {
+                    Intent intent = new Intent(this, UserPremiumMainMenuActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    Intent intent = new Intent(this, UserMainMenuActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
             else
             {
@@ -256,7 +267,7 @@ public class UserPaymentActivity extends AppCompatActivity
 
                         emphericalKey = jsonObject.getString("id");
 
-                        Log.d(TAG, "empherical key: " + emphericalKey);
+                        // Log.d(TAG, "empherical key: " + emphericalKey);
 
                         getClientSecret(customerID, emphericalKey);
                     }
@@ -304,7 +315,7 @@ public class UserPaymentActivity extends AppCompatActivity
 
                         clientSecret = jsonObject.getString("client_secret");
 
-                        Log.d(TAG, "onResponse client secret: " + clientSecret);
+                        // Log.d(TAG, "onResponse client secret: " + clientSecret);
                     }
                     catch (JSONException e)
                     {

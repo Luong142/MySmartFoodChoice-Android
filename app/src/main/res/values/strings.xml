@@ -97,7 +97,7 @@
     <string name="_1320">1320</string>
     <string name="_2200">/2200</string>
     <string name="calories">Calories</string>
-    <string name="breakfast">Breakfast:</string>
+    <string name="breakfast">Breakfast</string>
     <string name="_650">650</string>
     <string name="upload_a_photo">Upload a photo</string>
     <string name="_60">60%</string>
@@ -274,4 +274,6 @@
     <string name="access_your_personalized_virtual_assistant_now">Access Your Personalized Virtual Assistant Now</string>
     <string name="make_payment">Make Payment</string>
     <string name="start_your_journey_in_improving_your_health_today">Start Your Journey In Improving Your Health Today</string>
+    <string name="dinner">Dinner</string>
+    <string name="lunch">Lunch</string>
 </resources>

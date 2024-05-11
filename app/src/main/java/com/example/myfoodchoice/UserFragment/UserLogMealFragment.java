@@ -72,7 +72,7 @@ public class UserLogMealFragment extends Fragment
 
     Button morningBtn, afternoonBtn, nightBtn;
 
-    TextView caloriesCountText, cholesterolCountText, sugarCountText, saltCountText, genderText;
+    TextView caloriesCountText, cholesterolCountText, sugarCountText, saltCountText, timeTextView;
 
     Bundle bundleStore;
 
@@ -160,7 +160,7 @@ public class UserLogMealFragment extends Fragment
         cholesterolCountText = view.findViewById(R.id.cholesterolNumTextView);
         sugarCountText = view.findViewById(R.id.sugarNumTextView);
         saltCountText = view.findViewById(R.id.sodiumNumTextView);
-        genderText = view.findViewById(R.id.genderTextView);
+        timeTextView = view.findViewById(R.id.timeTextView);
 
         morningBtn.setOnClickListener(onNavToUserMealRecordMorningListener());
         afternoonBtn.setOnClickListener(onNavToUserMealRecordAfternoonListener());
@@ -532,8 +532,8 @@ public class UserLogMealFragment extends Fragment
                             break;
                     }
 
-                    // display gender
-                    genderText.setText(String.format(Locale.ROOT, "Gender: %s", gender));
+                    // display time here
+                    timeTextView.setText(String.format(Locale.ROOT, "Gender: %s", gender));
 
                     // todo: for health
                     isDiabetes = userProfile.isDiabetes();
