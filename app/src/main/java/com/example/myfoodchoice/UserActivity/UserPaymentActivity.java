@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
@@ -42,7 +39,7 @@ import java.util.Map;
 
 public class UserPaymentActivity extends AppCompatActivity
 {
-    // todo: https://www.youtube.com/watch?v=-1dX7mEV80M&ab_channel=CodewithArvind
+    private static final String PREMIUM_USER = "Premium User";
     String secretKey = "sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu";
     String publishableKey = "pk_test_51PE9Gp2Lluf0ZsJHLz9trebrLFYm75gSsTJXCYq4X0kG5BtrT6p21ydg6lR2SmRbo7gNIqkwYWQM15ysxpkgbkxN009EdwKmNc";
 
@@ -76,6 +73,8 @@ public class UserPaymentActivity extends AppCompatActivity
 
     // todo: for UI
     FloatingActionButton backBtn;
+
+    Button paymentBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -113,7 +112,7 @@ public class UserPaymentActivity extends AppCompatActivity
 
                         customerID = jsonObject.getString("id");
 
-                        Toast.makeText(this, customerID, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "customer id: " + customerID);
 
                         getEmphericalKey();
                     }
@@ -141,46 +140,39 @@ public class UserPaymentActivity extends AppCompatActivity
 
         // todo: for UI
         backBtn = findViewById(R.id.backBtn);
+        paymentBtn = findViewById(R.id.paymentBtn);
 
         backBtn.setOnClickListener(onBackListener());
+        paymentBtn.setOnClickListener(onPaymentBtnListener());
     }
 
     @NonNull
     @Contract(pure = true)
-    private View.OnClickListener onBackListener()
+    private View.OnClickListener onPaymentBtnListener()
     {
-        return v ->
+        return  v ->
         {
-            if (userAccount == null)
+            if (emphericalKey == null)
             {
-                Log.d(TAG, "onBackListener: userAccount is null");
+                Toast.makeText(this, "Please wait, loading...", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (userAccount.getAccountType().equals("Premium User"))
+            if (secretKey == null)
             {
-                Intent intent = new Intent(this, UserPremiumMainMenuActivity.class);
-                startActivity(intent);
-                finish();
+                Toast.makeText(this, "Please wait, loading...", Toast.LENGTH_SHORT).show();
+                return;
             }
-            else
-            {
-                Intent intent = new Intent(this, UserMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
+
+            paymentFlow();
         };
     }
 
-    /*
-    // todo: we need to add payment page.
-            if (userAccount != null)
-            {
-                userAccount.setAccountType(PREMIUM_USER);
-                databaseReferenceUserAccounts.setValue(userAccount)
-                        .addOnCompleteListener(onUpgradeCompleteListener());
-            }
-     */
+    private void paymentFlow()
+    {
+        paymentSheet.presentWithPaymentIntent(clientSecret, new
+                PaymentSheet.Configuration("MySmartFoodChoice LTD PTE"));
+    }
 
     @NonNull
     @Contract(" -> new")
@@ -238,6 +230,13 @@ public class UserPaymentActivity extends AppCompatActivity
         if (paymentSheetResult instanceof PaymentSheetResult.Completed)
         {
             Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show();
+            // todo: this is where we upgrade user account.
+            if (userAccount != null)
+            {
+                userAccount.setAccountType(PREMIUM_USER);
+                databaseReferenceUserAccounts.setValue(userAccount)
+                        .addOnCompleteListener(onUpgradeCompleteListener());
+            }
         }
         else
         {
@@ -257,7 +256,7 @@ public class UserPaymentActivity extends AppCompatActivity
 
                         emphericalKey = jsonObject.getString("id");
 
-                        //Toast.makeText(this, customerID, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "empherical key: " + emphericalKey);
 
                         getClientSecret(customerID, emphericalKey);
                     }
@@ -305,7 +304,7 @@ public class UserPaymentActivity extends AppCompatActivity
 
                         clientSecret = jsonObject.getString("client_secret");
 
-                        //Toast.makeText(this, clientSecret, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onResponse client secret: " + clientSecret);
                     }
                     catch (JSONException e)
                     {
@@ -341,9 +340,30 @@ public class UserPaymentActivity extends AppCompatActivity
         requestQueue.add(request);
     }
 
-    private void paymentFlow()
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onBackListener()
     {
-        paymentSheet.presentWithPaymentIntent(clientSecret, new
-                PaymentSheet.Configuration("MySmartFoodChoice LTD PTE"));
+        return v ->
+        {
+            if (userAccount == null)
+            {
+                Log.d(TAG, "onBackListener: userAccount is null");
+                return;
+            }
+
+            if (userAccount.getAccountType().equals("Premium User"))
+            {
+                Intent intent = new Intent(this, UserPremiumMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Intent intent = new Intent(this, UserMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
     }
 }
