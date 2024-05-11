@@ -5,11 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AuthenticationActivity.RegisterUserActivity"
-    android:background="@drawable/bg_gradient_color_main"
-    >
-
-    <!-- android:background="@drawable/app_background"
-    copy this and paste for background -->
+    android:background="@drawable/bg_gradient_color_main">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/backBtn"
@@ -30,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="24dp"
-        android:text="@string/term_and_condition"
+        android:text="Terms\nConditions"
         android:textColor="@color/white"
         android:textSize="50sp"
         android:textStyle="italic"
@@ -64,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Welcome to MySmartFoodChoice"
-                android:textSize="25sp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 />
@@ -72,8 +68,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="By using our services, "
-                android:textSize="25sp"
+                android:layout_marginBottom="30dp"
+                android:text="By using our services"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 />
@@ -81,9 +78,54 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="you agree to the following terms and conditions"
+                android:text="- Your health data is protected"
                 android:textSize="25sp"
-                android:textStyle="bold"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Allow accessing your health data"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Commitment to user privacy"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Regular updates based on feedback"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Privacy policy adherence"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- No spam or advertisement"
+                android:textSize="25sp"
+                android:textStyle="italic"
                 android:textAlignment="center"
                 />
         </LinearLayout>

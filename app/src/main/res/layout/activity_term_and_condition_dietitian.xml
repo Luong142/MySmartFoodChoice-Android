@@ -60,7 +60,78 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Welcome to MySmartFoodChoice"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:text="By using our services\n----------------------------------"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Your profile is protected"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Professional conduct and ethics"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Confidentiality of client data"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Adherence to dietary guidelines"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Regular client communication"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Commitment to client satisfaction"
+                android:textSize="25sp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
