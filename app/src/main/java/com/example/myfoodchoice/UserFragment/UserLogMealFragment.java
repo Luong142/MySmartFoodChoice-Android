@@ -199,6 +199,7 @@ public class UserLogMealFragment extends Fragment
             // display the counter
             caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                     totalCalories, maxCalories));
+            caloriesCountText.setTextColor(Color.RED);
         }
         if (totalCholesterol > maxCholesterol)
         {
@@ -206,6 +207,7 @@ public class UserLogMealFragment extends Fragment
             totalCholesterol = maxCholesterol;
             cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                     totalCholesterol, maxCalories));
+            cholesterolCountText.setTextColor(Color.RED);
         }
         if (totalSugar > maxSugar)
         {
@@ -213,6 +215,7 @@ public class UserLogMealFragment extends Fragment
             totalSugar = maxSugar;
             sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                     totalSugar, maxSugar));
+            sugarCountText.setTextColor(Color.RED);
         }
         if (totalSalt > maxSalt)
         {
@@ -220,17 +223,15 @@ public class UserLogMealFragment extends Fragment
             totalSalt = maxSalt;
             saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                     totalSalt, maxSalt));
+            saltCountText.setTextColor(Color.RED);
         }
 
         // Display the Snackbar
         if (messageBuilder.length() > 0)
         {
             Snackbar.make(view, messageBuilder.toString(), Snackbar.LENGTH_LONG).show();
-
-
         }
     }
-
 
     private void refreshUIDisplay()
     {
@@ -265,15 +266,19 @@ public class UserLogMealFragment extends Fragment
         // display the counter
         caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                 totalCalories, maxCalories));
+        caloriesCountText.setTextColor(Color.BLACK);
 
         cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                 totalCholesterol, maxCholesterol));
+        cholesterolCountText.setTextColor(Color.BLACK);
 
         sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
                 totalSugar, maxSugar));
+        sugarCountText.setTextColor(Color.BLACK);
 
         saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                 totalSalt, maxSalt));
+        saltCountText.setTextColor(Color.BLACK);
     }
 
     @NonNull
@@ -312,13 +317,7 @@ public class UserLogMealFragment extends Fragment
                         totalSugar += nutritionMeal1.getTotalSugar();
                         totalSalt += nutritionMeal1.getTotalSodium();
 
-                        /*
-                        new Handler(Looper.getMainLooper()).post(() ->
-                            {
-                                // update UI elements here
-                                refreshUIDisplay();
-                            });
-                         */
+                        initNotification();
                     }
                     else
                     {
@@ -599,8 +598,6 @@ public class UserLogMealFragment extends Fragment
                     // Fragment is not currently added to its activity, so we don't perform any operations
                     return;
                 }
-
-                initNotification();
 
                 userProfile = snapshot.getValue(UserProfile.class);
 

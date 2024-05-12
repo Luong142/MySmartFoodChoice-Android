@@ -242,7 +242,7 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new
                         Intent(LoginActivity.this, UserPremiumMainMenuActivity.class);
                 startActivity(intent);
@@ -250,7 +250,8 @@ public class LoginActivity extends AppCompatActivity
             }
             else
             {
-                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Error, " +
+                        "there is something wrong with database", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -406,7 +407,7 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
                 startActivity(intent);
                 finish();
@@ -425,7 +426,7 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
                 startActivity(intent);
                 finish();
