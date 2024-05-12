@@ -118,9 +118,11 @@ public class UserChatBotMessageFragment extends Fragment
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.requireContext());
         linearLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(linearLayoutManager);
+        chatRecyclerView.smoothScrollToPosition(messageArrayList.size());
+        chatRecyclerView.setVerticalScrollBarEnabled(true);
 
         // todo: on start chat bot should say hello
-        messageArrayList.add(new Message("Hello, how may I assist you today?", Message.SEND_BY_BOT));
+        messageArrayList.add(new Message("Hello! how can I assist you today?", Message.SEND_BY_BOT));
         userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
     }
 
@@ -228,22 +230,20 @@ public class UserChatBotMessageFragment extends Fragment
         {
             String question = editMessageText.getText().toString().trim();
             addToChat(question, Message.SEND_BY_ME);
-
             StringBuilder sbContext = new StringBuilder();
-            sbContext.append("You are the best assistant in the world. " +
-                    "You are my chat-bot in my Smart Food Choice Android App\n");
-            sbContext.append("Your job is to provide friendly to our user as they are valuable customer.\n");
-            sbContext.append("Here is my user profile details\n").append(userProfile.getFullUserDetail());
-
             // fixme: we can improve this prompt engineering by formatting the context for chat bot
+            sbContext.append("You are the best, helpful, friendly assistant in the world.\n" +
+                    "You are my chat-bot in my Smart Food Choice Android App\n");
+            sbContext.append("Do not show that you can read user profile to user, use this detail to serve them\n")
+                    .append(userProfile.getFullUserDetail());
             if (globalNutritionMeal != null)
             {
-                sbContext.append("\nHere is my meal details\n").append(globalNutritionMeal.toString());
+                sbContext.append("Do not show that you can read nutrition meal to user, use this detail to serve them\n")
+                        .append(globalNutritionMeal.toString());
             }
-
             if (items != null)
             {
-                sbContext.append("\nHere is my meal items details\n");
+                sbContext.append("\nDo not show that you can read item to user, use this detail to serve them\n");
                 for (FoodItem.Item item : items)
                 {
                     sbContext.append(item.toString());

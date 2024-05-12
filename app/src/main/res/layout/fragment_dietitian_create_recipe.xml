@@ -160,7 +160,7 @@
             android:layout_marginEnd="20dp"
             android:backgroundTint="@color/peach_puff"
             android:contentDescription="@string/todo"
-            android:src="@drawable/add" />
+            android:src="@drawable/add_new" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/clearTextRecipeBtn"

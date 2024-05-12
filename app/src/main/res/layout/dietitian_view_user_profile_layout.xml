@@ -27,7 +27,7 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addRecommendedRecipeBtn"
                 android:layout_gravity="center"
-                android:src="@drawable/add"
+                android:src="@drawable/add_new"
                 android:tooltipText="Recommend this user with your recipe"
                 android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/pink"

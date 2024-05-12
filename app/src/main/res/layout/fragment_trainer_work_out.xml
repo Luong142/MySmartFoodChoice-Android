@@ -44,7 +44,7 @@
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/dodger_blue"
             android:contentDescription="@string/create_work_out"
-            android:src="@drawable/add"
+            android:src="@drawable/add_new"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

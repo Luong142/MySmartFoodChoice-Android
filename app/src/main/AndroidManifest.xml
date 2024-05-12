@@ -38,6 +38,9 @@
         android:theme="@style/Theme.MyFoodChoice"
         tools:targetApi="31">
         <activity
+            android:name=".UserActivity.UserViewDishInMealActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserActivity.UserPaymentActivity"
             android:exported="false" />
         <activity

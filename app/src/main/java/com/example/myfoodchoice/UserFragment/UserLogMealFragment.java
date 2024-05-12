@@ -233,7 +233,7 @@ public class UserLogMealFragment extends Fragment
                 saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
-                // todo: improve this system if over 7 days.
+                // todo: improve this system if over 1 days.
 
                 /*
                     // reset the value whenever the nutrition value is changed.

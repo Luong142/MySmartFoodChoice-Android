@@ -277,4 +277,6 @@
     <string name="dinner">Dinner</string>
     <string name="lunch">Lunch</string>
     <string name="clear_all_text">Clear All Text</string>
+    <string name="add_dish_in_meal">Add Dish In Meal</string>
+    <string name="view_dish_in_meal">View Dish In Meal</string>
 </resources>

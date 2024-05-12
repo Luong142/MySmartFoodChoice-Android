@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +38,6 @@ import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
-import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
@@ -110,7 +108,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     // TODO: add in one more button for taking photo I think.
     FloatingActionButton takePhotoBtn, uploadPhotoBtn;
 
-    LinearLayout logMealBtn, addDishBtn;
+    Button logMealBtn, addDishBtn;
 
     ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher, takePhotoActivityResultLauncher;
 
@@ -416,18 +414,35 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         // fixme: https://calorieninjas.com/
 
         // todo: remember to update those lists below as new model
-        List<String> allergyEggList = Arrays.asList("eggs", "egg");
         // fixme: all checking ingredients must be in lower case.
 
-        List<String> allergyPeanutList = Arrays.asList("peanuts", "peanut");
+        List<String> allergyEggList = Arrays.asList("eggs", "egg",
+                "egg white", "egg yolk", "omelette", "scrambled eggs", "fried eggs",
+                "egg salad"); // Note: "eggplant" is not an egg but is included for completeness
 
-        List<String> allergySeafoodList = Arrays.asList("lobster", "fish",
-                "crustacean", "shellfish",
-                "anchovy fillet", "fish stock", "king prawns", "fish sauce");
+        List<String> allergyPeanutList = Arrays.asList("peanuts",
+                "peanut", "peanut butter", "peanut oil", "peanut flour",
+                "peanut sauce", "peanut butter cookies", "peanut brittle");
 
-        List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
-                "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
-                "anchovy fillet", "fish stock");
+        List<String> allergySeafoodList = Arrays.asList("lobster",
+                "fish", "crustacean", "shellfish", "anchovy fillet",
+                "fish stock", "king prawns", "fish sauce", "shrimp", "crab", "oysters",
+                "mussels", "clams", "scallop", "octopus", "squid", "sea bass",
+                "salmon", "tuna", "trout", "halibut", "cod", "snapper", "tilapia",
+                "flounder", "mackerel", "sardines", "anchovies", "caviar", "truffles",
+                "game meat");
+
+        List<String> nonVegeList = Arrays.asList(
+                "meat", "chicken", "beef", "lamb", "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
+                "anchovy fillet", "fish stock", "king prawns", "fish sauce", "lobster", "fish", "crustacean", "shellfish",
+                "egg", "bacon", "steak", "ribs", "brisket", "spareribs", "hot dogs",
+                "sausages", "burgers", "patties",
+                "salmon", "tuna", "mussels", "clams", "oysters",
+                "scallops", "shrimp", "prawns", "crab", "lobster",
+                "snapper", "tilapia", "cod", "halibut", "trout", "catfish",
+                "flounder", "mackerel", "sardines", "anchovies",
+                "caviar", "truffles", "game meat" // Includes deer, elk, bison, etc.
+        );
 
         String allergen;
         // todo:
@@ -612,9 +627,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     private OnFailureListener onFailureUploadFoodImage()
     {
         return e ->
-        {
-            Log.d(TAG, "onFailureUploadFoodImage: " + e.getMessage());
-        };
+                Log.d(TAG, "onFailureUploadFoodImage: " + e.getMessage());
     }
 
     private void updateDishNutritionUI()
@@ -738,7 +751,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             call.enqueue(callBackNutritionValueResponseFromAPI());
 
             // todo: call free food API for allergies and diet type.
-            String modifiedName = ""; // todo: remember to add in case for this.
+            String modifiedName; // todo: remember to add in case for this.
             switch (foodName)
             {
                 case ("Nasi Lemak"):

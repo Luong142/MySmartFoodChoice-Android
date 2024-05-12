@@ -194,7 +194,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="50dp"
                 android:contentDescription="@string/increment_weight"
-                android:src="@drawable/add" />
+                android:src="@drawable/add_new" />
         </LinearLayout>
     </LinearLayout>
 
@@ -254,7 +254,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="50dp"
                 android:contentDescription="@string/increment_age"
-                android:src="@drawable/add" />
+                android:src="@drawable/add_new" />
         </LinearLayout>
     </LinearLayout>
 
