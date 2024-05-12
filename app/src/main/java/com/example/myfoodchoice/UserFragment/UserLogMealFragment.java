@@ -1,13 +1,13 @@
 package com.example.myfoodchoice.UserFragment;
 
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,12 +31,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
 
 public class UserLogMealFragment extends Fragment
 {
+    private static final int NOTIFICATION_ID = 1;
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceDailyFoodIntake;
 
@@ -67,7 +73,9 @@ public class UserLogMealFragment extends Fragment
 
     NutritionMeal nutritionMeal;
 
-    ProgressBar progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
+    Date currentDateMeal, currentRealTimeDate;
+
+    CircularProgressIndicator progressBarCalories, progressBarCholesterol, progressBarSugar, progressBarSalt;
     // fixme: apply this pie chart instead of progress bar.
 
     Button morningBtn, afternoonBtn, nightBtn;
@@ -83,6 +91,8 @@ public class UserLogMealFragment extends Fragment
     StringBuilder alertDialogMessage;
 
     private final HashMap<String, NutritionMeal> mealCache = new HashMap<>();
+    public SimpleDateFormat sdfDate;
+    public String formattedCurrentDate, formattedMealDate;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -162,6 +172,13 @@ public class UserLogMealFragment extends Fragment
         saltCountText = view.findViewById(R.id.sodiumNumTextView);
         timeTextView = view.findViewById(R.id.timeTextView);
 
+        // display time here
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Singapore"));
+        currentRealTimeDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        sdfDate = new SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.ENGLISH);
+        formattedCurrentDate = sdfDate.format(currentRealTimeDate);
+        timeTextView.setText(formattedCurrentDate);
+
         morningBtn.setOnClickListener(onNavToUserMealRecordMorningListener());
         afternoonBtn.setOnClickListener(onNavToUserMealRecordAfternoonListener());
         nightBtn.setOnClickListener(onNavToUserMealRecordNightListener());
@@ -169,6 +186,94 @@ public class UserLogMealFragment extends Fragment
         // init view
         this.view = view;
         alertDialogMessage = new StringBuilder();
+    }
+
+    public void initNotification()
+    {
+        // Build the Snackbar message
+        StringBuilder messageBuilder = new StringBuilder();
+        if (totalCalories > maxCalories)
+        {
+            messageBuilder.append("You have exceeded your daily calorie intake limit.\n");
+            totalCalories = maxCalories;
+            // display the counter
+            caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
+                    totalCalories, maxCalories));
+        }
+        if (totalCholesterol > maxCholesterol)
+        {
+            messageBuilder.append("You have exceeded your daily cholesterol intake limit.\n");
+            totalCholesterol = maxCholesterol;
+            cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
+                    totalCholesterol, maxCalories));
+        }
+        if (totalSugar > maxSugar)
+        {
+            messageBuilder.append("You have exceeded your daily sugar intake limit.\n");
+            totalSugar = maxSugar;
+            sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
+                    totalSugar, maxSugar));
+        }
+        if (totalSalt > maxSalt)
+        {
+            messageBuilder.append("You have exceeded your daily sodium intake limit.\n");
+            totalSalt = maxSalt;
+            saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
+                    totalSalt, maxSalt));
+        }
+
+        // Display the Snackbar
+        if (messageBuilder.length() > 0)
+        {
+            Snackbar.make(view, messageBuilder.toString(), Snackbar.LENGTH_LONG).show();
+
+
+        }
+    }
+
+
+    private void refreshUIDisplay()
+    {
+        // init them
+        totalCalories = 0;
+        totalCholesterol = 0;
+        totalSalt = 0;
+        totalSugar = 0;
+
+        percentageCalories = 0;
+        percentageCholesterol = 0;
+        percentageSalt = 0;
+        percentageSugar = 0;
+
+        progressBarCalories.setProgress((int) percentageCalories);
+        caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
+                percentageCalories));
+
+        progressBarCholesterol.setProgress((int) percentageCholesterol);
+        cholesterolText.setText(String.format(Locale.ROOT, "%.1f%%",
+                percentageCholesterol));
+
+        // fixme: recalculate sodium percentage
+        progressBarSalt.setProgress((int) percentageSalt);
+        saltText.setText(String.format(Locale.ROOT, "%.1f%%",
+                percentageSalt));
+
+        progressBarSugar.setProgress((int) percentageSugar);
+        sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
+                percentageSugar));
+
+        // display the counter
+        caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
+                totalCalories, maxCalories));
+
+        cholesterolCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
+                totalCholesterol, maxCholesterol));
+
+        sugarCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f g",
+                totalSugar, maxSugar));
+
+        saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
+                totalSalt, maxSalt));
     }
 
     @NonNull
@@ -181,15 +286,45 @@ public class UserLogMealFragment extends Fragment
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
+                // Log.d(TAG, currentDate);
                 NutritionMeal nutritionMeal1 = snapshot.getValue(NutritionMeal.class);
                 if (nutritionMeal1 != null)
                 {
-                    mealCache.put(snapshot.getKey(), nutritionMeal);
-                    // Log.d(TAG, "onChildAdded: " + meal1);
-                    totalCalories += nutritionMeal1.getTotalCalories();
-                    totalCholesterol += nutritionMeal1.getTotalCholesterol();
-                    totalSugar += nutritionMeal1.getTotalSugar();
-                    totalSalt += nutritionMeal1.getTotalSodium();
+                    // for time
+                    currentDateMeal = nutritionMeal1.getDate();
+                    formattedMealDate = sdfDate.format(currentDateMeal);
+                    // Log.d(TAG, currentDateMeal.toString());
+                    // fixme: must extract only the date and compare them.
+
+                    // fixme: pls note that this realtime system check haven't tested yet.
+                    // still find a way to test this.
+                    if (formattedMealDate.equals(formattedCurrentDate))
+                    {
+                        /*
+                        Log.d(TAG, "onChildAdded: yes");
+                        Log.d(TAG, currentDateMeal.toString());
+                        Log.d(TAG, currentRealTimeDate.toString());
+                         */
+                        mealCache.put(snapshot.getKey(), nutritionMeal);
+                        // Log.d(TAG, "onChildAdded: " + meal1);
+                        totalCalories += nutritionMeal1.getTotalCalories();
+                        totalCholesterol += nutritionMeal1.getTotalCholesterol();
+                        totalSugar += nutritionMeal1.getTotalSugar();
+                        totalSalt += nutritionMeal1.getTotalSodium();
+
+                        /*
+                        new Handler(Looper.getMainLooper()).post(() ->
+                            {
+                                // update UI elements here
+                                refreshUIDisplay();
+                            });
+                         */
+                    }
+                    else
+                    {
+                        // ignore the data for the meal not the same date.
+                        refreshUIDisplay();
+                    }
                 }
 
                 // calculate percentage
@@ -218,8 +353,6 @@ public class UserLogMealFragment extends Fragment
                 sugarText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageSugar));
 
-                //notify();
-
                 // display the counter
                 caloriesCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f kcal",
                         totalCalories, maxCalories));
@@ -233,53 +366,14 @@ public class UserLogMealFragment extends Fragment
                 saltCountText.setText(String.format(Locale.ROOT, "%.1f/%.1f mg",
                         totalSalt, maxSalt));
 
+                // makeNotification();
                 // todo: improve this system if over 1 days.
-
                 /*
                     // reset the value whenever the nutrition value is changed.
                     totalCalories = 0;
                     totalCholesterol = 0;
                     totalSugar = 0;
                     totalSalt = 0;
-                 */
-                /*
-                fixme: change this into notification instead of a toast.
-                // todo: warn the user if the current nutrition value is bigger than maximum nutrition value.
-                if (totalCalories > maxCalories)
-                {
-                    alertDialogMessage.append("You have exceeded your daily calorie intake limit.\n");
-                    progressBarCalories.setBackgroundColor(Color.RED);
-                }
-
-                if (totalCholesterol > maxCholesterol)
-                {
-                    alertDialogMessage.append("You have exceeded your daily cholesterol intake limit.\n");
-                    progressBarCholesterol.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSugar > maxSugar)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sugar intake limit.\n");
-                    progressBarSugar.setBackgroundColor(Color.RED);
-                }
-
-                if (totalSalt > maxSalt)
-                {
-                    alertDialogMessage.append("You have exceeded your daily sodium intake limit.\n");
-                    progressBarSalt.setBackgroundColor(Color.RED);
-                }
-
-                // fixme: the error is here view is gone if we use snack bar.
-                if (alertDialogMessage.length() > 0)
-                {
-                    if (alertDialogMessage.length() > 0)
-                    {
-                        if (getActivity() != null)
-                        {
-                            Toast.makeText(getActivity(), alertDialogMessage, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
                  */
             }
 
@@ -290,20 +384,45 @@ public class UserLogMealFragment extends Fragment
                 if (nutritionMeal1 != null)
                 {
                     NutritionMeal oldNutritionMeal = mealCache.get(snapshot.getKey());
-                    if (oldNutritionMeal != null) {
-                        // Subtract the old values
-                        totalCalories -= oldNutritionMeal.getTotalCalories();
-                        totalCholesterol -= oldNutritionMeal.getTotalCholesterol();
-                        totalSugar -= oldNutritionMeal.getTotalSugar();
-                        totalSalt -= oldNutritionMeal.getTotalSodium();
+                    if (oldNutritionMeal != null)
+                    {
+                        /*
+                        Log.d(TAG, "onChildChanged: calories " + totalCalories);
+                        Log.d(TAG, "onChildChanged: cholesterol " + totalCholesterol);
+                        Log.d(TAG, "onChildChanged: sugar " + totalSugar);
+                        Log.d(TAG, "onChildChanged: salt " + totalSalt);
+                         */
+                        if (formattedMealDate.equals(formattedCurrentDate))
+                        {
+                            /*
+                            Log.d(TAG, "onChildAdded: yes");
+                            Log.d(TAG, currentDateMeal.toString());
+                            Log.d(TAG, currentRealTimeDate.toString());
+                             */
+                            // Log.d(TAG, "onChildAdded: " + meal1);
+                            // Subtract the old values
+                            totalCalories -= oldNutritionMeal.getTotalCalories();
+                            totalCholesterol -= oldNutritionMeal.getTotalCholesterol();
+                            totalSugar -= oldNutritionMeal.getTotalSugar();
+                            totalSalt -= oldNutritionMeal.getTotalSodium();
+
+                            // use a Handler to post UI updates on the main thread
+                            /*
+                            new Handler(Looper.getMainLooper()).post(() ->
+                            {
+                                // update UI elements here
+                                refreshUIDisplay();
+                            });
+                             */
+                        }
+                        else
+                        {
+                            // ignore the data for the meal not the same date.
+                            refreshUIDisplay();
+                        }
                     }
-                    // Update the cache with the new meal
+                    // update the cache with the new meal
                     mealCache.put(snapshot.getKey(), nutritionMeal1);
-                    // Add the new values
-                    totalCalories += nutritionMeal1.getTotalCalories();
-                    totalCholesterol += nutritionMeal1.getTotalCholesterol();
-                    totalSugar += nutritionMeal1.getTotalSugar();
-                    totalSalt += nutritionMeal1.getTotalSodium();
                 }
 
                 // calculate percentage
@@ -357,13 +476,15 @@ public class UserLogMealFragment extends Fragment
                     NutritionMeal oldNutritionMeal = mealCache.get(snapshot.getKey());
                     if (oldNutritionMeal != null)
                     {
-                        // Subtract the old values
-                        totalCalories -= oldNutritionMeal.getTotalCalories();
-                        totalCholesterol -= oldNutritionMeal.getTotalCholesterol();
-                        totalSugar -= oldNutritionMeal.getTotalSugar();
-                        totalSalt -= oldNutritionMeal.getTotalSodium();
+                        if (formattedMealDate.equals(formattedCurrentDate))
+                        {
+                            totalCalories -= oldNutritionMeal.getTotalCalories();
+                            totalCholesterol -= oldNutritionMeal.getTotalCholesterol();
+                            totalSugar -= oldNutritionMeal.getTotalSugar();
+                            totalSalt -= oldNutritionMeal.getTotalSodium();
+                        }
                     }
-                    // Remove the meal from the cache
+                    // remove the meal from the cache
                     mealCache.remove(snapshot.getKey());
                 }
 
@@ -373,9 +494,7 @@ public class UserLogMealFragment extends Fragment
                 percentageSalt = (totalSalt / maxSalt) * 100;
                 percentageSugar = (totalSugar / maxSugar) * 100;
 
-
                 // fixme: null pointer exception
-
                 progressBarCalories.setProgress((int) percentageCalories);
                 caloriesText.setText(String.format(Locale.ROOT, "%.1f%%",
                         percentageCalories));
@@ -414,8 +533,8 @@ public class UserLogMealFragment extends Fragment
             {
                 // Meal meal1 = snapshot.getValue(Meal.class);
                 // do nothing here, just reupdate
-
                 // calculate percentage
+
                 percentageCalories = (totalCalories / maxCalories) * 100;
                 percentageCholesterol = (totalCholesterol / maxCholesterol) * 100;
                 percentageSalt = (totalSalt / maxSalt) * 100;
@@ -481,6 +600,8 @@ public class UserLogMealFragment extends Fragment
                     return;
                 }
 
+                initNotification();
+
                 userProfile = snapshot.getValue(UserProfile.class);
 
                 if (userProfile != null)
@@ -531,9 +652,6 @@ public class UserLogMealFragment extends Fragment
                             Log.d(TAG, "Unknown gender: " + gender);
                             break;
                     }
-
-                    // display time here
-                    timeTextView.setText(String.format(Locale.ROOT, "Gender: %s", gender));
 
                     // todo: for health
                     isDiabetes = userProfile.isDiabetes();

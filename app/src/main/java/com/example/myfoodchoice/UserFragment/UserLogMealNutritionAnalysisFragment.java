@@ -44,6 +44,7 @@ import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
+import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -418,7 +419,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
         List<String> allergyEggList = Arrays.asList("eggs", "egg",
                 "egg white", "egg yolk", "omelette", "scrambled eggs", "fried eggs",
-                "egg salad"); // Note: "eggplant" is not an egg but is included for completeness
+                "egg salad");
 
         List<String> allergyPeanutList = Arrays.asList("peanuts",
                 "peanut", "peanut butter", "peanut oil", "peanut flour",
@@ -441,7 +442,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 "scallops", "shrimp", "prawns", "crab", "lobster",
                 "snapper", "tilapia", "cod", "halibut", "trout", "catfish",
                 "flounder", "mackerel", "sardines", "anchovies",
-                "caviar", "truffles", "game meat" // Includes deer, elk, bison, etc.
+                "caviar", "truffles", "game meat"
         );
 
         String allergen;
@@ -952,9 +953,9 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 loadingLogMeal.setVisibility(ProgressBar.GONE);
 
                 // todo: go to the home page.
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new UserLogMealFragment())
-                        .commit();
+                Intent intent = new Intent(requireContext(), UserMainMenuActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
             else
             {

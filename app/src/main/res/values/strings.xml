@@ -279,4 +279,7 @@
     <string name="clear_all_text">Clear All Text</string>
     <string name="add_dish_in_meal">Add Dish In Meal</string>
     <string name="view_dish_in_meal">View Dish In Meal</string>
+    <string name="sodium_gr">Sodium, gr</string>
+    <string name="cholesterol_g">Cholesterol, g</string>
+    <string name="sugar_mg">Sugar, mg</string>
 </resources>
