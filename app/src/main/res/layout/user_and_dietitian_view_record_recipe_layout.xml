@@ -25,8 +25,9 @@
             >
             <ImageView
                 android:id="@+id/recipeImage"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/food_placeholder"
                 />
@@ -58,9 +59,51 @@
                     android:text="@string/recipe_category"
                     android:textStyle="bold" />
             </LinearLayout>
-
-
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dietitianLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/peach_puff_new"
+            app:cardCornerRadius="10dp"
+            android:elevation="10dp"
+            android:orientation="horizontal"
+            android:background="@color/peach_puff_new"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                >
+
+                <ImageView
+                    android:id="@+id/dietitianProfileImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/login_person"
+                    />
+
+                <TextView
+                    android:id="@+id/dietitianProfileInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dietitian_info"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewDetailRecipe"

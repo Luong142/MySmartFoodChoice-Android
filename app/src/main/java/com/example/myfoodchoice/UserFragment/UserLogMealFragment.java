@@ -229,7 +229,15 @@ public class UserLogMealFragment extends Fragment
         // Display the Snackbar
         if (messageBuilder.length() > 0)
         {
-            Snackbar.make(view, messageBuilder.toString(), Snackbar.LENGTH_LONG).show();
+            if (view != null)
+            {
+                Snackbar snackbar = Snackbar.make(view, messageBuilder.toString(), Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            else
+            {
+                Log.e(TAG, "view is null");
+            }
         }
     }
 

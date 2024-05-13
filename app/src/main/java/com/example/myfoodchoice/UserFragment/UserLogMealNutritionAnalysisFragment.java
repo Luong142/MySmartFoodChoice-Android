@@ -418,8 +418,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         // fixme: all checking ingredients must be in lower case.
 
         List<String> allergyEggList = Arrays.asList("eggs", "egg",
-                "egg white", "egg yolk", "omelette", "scrambled eggs", "fried eggs",
-                "egg salad");
+                "egg white", "egg yolks", "omelette", "scrambled eggs", "fried eggs",
+                "egg salad", "egg yolk");
 
         List<String> allergyPeanutList = Arrays.asList("peanuts",
                 "peanut", "peanut butter", "peanut oil", "peanut flour",
@@ -442,7 +442,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                 "scallops", "shrimp", "prawns", "crab", "lobster",
                 "snapper", "tilapia", "cod", "halibut", "trout", "catfish",
                 "flounder", "mackerel", "sardines", "anchovies",
-                "caviar", "truffles", "game meat"
+                "caviar", "truffles", "game meat", "beef fillet"
         );
 
         String allergen;

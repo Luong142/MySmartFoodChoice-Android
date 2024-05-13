@@ -39,13 +39,11 @@ public class UserViewRecipeFragment extends Fragment
 
     FirebaseUser firebaseUser;
 
-    static final String PATH_RECIPE = "Dietitian Recipe";
+    static final String PATH_RECIPE = "Android Dietitian Recipe";
 
     DatabaseReference databaseReferenceCreateRecipe;
 
     Dish recipes;
-
-    Dish.Meals recipe;
 
     String userID;
 

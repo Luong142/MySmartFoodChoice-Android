@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -82,7 +81,7 @@ public class HealthTipsUserAdapter extends RecyclerView.Adapter<HealthTipsUserAd
     public HealthTipsUserAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.health_tips_item_layout,
+                R.layout.user_view_health_tips_item_layout,
                 parent, false);
         return new myViewHolder(itemView, onHealthTipsClickListener);
     }

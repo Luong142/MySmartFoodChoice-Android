@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/ingredient_layout" />
+        tools:listitem="@layout/user_view_ingredient_layout" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
