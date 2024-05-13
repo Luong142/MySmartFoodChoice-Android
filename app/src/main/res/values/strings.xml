@@ -282,4 +282,6 @@
     <string name="sodium_gr">Sodium, gr</string>
     <string name="cholesterol_g">Cholesterol, g</string>
     <string name="sugar_mg">Sugar, mg</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="dietitian_info">Dietitian Info</string>
 </resources>

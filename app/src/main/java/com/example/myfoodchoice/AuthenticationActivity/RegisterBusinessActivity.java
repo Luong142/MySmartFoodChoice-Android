@@ -211,6 +211,9 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 databaseReferenceBusinessProfile =
                         firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(firebaseUser.getUid());
 
+                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                        .setDisplayName(firstNameString + " " + lastNameString).build());
+
                 // init user account
                 account = new Account(email, password); // with email and password
                 account.setAccountType("Dietitian");
@@ -309,6 +312,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
             // FIXME: need to set up the business profile before uploading to firebase.
             intentNavToBusinessProfileActivity = new Intent(RegisterBusinessActivity.this,
                     BusinessProfileCreateActivity.class);
+            intentNavToBusinessProfileActivity.putExtra("businessProfile", businessProfile);
             intentNavToBusinessProfileActivity.putExtra("userAccount", account);
             startActivity(intentNavToBusinessProfileActivity);
             finish();

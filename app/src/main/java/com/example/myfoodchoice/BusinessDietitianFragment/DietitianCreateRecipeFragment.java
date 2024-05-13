@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -34,7 +35,7 @@ import java.util.Objects;
 
 public class DietitianCreateRecipeFragment extends Fragment implements OnActionIngredientListener
 {
-    static final String PATH_RECIPE = "Dietitian Recipe";
+    static final String PATH_RECIPE = "Android Dietitian Recipe";
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.
@@ -75,6 +76,9 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        // todo: this will help not to push the content up
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // TODO: init firebase components.
 
@@ -176,6 +180,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             meal.setStrMeal(recipeName.trim());
             ingredientArrayList.trimToSize();
             meal.setIngredientsManual(ingredientArrayList);
+            meal.setDietitianKey(dietitianID);
 
             recipe.getMeals().add(meal);
 

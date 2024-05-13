@@ -1,8 +1,13 @@
 package com.example.myfoodchoice.ModelSignUp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
-public class BusinessProfile extends CommonProfile
+import org.jetbrains.annotations.Contract;
+
+public class BusinessProfile extends CommonProfile implements Parcelable
 {
     private String role;
 
@@ -26,6 +31,23 @@ public class BusinessProfile extends CommonProfile
         this.role = role;
         this.businessImage = businessImage;
     }
+
+    public BusinessProfile(@NonNull Parcel in)
+    {
+        super(in);
+        role = in.readString();
+        businessKey = in.readString();
+        businessImage = in.readInt();
+        contactNumber = in.readInt();
+    }
+
+    public String getDietitianInfo()
+    {
+        return "Meet " + super.getFirstName() + " " +
+                super.getLastName() + ", your dietitian guide.\n" +
+                "Contact Number " + contactNumber + "\n";
+    }
+
 
     public String getBusinessKey()
     {
@@ -74,4 +96,32 @@ public class BusinessProfile extends CommonProfile
     public void setRole(String role) {
         this.role = role;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(role);
+        dest.writeString(businessKey);
+        dest.writeInt(businessImage);
+        dest.writeInt(contactNumber);
+    }
+
+    public static final Creator<BusinessProfile> CREATOR = new Creator<BusinessProfile>()
+    {
+        @NonNull
+        @Contract("_ -> new")
+        @Override
+        public BusinessProfile createFromParcel(Parcel in)
+        {
+            return new BusinessProfile(in);
+        }
+
+        @NonNull
+        @Contract(value = "_ -> new", pure = true)
+        @Override
+        public BusinessProfile[] newArray(int size)
+        {
+            return new BusinessProfile[size];
+        }
+    };
 }

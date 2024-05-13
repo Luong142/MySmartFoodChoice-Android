@@ -50,8 +50,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     EditText contactNumber;
 
-    String firstNameString, lastNameString;
-
     int contactNumberInt;
 
     Button createProfileBtn;
@@ -109,9 +107,12 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
         roleArrayList = new ArrayList<>();
 
         // set model class
-        businessProfile = new BusinessProfile();
+        // businessProfile = new BusinessProfile();
         intentRetrieveUserAccount = getIntent();
         account = intentRetrieveUserAccount.getParcelableExtra("userAccount");
+        businessProfile = intentRetrieveUserAccount.getParcelableExtra("businessProfile");
+        // assert businessProfile != null;
+        Log.d(TAG, "onCreate: " + businessProfile);
 
         // TODO: init UI components
         profileImage = findViewById(R.id.profileImage);
@@ -218,8 +219,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 role = "Dietitian";
 
                 // set data here
-                businessProfile.setFirstName(firstNameString);
-                businessProfile.setLastName(lastNameString);
                 businessProfile.setContactNumber(contactNumberInt);
                 businessProfile.setRole(role);
                 businessProfile.setBusinessKey(firebaseUser.getUid());
@@ -263,9 +262,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             databaseReferenceDietitianProfile.setValue(businessProfile)
                     .addOnCompleteListener(onCompleteListener())
                     .addOnFailureListener(onFailurePart());
-
-            firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                            .setDisplayName(firstNameString + " " + lastNameString).build());
 
             firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteCreateProfileListener());

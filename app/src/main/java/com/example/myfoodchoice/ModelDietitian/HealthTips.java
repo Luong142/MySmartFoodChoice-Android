@@ -1,13 +1,21 @@
 package com.example.myfoodchoice.ModelDietitian;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 public class HealthTips
 {
     private String userKey;
-    private String title;
 
+    private String dietitianKey;
+
+    private String title;
     private String content;
+
+    private String dietitianProfileImage;
+
+    private String dietitianInfo;
 
     public HealthTips()
     {
@@ -21,20 +29,42 @@ public class HealthTips
         this.content = content;
     }
 
-    public HealthTips(String title, String content)
-    {
-        this.title = title;
-        this.content = content;
-    }
-
     @NonNull
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "HealthTips{" +
                 "userKey='" + userKey + '\'' +
+                ", dietitianKey='" + dietitianKey + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", dietitianProfileImage='" + dietitianProfileImage + '\'' +
+                ", dietitianInfo='" + dietitianInfo + '\'' +
                 '}';
+    }
+
+    public String getDietitianInfo() {
+        return dietitianInfo;
+    }
+
+    public void setDietitianInfo(String dietitianInfo) {
+        this.dietitianInfo = dietitianInfo;
+    }
+
+    public String getDietitianProfileImage() {
+        return dietitianProfileImage;
+    }
+
+    public void setDietitianProfileImage(String dietitianProfileImage) {
+        this.dietitianProfileImage = dietitianProfileImage;
+    }
+
+    public String getDietitianKey() {
+        return dietitianKey;
+    }
+
+    public void setDietitianKey(String dietitianKey) {
+        this.dietitianKey = dietitianKey;
     }
 
     public String getUserKey() {

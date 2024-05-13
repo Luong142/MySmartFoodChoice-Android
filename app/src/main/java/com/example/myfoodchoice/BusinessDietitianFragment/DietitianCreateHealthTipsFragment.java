@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
 import com.example.myfoodchoice.ModelChatGPT.FullResponse;
 import com.example.myfoodchoice.ModelDietitian.HealthTips;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
@@ -26,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
@@ -39,12 +42,17 @@ public class DietitianCreateHealthTipsFragment extends Fragment
 {
     // todo: declare firebase here
     static final String PATH_HEALTH_TIPS = "Dietitian Health Tips";
+
+    static final String PATH_BUSINESS_PROFILE = "Business Profile";
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.
     static final String TAG = "DietitianCreateHealthTipsFragment";
 
-    DatabaseReference databaseReferenceHealthTips, databaseReferenceHealthTipsChild;
+    DatabaseReference databaseReferenceHealthTips,
+            databaseReferenceHealthTipsChild, databaseReferenceDietitianProfile;
+
+    BusinessProfile businessProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -52,7 +60,7 @@ public class DietitianCreateHealthTipsFragment extends Fragment
 
     FirebaseUser firebaseUser;
 
-    String dietitianID, generatedAnswer;
+    String dietitianID, generatedAnswer, dietitianProfileImage, dietitianInfo;
 
     // todo: declare UI components
     EditText titleHealthTips, contentHealthTips;
@@ -71,6 +79,9 @@ public class DietitianCreateHealthTipsFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        // todo: this will help not to push the content up
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // init bundle
         bundleStore = getArguments();
@@ -93,6 +104,11 @@ public class DietitianCreateHealthTipsFragment extends Fragment
             dietitianID = firebaseUser.getUid();
 
             databaseReferenceHealthTips = firebaseDatabase.getReference(PATH_HEALTH_TIPS).child(dietitianID);
+
+            databaseReferenceDietitianProfile = firebaseDatabase
+                    .getReference(PATH_BUSINESS_PROFILE).child(dietitianID);
+
+            databaseReferenceDietitianProfile.addValueEventListener(onDietitianProfileListener());
         }
 
         // todo: init UI components
@@ -113,6 +129,32 @@ public class DietitianCreateHealthTipsFragment extends Fragment
         generateAIContentBtn.setOnClickListener(onGenerateAIContentListener());
         createHealthTipsBtn.setOnClickListener(onCreateHealthTipsListener());
         clearAllBtn.setOnClickListener(onClearAllListener());
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener onDietitianProfileListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot)
+            {
+                businessProfile = snapshot.getValue(BusinessProfile.class);
+
+                if (businessProfile != null)
+                {
+                    dietitianProfileImage = businessProfile.getProfileImageUrl();
+                    dietitianInfo = businessProfile.getDietitianInfo();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error)
+            {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
+            }
+        };
     }
 
     @NonNull
@@ -143,6 +185,9 @@ public class DietitianCreateHealthTipsFragment extends Fragment
 
             // create health tips
             healthTips = new HealthTips(userKey, title, content);
+            healthTips.setDietitianKey(dietitianID);
+            healthTips.setDietitianProfileImage(dietitianProfileImage);
+            healthTips.setDietitianInfo(dietitianInfo);
 
             databaseReferenceHealthTipsChild = databaseReferenceHealthTips.push();
             databaseReferenceHealthTipsChild.setValue(healthTips).addOnCompleteListener

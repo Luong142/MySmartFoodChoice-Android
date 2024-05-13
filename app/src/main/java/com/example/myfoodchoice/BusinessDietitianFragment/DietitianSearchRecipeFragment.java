@@ -56,7 +56,7 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
 
     FirebaseUser firebaseUser;
 
-    static final String PATH_RECIPE = "Dietitian Recipe";
+    static final String PATH_RECIPE = "Android Dietitian Recipe";
 
     DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
 
@@ -145,6 +145,9 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
         //  let the dietitian to search for that suitable recipe.
         // get the string name of food whenever it is clicked.
 
+        // remove the recipe from search
+        recipeCategoryArrayList.remove(position);
+        recipeSearchCategoryMainAdapter.notifyItemRemoved(position);
 
         // todo: we can improve this by warning the dietitian based on user profile
         //  (allergic, diet type, and health conditions)
@@ -165,8 +168,9 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
                                 Dish filteredRecipes = filterEmptyStrings(recipes);
                                 // Log.d(TAG, "onResponse: " + filteredRecipes);
                                 filteredRecipes.getMeals().get(0).setUserKey(selectedUserProfile.getKey());
+                                filteredRecipes.getMeals().get(0).setDietitianKey(dietitianID);
 
-                                Log.d(TAG, "onResponse: " + filteredRecipes.getMeals().get(0).getUserKey());
+                                // Log.d(TAG, "onResponse: " + filteredRecipes.getMeals().get(0).getUserKey());
 
                                 // set database here
                                 databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();

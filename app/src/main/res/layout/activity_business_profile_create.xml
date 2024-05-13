@@ -40,7 +40,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="540dp"
+        android:layout_height="420dp"
         android:backgroundTint="@color/peach_puff"
         android:orientation="vertical"
         app:cardCornerRadius="30dp"

@@ -1,8 +1,13 @@
 package com.example.myfoodchoice.ModelSignUp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
-public class CommonProfile
+import org.jetbrains.annotations.Contract;
+
+public class CommonProfile implements Parcelable
 {
     private String firstName;
 
@@ -24,6 +29,45 @@ public class CommonProfile
         this.profileImageUrl = profileImageUrl;
     }
 
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags)
+    {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(profileImageUrl);
+    }
+
+    public static final Creator<CommonProfile> CREATOR = new Creator<CommonProfile>()
+    {
+        @NonNull
+        @Contract("_ -> new")
+        @Override
+        public CommonProfile createFromParcel(Parcel in)
+        {
+            return new CommonProfile(in);
+        }
+
+        @NonNull
+        @Contract(value = "_ -> new", pure = true)
+        @Override
+        public CommonProfile[] newArray(int size)
+        {
+            return new CommonProfile[size];
+        }
+    };
+
+    public CommonProfile(@NonNull Parcel in)
+    {
+        firstName = in.readString();
+        lastName = in.readString();
+        profileImageUrl = in.readString();
+    }
     @NonNull
     @Override
     public String toString()
