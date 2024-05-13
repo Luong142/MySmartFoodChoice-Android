@@ -14,9 +14,9 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/view_recommended_recipe"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/recommended_recipes"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold" />

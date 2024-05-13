@@ -2,144 +2,144 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BusinessDietitianActivity.DietitianUpdateProfileActivity"
+    tools:context=".AuthenticationActivity.RegisterBusinessActivity"
     android:background="@drawable/bg_gradient_color_main"
     >
 
-    <LinearLayout
-        android:layout_width="340dp"
+    <!-- android:background="@drawable/app_background"
+    copy this and paste for background -->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_layout_login_page"
-        android:gravity="top"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/peach_puff"
+        android:contentDescription="@string/todo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556">
+        app:srcCompat="@drawable/back" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/update_profile"
-            android:textAlignment="center"
-            android:textSize="35sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/welcomeTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/update_profile"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
-        <View
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="540dp"
+        android:backgroundTint="@color/peach_puff"
+        android:orientation="vertical"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/profile_picture"
-            android:textSize="30sp" />
+            android:layout_marginTop="30dp"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/profilePictureUpdate"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/profile_picture"
-            android:src="@drawable/default_profile_picture" />
+            <ImageView
+                android:id="@+id/profilePictureUpdate"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/profile_picture"
+                android:src="@drawable/default_profile_picture" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/first_name"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/firstNameUpdate"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="last name"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_first_name"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/firstNameUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="first name"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/first_name"
+                android:drawableStart="@drawable/name"
+                android:drawablePadding="10dp"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/last_name"
-            android:textSize="30sp" />
+            <EditText
+                android:id="@+id/lastNameUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="first name"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/last_name"
+                android:drawableStart="@drawable/name"
+                android:drawablePadding="10dp"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
 
-        <EditText
-            android:id="@+id/lastNameUpdate"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="last name"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_last_name"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/contactNumberUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="Enter Weight"
+                android:maxLength="8"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/contact_number"
+                android:drawableStart="@drawable/phonenum"
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/contact_number"
-            android:textSize="30sp" />
+            <Button
+                android:id="@+id/updateBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:elevation="20dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:text="@string/update"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/contactNumberUpdate"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:autofillHints="last name"
-            android:background="@drawable/rounded_layout_editor"
-            android:hint="@string/enter_contact_number"
-            android:inputType="number"
-            android:maxLength="8"
-            android:textAlignment="center"
-            android:textColorHint="#FAFAFA"
-            android:textSize="20sp" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Button
-            android:id="@+id/updateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/dodger_blue"
-            android:text="@string/update"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

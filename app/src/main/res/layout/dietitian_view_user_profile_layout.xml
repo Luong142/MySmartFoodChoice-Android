@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/add_new"
                 android:tooltipText="Recommend this user with your recipe"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/pink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,6 +39,7 @@
                 android:id="@+id/userProfileImage"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/login_person"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/todo" />
