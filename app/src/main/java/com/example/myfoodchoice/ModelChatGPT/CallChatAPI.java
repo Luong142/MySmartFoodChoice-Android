@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.ModelChatGPT;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
@@ -15,25 +13,10 @@ import retrofit2.Response;
 
 public class CallChatAPI
 {
-    private static final String TAG = "Test";
-
-    public static String answer = ""; // fixme: it is not possible to make this a separate function
-
-    public void makeChatGPTRequest(String question, String context)
+    public static void makeChatGPTRequest(String question, String context)
     {
-        // Create an instance of ChatGPT
-        ChatRequest chatRequest = new ChatRequest();
-        chatRequest.setModel("gpt-3.5-turbo");
-
-        ArrayList<ChatRequest.Messages> messages = new ArrayList<>();
-        ChatRequest.Messages messages0 = new ChatRequest.Messages("system",
-                context);
-        ChatRequest.Messages messages1 = new ChatRequest.Messages("user", question);
-        messages.add(messages1);
-
-        chatRequest.setMessages(messages);
-
-        // Log.d(TAG, "makeChatGPTRequest: " + chatRequest);
+        // todo: it is cheap to use gpt 3.5
+        ChatRequest chatRequest = getChatRequest(question, context);
 
         // Create the API service
         ChatGPTAPI chatGPTAPI = RetrofitChatGPTAPI.getRetrofitChatGPTInstance().create(ChatGPTAPI.class);
@@ -54,23 +37,41 @@ public class CallChatAPI
                         for (FullResponse.Choices choices : chatResponse.getChoices())
                         {
                             // get content to get the value
-                            Log.d(TAG, "onResponse: " + choices.getMessage().getContent());
+
                         }
                     }
                 }
                 else
                 {
-                    // Handle error
-                    Log.d(TAG, "Error: " + response.errorBody());
+                    //addResponse("Error, " + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<FullResponse> call, @NonNull Throwable t)
             {
-                // Handle failure
-                Log.d(TAG, "Failure: " + t.getMessage());
+                //addResponse("Error, " + t.getMessage());
             }
         });
+    }
+
+    @NonNull // todo: this method for init the message.
+    private static ChatRequest getChatRequest(String question, String context)
+    {
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setModel("gpt-3.5-turbo");
+
+        ArrayList<ChatRequest.Messages> messages = new ArrayList<>();
+
+        // init message with two types one is for AI, one is for user.
+        ChatRequest.Messages messages0 = new ChatRequest.Messages("system", context);
+        ChatRequest.Messages messages1 = new ChatRequest.Messages("user", question);
+
+        // add two of them to list.
+        messages.add(messages1);
+        messages.add(messages0);
+
+        chatRequest.setMessages(messages);
+        return chatRequest;
     }
 }

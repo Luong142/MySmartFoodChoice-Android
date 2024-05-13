@@ -1,5 +1,6 @@
 package com.example.myfoodchoice.AdapterRecyclerView;
 
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,11 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
 
         ImageView recipeImage;
 
-        CardView cardViewDetailRecipe;
+        CardView cardViewDetailRecipe, dietitianLayout;
+
+        ImageView dietitianProfileImage;
+
+        TextView dietitianProfileInfo;
 
         public myViewHolder(@NonNull View itemView)
         {
@@ -51,18 +56,29 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             cardViewDetailRecipe = itemView.findViewById(R.id.cardViewDetailRecipe);
             cardViewDetailRecipe.setVisibility(View.GONE);
 
+            // for dietitian view
+            dietitianLayout = itemView.findViewById(R.id.dietitianLayout);
+            dietitianLayout.setVisibility(View.GONE);
+
+            dietitianProfileImage = itemView.findViewById(R.id.dietitianProfileImage);
+            dietitianProfileInfo = itemView.findViewById(R.id.dietitianProfileInfo);
+
+
             itemView.setOnClickListener(v ->
             {
                 int position = getAbsoluteAdapterPosition();
                 if (position != RecyclerView.NO_POSITION)
                 {
-                    if (cardViewDetailRecipe.getVisibility() == View.GONE)
+                    if (cardViewDetailRecipe.getVisibility() == View.GONE
+                            && dietitianLayout.getVisibility() == View.GONE)
                     {
                         cardViewDetailRecipe.setVisibility(View.VISIBLE);
+                        dietitianLayout.setVisibility(View.VISIBLE);
                     }
                     else
                     {
                         cardViewDetailRecipe.setVisibility(View.GONE);
+                        dietitianLayout.setVisibility(View.GONE);
                     }
                 }
             });
@@ -86,6 +102,7 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
         // for two type of ingredients
         if (meals.getIngredientsSearch().isEmpty())
         {
+            // for manual recipe
             String recipeIngredientsManualFormat = String.format("Recipe Ingredients\n%s", meals.displayIngredientsManual());
             holder.recipeName.setText(recipeNameFormat);
             holder.recipeCategory.setText(recipeCategoryFormat);
@@ -94,9 +111,15 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             holder.recipeInstructions.setText(recipeInstructionFormat);
             Picasso.get().load(R.drawable.food_placeholder)
                     .error(R.drawable.food_placeholder).into(holder.recipeImage);
+
+            // for dietitian only
+            holder.dietitianProfileInfo.setText(meals.getDietitianInfo());
+            Picasso.get().load(meals.getDietitianProfileImage())
+                    .error(R.drawable.error).into(holder.dietitianProfileImage);
         }
         else
         {
+            // for search recipe
             String recipeIngredientsSearchFormat = String.format("Recipe Ingredients\n%s", meals.displayIngredientsSearch());
             holder.recipeName.setText(recipeNameFormat);
             holder.recipeCategory.setText(recipeCategoryFormat);
@@ -105,6 +128,11 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             holder.recipeInstructions.setText(recipeInstructionFormat);
             Picasso.get().load(meals.getStrMealThumb())
                     .error(R.drawable.error).into(holder.recipeImage);
+
+            // for dietitian only
+            holder.dietitianProfileInfo.setText(meals.getDietitianInfo());
+            Picasso.get().load(meals.getDietitianProfileImage())
+                    .error(R.drawable.error).into(holder.dietitianProfileImage);
         }
     }
 
@@ -113,7 +141,7 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
     public RecipeViewHistoryAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.dietitian_view_record_recipe_layout,
+                R.layout.user_and_dietitian_view_record_recipe_layout,
                 parent, false);
         return new RecipeViewHistoryAdapter.myViewHolder(itemView);
     }

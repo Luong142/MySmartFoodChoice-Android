@@ -19,6 +19,7 @@ import com.example.myfoodchoice.AdapterInterfaceListener.OnCreateRecipeFromSearc
 import com.example.myfoodchoice.AdapterRecyclerView.RecipeSearchCategoryMainAdapter;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
 import com.example.myfoodchoice.ModelFreeFoodAPI.RecipeCategories;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
@@ -42,6 +44,9 @@ import retrofit2.Response;
 
 public class DietitianSearchRecipeFragment extends Fragment implements OnCreateRecipeFromSearchListener {
     static final String TAG = "DietitianSearchRecipeFragment";
+
+    static final String PATH_DIETITIAN_PROFILE = "Business Profile";
+
     // todo: here is our plan, we use
     //  https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegetarian, (category)
     //  https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian (cuisine),
@@ -56,11 +61,14 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
 
     FirebaseUser firebaseUser;
 
-    static final String PATH_RECIPE = "Dietitian Recipe";
+    static final String PATH_RECIPE = "Android Dietitian Recipe";
 
-    DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
+    DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild,
+            databaseReferenceDietitianProfile;
 
-    String dietitianID, searchQuery;
+    BusinessProfile businessProfile;
+
+    String dietitianID, searchQuery, dietitianProfileImage, dietitianProfileInfo;
 
     ArrayList<RecipeCategories.RecipeCategory> recipeCategoryArrayList;
 
@@ -107,6 +115,11 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
             // set database here
             // TODO: init database reference for user profile
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
+
+            databaseReferenceDietitianProfile = firebaseDatabase.getReference
+                    (PATH_DIETITIAN_PROFILE).child(dietitianID);
+
+            databaseReferenceDietitianProfile.addValueEventListener(onDietitianProfileListener());
         }
 
         bundleFromView = getArguments();
@@ -137,6 +150,38 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
         searchRecipeView.setOnQueryTextListener(onSearchRecipeTextListener());
     }
 
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener onDietitianProfileListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot)
+            {
+                if (snapshot.exists())
+                {
+                    businessProfile = snapshot.getValue(BusinessProfile.class);
+                    if (businessProfile != null)
+                    {
+                        dietitianProfileImage = businessProfile.getProfileImageUrl();
+                        dietitianProfileInfo = businessProfile.getDietitianInfo();
+                    }
+                }
+                else
+                {
+                    Log.d(TAG, "onDataChange: No data found.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error)
+            {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        };
+    }
+
     @Override
     public void onCreateRecipeFromSearch(int position)
     {
@@ -145,6 +190,9 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
         //  let the dietitian to search for that suitable recipe.
         // get the string name of food whenever it is clicked.
 
+        // remove the recipe from search
+        recipeCategoryArrayList.remove(position);
+        recipeSearchCategoryMainAdapter.notifyItemRemoved(position);
 
         // todo: we can improve this by warning the dietitian based on user profile
         //  (allergic, diet type, and health conditions)
@@ -165,8 +213,11 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
                                 Dish filteredRecipes = filterEmptyStrings(recipes);
                                 // Log.d(TAG, "onResponse: " + filteredRecipes);
                                 filteredRecipes.getMeals().get(0).setUserKey(selectedUserProfile.getKey());
+                                filteredRecipes.getMeals().get(0).setDietitianKey(dietitianID);
+                                filteredRecipes.getMeals().get(0).setDietitianProfileImage(dietitianProfileImage);
+                                filteredRecipes.getMeals().get(0).setDietitianInfo(dietitianProfileInfo);
 
-                                Log.d(TAG, "onResponse: " + filteredRecipes.getMeals().get(0).getUserKey());
+                                // Log.d(TAG, "onResponse: " + filteredRecipes.getMeals().get(0).getUserKey());
 
                                 // set database here
                                 databaseReferenceCreateRecipeChild = databaseReferenceCreateRecipe.push();

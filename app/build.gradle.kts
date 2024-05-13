@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.stripe:stripe-android:20.42.0")
     implementation ("dev.langchain4j:langchain4j-open-ai:0.30.0")
     // Firebase dependencies.
     implementation ("com.squareup.okhttp3:okhttp:4.10.0") // for calling api request

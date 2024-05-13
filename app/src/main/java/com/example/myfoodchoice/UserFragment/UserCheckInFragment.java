@@ -53,7 +53,7 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
 
     final static String PATH_REWARDS = "Rewards";
 
-    final static String PATH_UserProfile = "User Profile";
+    final static String PATH_UserProfile = "Android User Profile";
 
     final static String PATH_CheckInDate = "Check In";
     private static final String TAG = "UserCheckInFragment";

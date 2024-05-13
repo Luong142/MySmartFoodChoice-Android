@@ -9,7 +9,7 @@ public class Recipe
     private String name;
     private String description;
 
-    // only for adapter here not for actual model.
+    // fixme: only for adapter here not for actual model for API, must use API.
     public Recipe()
     {
 

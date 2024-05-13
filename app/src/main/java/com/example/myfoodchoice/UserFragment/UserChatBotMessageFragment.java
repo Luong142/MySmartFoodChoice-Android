@@ -14,17 +14,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myfoodchoice.AdapterRecyclerView.UserChatMessageAdapter;
+import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelChatGPT.ChatRequest;
 import com.example.myfoodchoice.ModelChatGPT.FullResponse;
 import com.example.myfoodchoice.ModelChatGPT.Message;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
+import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.ChatGPTAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitChatGPTAPI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +45,28 @@ import retrofit2.Response;
 public class UserChatBotMessageFragment extends Fragment
 {
     // todo: our plan is to make this as a premium feature.
+
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
+
+    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily globalMeal.
+    DatabaseReference databaseReferenceUserProfile, databaseReferenceMeals;
+
+    FirebaseAuth firebaseAuth;
+
+    FirebaseDatabase firebaseDatabase;
+
+    FirebaseUser firebaseUser;
+
+    String userID;
+
+    UserProfile userProfile;
+
+    NutritionMeal globalNutritionMeal;
+
+    FoodItem foodItem;
+
+    List<FoodItem.Item> items;
+
     private static final String TAG = "UserChatBotMessageFragment";
     // todo: declare UI components
     RecyclerView chatRecyclerView;
@@ -50,6 +84,26 @@ public class UserChatBotMessageFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
+        // TODO: init firebase components
+        firebaseDatabase = FirebaseDatabase.getInstance
+                ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // TODO: init user id
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
+        {
+            userID = firebaseUser.getUid();
+
+            // TODO: init database reference for user profile
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
+            databaseReferenceMeals =  firebaseDatabase.getReference(PATH_DAILY_FOOD_INTAKE).child(userID);
+
+            databaseReferenceUserProfile.addValueEventListener(valueUserProfileEventListener());
+            databaseReferenceMeals.addChildEventListener(valueChildMealEventListener());
+        }
+
         // todo: init ui here
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
         editMessageText = view.findViewById(R.id.editMessageText);
@@ -64,6 +118,108 @@ public class UserChatBotMessageFragment extends Fragment
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.requireContext());
         linearLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(linearLayoutManager);
+        chatRecyclerView.smoothScrollToPosition(messageArrayList.size());
+        chatRecyclerView.setVerticalScrollBarEnabled(true);
+
+        // todo: on start chat bot should say hello
+        messageArrayList.add(new Message("Hello! how can I assist you today?", Message.SEND_BY_BOT));
+        userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ChildEventListener valueChildMealEventListener()
+    {
+        return new ChildEventListener()
+        {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+
+                if (globalNutritionMeal == null)
+                {
+                    Log.d(TAG, "Meal is null error here! ");
+                    return;
+                }
+
+                foodItem = globalNutritionMeal.getDishes();
+                items = foodItem.getItems();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+
+                if (globalNutritionMeal == null)
+                {
+                    Log.d(TAG, "Meal is null error here! ");
+                    return;
+                }
+
+                foodItem = globalNutritionMeal.getDishes();
+                items = foodItem.getItems();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+
+                if (globalNutritionMeal == null)
+                {
+                    Log.d(TAG, "Meal is null error here! ");
+                    return;
+                }
+
+                foodItem = globalNutritionMeal.getDishes();
+                items = foodItem.getItems();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+                if (globalNutritionMeal != null)
+                {
+                    Log.d(TAG, "onChildAdded: " + globalNutritionMeal);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener valueUserProfileEventListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                if (snapshot.exists())
+                {
+                    userProfile = snapshot.getValue(UserProfile.class);
+                }
+                else
+                {
+                    addResponse("Error, " + snapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                addResponse("Error, " + error.getMessage());
+            }
+        };
     }
 
     @NonNull
@@ -74,26 +230,42 @@ public class UserChatBotMessageFragment extends Fragment
         {
             String question = editMessageText.getText().toString().trim();
             addToChat(question, Message.SEND_BY_ME);
-            editMessageText.setText("");
+            StringBuilder sbContext = new StringBuilder();
+            // fixme: we can improve this prompt engineering by formatting the context for chat bot
+            sbContext.append("You are the best, helpful, friendly assistant in the world.\n" +
+                    "You are my chat-bot in my Smart Food Choice Android App\n");
+            sbContext.append("Do not show that you can read user profile to user, use this detail to serve them\n")
+                    .append(userProfile.getFullUserDetail());
+            if (globalNutritionMeal != null)
+            {
+                sbContext.append("Do not show that you can read nutrition meal to user, use this detail to serve them\n")
+                        .append(globalNutritionMeal.toString());
+            }
+            if (items != null)
+            {
+                sbContext.append("\nDo not show that you can read item to user, use this detail to serve them\n");
+                for (FoodItem.Item item : items)
+                {
+                    sbContext.append(item.toString());
+                }
+            }
 
+            makeChatGPTRequest(question, sbContext.toString());
+            editMessageText.setText("");
         };
     }
 
     public void makeChatGPTRequest(String question, String context)
     {
-        // Create an instance of ChatGPT
-        ChatRequest chatRequest = new ChatRequest();
-        chatRequest.setModel("gpt-3.5-turbo");
+        // todo: add initial "typing..."
+        if (messageArrayList != null)
+        {
+            messageArrayList.add(new Message("Typing...", Message.SEND_BY_BOT));
+            userChatMessageAdapter.notifyItemInserted(messageArrayList.size());
+        }
 
-        ArrayList<ChatRequest.Messages> messages = new ArrayList<>();
-        ChatRequest.Messages messages0 = new ChatRequest.Messages("system",
-                context);
-        ChatRequest.Messages messages1 = new ChatRequest.Messages("user", question);
-        messages.add(messages1);
-
-        chatRequest.setMessages(messages);
-
-        // Log.d(TAG, "makeChatGPTRequest: " + chatRequest);
+        // todo: it is cheap to use gpt 3.5
+        ChatRequest chatRequest = getChatRequest(question, context);
 
         // Create the API service
         ChatGPTAPI chatGPTAPI = RetrofitChatGPTAPI.getRetrofitChatGPTInstance().create(ChatGPTAPI.class);
@@ -114,26 +286,55 @@ public class UserChatBotMessageFragment extends Fragment
                         for (FullResponse.Choices choices : chatResponse.getChoices())
                         {
                             // get content to get the value
-                            Log.d(TAG, "onResponse: " + choices.getMessage().getContent());
+                            addResponse(choices.getMessage().getContent().trim());
                         }
                     }
                 }
                 else
                 {
-                    // Handle error
-                    Log.d(TAG, "Error: " + response.errorBody());
+                    addResponse("Error, please contact our developer. For feedback.\n"
+                            + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<FullResponse> call, @NonNull Throwable t)
             {
-                // Handle failure
-                Log.d(TAG, "Failure: " + t.getMessage());
+                addResponse("Error, please contact our developer. For feedback.\n"
+                        + t.getMessage());
             }
         });
     }
 
+    @NonNull // todo: this method for init the message.
+    private static ChatRequest getChatRequest(String question, String context)
+    {
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setModel("gpt-3.5-turbo");
+
+        ArrayList<ChatRequest.Messages> messages = new ArrayList<>();
+
+        // init message with two types one is for AI, one is for user.
+        ChatRequest.Messages messages0 = new ChatRequest.Messages("system", context);
+        ChatRequest.Messages messages1 = new ChatRequest.Messages("user", question);
+
+        // add two of them to list.
+        messages.add(messages1);
+        messages.add(messages0);
+
+        chatRequest.setMessages(messages);
+        return chatRequest;
+    }
+
+    private void addResponse(String response)
+    {
+        if (!messageArrayList.isEmpty())
+        {
+            messageArrayList.remove(messageArrayList.size() - 1);
+            userChatMessageAdapter.notifyItemRemoved(messageArrayList.size());
+        }
+        addToChat(response, Message.SEND_BY_BOT);
+    }
     private void addToChat(String message, String sentBy)
     {
         if (getActivity() != null)
@@ -144,6 +345,10 @@ public class UserChatBotMessageFragment extends Fragment
                 userChatMessageAdapter.notifyItemInserted(messageArrayList.size() - 1);
                 chatRecyclerView.smoothScrollToPosition(userChatMessageAdapter.getItemCount());
             });
+        }
+        else
+        {
+            Log.d(TAG, "addToChat: activity is null");
         }
     }
 

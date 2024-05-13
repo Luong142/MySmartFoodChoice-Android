@@ -44,6 +44,10 @@ public class Dish implements Serializable
 
   public static class Meals implements Serializable // todo: this is recognised as recipe too.
   {
+    private String dietitianProfileImage;
+
+    private String dietitianInfo;
+    private String dietitianKey;
     private String userKey;
     private ArrayList<String> ingredientsSearch;
 
@@ -244,6 +248,30 @@ public class Dish implements Serializable
           }
         }
       }
+    }
+
+    public String getDietitianProfileImage() {
+      return dietitianProfileImage;
+    }
+
+    public void setDietitianProfileImage(String dietitianProfileImage) {
+      this.dietitianProfileImage = dietitianProfileImage;
+    }
+
+    public String getDietitianInfo() {
+      return dietitianInfo;
+    }
+
+    public void setDietitianInfo(String dietitianInfo) {
+      this.dietitianInfo = dietitianInfo;
+    }
+
+    public String getDietitianKey() {
+      return dietitianKey;
+    }
+
+    public void setDietitianKey(String dietitianKey) {
+      this.dietitianKey = dietitianKey;
     }
 
     public ArrayList<String> getIngredientsManual() {

@@ -129,8 +129,9 @@ public class UserViewHealthTipsFragment extends Fragment implements OnHealthTips
                     {
                         if (healthTips.getUserKey().equals(userID))
                         {
-                            healthTipsArrayList.add(healthTips);
-                            healthTipsUserAdapter.notifyItemChanged(healthTipsArrayList.size() - 1);
+                            // do nothing
+                            // healthTipsArrayList.remove(healthTips);
+                            // healthTipsUserAdapter.notifyItemChanged(healthTipsArrayList.size() - 1);
                         }
                     }
                     else
@@ -171,7 +172,7 @@ public class UserViewHealthTipsFragment extends Fragment implements OnHealthTips
                     {
                         if (healthTips.getUserKey().equals(userID))
                         {
-                            healthTipsArrayList.add(healthTips);
+                            healthTipsArrayList.remove(healthTips);
                             healthTipsUserAdapter.notifyDataSetChanged();
                         }
                     }

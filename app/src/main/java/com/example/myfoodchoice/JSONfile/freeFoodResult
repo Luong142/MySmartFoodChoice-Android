@@ -1,7 +1,7 @@
 
 this is the result of food database, and it is free API yahoo!!! having tons of attribute.
 
-It would be great for searching food. And log their meal without taking picture?
+It would be great for searching food. And log their nutritionMeal without taking picture?
 
 onResponse: Dish{meals=[Meals{strImageSource=null, strIngredient10='Anchovy Fillet', strIngredient12='Onion', strIngredient11='Vegetable Oil', strIngredient14='Shallots',
 

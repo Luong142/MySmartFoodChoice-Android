@@ -1,4 +1,4 @@
-package com.example.myfoodchoice.ModelMeal;
+package com.example.myfoodchoice.ModelNutrition;
 
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
@@ -16,7 +16,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 
-public class Meal implements Parcelable
+public class NutritionMeal implements Parcelable
 {
     // todo: do the part for log my meal with morning, afternoon, tonight?
 
@@ -32,16 +32,16 @@ public class Meal implements Parcelable
 
     private FoodItem dishes;
 
-    public Meal()
+    public NutritionMeal()
     {
 
     }
 
-    public Meal(String key, boolean isMorning, boolean isAfternoon,
-                boolean isNight, double totalCalories,
-                double totalCholesterol,
-                double totalSugar, double totalSodium,
-                FoodItem dishes)
+    public NutritionMeal(String key, boolean isMorning, boolean isAfternoon,
+                         boolean isNight, double totalCalories,
+                         double totalCholesterol,
+                         double totalSugar, double totalSodium,
+                         FoodItem dishes)
     {
         this.key = key;
         this.isMorning = isMorning;
@@ -60,30 +60,29 @@ public class Meal implements Parcelable
         this.date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static final Creator<Meal> CREATOR = new Creator<Meal>()
+    public static final Creator<NutritionMeal> CREATOR = new Creator<NutritionMeal>()
     {
         @NonNull
         @Contract("_ -> new")
         @Override
-        public Meal createFromParcel(Parcel in) {
-            return new Meal(in);
+        public NutritionMeal createFromParcel(Parcel in) {
+            return new NutritionMeal(in);
         }
 
         @NonNull
         @Contract(value = "_ -> new", pure = true)
         @Override
-        public Meal[] newArray(int size) {
-            return new Meal[size];
+        public NutritionMeal[] newArray(int size) {
+            return new NutritionMeal[size];
         }
     };
 
-    public Meal(@NonNull Parcel in)
+    public NutritionMeal(@NonNull Parcel in)
     {
         setKey(in.readString());
         this.isMorning = in.readByte() != 0;
         this.isAfternoon = in.readByte() != 0;
         this.isNight = in.readByte() != 0;
-
         // this will read the object
         this.dishes = in.readParcelable(FoodItem.class.getClassLoader());
         this.date = (Date) in.readSerializable();
@@ -118,18 +117,16 @@ public class Meal implements Parcelable
     @Override
     public String toString()
     {
-        return "Meal" +
+        return "Meal Details" +
                 "{" +
-                "key='" + key + '\'' +
-                ", isMorning=" + isMorning +
-                ", isAfternoon=" + isAfternoon +
-                ", isNight=" + isNight +
-                ", totalCalories=" + totalCalories +
-                ", totalCholesterol=" + totalCholesterol +
-                ", totalSugar=" + totalSugar +
-                ", totalSodium=" + totalSodium +
-                ", date=" + date +
-                ", dishes=" + dishes +
+                "Key: '" + key + '\'' +
+                ", Meal Time: " + (isMorning? "Morning" : (isAfternoon? "Afternoon" : "Night")) +
+                ", Total Calories: " + totalCalories +
+                ", Total Cholesterol: " + totalCholesterol +
+                ", Total Sugar: " + totalSugar +
+                ", Total Sodium: " + totalSodium +
+                ", Date: " + date +
+                ", Dishes: " + dishes +
                 '}';
     }
 

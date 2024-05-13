@@ -26,10 +26,14 @@ import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.Prevalent.Prevalent;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
+import com.example.myfoodchoice.UserActivity.UserPremiumMainMenuActivity;
+import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +41,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
+
+import java.util.UUID;
 
 import io.paperdb.Paper;
 
@@ -51,6 +57,8 @@ public class LoginActivity extends AppCompatActivity
     // TODO: declare UI component
     // button
     Button loginBtn;
+
+    FloatingActionButton backBtn;
 
     // Edit text
     EditText loginEmailEditText, loginPasswordEditText;
@@ -71,6 +79,8 @@ public class LoginActivity extends AppCompatActivity
     FirebaseAuth mAuth;
 
     FirebaseUser firebaseUser;
+
+    String guestUserID;
 
     static final int INDEX_START = 0;
 
@@ -140,10 +150,12 @@ public class LoginActivity extends AppCompatActivity
         loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setVisibility(View.VISIBLE);
         loginBtn.setOnClickListener(onLoginListener());
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(onBackBtnListener());
 
         // nav to sign up page based on text click
         spannableStringSignUpNav = new SpannableString(clickableSignUpNav.getText());
-        spannableStringSignUpNav.setSpan(clickableSignUpNavSpan(), 17, clickableSignUpNav.length(), 0);
+        spannableStringSignUpNav.setSpan(clickableSignUpNavSpan(), 0, clickableSignUpNav.length(), 0);
         clickableSignUpNav.setText(spannableStringSignUpNav);
         clickableSignUpNav.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -190,8 +202,8 @@ public class LoginActivity extends AppCompatActivity
                     case "Dietitian":
                         allowDietitianLogin(emailRememberMe, passwordRememberMe);
                         break;
-                    case "Trainer":
-                        // allowTrainerLogin(emailRememberMe, passwordRememberMe);
+                    case "Premium User":
+                        allowPremiumUserLogin(emailRememberMe, passwordRememberMe);
                         break;
                     default:
                         Toast.makeText(LoginActivity.this,
@@ -212,21 +224,37 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    /*
-        private final FirebaseAuth.AuthStateListener authStateListener =
-                mAuth ->
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onBackBtnListener()
+    {
+        return v ->
         {
-            firebaseUser = mAuth.getCurrentUser();
-            if (firebaseUser != null)
-            {
-                // user signed in
-                Log.d("LoginActivity", "UID here: " + firebaseUser.getUid());
-                userID = firebaseUser.getUid();
-                databaseReferenceAccountType = firebaseDatabase.getReference("Registered Users").child(userID);
-                databaseReferenceAccountType.addListenerForSingleValueEvent(valueAccountTypeEventListener());
-            }
+            Intent intent1 = new Intent(LoginActivity.this, WelcomeActivity.class);
+            startActivity(intent1);
+            finish();
         };
-     */
+    }
+
+    private void allowPremiumUserLogin(String email, String password)
+    {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                // Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                Intent intent = new
+                        Intent(LoginActivity.this, UserPremiumMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "Error, " +
+                        "there is something wrong with database", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @NonNull
     @Contract(" -> new") // the purpose to is to recognise the account type
@@ -257,39 +285,8 @@ public class LoginActivity extends AppCompatActivity
 
                     switch (accountType) // FIXME: there is a bug when login, it might inform us.
                     {
-                        case "Guest":
-                            intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
-                            /*
-                            if (isTrialOver)
-                            {
-                            }
-                            else
-                            {
-                                alertGuestTrialOverDialog = new
-                                        AlertDialog.Builder(LoginActivity.this).create();
-                                alertGuestTrialOverDialog.setTitle("Trial Over");
-                                alertGuestTrialOverDialog.setMessage
-                                        ("Your trial period is over, please upgrade your account.");
-                                alertGuestTrialOverDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE,
-                                        "Confirm",
-                                        (dialog, which) ->
-                                        {
-                                            // dismiss and move the guest user to login page.
-                                            dialog.dismiss();
-                                            intent = new Intent(LoginActivity.this,
-                                                    GuestTrialOverActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        });
-                                alertGuestTrialOverDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE,
-                                        "Cancel",
-                                        (dialog, which) -> dialog.dismiss());
-                                alertGuestTrialOverDialog.show();
-                            }
-                             */
-                            break;
-                        case "Trainer":
-                            // intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
+                        case "Premium User":
+                            intent = new Intent(LoginActivity.this, UserPremiumMainMenuActivity.class);
                             break;
                         case "Dietitian":
                             intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
@@ -317,9 +314,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-                Toast.makeText
-                        (LoginActivity.this, "Error database connection", Toast.LENGTH_SHORT).show();
-                Log.w("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
+                Log.d("LoginActivity", "loadUserProfile:onCancelled ", error.toException());
             }
         };
     }
@@ -412,29 +407,8 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, UserMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void allowGuestLogin(String email, String password)
-    {
-        // TODO: login function
-
-        // authentication login
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-            {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -452,7 +426,7 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, DietitianMainMenuActivity.class);
                 startActivity(intent);
                 finish();
@@ -463,27 +437,6 @@ public class LoginActivity extends AppCompatActivity
             }
         });
     }
-
-    /*
-    private void allowTrainerLogin(String email, String password)
-    {
-        // authentication login
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task ->
-        {
-            if (task.isSuccessful())
-            {
-                Toast.makeText(LoginActivity.this, "Welcome to Smart Food Choice!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, TrainerMainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-     */
 
     @Override
     protected void onPause()
@@ -536,14 +489,8 @@ public class LoginActivity extends AppCompatActivity
             public void onClick(@NonNull View widget)
             {
                 // fixme: the problem is that getCurrentUser(), should generate a new user
-                if (mAuth.getCurrentUser() != null)
-                {
-                    mAuth.signInAnonymously().addOnCompleteListener(onCompleteSignInAsGuestListener());
-                }
-                else
-                {
-                    Log.d(TAG, "onClick: " + mAuth.getCurrentUser());
-                }
+                guestUserID = UUID.randomUUID().toString();
+                mAuth.signInAnonymously().addOnCompleteListener(onCompleteSignInAsGuestListener());
             }
         };
     }
@@ -555,16 +502,20 @@ public class LoginActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                // sign in success, update UI with the signed-in user's information
-                userID = mAuth.getUid();
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null)
+                {
+                    user.updateProfile(new UserProfileChangeRequest.Builder()
+                            .setDisplayName(guestUserID)
+                            .build());
+
+                }
+
                 Intent intent = new Intent(LoginActivity.this, GuestMainMenuActivity.class);
                 startActivity(intent);
                 finish();
-            }
-            else
-            {
-                // If sign in fails, display a message to the user.
-                Log.w(TAG, "signInAnonymously:failure", task.getException());
+            } else {
+                Log.d(TAG, "signInAnonymously:failure", task.getException());
             }
         };
     }

@@ -5,44 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient_color_main"
-    android:padding="16dp"
-    tools:layout_editor_absoluteY="25dp">
+    >
 
 
     <!-- todo: put the date here in correct string format using Locale.Root-->
+
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:text="@string/log_my_meal"
-            android:textColor="@android:color/white"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/nutritionInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:backgroundTint="@color/peach_puff"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp"
@@ -77,26 +64,30 @@
                     android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
                         android:layout_gravity="center">
 
-                        <ProgressBar
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:id="@+id/progressBarCalories"
-                            style="@style/CircularDeterminateProgressBarCalories"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:progress="0"
+                            app:indicatorColor="@color/deep_pink"
+                            app:indicatorSize="150dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:progress="50" />
+                            app:trackColor="@color/light_pink"
+                            app:trackCornerRadius="10dp"
+                            app:trackThickness="16dp" />
 
                         <TextView
                             android:id="@+id/progressCaloriesTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="51dp"
+                            android:layout_marginStart="50dp"
                             android:layout_marginTop="39dp"
                             android:layout_marginEnd="53dp"
                             android:layout_marginBottom="78dp"
@@ -123,26 +114,30 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
-                        android:layout_width="50dp"
+                        android:layout_width="40dp"
                         android:layout_height="match_parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center">
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center"
+                        tools:layout_editor_absoluteX="200dp">
 
-                        <ProgressBar
+
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:id="@+id/progressBarSodium"
-                            style="@style/CircularDeterminateProgressBarSodium"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:progress="0"
+                            app:indicatorColor="@color/deep_sky_blue"
+                            app:indicatorSize="150dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0"
-                            tools:progress="50" />
+                            app:trackColor="@color/dodger_blue"
+                            app:trackCornerRadius="10dp"
+                            app:trackThickness="16dp" />
 
                         <TextView
                             android:id="@+id/progressSodiumTextView"
@@ -186,7 +181,7 @@
                         android:id="@+id/caloriesNumTextView"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0/2200.0 kcal"
+                        android:text="0/2200 kcal"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -195,7 +190,7 @@
                         android:id="@+id/sodiumNumTextView"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0/300.0 mg"
+                        android:text="0/2300 mg"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -209,20 +204,24 @@
                     android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
                         android:layout_gravity="center">
 
-                        <ProgressBar
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:id="@+id/progressBarCholesterol"
-                            style="@style/CircularDeterminateProgressBarCholesterol"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:progress="0"
+                            app:indicatorColor="@color/cyan"
+                            app:indicatorSize="150dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:progress="50" />
+                            app:trackColor="@color/light_cyan"
+                            app:trackCornerRadius="10dp"
+                            app:trackThickness="16dp" />
 
                         <TextView
                             android:id="@+id/progressCholesterolTextView"
@@ -255,12 +254,12 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
-                        android:layout_width="50dp"
+                        android:layout_width="40dp"
                         android:layout_height="match_parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.949"
@@ -268,16 +267,20 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0">
 
-                        <ProgressBar
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:id="@+id/progressBarSugar"
-                            style="@style/CircularDeterminateProgressBarSugar"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:progress="0"
+                            app:indicatorColor="@color/lime_green"
+                            app:indicatorSize="150dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:progress="50" />
+                            app:trackColor="@color/_light_green"
+                            app:trackCornerRadius="10dp"
+                            app:trackThickness="16dp" />
 
                         <TextView
                             android:id="@+id/progressSugarTextView"
@@ -322,7 +325,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="0/36.0 mg"
+                        android:text="0/300 mg"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -332,65 +335,94 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="0/2300.0 g"
+                        android:text="0/36 g"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/show_time"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/genderTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Gender"
-            android:textAlignment="textStart"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nutritionInfo" />
-
-        <Button
-            android:id="@+id/morningButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/peach_puff"
-            android:backgroundTint="@color/peach_puff"
-            android:drawableLeft="@android:drawable/ic_input_add"
-            android:padding="15dp"
-            android:text="@string/morning"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/afternoonButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/holo_blue_dark"
-            android:drawableLeft="@android:drawable/ic_input_add"
-            android:padding="15dp"
-            android:text="@string/afternoon"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/nightButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/holo_blue_dark"
-            android:drawableLeft="@android:drawable/ic_input_add"
-            android:padding="15dp"
-            android:text="@string/night"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView6"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:backgroundTint="@color/peach_puff"
+        android:orientation="vertical"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/morningButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:drawableLeft="@drawable/breakfast"
+                android:padding="10dp"
+                android:text="@string/morning"
+                android:textColor="@android:color/black"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/afternoonButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:drawableLeft="@drawable/lunch"
+                android:padding="10dp"
+                android:text="@string/afternoon"
+                android:textColor="@android:color/black"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/nightButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:drawableLeft="@drawable/dinner"
+                android:padding="10dp"
+                android:text="@string/night"
+                android:textColor="@android:color/black"
+                android:textSize="25sp" />
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

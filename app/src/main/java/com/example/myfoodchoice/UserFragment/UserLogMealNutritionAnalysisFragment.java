@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +37,14 @@ import com.example.myfoodchoice.AdapterInterfaceListener.OnDishClickListener;
 import com.example.myfoodchoice.AdapterRecyclerView.DishGuestUserAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
-import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.example.myfoodchoice.RetrofitProvider.CaloriesNinjaAPI;
 import com.example.myfoodchoice.RetrofitProvider.FreeFoodDetailAPI;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitFreeFoodClient;
 import com.example.myfoodchoice.RetrofitProvider.RetrofitNinjaCaloriesClient;
+import com.example.myfoodchoice.UserActivity.UserMainMenuActivity;
 import com.example.myfoodchoice.ml.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -85,6 +85,7 @@ import retrofit2.Response;
 public class UserLogMealNutritionAnalysisFragment extends Fragment implements OnDishClickListener
 {
     final static String TAG = "UserLogMealNutritionFragment";
+    private static final String PATH_ACCOUNT_TYPE = "Registered Accounts";
     int imageSize;
 
     // TODO: declare UI components
@@ -108,7 +109,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     // TODO: add in one more button for taking photo I think.
     FloatingActionButton takePhotoBtn, uploadPhotoBtn;
 
-    LinearLayout logMealBtn, addDishBtn;
+    Button logMealBtn, addDishBtn;
 
     ActivityResultLauncher<Intent> uploadPhotoactivityResultLauncher, takePhotoActivityResultLauncher;
 
@@ -135,17 +136,20 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
     FirebaseDatabase firebaseDatabase;
 
+    FirebaseStorage firebaseStorage;
+
     FirebaseUser firebaseUser;
 
     String userID, foodName, dietType;
 
     boolean isSeafoodAllergic, isPeanutAllergic, isEggAllergic;
 
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
-    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily meal.
+    final static String PATH_DAILY_FOOD_INTAKE = "Android Meals"; // fixme:  the path need to access daily meal.
 
-    Meal meal;
+    NutritionMeal nutritionMeal;
+
     double totalCalories, totalCholesterol, totalSalt, totalSugar;
 
     RecyclerView dishRecyclerView;
@@ -173,6 +177,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         firebaseDatabase = FirebaseDatabase.getInstance
                 ("https://myfoodchoice-dc7bd-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
+        firebaseStorage = FirebaseStorage.getInstance();
+
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -191,7 +197,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
 
             databaseReferenceUserProfile.addValueEventListener(onHealthUserProfileListener());
 
-            storageReferenceFoodImage = FirebaseStorage.getInstance().getReference()
+            storageReferenceFoodImage = firebaseStorage.getReference()
                     .child("Food Images")
                     .child(userID);
         }
@@ -200,13 +206,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         bundle = getArguments();
         if (bundle != null)
         {
-            meal = bundle.getParcelable("meal");
+            nutritionMeal = bundle.getParcelable("meal");
         }
 
         foodItem = new FoodItem();
-        if (meal != null)
+        if (nutritionMeal != null)
         {
-            meal.setDishes(foodItem);
+            nutritionMeal.setDishes(foodItem);
         }
 
         itemDisplay = new FoodItem.Item();
@@ -409,18 +415,35 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         // fixme: https://calorieninjas.com/
 
         // todo: remember to update those lists below as new model
-        List<String> allergyEggList = Arrays.asList("eggs", "egg");
         // fixme: all checking ingredients must be in lower case.
 
-        List<String> allergyPeanutList = Arrays.asList("peanuts", "peanut");
+        List<String> allergyEggList = Arrays.asList("eggs", "egg",
+                "egg white", "egg yolks", "omelette", "scrambled eggs", "fried eggs",
+                "egg salad", "egg yolk");
 
-        List<String> allergySeafoodList = Arrays.asList("lobster", "fish",
-                "crustacean", "shellfish",
-                "anchovy fillet", "fish stock", "king prawns", "fish sauce");
+        List<String> allergyPeanutList = Arrays.asList("peanuts",
+                "peanut", "peanut butter", "peanut oil", "peanut flour",
+                "peanut sauce", "peanut butter cookies", "peanut brittle");
 
-        List<String> nonVegeList = Arrays.asList("meat", "chicken", "beef", "lamb",
-                "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
-                "anchovy fillet", "fish stock");
+        List<String> allergySeafoodList = Arrays.asList("lobster",
+                "fish", "crustacean", "shellfish", "anchovy fillet",
+                "fish stock", "king prawns", "fish sauce", "shrimp", "crab", "oysters",
+                "mussels", "clams", "scallop", "octopus", "squid", "sea bass",
+                "salmon", "tuna", "trout", "halibut", "cod", "snapper", "tilapia",
+                "flounder", "mackerel", "sardines", "anchovies", "caviar", "truffles",
+                "game meat");
+
+        List<String> nonVegeList = Arrays.asList(
+                "meat", "chicken", "beef", "lamb", "turkey", "pork", "ham", "sausage", "duck", "mutton", "venison",
+                "anchovy fillet", "fish stock", "king prawns", "fish sauce", "lobster", "fish", "crustacean", "shellfish",
+                "egg", "bacon", "steak", "ribs", "brisket", "spareribs", "hot dogs",
+                "sausages", "burgers", "patties",
+                "salmon", "tuna", "mussels", "clams", "oysters",
+                "scallops", "shrimp", "prawns", "crab", "lobster",
+                "snapper", "tilapia", "cod", "halibut", "trout", "catfish",
+                "flounder", "mackerel", "sardines", "anchovies",
+                "caviar", "truffles", "game meat", "beef fillet"
+        );
 
         String allergen;
         // todo:
@@ -518,7 +541,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                         // assign the variable to the is foodItems array list.
 
                         // FIXME: sometime the API doesn't give response.
-                        Log.d(TAG, "onResponse: " + foodItem);
+                        // Log.d(TAG, "onResponse: " + foodItem);
                         // todo: set progress bar here
                         // get all total calculations
                         for (FoodItem.Item itemLoop : foodItem.getItems())
@@ -532,15 +555,10 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                             itemDisplay = itemLoop;
                             itemDisplay.setFoodImage(selectedImageUri.toString());
 
-                            if (firebaseUser.getDisplayName() == null)
-                            {
-                                // this is for the guest, they don't have their own user profile
-                                return;
-                            }
 
                             // fixme: remember must be unique name if not will be override
                             String uniqueImageName = firebaseUser.getDisplayName() + "_" +
-                                    UUID.randomUUID().toString() + ".jpg";
+                                    UUID.randomUUID() + ".jpg";
 
                             // upload the image to Firebase Storage
                             final StorageReference storageReference = storageReferenceFoodImage.child
@@ -566,10 +584,12 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
                         }
 
                         // todo: set the total calories first.
-                        meal.setTotalCalories(totalCalories);
-                        meal.setTotalCholesterol(totalCholesterol);
-                        meal.setTotalSodium(totalSalt);
-                        meal.setTotalSugar(totalSugar);
+                        nutritionMeal.setTotalCalories(totalCalories);
+                        nutritionMeal.setTotalCholesterol(totalCholesterol);
+                        nutritionMeal.setTotalSodium(totalSalt);
+                        nutritionMeal.setTotalSugar(totalSugar);
+
+                        // Log.d(TAG, String.valueOf(nutritionMeal.getTotalCalories()));
 
                         // update the individual nutrition value
                         updateDishNutritionUI();
@@ -608,9 +628,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     private OnFailureListener onFailureUploadFoodImage()
     {
         return e ->
-        {
-            Log.d(TAG, "onFailureUploadFoodImage: " + e.getMessage());
-        };
+                Log.d(TAG, "onFailureUploadFoodImage: " + e.getMessage());
     }
 
     private void updateDishNutritionUI()
@@ -734,7 +752,7 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             call.enqueue(callBackNutritionValueResponseFromAPI());
 
             // todo: call free food API for allergies and diet type.
-            String modifiedName = ""; // todo: remember to add in case for this.
+            String modifiedName; // todo: remember to add in case for this.
             switch (foodName)
             {
                 case ("Nasi Lemak"):
@@ -803,13 +821,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             Toast.makeText(requireContext(), "Dish is added.", Toast.LENGTH_SHORT).show();
 
             // ensure the list is initialized before adding an item
-            if (meal.getDishes().getItems() == null)
+            if (nutritionMeal.getDishes().getItems() == null)
             {
-                meal.getDishes().setItems(new ArrayList<>());
+                nutritionMeal.getDishes().setItems(new ArrayList<>());
             }
 
             // this object for the next activity to record.
-            if (meal.getDishes().getItems().add(itemDisplay))
+            if (nutritionMeal.getDishes().getItems().add(itemDisplay))
             {
                 addDishBtn.setVisibility(Button.VISIBLE);
                 loadingAddDish.setVisibility(ProgressBar.GONE);
@@ -828,13 +846,13 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     public void onRemoveDish(int position) // todo: remove the element
     {
         // todo: to remove the dish from the list.
-        if (meal.getDishes().getItems() == null)
+        if (nutritionMeal.getDishes().getItems() == null)
         {
-            meal.getDishes().setItems(new ArrayList<>());
+            nutritionMeal.getDishes().setItems(new ArrayList<>());
         }
 
         // this object for the next activity to record.
-        meal.getDishes().getItems().remove(position);
+        nutritionMeal.getDishes().getItems().remove(position);
 
         // this one is for adapter which means for UI to show.
         foodItemsDisplay.remove(position);
@@ -879,15 +897,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
         {
             StringBuilder message = new StringBuilder();
 
-            if (meal.getDishes() == null || meal.getDishes().getItems() == null ||
-                    meal.getDishes().getItems().isEmpty())
+            if (nutritionMeal.getDishes() == null || nutritionMeal.getDishes().getItems() == null ||
+                    nutritionMeal.getDishes().getItems().isEmpty())
             {
                 message.append("Dish is required to be added before logging your meal.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (meal.getDishes().getItems().size() > 3)
+            if (nutritionMeal.getDishes().getItems().size() > 3)
             {
                 message.append("You can only add up to 3 dishes.");
                 Toast.makeText(requireContext(), message.toString(), Toast.LENGTH_LONG).show();
@@ -905,18 +923,18 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             loadingLogMeal.setVisibility(ProgressBar.VISIBLE);
 
             // todo: set the time stamp for meal
-            meal.startDate();
+            nutritionMeal.startDate();
 
             // todo: push the data in firebase
             databaseReferenceDailyFoodIntakeChild = databaseReferenceDailyFoodIntake.push();
 
-            meal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
+            nutritionMeal.setKey(databaseReferenceDailyFoodIntakeChild.getKey());
             // fixme: testing
             //Log.d(TAG, "onNavToLogMealListener: " + meal);
             //Log.d(TAG, "onNavToLogMealListener: " + formatTime(meal.getDate()));
 
             // todo: set total nutrition value
-            databaseReferenceDailyFoodIntakeChild.setValue(meal).addOnCompleteListener(onCompleteLogMealListener());
+            databaseReferenceDailyFoodIntakeChild.setValue(nutritionMeal).addOnCompleteListener(onCompleteLogMealListener());
         };
     }
 
@@ -929,15 +947,15 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             if (task.isSuccessful())
             {
                 Toast.makeText(requireContext(), "Logged your meal.", Toast.LENGTH_LONG).show();
-                bundle.putParcelable("meal", meal);
+                bundle.putParcelable("meal", nutritionMeal);
 
                 logMealBtn.setVisibility(Button.VISIBLE);
                 loadingLogMeal.setVisibility(ProgressBar.GONE);
 
                 // todo: go to the home page.
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new UserHomeAlvinFragment())
-                        .commit();
+                Intent intent = new Intent(requireContext(), UserMainMenuActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
             else
             {

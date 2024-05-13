@@ -10,6 +10,7 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -39,19 +41,22 @@ public class RegisterUserActivity extends AppCompatActivity
 {
     // TODO: declare UI components
 
-    // buttons
     Button nextBtn;
 
+    FloatingActionButton backBtn;
+
     // log in clickable text
-    TextView navLoginClick;
+    TextView navLoginClick, clickableTermNavText;
+
+    CheckBox agreeTermCheckBox;
 
     // Edit text
-    EditText signupEmailEditText, signupPasswordEditText, firstNameEditText, lastNameEditText;
+    EditText signupEmailEditText, signupPasswordEditText, firstName, lastName;
 
     // progress bar
     ProgressBar progressBar;
 
-    SpannableString spannableStringLoginNav;
+    SpannableString spannableStringLoginNav, spannableStringTermNav;
 
     // for authentication
     FirebaseAuth firebaseAuth;
@@ -61,10 +66,12 @@ public class RegisterUserActivity extends AppCompatActivity
 
     static final String TAG = "RegisterGuestActivity";
 
-    static final String LABEL_USER = "Registered Accounts";
+    static final String PATH_ACCOUNTS = "Registered Accounts";
 
-    DatabaseReference databaseReferenceRegisteredGuest;
-    String email, password, firstName, lastName;
+    static final String PATH_USERPROFILE = "Android User Profile";
+
+    DatabaseReference databaseReferenceRegisteredUser, databaseReferenceUserProfile;
+    String email, password;
 
     Account account;
 
@@ -73,6 +80,9 @@ public class RegisterUserActivity extends AppCompatActivity
     FirebaseUser firebaseUser;
 
     Intent intentNavToUserProfileFirstActivity;
+
+    private String firstNameString;
+    private String lastNameString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -92,8 +102,8 @@ public class RegisterUserActivity extends AppCompatActivity
         // edit text
         signupEmailEditText = findViewById(R.id.sign_up_email);
         signupPasswordEditText = findViewById(R.id.sign_up_password);
-        firstNameEditText = findViewById(R.id.firstNameProfile);
-        lastNameEditText = findViewById(R.id.lastNameProfile);
+        firstName = findViewById(R.id.firstNameProfile);
+        lastName = findViewById(R.id.lastNameProfile);
 
         // progress bar
         progressBar = findViewById(R.id.progressBar);
@@ -103,13 +113,24 @@ public class RegisterUserActivity extends AppCompatActivity
         nextBtn = findViewById(R.id.nextBtn);
         nextBtn.setVisibility(View.VISIBLE);
         nextBtn.setOnClickListener(onSignUpListener());
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(onBackBtnListener());
 
         // clickable text
         navLoginClick = findViewById(R.id.clickableLoginNavText);
         spannableStringLoginNav = new SpannableString(navLoginClick.getText());
-        spannableStringLoginNav.setSpan(clickableLoginNavSpan(), 18, navLoginClick.length(), 0);
+        spannableStringLoginNav.setSpan(clickableLoginNavSpan(), 0, navLoginClick.length(), 0);
         navLoginClick.setText(spannableStringLoginNav);
         navLoginClick.setMovementMethod(LinkMovementMethod.getInstance());
+
+        clickableTermNavText = findViewById(R.id.clickableTermNavText);
+        spannableStringTermNav = new SpannableString(clickableTermNavText.getText());
+        spannableStringTermNav.setSpan(clickableTermNavSpan(), 0, clickableTermNavText.length(), 0);
+        clickableTermNavText.setText(spannableStringTermNav);
+        clickableTermNavText.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // check box here
+        agreeTermCheckBox = findViewById(R.id.agreeTermCheckBox);
     }
 
     public View.OnClickListener onSignUpListener()
@@ -120,8 +141,8 @@ public class RegisterUserActivity extends AppCompatActivity
             email = signupEmailEditText.getText().toString().trim();
             password = signupPasswordEditText.getText().toString().trim();
 
-            //Log.d(TAG, "onSignUpListener: " + firstName + " " + lastName);
-            //Log.d(TAG, "onSignUpListener: " + email + " " + password);
+            firstNameString = firstName.getText().toString().trim();
+            lastNameString = lastName.getText().toString().trim();
 
             // validation
             if (TextUtils.isEmpty(email))
@@ -145,17 +166,25 @@ public class RegisterUserActivity extends AppCompatActivity
                 return;
             }
 
-            if (containsNumber(firstNameEditText))
+            if (TextUtils.isEmpty(firstName.getText().toString().trim()))
             {
-                firstNameEditText.setError("First name cannot contain numbers.");
-                firstNameEditText.requestFocus();
-                return;
+                firstName.setError("Please enter your first name.");
+                firstName.requestFocus();
+                return; // exit the method if age is not entered
             }
 
-            if (containsNumber(lastNameEditText))
+            if (TextUtils.isEmpty(lastName.getText().toString().trim()))
             {
-                lastNameEditText.setError("Last name cannot contain numbers.");
-                lastNameEditText.requestFocus();
+                lastName.setError("Please enter your last name.");
+                lastName.requestFocus();
+                return; // exit the method if age is not entered
+            }
+
+            if (!agreeTermCheckBox.isChecked())
+            {
+                Toast.makeText(this, "Agreement required to continue.",
+                        Toast.LENGTH_LONG).show();
+                agreeTermCheckBox.requestFocus();
                 return;
             }
 
@@ -169,37 +198,31 @@ public class RegisterUserActivity extends AppCompatActivity
             {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(RegisterUserActivity.this, "Guest registered successfully.",
-                            Toast.LENGTH_SHORT).show();
                     firebaseUser = firebaseAuth.getCurrentUser();
                     // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
-
-                    // retrieve the first name and last name from the user.
-                    firstName = firstNameEditText.getText().toString().trim();
-                    lastName = lastNameEditText.getText().toString().trim();
 
                     // init database reference
 
                     // for user account
-                    databaseReferenceRegisteredGuest =
-                            firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
+                    databaseReferenceRegisteredUser =
+                            firebaseDatabase.getReference(PATH_ACCOUNTS).child(firebaseUser.getUid());
 
+                    databaseReferenceUserProfile =
+                            firebaseDatabase.getReference(PATH_USERPROFILE).child(firebaseUser.getUid());
 
                     // init user account
                     account = new Account(email, password);
                     // set to user, because supervisor said that user
-                    // can register not the guest, guest is to login.
                     account.setAccountType("User");
-
-                    // Log.d(TAG, "onCreate: " + account.toString());
 
                     // start the trial day?
                     account.startGuestTrialPeriod();
 
                     // intent to carry this too
                     userProfile = new UserProfile();
-                    userProfile.setFirstName(firstName);
-                    userProfile.setLastName(lastName);
+                    userProfile.setKey(firebaseUser.getUid());
+                    userProfile.setFirstName(firstNameString);
+                    userProfile.setLastName(lastNameString);
 
                     // set display name
                     firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
@@ -207,7 +230,7 @@ public class RegisterUserActivity extends AppCompatActivity
                             .addOnFailureListener(onFailureUpdateDisplayName());
 
                     // through we move to next if complete
-                    databaseReferenceRegisteredGuest.setValue(account).addOnCompleteListener
+                    databaseReferenceRegisteredUser.setValue(account).addOnCompleteListener
                             (onCompleteUserAccountListener());
                     // auto create a new path with name as string value and assign to a variable.
                     // databaseReference = firebaseDatabase.getReference(LABEL);
@@ -247,8 +270,6 @@ public class RegisterUserActivity extends AppCompatActivity
                     {
                         // FIXME: debug purpose
                         Log.d(TAG, "Error: " + e.getMessage());
-                        Toast.makeText(RegisterUserActivity.this, "Error: " + e.getMessage(),
-                                Toast.LENGTH_SHORT).show();
                     }
                     // to make the progress bar gone.
                     progressBar.setVisibility(View.GONE);
@@ -256,12 +277,6 @@ public class RegisterUserActivity extends AppCompatActivity
                 }
             });
         };
-    }
-
-    public boolean containsNumber(@NonNull EditText editText)
-    {
-        String text = editText.getText().toString();
-        return text.matches(".*\\d.*");
     }
 
     @NonNull
@@ -280,24 +295,57 @@ public class RegisterUserActivity extends AppCompatActivity
     @Contract(pure = true)
     private OnCompleteListener<Void> onCompleteUserAccountListener()
     {
-        return v ->
+        return task ->
         {
-            // Log.d(TAG, "onCompleteUserAccountListener: " + userProfile); // debug message
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Security Measure Applied");
-            alertDialog.setMessage("Your data is now secure. Only authorized users can access their personal information. " +
-                    "If you encounter any issues or have questions, please contact support.");
-            alertDialog.setPositiveButton("OK", (dialog, which) -> {
-                // dismiss the dialog
-                dialog.dismiss();
-                // move to user profile for default user profile page.
-                intentNavToUserProfileFirstActivity = new Intent(RegisterUserActivity.this, UserProfileCreateFirstActivity.class);
-                intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
-                startActivity(intentNavToUserProfileFirstActivity);
-                finish();
-            });
-            alertDialog.show();
+            if (task.isSuccessful())
+            {
+                databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteDefaultUserProfileListener());
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteUserAccountListener: " + "failed");
+            }
         };
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private OnCompleteListener<Void> onCompleteDefaultUserProfileListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                // todo: need to upgrade this into term and condition
+                // Log.d(TAG, "onCompleteUserAccountListener: " + userProfile); // debug message
+                AlertDialog.Builder alertDialog = getBuilder();
+                alertDialog.setPositiveButton("OK", (dialog, which) ->
+                {
+                    // dismiss the dialog
+                    dialog.dismiss();
+                    // move to user profile for default user profile page.
+                    intentNavToUserProfileFirstActivity = new Intent(RegisterUserActivity.this, UserProfileCreateFirstActivity.class);
+                    intentNavToUserProfileFirstActivity.putExtra("userProfile", userProfile);
+                    startActivity(intentNavToUserProfileFirstActivity);
+                    finish();
+                });
+                alertDialog.show();
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteDefaultUserProfileListener: " + "failed");
+            }
+        };
+    }
+
+    @NonNull
+    private AlertDialog.Builder getBuilder()
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Security Measure Applied");
+        alertDialog.setMessage("Your data is now secure. Only authorized users can access their personal information. " +
+                "If you encounter any issues or have questions, please contact support.");
+        return alertDialog;
     }
 
     public ClickableSpan clickableLoginNavSpan()
@@ -314,5 +362,34 @@ public class RegisterUserActivity extends AppCompatActivity
                 }
             };
         }
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ClickableSpan clickableTermNavSpan()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(@NonNull View widget)
+            {
+                // open the terms of service activity
+                Intent intent = new Intent(RegisterUserActivity.this, TermAndConditionUserActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onBackBtnListener()
+    {
+        return v ->
+        {
+            Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        };
     }
 }

@@ -10,6 +10,7 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,14 +20,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myfoodchoice.ModelSignUp.Account;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
@@ -36,21 +40,32 @@ import java.util.Objects;
 public class RegisterBusinessActivity extends AppCompatActivity
 {
     private static final String TAG = "Register Business Trainer";
-    private static final String LABEL_USER = "Registered Users";
+    private static final String PATH_ACCOUNT = "Registered Accounts";
+
+    private static final String PATH_BUSINESS_PROFILE = "Business Profile";
+
+    DatabaseReference databaseReferenceRegisteredAccounts, databaseReferenceBusinessProfile;
+
     // TODO: declare UI components
-    EditText emailEditText, passwordEditText;
+    EditText emailEditText, passwordEditText, firstName, lastName;
 
     String email, password;
 
-    TextView navLoginClick;
+    TextView navLoginClick, clickableTermNavText;
 
-    SpannableString spannableStringLoginNav;
+    SpannableString spannableStringLoginNav, spannableStringTermNav;
+
+    CheckBox agreeTermCheckBox;
 
     Button nextBtn;
+
+    FloatingActionButton backBtn;
 
     ProgressBar progressBar;
 
     Account account;
+
+    BusinessProfile businessProfile;
 
     FirebaseUser firebaseUser;
 
@@ -59,6 +74,8 @@ public class RegisterBusinessActivity extends AppCompatActivity
     Intent intentNavToBusinessProfileActivity;
 
     FirebaseAuth firebaseAuth;
+    private String firstNameString;
+    private String lastNameString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,14 +95,10 @@ public class RegisterBusinessActivity extends AppCompatActivity
         // TODO: init UI components
         emailEditText = findViewById(R.id.sign_up_email);
         passwordEditText = findViewById(R.id.sign_up_password);
+        firstName = findViewById(R.id.firstNameProfile);
+        lastName = findViewById(R.id.lastNameProfile);
         nextBtn = findViewById(R.id.nextBtn);
         navLoginClick = findViewById(R.id.clickableLoginNavText);
-
-        // set on click for text
-        spannableStringLoginNav = new SpannableString(navLoginClick.getText());
-        spannableStringLoginNav.setSpan(clickableLoginNavSpan(), 18, navLoginClick.length(), 0);
-        navLoginClick.setText(spannableStringLoginNav);
-        navLoginClick.setMovementMethod(LinkMovementMethod.getInstance());
 
         // set progress bar
         progressBar = findViewById(R.id.progressBar);
@@ -93,8 +106,27 @@ public class RegisterBusinessActivity extends AppCompatActivity
 
         // set on click
         nextBtn.setOnClickListener(onSignUpListener());
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(onBackBtnListener());
 
+        // set on click for text
+        spannableStringLoginNav = new SpannableString(navLoginClick.getText());
+        spannableStringLoginNav.setSpan(clickableLoginNavSpan(), 0, navLoginClick.length(), 0);
+        navLoginClick.setText(spannableStringLoginNav);
+        navLoginClick.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+        clickableTermNavText = findViewById(R.id.clickableTermNavText);
+        spannableStringTermNav = new SpannableString(clickableTermNavText.getText());
+        spannableStringTermNav.setSpan(clickableTermNavSpan(), 0, clickableTermNavText.length(), 0);
+        clickableTermNavText.setText(spannableStringTermNav);
+        clickableTermNavText.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // check box here
+        agreeTermCheckBox = findViewById(R.id.agreeTermCheckBox);
     }
+
+
 
     @NonNull
     @Contract(pure = true)
@@ -102,11 +134,11 @@ public class RegisterBusinessActivity extends AppCompatActivity
     {
         return v ->
         {
-            // Log.d("RegisterActivity", "signup button activated! ");
+            firstNameString = firstName.getText().toString().trim();
+            lastNameString = lastName.getText().toString().trim();
+
             email = emailEditText.getText().toString().trim();
             password = passwordEditText.getText().toString().trim();
-
-            // Log.d(TAG, "onSignUpListener: " + email + " " + password);
 
             // validation
             if (TextUtils.isEmpty(email))
@@ -123,10 +155,32 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 return;
             }
 
+            if (TextUtils.isEmpty(firstName.getText().toString().trim()))
+            {
+                firstName.setError("Please enter your first name.");
+                firstName.requestFocus();
+                return; // exit the method if age is not entered
+            }
+
+            if (TextUtils.isEmpty(lastName.getText().toString().trim()))
+            {
+                lastName.setError("Please enter your last name.");
+                lastName.requestFocus();
+                return; // exit the method if age is not entered
+            }
+
             if (password.length() < 4)
             {
                 passwordEditText.setError("Password must be at least 6 characters.");
                 passwordEditText.requestFocus();
+                return;
+            }
+
+            if (!agreeTermCheckBox.isChecked())
+            {
+                Toast.makeText(this, "Agreement required to continue.",
+                        Toast.LENGTH_LONG).show();
+                agreeTermCheckBox.requestFocus();
                 return;
             }
 
@@ -136,62 +190,40 @@ public class RegisterBusinessActivity extends AppCompatActivity
 
             // register user to the firebase.
             // FIXME: the problem is the data is not saved in this realtime database.
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(onNextListener());
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(onCreateBusinessAccountListener());
         };
     }
 
     @NonNull
     @Contract(pure = true)
-    private OnCompleteListener<AuthResult> onNextListener()
+    private OnCompleteListener<AuthResult> onCreateBusinessAccountListener()
     {
         return task ->
         {
-            if (task.isSuccessful()) {
-                //Toast.makeText(RegisterBusinessActivity.this, "Vendor registered successfully.",
-                        //Toast.LENGTH_SHORT).show();
+            if (task.isSuccessful())
+            {
                 firebaseUser = firebaseAuth.getCurrentUser();
-                // Log.d(TAG, "createUserWithEmail:success " + Objects.requireNonNull(firebaseUser).getUid());
 
                 // init database reference
+                databaseReferenceRegisteredAccounts =
+                        firebaseDatabase.getReference(PATH_ACCOUNT).child(firebaseUser.getUid());
 
-                // for user account
-                // databaseReferenceRegisteredUser =
-                        // firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
+                databaseReferenceBusinessProfile =
+                        firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(firebaseUser.getUid());
+
+                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                        .setDisplayName(firstNameString + " " + lastNameString).build());
 
                 // init user account
                 account = new Account(email, password); // with email and password
+                account.setAccountType("Dietitian");
+                businessProfile = new BusinessProfile();
 
-                // through we move to next if complete
-                    /*
-                        databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener
-                        (onCompleteUserAccountListener());
-                     */
-                // auto create a new path with name as string value and assign to a variable.
-                // databaseReference = firebaseDatabase.getReference(LABEL);
+                // set name here.
+                businessProfile.setFirstName(firstNameString);
+                businessProfile.setLastName(lastNameString);
 
-                // TODO: set the value based on the model class ReadWriteUserDetail
-                // create a new child of this user and set that value.
-                // databaseReference.child
-                // (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
-                // FIXME: not yet to do this, need to set up the user profile before uploading to firebase.
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("Security Measure Applied");
-                alertDialog.setMessage("Your data is now secure. " +
-                        "Only authorized vendors can access their personal information. " +
-                        "If you encounter any issues or have questions, please contact support.");
-                alertDialog.setPositiveButton("OK", (dialog, which) -> {
-                    // dismiss the dialog
-                    dialog.dismiss();
-                    // move to business profile for default business profile page.
-                    // FIXME: need to set up the business profile before uploading to firebase.
-                    intentNavToBusinessProfileActivity = new Intent(RegisterBusinessActivity.this,
-                            BusinessProfileCreateActivity.class);
-                    intentNavToBusinessProfileActivity.putExtra("userAccount", account);
-                    startActivity(intentNavToBusinessProfileActivity);
-                    finish();
-                });
-                alertDialog.show();
+                databaseReferenceRegisteredAccounts.setValue(account).addOnCompleteListener(onCompletedRegisteredAccountListener());
             }
             else
             {
@@ -221,14 +253,71 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 {
                     // FIXME: debug purpose
                     Log.d(TAG, "Error: " + e.getMessage());
-                    Toast.makeText(RegisterBusinessActivity.this, "Error: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
                 }
                 // to make the progress bar gone.
                 progressBar.setVisibility(View.GONE);
                 nextBtn.setVisibility(View.VISIBLE);
             }
         };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompletedRegisteredAccountListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                databaseReferenceBusinessProfile.setValue(businessProfile).addOnCompleteListener(onCompleteDefaultBusinessProfileListener());
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteUserAccountListener: " + "failed");
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompleteDefaultBusinessProfileListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                AlertDialog.Builder alertDialog = getBuilder();
+                alertDialog.show();
+            }
+            else
+            {
+                Log.d(TAG, "onCompleteDefaultUserProfileListener: " + "failed");
+            }
+        };
+    }
+
+    @NonNull
+    private AlertDialog.Builder getBuilder()
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Security Measure Applied");
+        alertDialog.setMessage("Your data is now secure. " +
+                "Only authorized dietitians can access their personal information. " +
+                "If you encounter any issues or have questions, please contact customer support.");
+        alertDialog.setPositiveButton("OK", (dialog, which) ->
+        {
+            // dismiss the dialog
+            dialog.dismiss();
+            // move to business profile for default business profile page.
+            // FIXME: need to set up the business profile before uploading to firebase.
+            intentNavToBusinessProfileActivity = new Intent(RegisterBusinessActivity.this,
+                    BusinessProfileCreateActivity.class);
+            intentNavToBusinessProfileActivity.putExtra("businessProfile", businessProfile);
+            intentNavToBusinessProfileActivity.putExtra("userAccount", account);
+            startActivity(intentNavToBusinessProfileActivity);
+            finish();
+        });
+        return alertDialog;
     }
 
     @NonNull
@@ -246,4 +335,47 @@ public class RegisterBusinessActivity extends AppCompatActivity
             }
         };
     }
+
+    @NonNull
+    @Contract(" -> new")
+    private ClickableSpan clickableTermNavSpan()
+    {
+        return new ClickableSpan()
+        {
+            @Override
+            public void onClick(@NonNull View widget)
+            {
+                // open the terms of service activity
+                Intent intent = new Intent(RegisterBusinessActivity.this, TermAndConditionDietitianActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onBackBtnListener()
+    {
+        return v ->
+        {
+            Intent intent = new Intent(RegisterBusinessActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        };
+    }
 }
+
+// through we move to next if complete
+                    /*
+                        databaseReferenceRegisteredUser.setValue(userAccount).addOnCompleteListener
+                        (onCompleteUserAccountListener());
+                     */
+// auto create a new path with name as string value and assign to a variable.
+// databaseReference = firebaseDatabase.getReference(LABEL);
+
+// TODO: set the value based on the model class ReadWriteUserDetail
+// create a new child of this user and set that value.
+// databaseReference.child
+// (firebaseUser.getUid()).setValue(userProfile).addOnCompleteListener(onCompleteListener());
+// FIXME: not yet to do this, need to set up the user profile before uploading to firebase.

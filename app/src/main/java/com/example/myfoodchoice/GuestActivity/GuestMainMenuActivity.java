@@ -13,7 +13,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myfoodchoice.R;
-import com.example.myfoodchoice.UserFragment.UserHomeAlvinFragment;
 import com.example.myfoodchoice.UserFragment.UserLogMealFragment;
 import com.example.myfoodchoice.UserFragment.UserViewMealHistoryFragment;
 import com.example.myfoodchoice.WelcomeActivity.WelcomeActivity;
@@ -58,7 +57,7 @@ public class GuestMainMenuActivity extends AppCompatActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeAlvinFragment()).commit();
+                    new UserLogMealFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -77,6 +76,13 @@ public class GuestMainMenuActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
+    /*
+    <item
+            android:id="@+id/nav_bmi_calculator"
+            android:title="@string/bmi_calculator"
+            android:icon="@drawable/calculator"/>
+     */
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
@@ -85,15 +91,8 @@ public class GuestMainMenuActivity extends AppCompatActivity
         // TODO: implement more tab here
         // TODO: also need to update nav_header with the image and the email
 
-        if (itemId == R.id.nav_home)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new UserHomeAlvinFragment()).commit();
-            // Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-        }
-
         // todo: to update the part separate the button into two items in menu here
-        else if (itemId == R.id.nav_log_my_meal)
+        if (itemId == R.id.nav_log_my_meal)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new UserLogMealFragment()).commit();

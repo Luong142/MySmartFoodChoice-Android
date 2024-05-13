@@ -2,7 +2,7 @@
 1 Nasi lemak 
 2 Omlette
 3 Fish Soup (Ukha)
-4 Tart 
+4 Tart
 5 Laksa
 
 It is possible to train another model.

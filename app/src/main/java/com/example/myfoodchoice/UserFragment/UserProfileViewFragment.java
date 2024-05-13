@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.myfoodchoice.AuthenticationActivity.LoginActivity;
@@ -36,14 +37,16 @@ import org.jetbrains.annotations.Contract;
 
 public class UserProfileViewFragment extends Fragment
 {
+    private static final String PATH_USERPROFILE = "Android User Profile";
     // todo: we need to update more attributes (weight, diet type)
-
     // TODO: declare UI components
     Button updateProfileBtn, deleteAccountBtn;
 
     ProgressBar progressBarDeleteAccount;
 
-    TextView fullNameText, ageText, weightText;
+    CardView cardViewDetailUserProfile, cardViewHealthContent;
+
+    TextView userProfileText, healthProfileText;
 
     ImageView imageView;
 
@@ -64,7 +67,6 @@ public class UserProfileViewFragment extends Fragment
     String userID;
 
     UserProfile userProfile;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -83,7 +85,7 @@ public class UserProfileViewFragment extends Fragment
             userID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
-            databaseReferenceUserProfile = firebaseDatabase.getReference("User Profile").child(userID);
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
             databaseReferenceRegisteredAccounts = firebaseDatabase
                     .getReference("Registered Accounts").child(userID);
 
@@ -95,12 +97,18 @@ public class UserProfileViewFragment extends Fragment
         // TODO: init UI components
         updateProfileBtn = view.findViewById(R.id.updateProfileBtn);
 
-        fullNameText = view.findViewById(R.id.userProfile);
-        ageText = view.findViewById(R.id.ageProfile);
-        weightText = view.findViewById(R.id.weightProfile);
+        userProfileText = view.findViewById(R.id.userProfileText);
 
         imageView = view.findViewById(R.id.displayUserImage);
         deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn);
+
+        cardViewDetailUserProfile = view.findViewById(R.id.cardViewDetailUserProfile);
+        cardViewHealthContent = view.findViewById(R.id.cardViewHealthContent);
+        healthProfileText = view.findViewById(R.id.healthProfileText);
+
+        // set on click for card view
+        cardViewHealthContent.setVisibility(View.GONE);
+        cardViewDetailUserProfile.setOnClickListener(onCardViewDetailUserHealthListener());
 
         // set progress bar
         progressBarDeleteAccount = view.findViewById(R.id.progressBarDeleteAccount);
@@ -109,6 +117,23 @@ public class UserProfileViewFragment extends Fragment
         // add onClickListener
         updateProfileBtn.setOnClickListener(onUpdateUserProfileListener());
         deleteAccountBtn.setOnClickListener(onDeleteAccountListener());
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onCardViewDetailUserHealthListener()
+    {
+        return v ->
+        {
+            if (cardViewHealthContent.getVisibility() == View.GONE)
+            {
+                cardViewHealthContent.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                cardViewHealthContent.setVisibility(View.GONE);
+            }
+        };
     }
 
     @NonNull
@@ -249,13 +274,8 @@ public class UserProfileViewFragment extends Fragment
                 if (userProfile != null)
                 {
                     // display user profile info
-                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
-                    int age = userProfile.getAge();
-                    int weight = Integer.parseInt(userProfile.getWeight());
-
-                    fullNameText.setText(fullName);
-                    ageText.setText(String.valueOf(age));
-                    weightText.setText(String.valueOf(weight));
+                    userProfileText.setText(userProfile.getUserProfileDetail());
+                    healthProfileText.setText(userProfile.getUserHealthDetail());
 
                     // set profile picture here
                     String profileImageUrl = userProfile.getProfileImageUrl();

@@ -1,7 +1,48 @@
 need to enhance the Interface for informing security or term or condition applied.
 
-ChatGPT API worth it to enhance user experience, also aid Dietitian in generating Health Tips content.
-Our trump card.
 
-// watch these tutorial for
-https://www.youtube.com/watch?v=ahhze_u5ZUs&ab_channel=EasyTuto
+// todo: fix the check in system
+
+ChatGPT API worth it to enhance user experience, also aid Dietitian in generating Health Tips content.
+
+todo: change the name of recipe dietitian path as any new data can crash the app when user clicked on.
+todo: default user profile should be implemented in case if user skipped user profile part
+todo: stripe API should be done.
+todo: hide the health condition in user profile when the user can click on it.
+todo: user need to manually find the food search for meal in the database meal API.
+todo: do the timing system for log meal when 1 day is over then it should reset to the first place.
+todo: user can create log meal manually in case of image recognition is not working.
+todo: improve the ChatBot said "hi how are you in the first place" for extra user experience. (done)
+todo: improve the UI, notification in food image recognition instead of small pop up from below.
+todo: find bugs.
+todo: add if (snapshot.exists())
+to protect from crashing null especially if the data is incorrect not match?
+
+# Create a Customer (use an existing Customer ID if this is a returning customer)
+curl https://api.stripe.com/v1/customers \
+  -u sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu
+
+: \
+  -X "POST"
+
+# Create an Ephemeral Key for the Customer
+curl https://api.stripe.com/v1/ephemeral_keys \
+  -u sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu
+
+: \
+  -H "Stripe-Version: 2024-04-10" \
+  -X "POST" \
+  -d "customer"="{{CUSTOMER_ID}}" \
+
+# Create a PaymentIntent
+curl https://api.stripe.com/v1/payment_intents \
+  -u sk_test_51PE9Gp2Lluf0ZsJHi8QSjt4aqh1ZDC31O1yDcMATa5lzTH95zmNP6fY6CHyim6DcxXze7ntfJtV5WFcUhpxOUUfE00SkNAEOHu
+
+: \
+  -X "POST" \
+  -d "customer"="{{CUSTOMER_ID}}" \
+  -d "amount"=1099 \
+  -d "currency"="eur" \
+  # In the latest version of the API, specifying the `automatic_payment_methods` parameter
+  # is optional because Stripe enables its functionality by default.
+  -d "automatic_payment_methods[enabled]"=true \

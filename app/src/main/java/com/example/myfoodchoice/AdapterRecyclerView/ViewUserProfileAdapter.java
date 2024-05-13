@@ -100,7 +100,7 @@ public class ViewUserProfileAdapter extends RecyclerView.Adapter<ViewUserProfile
                     (Uri.parse(userProfile.getProfileImageUrl())).into
                     (holder.userProfileImage);
 
-            holder.userProfileDetail.setText(userProfile.getDetail());
+            holder.userProfileDetail.setText(userProfile.getFullUserDetail());
         }
     }
 

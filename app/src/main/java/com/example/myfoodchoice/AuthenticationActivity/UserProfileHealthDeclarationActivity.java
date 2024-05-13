@@ -3,15 +3,18 @@ package com.example.myfoodchoice.AuthenticationActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myfoodchoice.AdapterSpinner.DietTypeAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.Contract;
+
+import java.util.ArrayList;
 
 public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 {
@@ -50,7 +55,14 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
 
     final static String TAG = "UserProfileHealthDeclaration";
 
-    final static String PATH_USERPROFILE = "User Profile";
+    final static String PATH_USERPROFILE = "Android User Profile";
+
+    ArrayList<UserProfile> dietTypeArrayList;
+
+    Spinner spinnerDietType;
+
+    String dietType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -80,13 +92,14 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         signUpBtn.setVisibility(Button.VISIBLE);
 
         // TODO: init UI component
-        /*
-        initListAllergies();
-        spinnerAllergies = findViewById(R.id.allergiesSpinner);
-        AllergiesAdapter allergiesAdapter = new AllergiesAdapter(this, allergiesArrayList);
-        spinnerAllergies.setAdapter(allergiesAdapter);
-        spinnerAllergies.setOnItemSelectedListener(onItemSelectedAllergiesListener());
-         */
+        // TODO: init UI component
+        dietTypeArrayList = new ArrayList<>();
+        spinnerDietType = findViewById(R.id.dietTypeSpinner);
+        initListDietType();
+        // spinnerDietType = findViewById(R.id.dietTypeSpinner);
+        DietTypeAdapter dietTypeAdapter = new DietTypeAdapter(this, dietTypeArrayList);
+        spinnerDietType.setAdapter(dietTypeAdapter);
+        spinnerDietType.setOnItemSelectedListener(onItemSelectedDietTypeListener);
 
         // for user profile that has been brought over from the first user profile activity.
         intent = getIntent();
@@ -159,6 +172,7 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
             userProfile.setAllergyPeanut(peanutCheckValue);
             userProfile.setAllergySeafood(seafoodCheckValue);
             userProfile.setKey(firebaseUser.getUid());
+            userProfile.setDietType(dietType);
 
             // Log.d(TAG, "onSignUpListener: " + userProfile);
 
@@ -194,6 +208,25 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         };
     }
 
+    private final AdapterView.OnItemSelectedListener onItemSelectedDietTypeListener =
+            new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id)
+                {
+                    // the purpose is for spinner to select and apply the string dietType to define the user profile
+                    UserProfile userProfile1 = (UserProfile) parent.getItemAtPosition(position);
+                    dietType = userProfile1.getDietType();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+                    // show message
+                    Toast.makeText(getApplicationContext(), "Please select a diet type.", Toast.LENGTH_SHORT).show();
+                }
+            };
+
     @NonNull
     @Contract(pure = true)
     private CompoundButton.OnCheckedChangeListener onCheckedBloodPressureListener()
@@ -222,5 +255,12 @@ public class UserProfileHealthDeclarationActivity extends AppCompatActivity
         {
             diabetesCheckValue = isChecked;
         };
+    }
+
+    private void initListDietType()
+    {
+        // FIXME: edamam can't be used.
+        dietTypeArrayList.add(new UserProfile("Vegetarian", R.drawable.vege));
+        dietTypeArrayList.add(new UserProfile("Non-Vegetarian", R.drawable.non_vege));
     }
 }

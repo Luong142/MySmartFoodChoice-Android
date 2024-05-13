@@ -6,13 +6,6 @@
 
     <!-- TODO: update the guest part -->
     <group android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_home"
-            android:title="@string/home"
-            android:icon="@drawable/home"
-            />
-
         <item
             android:id="@+id/nav_log_my_meal"
             android:title="@string/log_my_meal"
@@ -24,10 +17,13 @@
             android:title="@string/meal_history"
             android:icon="@drawable/history"/>
 
+
+
         <item
             android:id="@+id/nav_log_off"
             android:icon="@drawable/logoff"
             android:title="@string/log_out"
             />
+
     </group>
 </menu>

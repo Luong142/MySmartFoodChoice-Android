@@ -44,7 +44,7 @@ public class UserMyRewardsViewFragment extends Fragment implements OnAlrRedeemed
 
     DatabaseReference databaseReferenceUserProfile;
     
-    final static String PATH_UserProfile = "User Profile";
+    final static String PATH_UserProfile = "Android User Profile";
 
     FirebaseAuth firebaseAuth;
 

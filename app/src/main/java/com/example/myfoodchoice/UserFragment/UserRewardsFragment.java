@@ -50,7 +50,7 @@ public class UserRewardsFragment extends Fragment implements OnRewardItemRedeemC
     StorageReference storageReferenceRewardsImage, storageReferenceStaticRewardsImage;
     final static String PATH_REWARDS = "Rewards";
 
-    final static String PATH_UserProfile = "User Profile";
+    final static String PATH_UserProfile = "Android User Profile";
 
     FirebaseAuth firebaseAuth;
 

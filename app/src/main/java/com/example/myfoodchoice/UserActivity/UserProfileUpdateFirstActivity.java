@@ -17,12 +17,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.GuestActivity.GuestMainMenuActivity;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,12 +50,13 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
     ProgressBar progressBar;
 
-    Button nextBtn;
+    Button updateBtn;
+
+    FloatingActionButton backBtn;
+
     static final String TAG = "UserProfileUpdateFirstActivity";
 
-    DatabaseReference databaseReferenceUserProfile;
-
-    DatabaseReference databaseReferenceAccountType;
+    DatabaseReference databaseReferenceUserProfile, databaseReferenceAccountType;
 
     StorageReference storageReferenceProfilePics;
 
@@ -77,7 +78,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
-    final static String PATH_USERPROFILE = "User Profile";
+    final static String PATH_USERPROFILE = "Android User Profile";
 
     final static String PATH_ACCOUNT_TYPE = "Registered Accounts";
 
@@ -114,15 +115,19 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         firstNameUpdate = findViewById(R.id.firstNameProfile);
         lastNameUpdate = findViewById(R.id.lastNameProfile);
         weightUpdate = findViewById(R.id.weightProfile);
-        nextBtn = findViewById(R.id.nextBtn);
+        updateBtn = findViewById(R.id.updateBtn);
+        backBtn = findViewById(R.id.backBtn);
+
+
         progressBar = findViewById(R.id.progressBar);
 
         // set both to gone and visible
         progressBar.setVisibility(ProgressBar.GONE);
-        nextBtn.setVisibility(Button.VISIBLE);
+        updateBtn.setVisibility(Button.VISIBLE);
 
         imageProfilePictureUpdate.setOnClickListener(onImageClickListener());
-        nextBtn.setOnClickListener(onNextBtnListener());
+        updateBtn.setOnClickListener(onNextBtnListener());
+        backBtn.setOnClickListener(onBackBtnListener());
 
         // init activity for gallery part.
         activityResultLauncher = registerForActivityResult(
@@ -143,6 +148,27 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                     }
                 }
         );
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private View.OnClickListener onBackBtnListener()
+    {
+        return v ->
+        {
+            if (accountType.equals("Premium User"))
+            {
+                intent = new Intent(UserProfileUpdateFirstActivity.this,
+                        UserPremiumMainMenuActivity.class);
+            }
+            else
+            {
+                intent = new Intent(UserProfileUpdateFirstActivity.this,
+                        UserMainMenuActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        };
     }
 
     @NonNull
@@ -178,7 +204,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         {
             // to set progress bar on
             progressBar.setVisibility(ProgressBar.VISIBLE);
-            nextBtn.setVisibility(Button.GONE);
+            updateBtn.setVisibility(Button.GONE);
 
             // validation here
             if (selectedImageUri == null)
@@ -186,7 +212,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 Toast.makeText(UserProfileUpdateFirstActivity.this,
                         "Please select a profile picture.", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.GONE);
-                nextBtn.setVisibility(Button.VISIBLE);
+                updateBtn.setVisibility(Button.VISIBLE);
                 return; // exit the method if selectedImageUri is null
             }
 
@@ -194,7 +220,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             {
                 firstNameUpdate.setError("Please enter your first name.");
                 progressBar.setVisibility(ProgressBar.GONE);
-                nextBtn.setVisibility(Button.VISIBLE);
+                updateBtn.setVisibility(Button.VISIBLE);
                 return; // exit the method if first name is empty
             }
 
@@ -202,7 +228,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             {
                 lastNameUpdate.setError("Please enter your last name.");
                 progressBar.setVisibility(ProgressBar.GONE);
-                nextBtn.setVisibility(Button.VISIBLE);
+                updateBtn.setVisibility(Button.VISIBLE);
                 return; // exit the method if last name is empty
             }
 
@@ -210,7 +236,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             {
                 weightUpdate.setError("Please enter your weight.");
                 progressBar.setVisibility(ProgressBar.GONE);
-                nextBtn.setVisibility(Button.VISIBLE);
+                updateBtn.setVisibility(Button.VISIBLE);
                 return; // exit the method if weight is empty
             }
 
@@ -220,7 +246,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             {
                 weightUpdate.setError("Please enter a valid weight.");
                 progressBar.setVisibility(ProgressBar.GONE);
-                nextBtn.setVisibility(Button.VISIBLE);
+                updateBtn.setVisibility(Button.VISIBLE);
                 return; // exit the method if weight is not a number
             }
 
@@ -328,27 +354,25 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             {
                 // to carry the userProfile for the next update in second one.
                 // fixme: the problem is that it should be go to guest if the trial is still there GG.
-                if (Objects.equals(accountType, "Guest"))
+                if (accountType.equals("Premium User"))
                 {
-                    intent = new Intent(UserProfileUpdateFirstActivity.this, GuestMainMenuActivity.class);
-                    intent.putExtra("userProfile", userProfile);
-                    startActivity(intent);
-                    finish();
+                    intent = new Intent(UserProfileUpdateFirstActivity.this,
+                            UserPremiumMainMenuActivity.class);
                 }
                 else
                 {
-                    intent = new Intent(UserProfileUpdateFirstActivity.this, UserMainMenuActivity.class);
-                    intent.putExtra("userProfile", userProfile);
-                    startActivity(intent);
-                    finish();
+                    intent = new Intent(UserProfileUpdateFirstActivity.this,
+                            UserMainMenuActivity.class);
                 }
+                startActivity(intent);
+                finish();
             }
             else
             {
                 Log.d(TAG, "onCompleteUpdateUserProfileListener: " + task.getException());
                 progressBar.setVisibility(ProgressBar.GONE);
-                Toast.makeText(UserProfileUpdateFirstActivity.this,
-                        "Failed to update profile.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(UserProfileUpdateFirstActivity.this,
+                        //"Failed to update profile.", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -361,7 +385,8 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                // Log.d(TAG, "onCompleteNextListener: " + task.getResult());
+                // do nothing
+                Log.d(TAG, "onCompleteNextListener: " + task.getResult());
             }
             else
             {

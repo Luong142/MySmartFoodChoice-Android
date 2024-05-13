@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class DietitianViewRecordRecipeFragment extends Fragment
 {
     // todo: declare firebase
-    static final String PATH_RECIPE = "Dietitian Recipe";
+    static final String PATH_RECIPE = "Android Dietitian Recipe";
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.

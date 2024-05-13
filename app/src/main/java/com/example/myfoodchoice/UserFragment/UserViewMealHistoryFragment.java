@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionMealListener;
 import com.example.myfoodchoice.AdapterRecyclerView.MealMainHistoryAdapter;
 import com.example.myfoodchoice.ModelCaloriesNinja.FoodItem;
-import com.example.myfoodchoice.ModelMeal.Meal;
+import com.example.myfoodchoice.ModelNutrition.NutritionMeal;
 import com.example.myfoodchoice.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,24 +46,24 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceMeals;
 
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
-    final static String PATH_DAILY_FOOD_INTAKE = "Meals"; // fixme:  the path need to access daily globalMeal.
+    final static String PATH_DAILY_FOOD_INTAKE = "Android Meals"; // fixme:  the path need to access daily globalMeal.
 
     String userID;
 
     // TODO: declare UI components
-    RecyclerView mealHistoryRecyclerView, mealDetailRecyclerView;
+    RecyclerView mealHistoryRecyclerView;
 
     MealMainHistoryAdapter mealMainHistoryAdapter;
 
     TabLayout timeTabLayout;
 
-    ArrayList<Meal> mealArrayList;
+    ArrayList<NutritionMeal> nutritionMealArrayList;
 
     boolean showMorningMeal, showAfternoonMeal, showNightMeal, showAllMeal;
     
-    Meal globalMeal;
+    NutritionMeal globalNutritionMeal;
 
     FoodItem foodItem;
 
@@ -101,9 +101,9 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
         timeTabLayout.addOnTabSelectedListener(onTabSelectedListener());
 
         // need to set this recycler view.
-        mealArrayList = new ArrayList<>();
+        nutritionMealArrayList = new ArrayList<>();
         mealHistoryRecyclerView = view.findViewById(R.id.mealRecyclerView);
-        mealMainHistoryAdapter = new MealMainHistoryAdapter(mealArrayList, this);
+        mealMainHistoryAdapter = new MealMainHistoryAdapter(nutritionMealArrayList, this);
         setAdapter();
     }
 
@@ -143,32 +143,32 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
 
     private void filterAndUpdateMeals()
     {
-        ArrayList<Meal> filteredMeals = new ArrayList<>();
+        ArrayList<NutritionMeal> filteredNutritionMeals = new ArrayList<>();
 
-        for (Meal meal : mealArrayList)
+        for (NutritionMeal nutritionMeal : nutritionMealArrayList)
         {
-            if (showMorningMeal && meal.isMorning())
+            if (showMorningMeal && nutritionMeal.isMorning())
             {
-                filteredMeals.add(meal);
+                filteredNutritionMeals.add(nutritionMeal);
             }
 
-            if (showAfternoonMeal && meal.isAfternoon())
+            if (showAfternoonMeal && nutritionMeal.isAfternoon())
             {
-                filteredMeals.add(meal);
+                filteredNutritionMeals.add(nutritionMeal);
             }
 
-            if (showNightMeal && meal.isNight())
+            if (showNightMeal && nutritionMeal.isNight())
             {
-                filteredMeals.add(meal);
+                filteredNutritionMeals.add(nutritionMeal);
             }
 
             if (showAllMeal)
             {
-                filteredMeals.add(meal);
+                filteredNutritionMeals.add(nutritionMeal);
             }
         }
         // Update the adapter with the filtered list
-        mealMainHistoryAdapter.updateMeals(filteredMeals);
+        mealMainHistoryAdapter.updateMeals(filteredNutritionMeals);
     }
 
     @NonNull
@@ -180,41 +180,41 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                globalMeal = snapshot.getValue(Meal.class);
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
 
-                if (globalMeal == null)
+                if (globalNutritionMeal == null)
                 {
                     Log.d(TAG, "Meal is null error here! ");
                     return;
                 }
 
-                foodItem = globalMeal.getDishes();
+                foodItem = globalNutritionMeal.getDishes();
                 items = foodItem.getItems();
 
                 // todo: to show the data?
-                mealArrayList.add(globalMeal);
-                mealMainHistoryAdapter.notifyItemInserted(mealArrayList.size() - 1);
+                nutritionMealArrayList.add(globalNutritionMeal);
+                mealMainHistoryAdapter.notifyItemInserted(nutritionMealArrayList.size() - 1);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                globalMeal = snapshot.getValue(Meal.class);
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
 
-                if (globalMeal == null)
+                if (globalNutritionMeal == null)
                 {
                     Log.d(TAG, "Meal is null error here! ");
                     return;
                 }
 
-                foodItem = globalMeal.getDishes();
+                foodItem = globalNutritionMeal.getDishes();
                 items = foodItem.getItems();
 
                 // Find the index of the changed meal in the list
                 int index = -1;
-                for (int i = 0; i < mealArrayList.size(); i++)
+                for (int i = 0; i < nutritionMealArrayList.size(); i++)
                 {
-                    if (mealArrayList.get(i).getKey().equals(globalMeal.getKey()))
+                    if (nutritionMealArrayList.get(i).getKey().equals(globalNutritionMeal.getKey()))
                     { // Assuming Meal has a getId() method
                         index = i;
                         break;
@@ -224,7 +224,7 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
                 // If the meal is found in the list, update it
                 if (index != -1)
                 {
-                    mealArrayList.set(index, globalMeal); // Update the meal at the found index
+                    nutritionMealArrayList.set(index, globalNutritionMeal); // Update the meal at the found index
                     mealMainHistoryAdapter.notifyItemChanged(index); // Notify the adapter of the change
                 }
                 else
@@ -237,29 +237,29 @@ public class UserViewMealHistoryFragment extends Fragment implements OnActionMea
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
-                globalMeal = snapshot.getValue(Meal.class);
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
 
-                if (globalMeal == null)
+                if (globalNutritionMeal == null)
                 {
                     Log.d(TAG, "Meal is null error here! ");
                     return;
                 }
 
-                foodItem = globalMeal.getDishes();
+                foodItem = globalNutritionMeal.getDishes();
                 items = foodItem.getItems();
 
                 // todo: to show the data?
-                mealArrayList.remove(globalMeal);
-                mealMainHistoryAdapter.notifyItemRemoved(mealArrayList.size() - 1);
+                nutritionMealArrayList.remove(globalNutritionMeal);
+                mealMainHistoryAdapter.notifyItemRemoved(nutritionMealArrayList.size() - 1);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                Meal globalMeal = snapshot.getValue(Meal.class);
-                if (globalMeal != null)
+                globalNutritionMeal = snapshot.getValue(NutritionMeal.class);
+                if (globalNutritionMeal != null)
                 {
-                    Log.d(TAG, "onChildAdded: " + globalMeal);
+                    Log.d(TAG, "onChildAdded: " + globalNutritionMeal);
                 }
             }
 

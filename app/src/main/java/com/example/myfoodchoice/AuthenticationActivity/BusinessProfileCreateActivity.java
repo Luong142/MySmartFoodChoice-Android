@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,7 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myfoodchoice.AdapterSpinner.BusinessRoleAdapter;
 import com.example.myfoodchoice.ModelSignUp.Account;
 import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.R;
@@ -50,11 +48,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     // TODO: declare UI components
     ImageView profileImage;
 
-    EditText firstName, lastName, contactNumber;
-
-    Spinner spinnerRole;
-
-    String firstNameString, lastNameString;
+    EditText contactNumber;
 
     int contactNumberInt;
 
@@ -70,7 +64,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     FirebaseUser firebaseUser;
 
-    DatabaseReference databaseReferenceTrainerProfile;
+    DatabaseReference databaseReferenceDietitianProfile;
 
     StorageReference storageReferenceProfilePics;
 
@@ -104,7 +98,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
         // TODO: init Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReferenceTrainerProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
+        databaseReferenceDietitianProfile = firebaseDatabase.getReference(LABEL).child(firebaseUser.getUid());
         storageReferenceProfilePics =
                 FirebaseStorage.getInstance().getReference().child("ProfilePics");
         databaseReferenceRegisteredUser = firebaseDatabase.getReference(LABEL_USER).child(firebaseUser.getUid());
@@ -113,26 +107,21 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
         roleArrayList = new ArrayList<>();
 
         // set model class
-        businessProfile = new BusinessProfile();
+        // businessProfile = new BusinessProfile();
         intentRetrieveUserAccount = getIntent();
         account = intentRetrieveUserAccount.getParcelableExtra("userAccount");
+        businessProfile = intentRetrieveUserAccount.getParcelableExtra("businessProfile");
+        // assert businessProfile != null;
+        Log.d(TAG, "onCreate: " + businessProfile);
 
         // TODO: init UI components
         profileImage = findViewById(R.id.profileImage);
-        firstName = findViewById(R.id.firstNameProfile);
-        lastName = findViewById(R.id.lastNameProfile);
+
         contactNumber = findViewById(R.id.contactNumberProfile);
         progressBar = findViewById(R.id.progressBar);
 
         // set progress bar to gone
         progressBar.setVisibility(ProgressBar.GONE);
-
-        // TODO: init spinner part
-        initBusinessRole();
-        spinnerRole = findViewById(R.id.roleSpinner);
-        BusinessRoleAdapter businessRoleAdapter = new BusinessRoleAdapter(this, roleArrayList);
-        spinnerRole.setAdapter(businessRoleAdapter);
-        spinnerRole.setOnItemSelectedListener(onItemSelectedRoleListener);
 
         // button
         createProfileBtn = findViewById(R.id.createProfileBtn);
@@ -182,20 +171,6 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 return; // exit the method if selectedImageUri is null
             }
 
-            if (TextUtils.isEmpty(firstName.getText().toString().trim()))
-            {
-                firstName.setError("Please enter your first name.");
-                firstName.requestFocus();
-                return; // exit the method if age is not entered
-            }
-
-            if (TextUtils.isEmpty(lastName.getText().toString().trim()))
-            {
-                lastName.setError("Please enter your last name.");
-                lastName.requestFocus();
-                return; // exit the method if age is not entered
-            }
-
             if (TextUtils.isEmpty(contactNumber.getText().toString().trim()))
             {
                 contactNumber.setError("Please enter your contact number.");
@@ -215,8 +190,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             storageTask = storageReference.putFile(selectedImageUri).addOnFailureListener(onFailurePart());
             // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getDisplayName());
 
-            firstNameString = firstName.getText().toString().trim();
-            lastNameString = lastName.getText().toString().trim();
+
             contactNumberInt = Integer.parseInt(contactNumber.getText().toString().trim());
 
             // set image here
@@ -242,10 +216,9 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
             {
                 Uri downloadUri = task.getResult();
                 myUri = downloadUri.toString();
+                role = "Dietitian";
 
                 // set data here
-                businessProfile.setFirstName(firstNameString);
-                businessProfile.setLastName(lastNameString);
                 businessProfile.setContactNumber(contactNumberInt);
                 businessProfile.setRole(role);
                 businessProfile.setBusinessKey(firebaseUser.getUid());
@@ -257,14 +230,11 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                     Toast.makeText(this, "Account object is null", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 account.setAccountType(role);
 
                 // FIXME: set image here based on the model
                 businessProfile.setProfileImageUrl(myUri);
-
-                // Log.d(TAG, "onCompleteUploadListener: " + businessProfile);
-                // Log.d(TAG, "onCompleteUploadListener: " + userAccount);
-                // Log.d(TAG, "onCreateProfileListener: " + selectedImageUri);
 
                 // TODO: set the value based on TrainerProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
@@ -289,12 +259,9 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
     {
         return task ->
         {
-            databaseReferenceTrainerProfile.setValue(businessProfile)
+            databaseReferenceDietitianProfile.setValue(businessProfile)
                     .addOnCompleteListener(onCompleteListener())
                     .addOnFailureListener(onFailurePart());
-
-            firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                            .setDisplayName(firstNameString + " " + lastNameString).build());
 
             firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteCreateProfileListener());
@@ -313,7 +280,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 // Profile successfully written!
                 // Log.d(TAG, "Profile successfully written!");
                 Toast.makeText(BusinessProfileCreateActivity.this,
-                        "Profile successfully created!", Toast.LENGTH_SHORT).show();
+                        "Dietitian Account created successfully!", Toast.LENGTH_SHORT).show();
 
             }
             else
@@ -383,7 +350,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     private void getUserInfo()
     {
-        databaseReferenceTrainerProfile.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
+        databaseReferenceDietitianProfile.child(firebaseUser.getUid()).addValueEventListener(valueEventListener());
     }
 
     @NonNull
@@ -411,10 +378,5 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
                 Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         };
-    }
-
-    private void initBusinessRole()
-    {
-        roleArrayList.add(new BusinessProfile("Dietitian", R.drawable.dietitian_icon));
     }
 }

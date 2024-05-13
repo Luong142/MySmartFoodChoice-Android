@@ -37,19 +37,9 @@
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         app:layout_constraintVertical_bias="0.355">
 
-        <TextView
-            android:id="@+id/currentDateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/current_date"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
         <View
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="20dp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/userCardView"
@@ -69,15 +59,15 @@
 
                 <ImageView
                     android:id="@+id/userProfileImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:contentDescription="@string/user_profile"
                     tools:src="@tools:sample/avatars" />
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -86,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"
+                        android:textSize="25sp"
                         android:textStyle="bold"
                         tools:text="John Doe" />
 
@@ -94,8 +84,17 @@
                         android:id="@+id/userPointsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="20sp"
                         android:textColor="@android:color/black"
                         tools:text="Points: 500" />
+
+                    <TextView
+                        android:id="@+id/currentDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/current_date"
+                        android:textAlignment="center"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
             </LinearLayout>

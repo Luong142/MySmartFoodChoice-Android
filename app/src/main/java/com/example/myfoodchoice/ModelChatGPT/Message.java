@@ -10,10 +10,21 @@ public class Message
 
     private String sendBy;
 
+    private String leftImage;
+
+    private String rightImage;
+
     public Message(String message, String sendBy)
     {
         this.message = message;
         this.sendBy = sendBy;
+    }
+
+    public Message(String message, String sendBy, String leftImage, String rightImage) {
+        this.message = message;
+        this.sendBy = sendBy;
+        this.leftImage = leftImage;
+        this.rightImage = rightImage;
     }
 
     public Message() {
@@ -21,12 +32,29 @@ public class Message
 
     @NonNull
     @Override
-    public String toString()
-    {
-        return "ChatInterface{" +
+    public String toString() {
+        return "Message{" +
                 "message='" + message + '\'' +
-                ", replies='" + sendBy + '\'' +
+                ", sendBy='" + sendBy + '\'' +
+                ", leftImage='" + leftImage + '\'' +
+                ", rightImage='" + rightImage + '\'' +
                 '}';
+    }
+
+    public String getLeftImage() {
+        return leftImage;
+    }
+
+    public void setLeftImage(String leftImage) {
+        this.leftImage = leftImage;
+    }
+
+    public String getRightImage() {
+        return rightImage;
+    }
+
+    public void setRightImage(String rightImage) {
+        this.rightImage = rightImage;
     }
 
     public String getMessage() {

@@ -1,9 +1,11 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnActionIngredientListener;
 import com.example.myfoodchoice.AdapterRecyclerView.IngredientRecipeAdapter;
 import com.example.myfoodchoice.ModelFreeFoodAPI.Dish;
+import com.example.myfoodchoice.ModelSignUp.BusinessProfile;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Contract;
 
@@ -34,13 +38,19 @@ import java.util.Objects;
 
 public class DietitianCreateRecipeFragment extends Fragment implements OnActionIngredientListener
 {
-    static final String PATH_RECIPE = "Dietitian Recipe";
+    static final String PATH_RECIPE = "Android Dietitian Recipe";
+
+    static final String PATH_DIETITIAN_PROFILE = "Business Profile";
+
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.
     static final String TAG = "DietitianCreateRecipeFragment";
 
-    DatabaseReference databaseReferenceCreateRecipe, databaseReferenceCreateRecipeChild;
+    DatabaseReference databaseReferenceCreateRecipe,
+            databaseReferenceCreateRecipeChild, databaseReferenceDietitianProfile;
+
+    BusinessProfile businessProfile;
 
     FirebaseAuth firebaseAuth;
 
@@ -62,7 +72,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
     EditText recipeNameText, recipeInstructionsText, ingredientText;
 
     Spinner cuisineSpinner, categorySpinner;
-    String dietitianID, recipeName, recipeInstruction;
+    String dietitianID, recipeName, recipeInstruction, dietitianProfileImage, dietitianProfileInfo;
     FloatingActionButton addIngredientBtn, clearRecipeBtn;
 
     Button createRecipeBtn;
@@ -75,6 +85,9 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        // todo: this will help not to push the content up
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // TODO: init firebase components.
 
@@ -92,6 +105,11 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             // TODO: init database reference for user profile
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
             ingredientArrayList = new ArrayList<>();
+
+            databaseReferenceDietitianProfile = firebaseDatabase.getReference
+                    (PATH_DIETITIAN_PROFILE).child(dietitianID);
+
+            databaseReferenceDietitianProfile.addValueEventListener(onDietitianProfileListener());
         }
 
         // todo: get the selected user profile
@@ -130,6 +148,38 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
         ingredientRecyclerView.setAdapter(ingredientRecipeAdapter);
         ingredientRecyclerView.setVerticalScrollBarEnabled(true);
         ingredientRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ValueEventListener onDietitianProfileListener()
+    {
+        return new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot)
+            {
+                if (snapshot.exists())
+                {
+                    businessProfile = snapshot.getValue(BusinessProfile.class);
+                    if (businessProfile != null)
+                    {
+                        dietitianProfileImage = businessProfile.getProfileImageUrl();
+                        dietitianProfileInfo = businessProfile.getDietitianInfo();
+                    }
+                }
+                else
+                {
+                    Log.d(TAG, "onDataChange: No data found.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error)
+            {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        };
     }
 
     @NonNull
@@ -176,6 +226,11 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             meal.setStrMeal(recipeName.trim());
             ingredientArrayList.trimToSize();
             meal.setIngredientsManual(ingredientArrayList);
+
+            // todo: set recipe belong to who dietitian
+            meal.setDietitianKey(dietitianID);
+            meal.setDietitianInfo(dietitianProfileInfo);
+            meal.setDietitianProfileImage(dietitianProfileImage);
 
             recipe.getMeals().add(meal);
 

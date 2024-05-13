@@ -17,8 +17,9 @@
         >
         <ImageView
             android:id="@+id/foodImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="20dp"
             android:src="@drawable/food_placeholder"
             android:contentDescription="@string/todo" />
 

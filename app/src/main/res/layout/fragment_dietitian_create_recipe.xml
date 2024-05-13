@@ -8,193 +8,170 @@
     tools:context=".BusinessDietitianFragment.DietitianCreateRecipeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:text="@string/create_recipe"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Food Type Spinner -->
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/peach_puff"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:gravity="center"
-                >
-
-                <EditText
-                    android:id="@+id/recipeNameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    android:autofillHints="Please enter the name of recipe"
-                    android:gravity="center"
-                    android:hint="@string/enter_name_of_recipe"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColorHint="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="italic" />
-
-                <Spinner
-                    android:id="@+id/cuisineSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="15dp"
-                    android:entries="@array/cuisine_array"
-                    android:layout="@layout/cuisine_category_spinner_layout"
-                    android:textAlignment="center" />
-
-                <Spinner
-                    android:id="@+id/categorySpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="15dp"
-                    android:entries="@array/foodType_array"
-                    android:layout="@layout/cuisine_category_spinner_layout"
-                    android:textAlignment="center" />
-
-                <EditText
-                    android:id="@+id/instructionsEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    android:autofillHints="Please enter instructions"
-                    android:gravity="center"
-                    android:hint="@string/enter_instruction"
-                    android:inputType="textMultiLine"
-                    android:maxLines="5"
-                    android:textColorHint="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="italic" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="44dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/createRecipeBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.051">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/peach_puff"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
-
-            <EditText
-                android:id="@+id/ingredientsEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:autofillHints="Please enter instructions"
-                android:gravity="center"
-                android:hint="@string/enter_ingredient"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-                android:textColorHint="@color/black"
-                android:textSize="20sp"
-                android:textStyle="italic" />
-
-        </androidx.cardview.widget.CardView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addIngredientBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/peach_puff"
-            android:contentDescription="@string/todo"
-            android:src="@drawable/add" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/clearTextRecipeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/peach_puff"
-            android:contentDescription="@string/todo"
-            android:src="@drawable/clear__1_" />
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredientsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="290dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/createRecipeBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
-        tools:listitem="@layout/ingredient_layout" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/user_view_ingredient_layout" />
 
-    <Button
-        android:id="@+id/createRecipeBtn"
-        android:layout_width="377dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/dodger_blue"
-        android:text="@string/create_recipe"
-        android:textColor="@color/white"
-        android:textSize="25sp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="580dp"
+        android:backgroundTint="@color/peach_puff"
+        android:orientation="vertical"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/recipeNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="Enter Name Of Recipe"
+                android:background="@drawable/edit_text_bg"
+                android:drawableStart="@drawable/title"
+                android:drawablePadding="10dp"
+                android:hint="@string/name_of_recipe"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/instructionsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:autofillHints="password"
+                android:background="@drawable/edit_text_bg"
+                android:drawableStart="@drawable/instruction"
+                android:drawablePadding="10dp"
+                android:hint="@string/instructions"
+                android:inputType="textMultiLine"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/ingredientsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:autofillHints="Please enter instructions"
+                android:background="@drawable/edit_text_bg"
+                android:drawableStart="@drawable/ingredients"
+                android:drawablePadding="10dp"
+                android:hint="@string/ingredient"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:textColorHint="@color/black"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                >
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/addIngredientBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="50dp"
+                    android:backgroundTint="@color/peach_puff_new"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/add_new" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/clearTextRecipeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/peach_puff_new"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/clear__1_" />
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/cuisineSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edit_text_bg"
+                android:entries="@array/cuisine_array"
+                android:layout="@layout/cuisine_category_spinner_layout"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_bg"
+                android:entries="@array/foodType_array"
+                android:layout="@layout/cuisine_category_spinner_layout"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:textAlignment="center" />
+
+            <!-- android:onClick="" for the above text -->
+
+            <Button
+                android:id="@+id/createRecipeBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="@color/peach_puff_new"
+                android:clickable="true"
+                android:elevation="20dp"
+                android:text="@string/create_recipe"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.47"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
