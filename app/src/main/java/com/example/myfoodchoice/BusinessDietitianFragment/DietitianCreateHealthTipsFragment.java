@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +45,6 @@ public class DietitianCreateHealthTipsFragment extends Fragment
     // todo: declare firebase here
     static final String PATH_HEALTH_TIPS = "Dietitian Health Tips";
 
-    static final String PATH_BUSINESS_PROFILE = "Business Profile";
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
     // todo: the recipe should be recommended by the dietitian.

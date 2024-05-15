@@ -76,7 +76,7 @@ public class BusinessProfileCreateActivity extends AppCompatActivity
 
     static final String LABEL_USER = "Registered Accounts";
 
-    static final String LABEL = "Business Profile";
+    static final String LABEL = "Android Business Profile";
 
     Uri selectedImageUri;
     String myUri, role;

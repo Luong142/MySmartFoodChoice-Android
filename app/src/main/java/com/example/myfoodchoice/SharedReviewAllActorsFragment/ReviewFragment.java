@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.SharedReviewAllActorsFragment;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,8 +68,6 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
     final static String PATH_REVIEW = "Reviews";
 
-    final static String PATH_BUSINESS_PROFILE = "Business Profile";
-
     DatabaseReference databaseReferenceUserProfile;
 
     DatabaseReference databaseReferenceAccount;
@@ -121,7 +121,8 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
             // databaseReferenceReview.addChildEventListener(valueChildReviewEventListener());
 
             // todo: init database reference for business profile
-            databaseReferenceBusinessProfile = firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(userID);
+            databaseReferenceBusinessProfile =
+                    firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(userID);
             databaseReferenceBusinessProfile.addListenerForSingleValueEvent(valueBusinessProfileEventListener());
          }
 
@@ -270,14 +271,6 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
         // TODO: implement onClick
         // Toast.makeText(getContext(), "pls update this next", Toast.LENGTH_SHORT).show();
 
-    }
-
-    private void populateReviewList()
-    {
-        // create 5 more reviews here
-        Review review = new Review("Test", "full name here", 5);
-
-        reviewArrayList.add(review);
     }
 
     @NonNull

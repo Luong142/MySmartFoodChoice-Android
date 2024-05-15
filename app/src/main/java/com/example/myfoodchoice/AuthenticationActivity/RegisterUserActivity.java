@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -64,7 +65,7 @@ public class RegisterUserActivity extends AppCompatActivity
     // for database
     FirebaseDatabase firebaseDatabase;
 
-    static final String TAG = "RegisterGuestActivity";
+    static final String TAG = "RegisterUserActivity";
 
     static final String PATH_ACCOUNTS = "Registered Accounts";
 
@@ -210,6 +211,7 @@ public class RegisterUserActivity extends AppCompatActivity
                     databaseReferenceUserProfile =
                             firebaseDatabase.getReference(PATH_USERPROFILE).child(firebaseUser.getUid());
 
+
                     // init user account
                     account = new Account(email, password);
                     // set to user, because supervisor said that user
@@ -225,13 +227,14 @@ public class RegisterUserActivity extends AppCompatActivity
                     userProfile.setLastName(lastNameString);
 
                     // set display name
-                    firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                                    .setDisplayName(firstName + " " + firstName).build())
+                    firebaseUser.updateProfile(new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstNameString + " " + lastNameString).build())
                             .addOnFailureListener(onFailureUpdateDisplayName());
+
 
                     // through we move to next if complete
                     databaseReferenceRegisteredUser.setValue(account).addOnCompleteListener
-                            (onCompleteUserAccountListener());
+                            (onCompleteUserAccountListener()).addOnCompleteListener(onCompletedFullNameListener());
                     // auto create a new path with name as string value and assign to a variable.
                     // databaseReference = firebaseDatabase.getReference(LABEL);
 
@@ -276,6 +279,25 @@ public class RegisterUserActivity extends AppCompatActivity
                     nextBtn.setVisibility(View.VISIBLE);
                 }
             });
+        };
+    }
+
+    @NonNull
+    @Contract(pure = true)
+    private OnCompleteListener<Void> onCompletedFullNameListener()
+    {
+        return task ->
+        {
+            if (task.isSuccessful())
+            {
+                Log.d(TAG, "OSOSOSO: " + firstNameString + " " + lastNameString);
+                Log.d(TAG, "onCompletedFullNameListener: " + task.getResult());
+            }
+            else
+            {
+                Log.d(TAG, "OSOSOSO: " + firstNameString + " " + lastNameString);
+                Log.d(TAG, "onCompletedFullNameListener: " + task.getException());
+            }
         };
     }
 

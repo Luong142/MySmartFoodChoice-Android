@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -300,7 +301,7 @@ public class UserProfileCreateFirstActivity extends AppCompatActivity
                 // TODO: set the value based on UserProfile class.
                 // databaseReferenceUserProfile.setValue(userProfile).addOnCompleteListener(onCompleteListener());
 
-                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                firebaseUser.updateProfile(new UserProfileChangeRequest.Builder()
                         .setPhotoUri(Uri.parse(myUri)).build()).addOnCompleteListener(onCompleteNextListener());
                 // Log.d(TAG,"onCompeteUploadListener: " + firebaseUser.getPhotoUrl());
             }

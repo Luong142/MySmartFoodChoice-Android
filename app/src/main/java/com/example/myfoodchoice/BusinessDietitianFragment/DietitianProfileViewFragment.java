@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -83,7 +85,7 @@ public class DietitianProfileViewFragment extends Fragment
 
             // TODO: init database reference for user profile
             databaseReferenceBusinessProfile =
-                    firebaseDatabase.getReference("Business Profile").child(userID);
+                    firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(userID);
             databaseReferenceBusinessProfile.addValueEventListener(valueDietitianProfileEventListener());
 
             databaseReferenceRegisteredAccount =

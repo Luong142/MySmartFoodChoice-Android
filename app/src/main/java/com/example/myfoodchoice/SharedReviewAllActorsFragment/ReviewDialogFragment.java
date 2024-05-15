@@ -1,5 +1,8 @@
 package com.example.myfoodchoice.SharedReviewAllActorsFragment;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+import static com.example.myfoodchoice.SharedReviewAllActorsFragment.ReviewFragment.PATH_USERPROFILE;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -33,12 +36,11 @@ public class ReviewDialogFragment extends DialogFragment
     EditText reviewTextEdit;
 
     // for firebase
-    DatabaseReference databaseReferenceReview;
+    DatabaseReference databaseReferenceReview, databaseReferenceUserType, databaseReferenceNewChild;
 
-    DatabaseReference databaseReferenceUserType;
+    DatabaseReference databaseReferenceUserProfile;
 
-    DatabaseReference databaseReferenceNewChild;
-
+    DatabaseReference databaseReferenceBusinessProfile;
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase firebaseDatabase;
@@ -92,13 +94,18 @@ public class ReviewDialogFragment extends DialogFragment
             // todo: init user type and retrieve it from database reference
             databaseReferenceUserType = firebaseDatabase.getReference(PATH_ACCOUNT).child(userID);
 
+            databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_USERPROFILE).child(userID);
+
+            databaseReferenceBusinessProfile = firebaseDatabase
+                    .getReference(PATH_BUSINESS_PROFILE).child(userID);
+
             // get the first name and last name together as display name
             // displayName = firebaseUser.getDisplayName();
             // Log.d(TAG, "onCreateDialog: " + displayName);
 
             imageUri = firebaseUser.getPhotoUrl();
             displayName = firebaseUser.getDisplayName();
-            Log.d(TAG, "onCreateDialog: " + displayName);
+            // Log.d(TAG, "onCreateDialog: " + displayName);
         }
 
         reviewTextEdit = view.findViewById(R.id.reviewEditText);

@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +47,6 @@ import retrofit2.Response;
 public class DietitianSearchRecipeFragment extends Fragment implements OnCreateRecipeFromSearchListener {
     static final String TAG = "DietitianSearchRecipeFragment";
 
-    static final String PATH_DIETITIAN_PROFILE = "Business Profile";
 
     // todo: here is our plan, we use
     //  https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegetarian, (category)
@@ -117,7 +118,7 @@ public class DietitianSearchRecipeFragment extends Fragment implements OnCreateR
             databaseReferenceCreateRecipe = firebaseDatabase.getReference(PATH_RECIPE).child(dietitianID);
 
             databaseReferenceDietitianProfile = firebaseDatabase.getReference
-                    (PATH_DIETITIAN_PROFILE).child(dietitianID);
+                    (PATH_BUSINESS_PROFILE).child(dietitianID);
 
             databaseReferenceDietitianProfile.addValueEventListener(onDietitianProfileListener());
         }

@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.BusinessDietitianFragment;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +42,6 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
 {
     static final String PATH_RECIPE = "Android Dietitian Recipe";
 
-    static final String PATH_DIETITIAN_PROFILE = "Business Profile";
 
     // todo: our plan is to let the dietitian to create the recipe manually
     //  or search for recipe to add for firebase database.
@@ -107,7 +108,7 @@ public class DietitianCreateRecipeFragment extends Fragment implements OnActionI
             ingredientArrayList = new ArrayList<>();
 
             databaseReferenceDietitianProfile = firebaseDatabase.getReference
-                    (PATH_DIETITIAN_PROFILE).child(dietitianID);
+                    (PATH_BUSINESS_PROFILE).child(dietitianID);
 
             databaseReferenceDietitianProfile.addValueEventListener(onDietitianProfileListener());
         }
