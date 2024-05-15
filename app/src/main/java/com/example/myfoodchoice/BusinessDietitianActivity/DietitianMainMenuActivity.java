@@ -44,6 +44,7 @@ import io.paperdb.Paper;
 public class DietitianMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    public static final String PATH_BUSINESS_PROFILE = "Android Business Profile";
     DrawerLayout drawerLayout;
 
     DatabaseReference databaseReferenceRegisteredBusinesses;
@@ -103,7 +104,7 @@ public class DietitianMainMenuActivity extends AppCompatActivity
             // FIXME: careful with path.
             // TODO: init database reference for user profile
             databaseReferenceDietitianProfile =
-                    firebaseDatabase.getReference("Business Profile").child(userID);
+                    firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(userID);
             databaseReferenceDietitianProfile.addListenerForSingleValueEvent
                     (valueDietitianProfileEventListener());
         }

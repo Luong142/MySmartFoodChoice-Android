@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -42,7 +43,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
     private static final String TAG = "Register Business Trainer";
     private static final String PATH_ACCOUNT = "Registered Accounts";
 
-    private static final String PATH_BUSINESS_PROFILE = "Business Profile";
+    private static final String PATH_BUSINESS_PROFILE = "Android Business Profile";
 
     DatabaseReference databaseReferenceRegisteredAccounts, databaseReferenceBusinessProfile;
 
@@ -211,8 +212,10 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 databaseReferenceBusinessProfile =
                         firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(firebaseUser.getUid());
 
-                firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                firebaseUser.updateProfile(new UserProfileChangeRequest.Builder()
                         .setDisplayName(firstNameString + " " + lastNameString).build());
+
+                // Log.d(TAG, "onCompleteUserAccountListener: " + firebaseUser.getDisplayName());
 
                 // init user account
                 account = new Account(email, password); // with email and password

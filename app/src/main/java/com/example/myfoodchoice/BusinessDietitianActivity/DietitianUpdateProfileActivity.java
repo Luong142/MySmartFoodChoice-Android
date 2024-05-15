@@ -1,5 +1,7 @@
 package com.example.myfoodchoice.BusinessDietitianActivity;
 
+import static com.example.myfoodchoice.BusinessDietitianActivity.DietitianMainMenuActivity.PATH_BUSINESS_PROFILE;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -94,7 +96,8 @@ public class DietitianUpdateProfileActivity extends AppCompatActivity
             userID = firebaseUser.getUid();
 
             // TODO: init database reference for user profile
-            databaseReferenceBusinessProfile = firebaseDatabase.getReference("Business Profile").child(userID);
+            databaseReferenceBusinessProfile =
+                    firebaseDatabase.getReference(PATH_BUSINESS_PROFILE).child(userID);
         }
 
         // define role

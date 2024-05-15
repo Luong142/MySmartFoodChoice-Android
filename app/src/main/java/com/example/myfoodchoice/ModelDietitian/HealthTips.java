@@ -1,7 +1,5 @@
 package com.example.myfoodchoice.ModelDietitian;
 
-import android.net.Uri;
-
 import androidx.annotation.NonNull;
 
 public class HealthTips
