@@ -231,6 +231,7 @@ public class RegisterUserActivity extends AppCompatActivity
                                     .setDisplayName(firstNameString + " " + lastNameString).build())
                             .addOnFailureListener(onFailureUpdateDisplayName());
 
+                    // Log.d(TAG, "onCompleteUserAccountListener: " + firebaseUser.getDisplayName());
 
                     // through we move to next if complete
                     databaseReferenceRegisteredUser.setValue(account).addOnCompleteListener
@@ -290,8 +291,8 @@ public class RegisterUserActivity extends AppCompatActivity
         {
             if (task.isSuccessful())
             {
-                Log.d(TAG, "OSOSOSO: " + firstNameString + " " + lastNameString);
-                Log.d(TAG, "onCompletedFullNameListener: " + task.getResult());
+                //Log.d(TAG, "OSOSOSO: " + firstNameString + " " + lastNameString);
+                // Log.d(TAG, "onCompletedFullNameListener: " + task.getResult());
             }
             else
             {

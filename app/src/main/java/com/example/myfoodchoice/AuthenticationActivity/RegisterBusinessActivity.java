@@ -215,7 +215,7 @@ public class RegisterBusinessActivity extends AppCompatActivity
                 firebaseUser.updateProfile(new UserProfileChangeRequest.Builder()
                         .setDisplayName(firstNameString + " " + lastNameString).build());
 
-                Log.d(TAG, "onCompleteUserAccountListener: " + firebaseUser.getDisplayName());
+                // Log.d(TAG, "onCompleteUserAccountListener: " + firebaseUser.getDisplayName());
 
                 // init user account
                 account = new Account(email, password); // with email and password
