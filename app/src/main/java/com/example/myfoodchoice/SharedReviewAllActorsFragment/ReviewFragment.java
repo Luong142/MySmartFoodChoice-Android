@@ -60,7 +60,7 @@ public class ReviewFragment extends Fragment implements OnReviewClickListener
 
 
     // TODO: declare firebase components here
-    final static String PATH_USERPROFILE = "User Profile"; // FIXME: the path need to access the account.
+    final static String PATH_USERPROFILE = "Android User Profile"; // FIXME: the path need to access the account.
 
     final static String PATH_ACCOUNT = "Registered Accounts";
 
