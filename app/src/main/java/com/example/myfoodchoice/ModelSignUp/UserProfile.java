@@ -162,11 +162,10 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
     public String getUserProfileDetail()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("Height: ").append(this.height).append("\n");
-        sb.append("Weight: ").append(this.weight).append("\n");
+        sb.append("Full Name\n");
+        sb.append(this.getFirstName()).append(" ").append(this.getLastName()).append("\n");
         sb.append("Gender: ").append(this.gender).append("\n");
         sb.append("Age: ").append(this.age).append("\n");
-        sb.append("Diet Type: ").append(this.dietType).append("\n");
         return sb.toString();
     }
 
@@ -175,6 +174,9 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
         StringBuilder sb = new StringBuilder();
         sb.append("Health Conditions Summary:\n");
         sb.append("---------------------------\n");
+        sb.append("Height: ").append(this.height).append("\n");
+        sb.append("Weight: ").append(this.weight).append("\n");
+        sb.append("Diet Type: ").append(this.dietType).append("\n");
         sb.append("High Blood Pressure: ").append(isHighBloodPressure ? "Yes" : "No").append("\n");
         sb.append("Diabetes: ").append(isDiabetes ? "Yes" : "No").append("\n");
         sb.append("High Cholesterol: ").append(isHighCholesterol ? "Yes" : "No").append("\n");
