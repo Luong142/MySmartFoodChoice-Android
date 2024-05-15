@@ -23,13 +23,19 @@ import com.example.myfoodchoice.AdapterRecyclerView.CheckInDayAdapter;
 import com.example.myfoodchoice.ModelSignUp.UserProfile;
 import com.example.myfoodchoice.ModelUtilities.CheckInDay;
 import com.example.myfoodchoice.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Contract;
@@ -40,6 +46,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 
 public class UserCheckInFragment extends Fragment implements OnDailyCheckInListener
@@ -49,13 +56,16 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
 
     DatabaseReference databaseReferenceUserProfile,
             databaseReferenceRewards,
-            databaseReferenceCheckInDate;
+            databaseReferenceCheckInDate, databaseReferenceDay;
 
     final static String PATH_REWARDS = "Rewards";
 
     final static String PATH_UserProfile = "Android User Profile";
 
     final static String PATH_CheckInDate = "Check In";
+
+    final static String PATH_DAY = "Day Item";
+
     private static final String TAG = "UserCheckInFragment";
 
     FirebaseAuth firebaseAuth;
@@ -108,8 +118,14 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
             databaseReferenceUserProfile = firebaseDatabase.getReference(PATH_UserProfile).child(userID);
             databaseReferenceRewards = firebaseDatabase.getReference(PATH_REWARDS).child(userID);
             databaseReferenceCheckInDate = firebaseDatabase.getReference(PATH_CheckInDate).child(userID);
+            databaseReferenceDay = firebaseDatabase.getReference(PATH_DAY).child(userID);
 
             databaseReferenceUserProfile.addValueEventListener(valuePointUserProfileEventListener());
+
+            // firebaseStorage storage = FirebaseStorage.getInstance();
+            generateDayData();
+
+            databaseReferenceDay.addChildEventListener(valueEventListenerDay());
         }
 
         // init current date.
@@ -131,8 +147,6 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
         // Initialize the recipeList
         dayList = new ArrayList<>();
         handler = new Handler();
-        dayList.clear();
-        populateDayList();
         resetDayListAfterSevenDays();
 
         // for recycle view
@@ -142,6 +156,54 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
         dayRecyclerView.setVerticalScrollBarEnabled(true);
 
         // TODO: Populate the recipeList with your Recipe data
+    }
+
+    @NonNull
+    @Contract(" -> new")
+    private ChildEventListener valueEventListenerDay()
+    {
+        return new ChildEventListener()
+        {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                CheckInDay checkInDay = snapshot.getValue(CheckInDay.class);
+                if (checkInDay != null)
+                {
+                    dayList.add(checkInDay);
+                    // Log.d(TAG, "onChildAdded: " + checkInDay);
+                    dayAdapter.notifyItemInserted(dayList.size() - 1);
+                }
+                else
+                {
+                    Log.d(TAG, "onChildAdded: " + "null");
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+
+            }
+        };
     }
 
     @NonNull
@@ -208,7 +270,7 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
             currentDate = Date.from(current.atZone(ZoneId.systemDefault()).toInstant());
 
             // todo: per day is 50 points?
-            updates.put("points", userProfile.getPoints() + 10);
+            updates.put("points", userProfile.getPoints() + 30);
             databaseReferenceUserProfile.updateChildren(updates, onCompleteCheckInPointListener());
 
             // fixme: to set the value for debugging.
@@ -237,6 +299,23 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
             // notify
             dayList.remove(position);
             dayAdapter.notifyItemRemoved(position);
+
+            // Assuming each day's data is stored under a unique key in Firebase
+            String dayKey = "Day " + (position++); // Adjust based on your Firebase structure
+
+            // Remove the data for the specific day from Firebase
+            databaseReferenceDay.child(dayKey).removeValue()
+                    .addOnSuccessListener(aVoid ->
+                    {
+                        // Data successfully removed from Firebase
+                        // Toast.makeText(getContext(), "Check-in removed successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e ->
+                    {
+                        // Handle any errors
+                        Log.e(TAG, "Error removing check-in from Firebase", e);
+                        // Toast.makeText(getContext(), "Failed to remove check-in", Toast.LENGTH_SHORT).show();
+                    });
         }
         else
         {
@@ -266,43 +345,56 @@ public class UserCheckInFragment extends Fragment implements OnDailyCheckInListe
     }
 
     // todo: add in the timer after 7 days then reset this
-    private void populateDayList()
-    {
-        // fixme: the problem is that the init will reset this list.
-        if (dayList.isEmpty())
-        {
-            // we need a timer to reset this after 1 day.
-            CheckInDay checkInDay = new CheckInDay(R.drawable.check_in, "Day 1");
-            CheckInDay checkInDay1 = new CheckInDay(R.drawable.check_in, "Day 2");
-            CheckInDay checkInDay2 = new CheckInDay(R.drawable.check_in, "Day 3");
-            CheckInDay checkInDay3 = new CheckInDay(R.drawable.check_in, "Day 4");
-            CheckInDay checkInDay4 = new CheckInDay(R.drawable.check_in, "Day 5");
-            CheckInDay checkInDay5 = new CheckInDay(R.drawable.check_in, "Day 6");
-            CheckInDay checkInDay6 = new CheckInDay(R.drawable.check_in, "Day 7");
-
-
-            dayList.add(checkInDay);
-            dayList.add(checkInDay1);
-            dayList.add(checkInDay2);
-            dayList.add(checkInDay3);
-            dayList.add(checkInDay4);
-            dayList.add(checkInDay5);
-            dayList.add(checkInDay6);
-        }
-    }
 
     private void resetDayListAfterSevenDays()
     {
-        // Schedule the Runnable to be executed after 7 days
+        // schedule the Runnable to be executed after 7 days
         handler.postDelayed(() ->
         {
             // reset the dayList
             dayList.clear();
-            populateDayList();
+            generateDayData();
 
-            // If you want to reset the list again after 7 days, you can schedule this Runnable again
+            // ff you want to reset the list again after 7 days, you can schedule this Runnable again
             resetDayListAfterSevenDays();
         }, 7 * 24 * 60 * 60 * 1000); // 7 days in milliseconds
+    }
+
+    private void generateDayData()
+    {
+        StorageReference storageReference = FirebaseStorage.getInstance().
+                getReference("Image Day/checked.svg");
+        storageReference.getDownloadUrl().addOnSuccessListener(uri ->
+        {
+            CheckInDay checkInDay = new CheckInDay("Day 1");
+            CheckInDay checkInDay1 = new CheckInDay("Day 2");
+            CheckInDay checkInDay2 = new CheckInDay("Day 3");
+            CheckInDay checkInDay3 = new CheckInDay("Day 4");
+            CheckInDay checkInDay4 = new CheckInDay("Day 5");
+            CheckInDay checkInDay5 = new CheckInDay("Day 6");
+            CheckInDay checkInDay6 = new CheckInDay("Day 7");
+
+            checkInDay.setImageURL(uri.toString());
+            checkInDay1.setImageURL(uri.toString());
+            checkInDay2.setImageURL(uri.toString());
+            checkInDay3.setImageURL(uri.toString());
+            checkInDay4.setImageURL(uri.toString());
+            checkInDay5.setImageURL(uri.toString());
+            checkInDay6.setImageURL(uri.toString());
+
+            // for day reference set value for them
+            databaseReferenceDay.child("Day 1").setValue(checkInDay);
+            databaseReferenceDay.child("Day 2").setValue(checkInDay1);
+            databaseReferenceDay.child("Day 3").setValue(checkInDay2);
+            databaseReferenceDay.child("Day 4").setValue(checkInDay3);
+            databaseReferenceDay.child("Day 5").setValue(checkInDay4);
+            databaseReferenceDay.child("Day 6").setValue(checkInDay5);
+            databaseReferenceDay.child("Day 7").setValue(checkInDay6);
+        }).addOnFailureListener(exception ->
+        {
+            // Handle any errors
+            Log.e("FirebaseStorage", "Error getting download URL", exception);
+        });
     }
 
     private void setAdapter() 

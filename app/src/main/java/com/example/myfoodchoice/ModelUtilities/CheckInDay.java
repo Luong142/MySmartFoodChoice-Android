@@ -4,8 +4,14 @@ import androidx.annotation.NonNull;
 
 public class CheckInDay
 {
-    private int imageId;
     private String day;
+
+    private String imageURL;
+
+    public CheckInDay(String day)
+    {
+        this.day = day;
+    }
 
     public CheckInDay()
     {
@@ -14,7 +20,6 @@ public class CheckInDay
 
     public CheckInDay(int imageId, String day)
     {
-        this.imageId = imageId;
         this.day = day;
     }
 
@@ -23,17 +28,17 @@ public class CheckInDay
     public String toString()
     {
         return "CheckInDay{" +
-                "imageId=" + imageId +
                 ", day='" + day + '\'' +
+                ", URL='" + imageURL + '\'' +
                 '}';
     }
 
-    public int getImageId() {
-        return imageId;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getDay() {

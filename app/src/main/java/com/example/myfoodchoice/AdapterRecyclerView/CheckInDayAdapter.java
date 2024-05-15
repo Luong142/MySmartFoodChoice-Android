@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myfoodchoice.AdapterInterfaceListener.OnDailyCheckInListener;
 import com.example.myfoodchoice.ModelUtilities.CheckInDay;
 import com.example.myfoodchoice.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -62,8 +63,9 @@ public class CheckInDayAdapter extends RecyclerView.Adapter<CheckInDayAdapter.my
     public void onBindViewHolder(@NonNull myViewHolder holder, int position)
     {
         CheckInDay checkInDay = checkInDays.get(position);
-        holder.dayImage.setImageResource(checkInDay.getImageId());
         holder.dayText.setText(checkInDay.getDay());
+
+        Picasso.get().load(checkInDay.getImageURL()).error(R.drawable.check_in).into(holder.dayImage);
     }
 
     @Override
