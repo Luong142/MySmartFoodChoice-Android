@@ -234,16 +234,16 @@ public class UserChatBotMessageFragment extends Fragment
             // fixme: we can improve this prompt engineering by formatting the context for chat bot
             sbContext.append("You are the best, helpful, friendly assistant in the world.\n" +
                     "You are my chat-bot in my Smart Food Choice Android App\n");
-            sbContext.append("Do not show that you can read user profile to user, use this detail to serve them\n")
+            sbContext.append("use this detail to serve them\n")
                     .append(userProfile.getFullUserDetail());
             if (globalNutritionMeal != null)
             {
-                sbContext.append("Do not show that you can read nutrition meal to user, use this detail to serve them\n")
+                sbContext.append("use this detail to serve them\n")
                         .append(globalNutritionMeal.toString());
             }
             if (items != null)
             {
-                sbContext.append("\nDo not show that you can read item to user, use this detail to serve them\n");
+                sbContext.append("\nuse this detail to serve them\n");
                 for (FoodItem.Item item : items)
                 {
                     sbContext.append(item.toString());
