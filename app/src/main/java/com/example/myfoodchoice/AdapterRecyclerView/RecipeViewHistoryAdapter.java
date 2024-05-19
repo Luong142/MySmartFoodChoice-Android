@@ -108,11 +108,13 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             holder.recipeCuisine.setText(recipeCuisineFormat);
             holder.recipeIngredients.setText(recipeIngredientsManualFormat);
             holder.recipeInstructions.setText(recipeInstructionFormat);
+
             Picasso.get().load(R.drawable.food_placeholder)
                     .error(R.drawable.food_placeholder).into(holder.recipeImage);
 
             // for dietitian only
             holder.dietitianProfileInfo.setText(meals.getDietitianInfo());
+
             Picasso.get().load(meals.getDietitianProfileImage())
                     .error(R.drawable.error).into(holder.dietitianProfileImage);
         }
@@ -125,11 +127,13 @@ public class RecipeViewHistoryAdapter extends RecyclerView.Adapter<RecipeViewHis
             holder.recipeCuisine.setText(recipeCuisineFormat);
             holder.recipeIngredients.setText(recipeIngredientsSearchFormat);
             holder.recipeInstructions.setText(recipeInstructionFormat);
+
             Picasso.get().load(meals.getStrMealThumb())
                     .error(R.drawable.error).into(holder.recipeImage);
 
             // for dietitian only
             holder.dietitianProfileInfo.setText(meals.getDietitianInfo());
+
             Picasso.get().load(meals.getDietitianProfileImage())
                     .error(R.drawable.error).into(holder.dietitianProfileImage);
         }

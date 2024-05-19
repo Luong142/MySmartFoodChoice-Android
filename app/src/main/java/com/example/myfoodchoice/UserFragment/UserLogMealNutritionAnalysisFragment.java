@@ -687,7 +687,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
             Model model = Model.newInstance(requireActivity().getApplicationContext());
 
             // holding memory of that new image.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize
+                    (new int[]{1, 224, 224, 3}, DataType.FLOAT32);
 
             // fixme, @NonNull Bitmap image since the I have converted it into image.
             // fixme, Bitmap supports JPEG, PNG, BMP, GIF, WebP except uncommon image format

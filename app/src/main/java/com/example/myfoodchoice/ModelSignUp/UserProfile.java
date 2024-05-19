@@ -161,30 +161,29 @@ public class UserProfile extends CommonProfile implements Parcelable // way more
 
     public String getUserProfileDetail()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Full Name\n");
-        sb.append(this.getFirstName()).append(" ").append(this.getLastName()).append("\n");
-        sb.append("Gender: ").append(this.gender).append("\n");
-        sb.append("Age: ").append(this.age).append("\n");
-        return sb.toString();
+        String sb = "Full Name\n" +
+                this.getFirstName() + " " + this.getLastName() + "\n" +
+                "Gender: " + this.gender + "\n" +
+                "Age: " + this.age + "\n"
+                + "Weight: " + this.weight;
+        return sb;
     }
 
     public String getUserHealthDetail()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Health Conditions Summary:\n");
-        sb.append("---------------------------\n");
-        sb.append("Height: ").append(this.height).append("\n");
-        sb.append("Weight: ").append(this.weight).append("\n");
-        sb.append("Diet Type: ").append(this.dietType).append("\n");
-        sb.append("High Blood Pressure: ").append(isHighBloodPressure ? "Yes" : "No").append("\n");
-        sb.append("Diabetes: ").append(isDiabetes ? "Yes" : "No").append("\n");
-        sb.append("High Cholesterol: ").append(isHighCholesterol ? "Yes" : "No").append("\n");
-        sb.append(" Seafood: ").append(isAllergySeafood ? "Yes" : "No").append("\n");
-        sb.append(" Peanut: ").append(isAllergyPeanut ? "Yes" : "No").append("\n");
-        sb.append(" Egg: ").append(isAllergyEgg ? "Yes" : "No").append("\n");
-        sb.append("---------------------------");
-        return sb.toString();
+        String sb = "Health Conditions Summary:\n" +
+                "---------------------------\n" +
+                "Height: " + this.height + "\n" +
+                "Weight: " + this.weight + "\n" +
+                "Diet Type: " + this.dietType + "\n" +
+                "High Blood Pressure: " + (isHighBloodPressure ? "Yes" : "No") + "\n" +
+                "Diabetes: " + (isDiabetes ? "Yes" : "No") + "\n" +
+                "High Cholesterol: " + (isHighCholesterol ? "Yes" : "No") + "\n" +
+                " Seafood: " + (isAllergySeafood ? "Yes" : "No") + "\n" +
+                " Peanut: " + (isAllergyPeanut ? "Yes" : "No") + "\n" +
+                " Egg: " + (isAllergyEgg ? "Yes" : "No") + "\n" +
+                "---------------------------";
+        return sb;
     }
 
     @NonNull

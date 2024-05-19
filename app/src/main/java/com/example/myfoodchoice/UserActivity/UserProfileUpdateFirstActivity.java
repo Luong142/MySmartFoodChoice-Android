@@ -3,6 +3,7 @@ package com.example.myfoodchoice.UserActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -282,6 +283,8 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             userProfile.setLastName(lastName);
             userProfile.setWeight(weight);
 
+            // Log.d(TAG, "onNextBtnListener: " + userProfile);
+
             // set image here
             storageTask.continueWithTask(task ->
             {
@@ -324,6 +327,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
                 Map<String, Object> updates = new HashMap<>();
                 updates.put("firstName", firstName);
                 updates.put("lastName", lastName);
+                updates.put("weight", weight);
                 updates.put("profileImageUrl", myUri);
 
                 firebaseUser.updateProfile(new com.google.firebase.auth.UserProfileChangeRequest.Builder()
