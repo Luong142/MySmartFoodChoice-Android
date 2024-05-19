@@ -280,6 +280,7 @@ public class UserProfileUpdateFirstActivity extends AppCompatActivity
             userProfile = new UserProfile();
             userProfile.setFirstName(firstName);
             userProfile.setLastName(lastName);
+            userProfile.setWeight(weight);
 
             // set image here
             storageTask.continueWithTask(task ->

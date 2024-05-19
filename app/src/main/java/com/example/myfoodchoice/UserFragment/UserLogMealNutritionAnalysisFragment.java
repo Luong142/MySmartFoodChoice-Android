@@ -681,7 +681,8 @@ public class UserLogMealNutritionAnalysisFragment extends Fragment implements On
     public void classifyImage(@NonNull Bitmap image)// todo: algo using tensorflow lite to label image.
     {
         // todo: Tensorflow lite is an API.
-        try {
+        try
+        {
             // model here
             Model model = Model.newInstance(requireActivity().getApplicationContext());
 
